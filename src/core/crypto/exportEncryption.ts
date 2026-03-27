@@ -3,7 +3,7 @@
  * Handles encryption and decryption of vault exports with a separate password
  */
 
-import { deriveKeyFromPassword, encrypt, decrypt } from './encryption';
+import { deriveKeyFromPassword, encrypt, decrypt, type EncryptedData } from './encryption';
 import type { Credential } from '@/domain/entities/Credential';
 
 /**
@@ -51,7 +51,7 @@ export async function encryptExport(
       // Convert dates to ISO strings for JSON serialization
       createdAt: cred.createdAt.toISOString(),
       updatedAt: cred.updatedAt.toISOString(),
-    })) as any, // Type assertion needed for date conversion
+    })) as unknown as Credential[],
   };
 
   // Encrypt the data
@@ -86,8 +86,8 @@ export async function decryptImport(
   // Parse export JSON
   let vaultExport: VaultExport;
   try {
-    vaultExport = JSON.parse(exportJson);
-  } catch (error) {
+    vaultExport = JSON.parse(exportJson) as VaultExport;
+  } catch {
     throw new Error('Invalid export file format');
   }
 
@@ -95,8 +95,7 @@ export async function decryptImport(
   if (
     !vaultExport.version ||
     !vaultExport.salt ||
-    !vaultExport.encryptedData ||
-    !vaultExport.encryptionParams
+    !vaultExport.encryptedData
   ) {
     throw new Error('Invalid export file structure');
   }
@@ -117,10 +116,10 @@ export async function decryptImport(
   const key = await deriveKeyFromPassword(exportPassword, salt);
 
   // Parse encrypted data
-  let encryptedData;
+  let encryptedData: EncryptedData;
   try {
-    encryptedData = JSON.parse(vaultExport.encryptedData);
-  } catch (error) {
+    encryptedData = JSON.parse(vaultExport.encryptedData) as EncryptedData;
+  } catch {
     throw new Error('Invalid encrypted data format');
   }
 
@@ -128,15 +127,15 @@ export async function decryptImport(
   let decryptedString: string;
   try {
     decryptedString = await decrypt(encryptedData, key);
-  } catch (error) {
+  } catch {
     throw new Error('Failed to decrypt export. Invalid password or corrupted file.');
   }
 
   // Parse decrypted data
   let exportData: ExportData;
   try {
-    exportData = JSON.parse(decryptedString);
-  } catch (error) {
+    exportData = JSON.parse(decryptedString) as ExportData;
+  } catch {
     throw new Error('Invalid export data structure');
   }
 
@@ -161,7 +160,7 @@ export async function decryptImport(
  */
 export function generateExportFilename(): string {
   const date = new Date();
-  const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
+  const dateStr = date.toISOString().split('T')[0] ?? '';
   return `trustvault-backup-${dateStr}.tvault`;
 }
 

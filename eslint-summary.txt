@@ -1,0 +1,690 @@
+
+src/core/auth/webauthn.ts (5 E, 0 W):
+  46: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, the types have no overlap.
+  294: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, the types have no overlap.
+  294: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  296: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  297: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, the types have no overlap.
+
+src/core/autofill/autofillSettings.ts (0 E, 1 W):
+  52: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/core/autofill/credentialManagementService.ts (13 E, 0 W):
+  190: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `Credential`.
+  218: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  218: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  220: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  220: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .id on an `any` value.
+  221: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  221: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .password on an `any` value.
+  251: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  251: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  253: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  253: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .id on an `any` value.
+  254: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  254: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .password on an `any` value.
+
+src/core/breach/__tests__/hibp-security.test.ts (42 E, 0 W):
+  32: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  56: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  77: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  101: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  124: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  146: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  175: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  179: [@typescript-eslint/no-unused-vars] 'start' is assigned a value but never used.
+  198: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  204: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  210: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  231: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  246: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  253: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  259: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  268: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  268: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  269: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  269: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  284: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  304: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  330: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  353: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  388: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  404: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  420: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  439: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  478: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  498: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  517: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  535: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  559: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  577: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  595: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  613: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  631: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  651: [@typescript-eslint/require-await] Async method 'json' has no 'await' expression.
+  688: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  715: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  734: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  754: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+  773: [@typescript-eslint/require-await] Async method 'text' has no 'await' expression.
+
+src/core/breach/hibpService.ts (12 E, 4 W):
+  72: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  88: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  98: [@typescript-eslint/no-deprecated] `sha1` is deprecated. Use import from `noble/hashes/legacy` module
+  120: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  133: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  136: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  250: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  265: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  277: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  282: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  283: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  309: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  378: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  414: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  414: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  422: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+
+src/core/crypto/__tests__/encryption-edge-cases.test.ts (2 E, 0 W):
+  7: [@typescript-eslint/no-unused-vars] 'beforeEach' is defined but never used.
+  151: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/core/crypto/__tests__/password-edge-cases.test.ts (3 E, 0 W):
+  221: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  374: [no-useless-escape] Unnecessary escape character: \[.
+  406: [no-useless-escape] Unnecessary escape character: \[.
+
+src/core/crypto/encryption.ts (3 E, 0 W):
+  22: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always falsy.
+  72: [@typescript-eslint/no-deprecated] `sha256` is deprecated. Use import from `noble/hashes/sha2` module
+  259: [@typescript-eslint/no-deprecated] `sha256` is deprecated. Use import from `noble/hashes/sha2` module
+
+src/core/crypto/exportEncryption.ts (12 E, 0 W):
+  49: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  54: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  89: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  90: [@typescript-eslint/no-unused-vars] 'error' is defined but never used.
+  99: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always falsy.
+  122: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  123: [@typescript-eslint/no-unused-vars] 'error' is defined but never used.
+  130: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  131: [@typescript-eslint/no-unused-vars] 'error' is defined but never used.
+  138: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  139: [@typescript-eslint/no-unused-vars] 'error' is defined but never used.
+  165: [@typescript-eslint/restrict-template-expressions] Invalid type "string | undefined" of template literal expression.
+
+src/core/crypto/password.ts (5 E, 2 W):
+  30: [@typescript-eslint/require-await] Async function 'hashPassword' has no 'await' expression.
+  43: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  43: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  43: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  53: [@typescript-eslint/require-await] Async function 'verifyPassword' has no 'await' expression.
+  58: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  89: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/core/ocr/cameraCapture.ts (2 E, 0 W):
+  25: [@typescript-eslint/no-unnecessary-type-conversion] Using !! on a boolean does not change the type or value of the boolean.
+  27: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+
+src/core/ocr/tesseractService.ts (4 E, 3 W):
+  91: [@typescript-eslint/no-unnecessary-type-conversion] Using !! on a boolean does not change the type or value of the boolean.
+  93: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  115: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  115: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  142: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  146: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  149: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/data/repositories/CredentialRepositoryImpl.ts (18 E, 0 W):
+  168: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  207: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  208: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  272: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  273: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  291: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  292: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  298: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  299: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  314: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  315: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  326: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  327: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  336: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  337: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  464: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  465: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  466: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+
+src/data/repositories/UserRepositoryImpl.ts (6 E, 3 W):
+  71: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  97: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  98: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  310: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  333: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  356: [@typescript-eslint/require-await] Async method 'getSession' has no 'await' expression.
+  404: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  405: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`.
+  439: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+
+src/data/repositories/__tests__/CredentialRepositoryImpl.test.ts (5 E, 0 W):
+  343: [@typescript-eslint/no-unused-vars] 'anotherUser' is assigned a value but never used.
+  577: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  578: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  649: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  653: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/data/repositories/__tests__/UserRepositoryImpl.test.ts (3 E, 0 W):
+  10: [@typescript-eslint/no-unused-vars] 'User' is defined but never used.
+  201: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  202: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+
+src/data/repositories/breachResultsRepository.ts (1 E, 0 W):
+  23: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/data/storage/database.ts (3 E, 3 W):
+  169: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  172: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  175: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  211: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  213: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  233: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/data/storage/debugUtils.ts (3 E, 6 W):
+  15: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  28: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  30: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  30: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  45: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  47: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  57: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  57: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .debugDB on an `any` value.
+  62: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/features/vault/generator/strengthAnalyzer.ts (6 E, 0 W):
+  104: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  107: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  110: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  113: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  116: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  119: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/main.tsx (1 E, 5 W):
+  8: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  11: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  16: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  18: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  24: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  31: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/presentation/App.tsx (3 E, 4 W):
+  61: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  62: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  70: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  283: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  291: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  308: [@typescript-eslint/use-unknown-in-catch-callback-variable] Prefer the safe `: unknown` for a `catch` callback variable.
+  321: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/presentation/components/AutoLockSettings.tsx (1 E, 0 W):
+  158: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/presentation/components/BiometricSetupDialog.tsx (6 E, 1 W):
+  59: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  60: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  62: [react-hooks/exhaustive-deps] React Hook useEffect has a missing dependency: 'loadCredentials'. Either include it or rem
+  239: [@typescript-eslint/no-deprecated] `paragraph` is deprecated. Use the `component` prop instead. This prop will be removed in 
+  279: [@typescript-eslint/no-deprecated] `ListItemSecondaryAction` is deprecated. Use the `secondaryAction` prop in the `ListItem` 
+  282: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  317: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/BreachAlertBanner.tsx (4 E, 0 W):
+  40: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  83: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  117: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  157: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/BreachDetailsModal.tsx (5 E, 0 W):
+  160: [@typescript-eslint/no-deprecated] `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be
+  169: [@typescript-eslint/no-deprecated] `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be
+  178: [@typescript-eslint/no-deprecated] `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be
+  187: [@typescript-eslint/no-deprecated] `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be
+  255: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+
+src/presentation/components/CameraScanDialog.tsx (3 E, 0 W):
+  122: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  222: [@typescript-eslint/no-deprecated] `PaperProps` is deprecated. Use `slotProps.paper` instead. This prop will be removed in v7
+  403: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/CategoryIcon.tsx (0 E, 3 W):
+  26: [react-refresh/only-export-components] Fast refresh only works when a file only exports components. Use a new file to share const
+  50: [react-refresh/only-export-components] Fast refresh only works when a file only exports components. Use a new file to share const
+  74: [react-refresh/only-export-components] Fast refresh only works when a file only exports components. Use a new file to share const
+
+src/presentation/components/ChangeMasterPasswordDialog.tsx (6 E, 0 W):
+  111: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always falsy.
+  119: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  197: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  221: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  257: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  279: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/ClipboardSettings.tsx (1 E, 0 W):
+  100: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/presentation/components/CredentialCard.tsx (7 E, 1 W):
+  67: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  69: [react-hooks/exhaustive-deps] React Hook useEffect has a missing dependency: 'loadBreachStatus'. Either include it or re
+  200: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  214: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  240: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  255: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  268: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  271: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/CredentialDetailsDialog.tsx (5 E, 1 W):
+  100: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  102: [react-hooks/exhaustive-deps] React Hook useEffect has a missing dependency: 'loadExistingBreachData'. Either include it
+  220: [@typescript-eslint/no-deprecated] `TransitionComponent` is deprecated. Use `slots.transition` instead. This prop will be rem
+  451: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  494: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  506: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+
+src/presentation/components/ExportDialog.tsx (3 E, 0 W):
+  132: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  165: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  210: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/FilterChips.tsx (2 E, 0 W):
+  108: [@typescript-eslint/no-deprecated] `InputLabelProps` is deprecated. Use `slotProps.inputLabel` instead. This prop will be rem
+  108: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+
+src/presentation/components/ImportDialog.tsx (20 E, 0 W):
+  76: [@typescript-eslint/no-unused-vars] 'err' is defined but never used.
+  127: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  128: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  140: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or u
+  140: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  141: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or u
+  141: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  142: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or u
+  142: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  143: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  144: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  145: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or u
+  145: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  146: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  147: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  148: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  245: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  260: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  338: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  348: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/InstallPrompt.tsx (13 E, 0 W):
+  5: [@typescript-eslint/no-unsafe-assignment] Unsafe array destructuring of a tuple element with an `any` value.
+  5: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  10: [@typescript-eslint/ban-ts-comment] Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the fol
+  12: [@typescript-eslint/ban-ts-comment] Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the fol
+  27: [@typescript-eslint/ban-ts-comment] Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the fol
+  28: [@typescript-eslint/no-unsafe-call] Unsafe call of a(n) `any` typed value.
+  28: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .prompt on an `any` value.
+  29: [@typescript-eslint/ban-ts-comment] Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the fol
+  30: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  30: [@typescript-eslint/no-unused-vars] 'choice' is assigned a value but never used.
+  30: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .userChoice on an `any` value.
+  35: [@typescript-eslint/no-unused-vars] 'e' is defined but never used.
+  48: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/MobileNavigation.tsx (3 E, 0 W):
+  30: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  34: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  37: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+
+src/presentation/components/OcrResultDialog.tsx (1 E, 0 W):
+  187: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+
+src/presentation/components/PasswordGeneratorDialog.tsx (3 E, 0 W):
+  88: [@typescript-eslint/no-deprecated] `PaperProps` is deprecated. Use `slotProps.paper` instead. This prop will be removed in v7
+  118: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  130: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/SwipeableCredentialCard.tsx (2 E, 0 W):
+  184: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  276: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/presentation/components/TagInput.tsx (2 E, 0 W):
+  69: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  69: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+
+src/presentation/components/TotpDisplay.tsx (1 E, 0 W):
+  176: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/UnlockDialog.tsx (4 E, 0 W):
+  76: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  130: [@typescript-eslint/no-deprecated] `onKeyPress` is deprecated. Use `onKeyUp` or `onKeyDown` instead
+  134: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  160: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/components/UpdateAvailableSnackbar.tsx (2 E, 0 W):
+  11: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  40: [@typescript-eslint/no-unused-vars] 'e' is defined but never used.
+
+src/presentation/components/UpdateNotification.tsx (3 E, 0 W):
+  74: [@typescript-eslint/no-deprecated] `TransitionComponent` is deprecated. Use `slots.transition` instead. This prop will be rem
+  105: [@typescript-eslint/no-deprecated] `TransitionComponent` is deprecated. Use `slots.transition` instead. This prop will be rem
+  155: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/hooks/__tests__/useAutoLock.test.ts (6 E, 0 W):
+  156: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  184: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  204: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  242: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  263: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  284: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+
+src/presentation/hooks/__tests__/usePasswordGenerator.test.ts (10 E, 0 W):
+  185: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  197: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  209: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  221: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  233: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  276: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  289: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  289: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  290: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .length on an `any` value.
+  291: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .excludeAmbiguous on an `any` value.
+
+src/presentation/hooks/useAutoLock.ts (2 E, 3 W):
+  36: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  47: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  94: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  97: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, comparison is always true, since `"visible" === "visible"` is tru
+  99: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/presentation/hooks/useServiceWorkerUpdate.ts (10 E, 8 W):
+  63: [@typescript-eslint/return-await] Returning an awaited promise is required in this context.
+  65: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .type on an `any` value.
+  66: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `string | PromiseLike<string
+  66: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .version on an `any` value.
+  93: [@typescript-eslint/return-await] Returning an awaited promise is required in this context.
+  95: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .type on an `any` value.
+  96: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `string | PromiseLike<string
+  96: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .version on an `any` value.
+  123: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  131: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  170: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  183: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  197: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  220: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  245: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  264: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  286: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  324: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+
+src/presentation/pages/AddCredentialPage.tsx (22 E, 0 W):
+  191: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  201: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .username on an `any` value.
+  202: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .password on an `any` value.
+  203: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cardNumber on an `any` value.
+  204: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cardholderName on an `any` value.
+  205: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .expiryMonth on an `any` value.
+  206: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .expiryYear on an `any` value.
+  207: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cvv on an `any` value.
+  208: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cardType on an `any` value.
+  209: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .billingAddress on an `any` value.
+  212: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .username on an `any` value.
+  213: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .password on an `any` value.
+  214: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .totpSecret on an `any` value.
+  217: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `CredentialInput`.
+  242: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  256: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  326: [@typescript-eslint/no-deprecated] `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed i
+  416: [@typescript-eslint/no-deprecated] `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed i
+  417: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  470: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  566: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  574: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/pages/DashboardPage.tsx (20 E, 2 W):
+  118: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  121: [react-hooks/exhaustive-deps] The 'showSnackbar' function makes the dependencies of useCallback Hook (at line 134) chang
+  121: [react-hooks/exhaustive-deps] The 'showSnackbar' function makes the dependencies of useCallback Hook (at line 161) chang
+  137: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  243: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  371: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  382: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  423: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  429: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  435: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  441: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  541: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  560: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  580: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  625: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  642: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  657: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  674: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  686: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  705: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  706: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  720: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/pages/EditCredentialPage.tsx (27 E, 0 W):
+  130: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  153: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  252: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  263: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .username on an `any` value.
+  264: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .password on an `any` value.
+  265: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cardNumber on an `any` value.
+  266: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cardholderName on an `any` value.
+  267: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .expiryMonth on an `any` value.
+  268: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .expiryYear on an `any` value.
+  269: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cvv on an `any` value.
+  270: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .cardType on an `any` value.
+  271: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .billingAddress on an `any` value.
+  274: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .username on an `any` value.
+  275: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .password on an `any` value.
+  276: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .totpSecret on an `any` value.
+  279: [@typescript-eslint/no-unsafe-argument] Unsafe argument of type `any` assigned to a parameter of type `Partial<CredentialInput>`.
+  299: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  319: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  345: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  360: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  440: [@typescript-eslint/no-deprecated] `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed i
+  530: [@typescript-eslint/no-deprecated] `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed i
+  531: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  584: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  680: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  688: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  704: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/pages/FavoritesPage.tsx (17 E, 0 W):
+  91: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  105: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  107: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  175: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  183: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  198: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  232: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  253: [@typescript-eslint/no-deprecated] `Grid` is deprecated. Use the [`Grid2`](https://mui.com/material-ui/react-grid2/) componen
+  255: [@typescript-eslint/no-deprecated] `Grid` is deprecated. Use the [`Grid2`](https://mui.com/material-ui/react-grid2/) componen
+  278: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  278: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  300: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  343: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  368: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  375: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  385: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  399: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/pages/LoginPage.tsx (1 E, 3 W):
+  82: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  121: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  164: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  301: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/pages/PasswordGeneratorPage.tsx (4 E, 0 W):
+  176: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  195: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  214: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  247: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/presentation/pages/SecurityAuditPage.tsx (18 E, 3 W):
+  84: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  85: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  86: [react-hooks/exhaustive-deps] React Hook useEffect has a missing dependency: 'analyzeCredentials'. Either include it or 
+  137: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  137: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  175: [@typescript-eslint/no-non-null-assertion] Forbidden non-null assertion.
+  181: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  194: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  212: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  301: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  301: [@typescript-eslint/restrict-template-expressions] Invalid type "number | undefined" of template literal expression.
+  308: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  308: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  308: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  319: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  350: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  406: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  406: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  424: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  553: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  553: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+
+src/presentation/pages/SettingsPage.tsx (8 E, 1 W):
+  49: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  52: [@typescript-eslint/no-unnecessary-condition] Unnecessary optional chain on a non-nullish value.
+  106: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  111: [react-hooks/exhaustive-deps] React Hook useEffect has missing dependencies: 'saveSettings' and 'user'. Either include t
+  136: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  163: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  393: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  454: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  494: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+
+src/presentation/pages/SigninPage.tsx (5 E, 2 W):
+  51: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  74: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  77: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  122: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  125: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  224: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+  237: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+
+src/presentation/pages/SignupPage.tsx (2 E, 1 W):
+  61: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  73: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  189: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+
+src/presentation/pages/UnlockPage.tsx (6 E, 0 W):
+  59: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  70: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  76: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  148: [@typescript-eslint/no-deprecated] `onKeyPress` is deprecated. Use `onKeyUp` or `onKeyDown` instead
+  152: [@typescript-eslint/no-deprecated] `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7
+  178: [@typescript-eslint/no-misused-promises] Promise-returning function provided to attribute where a void return was expected.
+
+src/presentation/utils/__tests__/clipboard.test.ts (32 E, 0 W):
+  12: [@typescript-eslint/no-misused-promises] Promise returned in function argument where a void return was expected.
+  40: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  45: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  52: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  57: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  63: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  67: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  68: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  75: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  84: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  86: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  92: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  100: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  108: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  112: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  122: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  126: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  141: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  148: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  159: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  162: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  172: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  173: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  177: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  191: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  209: [@typescript-eslint/no-misused-promises] Promise returned in function argument where a void return was expected.
+  264: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  276: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  285: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  290: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  298: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  310: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+
+src/presentation/utils/clipboard.ts (15 E, 2 W):
+  25: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  25: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  30: [@typescript-eslint/no-misused-promises] Promise returned in function argument where a void return was expected.
+  39: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+  78: [@typescript-eslint/no-deprecated] `execCommand` is deprecated. [MDN Reference](https://developer.mozilla.org/docs/Web/API/Do
+  117: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  145: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  152: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  155: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  155: [@typescript-eslint/restrict-template-expressions] Invalid type "number" of template literal expression.
+  187: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  187: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  224: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  230: [@typescript-eslint/no-floating-promises] Promises must be awaited, end with a call to .catch, end with a call to .then with a rejec
+  240: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  240: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  250: [no-console] Unexpected console statement. Only these console methods are allowed: warn, error.
+
+src/presentation/utils/performance.ts (29 E, 0 W):
+  22: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  22: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  44: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  44: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  65: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  65: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .standalone on an `any` value.
+  73: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always falsy.
+  73: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always falsy.
+  79: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always falsy.
+  168: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  168: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  168: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .connection on an `any` value.
+  168: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  168: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .mozConnection on an `any` value.
+  168: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  168: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .webkitConnection on an `any` value.
+  174: [@typescript-eslint/no-unsafe-assignment] Unsafe assignment of an `any` value.
+  174: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .effectiveType on an `any` value.
+  192: [@typescript-eslint/no-unsafe-call] Unsafe call of a(n) `any` typed value.
+  192: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  192: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .requestIdleCallback on an `any` value.
+  218: [@typescript-eslint/no-unused-vars] 'e' is defined but never used.
+  240: [@typescript-eslint/no-unused-vars] 'e' is defined but never used.
+  256: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  256: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .hadRecentInput on an `any` value.
+  257: [@typescript-eslint/restrict-plus-operands] Invalid operand for a '+' operation. Operands must each be a number or string. Got `any`.
+  257: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  257: [@typescript-eslint/no-unsafe-member-access] Unsafe member access .value on an `any` value.
+  265: [@typescript-eslint/no-unused-vars] 'e' is defined but never used.
+
+src/test/integration.test.ts (17 E, 0 W):
+  16: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  73: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  103: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  113: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  142: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  175: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  222: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  225: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 
+  238: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  266: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  272: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  306: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  320: [@typescript-eslint/no-unnecessary-condition] Unnecessary conditional, value is always truthy.
+  336: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  401: [@typescript-eslint/no-explicit-any] Unexpected any. Specify a different type.
+  411: [@typescript-eslint/require-await] Async arrow function has no 'await' expression.
+  416: [@typescript-eslint/unbound-method] A method that is not declared with `this: void` may cause unintentional scoping of `this` 

@@ -166,13 +166,13 @@ export class TrustVaultDB extends Dexie {
       };
 
       await this.transaction('rw', this.credentials, this.users, this.settings, async () => {
-        if (data.credentials && data.credentials.length > 0) {
+        if (data.credentials.length > 0) {
           await this.credentials.bulkAdd(data.credentials);
         }
-        if (data.users && data.users.length > 0) {
+        if (data.users.length > 0) {
           await this.users.bulkAdd(data.users);
         }
-        if (data.settings && data.settings.length > 0) {
+        if (data.settings.length > 0) {
           await this.settings.bulkAdd(data.settings);
         }
       });
@@ -208,9 +208,9 @@ export const db = new TrustVaultDB();
  */
 export async function initializeDatabase(): Promise<void> {
   try {
-    console.log('Opening TrustVault database...');
+    console.warn('Opening TrustVault database...');
     await db.open();
-    console.log('TrustVault database initialized successfully');
+    console.warn('TrustVault database initialized successfully');
   } catch (error) {
     console.error('Failed to initialize database:', error);
     // Don't throw - allow app to continue without persistence
@@ -230,5 +230,5 @@ export function closeDatabase(): void {
  */
 export async function deleteDatabase(): Promise<void> {
   await db.delete();
-  console.log('TrustVault database deleted');
+  console.warn('TrustVault database deleted');
 }

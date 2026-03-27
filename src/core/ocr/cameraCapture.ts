@@ -22,9 +22,8 @@ export interface CameraStream {
  * Check if camera access is available in this browser/context.
  */
 export function isCameraSupported(): boolean {
-  return !!(
+  return (
     typeof navigator !== 'undefined' &&
-    navigator.mediaDevices &&
     typeof navigator.mediaDevices.getUserMedia === 'function'
   );
 }

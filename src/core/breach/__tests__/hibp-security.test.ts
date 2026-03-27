@@ -29,7 +29,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => '003D68EB55068C33ACE09247EE4C639306B:3\nOTHER_HASH:5'
+        text: () => Promise.resolve('003D68EB55068C33ACE09247EE4C639306B:3\nOTHER_HASH:5')
       } as Response);
 
       try {
@@ -53,7 +53,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -74,7 +74,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => '61E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471'
+        text: () => Promise.resolve('61E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471')
       } as Response);
 
       try {
@@ -98,10 +98,10 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () =>
+        text: () => Promise.resolve(
           'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:1\n' +
           'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:2\n' +
-          'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC:3'
+          'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC:3')
       } as Response);
 
       try {
@@ -121,7 +121,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -143,7 +143,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -172,12 +172,10 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
-        const start = Date.now();
-
         // First call triggers fetch and cache
         await checkPasswordBreach('password1');
         // Second call with same password uses cache (no fetch)
@@ -195,20 +193,20 @@ describe('HIBP Breach Detection Security', () => {
     it('should retry on 429 Too Many Requests with backoff', async () => {
       let callCount = 0;
 
-      const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(async () => {
+      const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(() => {
         callCount++;
         if (callCount < 3) {
-          return {
+          return Promise.resolve({
             ok: false,
             status: 429,
-            text: async () => 'Too Many Requests'
-          } as Response;
+            text: () => Promise.resolve('Too Many Requests')
+          } as Response);
         }
-        return {
+        return Promise.resolve({
           ok: true,
           status: 200,
-          text: async () => ''
-        } as Response;
+          text: () => Promise.resolve('')
+        } as Response);
       });
 
       try {
@@ -228,7 +226,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: false,
         status: 429,
-        text: async () => 'Too Many Requests'
+        text: () => Promise.resolve('Too Many Requests')
       } as Response);
 
       try {
@@ -243,21 +241,21 @@ describe('HIBP Breach Detection Security', () => {
     it('should increase delay exponentially', async () => {
       const startTimes: number[] = [];
 
-      const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(async () => {
+      const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(() => {
         startTimes.push(Date.now());
 
         if (startTimes.length < 3) {
-          return {
+          return Promise.resolve({
             ok: false,
             status: 429,
-            text: async () => 'Too Many Requests'
-          } as Response;
+            text: () => Promise.resolve('Too Many Requests')
+          } as Response);
         }
-        return {
+        return Promise.resolve({
           ok: true,
           status: 200,
-          text: async () => ''
-        } as Response;
+          text: () => Promise.resolve('')
+        } as Response);
       });
 
       try {
@@ -265,8 +263,8 @@ describe('HIBP Breach Detection Security', () => {
 
         // Check that delays increased (exponential backoff)
         if (startTimes.length >= 3) {
-          const delay1 = startTimes[1]! - startTimes[0]!;
-          const delay2 = startTimes[2]! - startTimes[1]!;
+          const delay1 = (startTimes[1] as number) - (startTimes[0] as number);
+          const delay2 = (startTimes[2] as number) - (startTimes[1] as number);
           // Second delay should be >= first delay (exponential)
           expect(delay2).toBeGreaterThanOrEqual(delay1 * 0.9); // Allow 10% margin
         }
@@ -281,7 +279,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -301,7 +299,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -327,7 +325,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -350,7 +348,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -385,7 +383,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: false,
         status: 403,
-        text: async () => 'Forbidden'
+        text: () => Promise.resolve('Forbidden')
       } as Response);
 
       try {
@@ -401,7 +399,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: false,
         status: 500,
-        text: async () => 'Internal Server Error'
+        text: () => Promise.resolve('Internal Server Error')
       } as Response);
 
       try {
@@ -417,7 +415,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'INVALID_FORMAT_NO_COLON'
+        text: () => Promise.resolve('INVALID_FORMAT_NO_COLON')
       } as Response);
 
       try {
@@ -436,7 +434,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -475,7 +473,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471'
+        text: () => Promise.resolve('E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471')
       } as Response);
 
       try {
@@ -495,7 +493,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:1'
+        text: () => Promise.resolve('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:1')
       } as Response);
 
       try {
@@ -514,7 +512,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:1234567'
+        text: () => Promise.resolve('E4C9B93F3F0682250B6CF8331B7EE68FD8:1234567')
       } as Response);
 
       try {
@@ -532,10 +530,10 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () =>
+        text: () => Promise.resolve(
           'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:10\n' +
           'E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471\n' +
-          'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:5'
+          'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:5')
       } as Response);
 
       try {
@@ -556,7 +554,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:100001'
+        text: () => Promise.resolve('E4C9B93F3F0682250B6CF8331B7EE68FD8:100001')
       } as Response);
 
       try {
@@ -574,7 +572,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:50000'
+        text: () => Promise.resolve('E4C9B93F3F0682250B6CF8331B7EE68FD8:50000')
       } as Response);
 
       try {
@@ -592,7 +590,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:5000'
+        text: () => Promise.resolve('E4C9B93F3F0682250B6CF8331B7EE68FD8:5000')
       } as Response);
 
       try {
@@ -610,7 +608,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:500'
+        text: () => Promise.resolve('E4C9B93F3F0682250B6CF8331B7EE68FD8:500')
       } as Response);
 
       try {
@@ -628,7 +626,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -648,7 +646,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        json: async () => [
+        json: () => Promise.resolve([
           {
             Name: 'Adobe',
             Title: 'Adobe',
@@ -666,7 +664,7 @@ describe('HIBP Breach Detection Security', () => {
             IsSpamList: false,
             LogoPath: 'https://haveibeenpwned.com/Content/Images/PwnedLogos/Adobe.png'
           }
-        ]
+        ])
       } as Response);
 
       try {
@@ -685,7 +683,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: false,
         status: 404,
-        text: async () => 'Not found'
+        text: () => Promise.resolve('Not found')
       } as Response);
 
       try {
@@ -712,7 +710,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -731,7 +729,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -751,7 +749,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {
@@ -770,7 +768,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => ''
+        text: () => Promise.resolve('')
       } as Response);
 
       try {

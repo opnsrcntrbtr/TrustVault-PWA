@@ -4,7 +4,7 @@
  * Addresses identified gaps in encryption module coverage
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
   generateRandomBytes,
   generateSalt,
@@ -148,7 +148,7 @@ describe('Encryption Edge Cases', () => {
     it('should handle 100 concurrent encryption operations', async () => {
       const key = await generateEncryptionKey();
       const operations = Array.from({ length: 100 }, (_, i) =>
-        encrypt(`Data ${i}`, key)
+        encrypt(`Data ${String(i)}`, key)
       );
 
       const results = await Promise.all(operations);

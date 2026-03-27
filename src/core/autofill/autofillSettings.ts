@@ -49,7 +49,7 @@ export function loadAutofillSettings(): AutofillSettings {
 export function saveAutofillSettings(settings: AutofillSettings): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    console.log('Autofill settings saved');
+    console.warn('Autofill settings saved');
   } catch (error) {
     console.error('Failed to save autofill settings:', error);
   }

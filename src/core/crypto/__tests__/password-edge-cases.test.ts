@@ -218,7 +218,7 @@ describe('Password Edge Cases and Security', () => {
 
   describe('Concurrent Hashing (Race Conditions)', () => {
     it('should handle concurrent password hashing', async () => {
-      const passwords = Array.from({ length: 10 }, (_, i) => `Password${i}!`);
+      const passwords = Array.from({ length: 10 }, (_, i) => `Password${String(i)}!`);
 
       const hashes = await Promise.all(passwords.map(p => hashPassword(p)));
 
@@ -371,7 +371,7 @@ describe('Password Edge Cases and Security', () => {
         numbers: false
       });
 
-      expect(password).toMatch(/^[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]+$/);
+      expect(password).toMatch(/^[!@#$%^&*()_+\-=[\]{}|;:,.<>?]+$/);
     });
 
     it('should exclude ambiguous characters when specified', () => {
@@ -403,7 +403,7 @@ describe('Password Edge Cases and Security', () => {
       expect(password).toMatch(/[a-z]/);
       expect(password).toMatch(/[A-Z]/);
       expect(password).toMatch(/[0-9]/);
-      expect(password).toMatch(/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/);
+      expect(password).toMatch(/[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/);
     });
   });
 

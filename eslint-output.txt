@@ -1,0 +1,763 @@
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/auth/webauthn.ts
+   46:5   error  Unnecessary conditional, the types have no overlap                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unnecessary-condition
+  294:5   error  Unnecessary conditional, the types have no overlap                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unnecessary-condition
+  294:31  error  Unnecessary optional chain on a non-nullish value                                                                                                                                                                                                                                                                                           @typescript-eslint/no-unnecessary-condition
+  296:18  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  297:9   error  Unnecessary conditional, the types have no overlap                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unnecessary-condition
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/autofill/autofillSettings.ts
+  52:5  warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/autofill/credentialManagementService.ts
+  190:39  error  Unsafe argument of type `any` assigned to a parameter of type `Credential`  @typescript-eslint/no-unsafe-argument
+  218:13  error  Unsafe assignment of an `any` value                                         @typescript-eslint/no-unsafe-assignment
+  218:42  error  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+  220:9   error  Unsafe assignment of an `any` value                                         @typescript-eslint/no-unsafe-assignment
+  220:26  error  Unsafe member access .id on an `any` value                                  @typescript-eslint/no-unsafe-member-access
+  221:9   error  Unsafe assignment of an `any` value                                         @typescript-eslint/no-unsafe-assignment
+  221:32  error  Unsafe member access .password on an `any` value                            @typescript-eslint/no-unsafe-member-access
+  251:13  error  Unsafe assignment of an `any` value                                         @typescript-eslint/no-unsafe-assignment
+  251:42  error  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+  253:9   error  Unsafe assignment of an `any` value                                         @typescript-eslint/no-unsafe-assignment
+  253:26  error  Unsafe member access .id on an `any` value                                  @typescript-eslint/no-unsafe-member-access
+  254:9   error  Unsafe assignment of an `any` value                                         @typescript-eslint/no-unsafe-assignment
+  254:32  error  Unsafe member access .password on an `any` value                            @typescript-eslint/no-unsafe-member-access
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/breach/__tests__/hibp-security.test.ts
+   32:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+   56:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+   77:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  101:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  124:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  146:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  175:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  179:15  error  'start' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  198:78  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  204:13  error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  210:11  error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  231:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  246:78  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  253:13  error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  259:11  error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  268:26  error  Forbidden non-null assertion                    @typescript-eslint/no-non-null-assertion
+  268:43  error  Forbidden non-null assertion                    @typescript-eslint/no-non-null-assertion
+  269:26  error  Forbidden non-null assertion                    @typescript-eslint/no-non-null-assertion
+  269:43  error  Forbidden non-null assertion                    @typescript-eslint/no-non-null-assertion
+  284:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  304:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  330:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  353:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  388:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  404:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  420:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  439:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  478:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  498:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  517:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  535:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  559:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  577:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  595:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  613:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  631:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  651:9   error  Async method 'json' has no 'await' expression   @typescript-eslint/require-await
+  688:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  715:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  734:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  754:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+  773:9   error  Async method 'text' has no 'await' expression   @typescript-eslint/require-await
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/breach/hibpService.ts
+   72:49  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+   88:33  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+   98:21  error    `sha1` is deprecated. Use import from `noble/hashes/legacy` module                 @typescript-eslint/no-deprecated
+  120:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  133:11  error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  136:9   error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  250:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  265:11  error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  277:11  error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  282:11  error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  283:11  error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  309:11  error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+  378:3   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  414:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  414:31  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+  422:9   error    Unsafe assignment of an `any` value                                                @typescript-eslint/no-unsafe-assignment
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/crypto/__tests__/encryption-edge-cases.test.ts
+    7:32  error  'beforeEach' is defined but never used                @typescript-eslint/no-unused-vars
+  151:25  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/crypto/__tests__/password-edge-cases.test.ts
+  221:73  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  374:50  error  Unnecessary escape character: \[                      no-useless-escape
+  406:49  error  Unnecessary escape character: \[                      no-useless-escape
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/crypto/encryption.ts
+   22:40  error  Unnecessary conditional, value is always falsy                      @typescript-eslint/no-unnecessary-condition
+   72:29  error  `sha256` is deprecated. Use import from `noble/hashes/sha2` module  @typescript-eslint/no-deprecated
+  259:10  error  `sha256` is deprecated. Use import from `noble/hashes/sha2` module  @typescript-eslint/no-deprecated
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/crypto/exportEncryption.ts
+   49:5   error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+   54:12  error  Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+   89:5   error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+   90:12  error  'error' is defined but never used                                              @typescript-eslint/no-unused-vars
+   99:5   error  Unnecessary conditional, value is always falsy                                 @typescript-eslint/no-unnecessary-condition
+  122:5   error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  123:12  error  'error' is defined but never used                                              @typescript-eslint/no-unused-vars
+  130:37  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  131:12  error  'error' is defined but never used                                              @typescript-eslint/no-unused-vars
+  138:5   error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  139:12  error  'error' is defined but never used                                              @typescript-eslint/no-unused-vars
+  165:31  error  Invalid type "string | undefined" of template literal expression               @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/crypto/password.ts
+  30:8   error    Async function 'hashPassword' has no 'await' expression                            @typescript-eslint/require-await
+  43:22  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+  43:41  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+  43:60  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+  53:8   error    Async function 'verifyPassword' has no 'await' expression                          @typescript-eslint/require-await
+  58:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  89:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/ocr/cameraCapture.ts
+  25:10  error  Using !! on a boolean does not change the type or value of the boolean  @typescript-eslint/no-unnecessary-type-conversion
+  27:5   error  Unnecessary conditional, value is always truthy                         @typescript-eslint/no-unnecessary-condition
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/core/ocr/tesseractService.ts
+   91:10  error    Using !! on a boolean does not change the type or value of the boolean             @typescript-eslint/no-unnecessary-type-conversion
+   93:5   error    Unnecessary conditional, value is always truthy                                    @typescript-eslint/no-unnecessary-condition
+  115:19  error    Unnecessary optional chain on a non-nullish value                                  @typescript-eslint/no-unnecessary-condition
+  115:55  error    Unnecessary optional chain on a non-nullish value                                  @typescript-eslint/no-unnecessary-condition
+  142:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  146:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  149:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/repositories/CredentialRepositoryImpl.ts
+  168:29  error  Forbidden non-null assertion                                                   @typescript-eslint/no-non-null-assertion
+  207:17  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  208:42  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  272:13  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  273:38  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  291:13  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  292:38  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  298:17  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  299:33  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  314:17  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  315:38  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  326:17  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  327:38  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  336:17  error  Unsafe assignment of an `any` value                                            @typescript-eslint/no-unsafe-assignment
+  337:31  error  Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`  @typescript-eslint/no-unsafe-argument
+  464:15  error  Unnecessary conditional, value is always truthy                                @typescript-eslint/no-unnecessary-condition
+  465:40  error  Unnecessary optional chain on a non-nullish value                              @typescript-eslint/no-unnecessary-condition
+  466:40  error  Unnecessary optional chain on a non-nullish value                              @typescript-eslint/no-unnecessary-condition
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/repositories/UserRepositoryImpl.ts
+   71:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                                                                                                                                                                                           no-console
+   97:11  error    Unsafe assignment of an `any` value                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-unsafe-assignment
+   98:48  error    Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`                                                                                                                                                                                                                                                               @typescript-eslint/no-unsafe-argument
+  310:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                                                                                                                                                                                           no-console
+  333:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                                                                                                                                                                                           no-console
+  356:3   error    Async method 'getSession' has no 'await' expression                                                                                                                                                                                                                                                                                         @typescript-eslint/require-await
+  404:11  error    Unsafe assignment of an `any` value                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-unsafe-assignment
+  405:42  error    Unsafe argument of type `any` assigned to a parameter of type `EncryptedData`                                                                                                                                                                                                                                                               @typescript-eslint/no-unsafe-argument
+  439:22  error    A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/repositories/__tests__/CredentialRepositoryImpl.test.ts
+  343:13  error  'anotherUser' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  577:14  error  Forbidden non-null assertion                          @typescript-eslint/no-non-null-assertion
+  578:14  error  Forbidden non-null assertion                          @typescript-eslint/no-non-null-assertion
+  649:33  error  Unnecessary optional chain on a non-nullish value     @typescript-eslint/no-unnecessary-condition
+  653:67  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/repositories/__tests__/UserRepositoryImpl.test.ts
+   10:15  error  'User' is defined but never used  @typescript-eslint/no-unused-vars
+  201:14  error  Forbidden non-null assertion      @typescript-eslint/no-non-null-assertion
+  202:14  error  Forbidden non-null assertion      @typescript-eslint/no-non-null-assertion
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/repositories/breachResultsRepository.ts
+  23:41  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/storage/database.ts
+  169:13  error    Unnecessary conditional, value is always truthy                                    @typescript-eslint/no-unnecessary-condition
+  172:13  error    Unnecessary conditional, value is always truthy                                    @typescript-eslint/no-unnecessary-condition
+  175:13  error    Unnecessary conditional, value is always truthy                                    @typescript-eslint/no-unnecessary-condition
+  211:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  213:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  233:3   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/data/storage/debugUtils.ts
+  15:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  28:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  30:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  30:22  error    Invalid type "number" of template literal expression                               @typescript-eslint/restrict-template-expressions
+  45:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  47:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  57:14  error    Unexpected any. Specify a different type                                           @typescript-eslint/no-explicit-any
+  57:19  error    Unsafe member access .debugDB on an `any` value                                    @typescript-eslint/no-unsafe-member-access
+  62:3   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/features/vault/generator/strengthAnalyzer.ts
+  104:15  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  107:15  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  110:15  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  113:15  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  116:15  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  119:15  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/main.tsx
+   8:3  error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  11:1  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  16:1  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  18:1  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  24:1  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  31:3  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/App.tsx
+   61:58  error    Unnecessary optional chain on a non-nullish value                                  @typescript-eslint/no-unnecessary-condition
+   62:28  error    Unnecessary optional chain on a non-nullish value                                  @typescript-eslint/no-unnecessary-condition
+   70:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  283:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  291:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  308:15  error    Prefer the safe `: unknown` for a `catch` callback variable                        @typescript-eslint/use-unknown-in-catch-callback-variable
+  321:3   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/AutoLockSettings.tsx
+  158:43  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/BiometricSetupDialog.tsx
+   59:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                                                                               @typescript-eslint/no-floating-promises
+   60:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                                                                               @typescript-eslint/no-floating-promises
+   62:6   warning  React Hook useEffect has a missing dependency: 'loadCredentials'. Either include it or remove the dependency array                                                                                                                                                               react-hooks/exhaustive-deps
+  239:60  error    `paragraph` is deprecated. Use the `component` prop instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details                                                       @typescript-eslint/no-deprecated
+  279:20  error    `ListItemSecondaryAction` is deprecated. Use the `secondaryAction` prop in the `ListItem` component instead. This component will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  282:31  error    Promise-returning function provided to attribute where a void return was expected                                                                                                                                                                                                @typescript-eslint/no-misused-promises
+  317:19  error    Promise-returning function provided to attribute where a void return was expected                                                                                                                                                                                                @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/BreachAlertBanner.tsx
+   40:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+   83:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  117:18  error  Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  157:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/BreachDetailsModal.tsx
+  160:17  error  `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  169:17  error  `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  178:17  error  `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  187:17  error  `primaryTypographyProps` is deprecated. Use `slotProps.primary` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  255:20  error  Unnecessary conditional, value is always truthy                                                                                                                                                                          @typescript-eslint/no-unnecessary-condition
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/CameraScanDialog.tsx
+  122:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                         @typescript-eslint/no-floating-promises
+  222:7   error  `PaperProps` is deprecated. Use `slotProps.paper` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  403:23  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                          @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/CategoryIcon.tsx
+  26:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  50:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  74:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/ChangeMasterPasswordDialog.tsx
+  111:11  error  Unnecessary conditional, value is always falsy                                                                                                                                                                            @typescript-eslint/no-unnecessary-condition
+  119:28  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  197:15  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  221:15  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  257:15  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  279:19  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/ClipboardSettings.tsx
+  100:43  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/CredentialCard.tsx
+   67:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+   69:6   warning  React Hook useEffect has a missing dependency: 'loadBreachStatus'. Either include it or remove the dependency array                                                 react-hooks/exhaustive-deps
+  200:12  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  214:30  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  240:35  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  255:32  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  268:66  error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+  271:66  error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/CredentialDetailsDialog.tsx
+  100:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                   @typescript-eslint/no-floating-promises
+  102:6   warning  React Hook useEffect has a missing dependency: 'loadExistingBreachData'. Either include it or remove the dependency array                                                                                            react-hooks/exhaustive-deps
+  220:54  error    `TransitionComponent` is deprecated. Use `slots.transition` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  451:23  error    Promise-returning function provided to attribute where a void return was expected                                                                                                                                    @typescript-eslint/no-misused-promises
+  494:19  error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                   @typescript-eslint/no-floating-promises
+  506:19  error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                   @typescript-eslint/no-floating-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/ExportDialog.tsx
+  132:11  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  165:11  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  210:19  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/FilterChips.tsx
+  108:15  error  `InputLabelProps` is deprecated. Use `slotProps.inputLabel` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  108:32  error  Unsafe assignment of an `any` value                                                                                                                                                                                                 @typescript-eslint/no-unsafe-assignment
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/ImportDialog.tsx
+   76:14  error  'err' is defined but never used                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+  127:41  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  128:44  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  140:18  error  Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined                                                                                                                        @typescript-eslint/no-unnecessary-condition
+  140:18  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  141:21  error  Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined                                                                                                                        @typescript-eslint/no-unnecessary-condition
+  141:21  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  142:21  error  Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined                                                                                                                        @typescript-eslint/no-unnecessary-condition
+  142:21  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  143:16  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  144:18  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  145:21  error  Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined                                                                                                                        @typescript-eslint/no-unnecessary-condition
+  145:21  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  146:17  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  147:23  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  148:23  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  245:30  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  260:21  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  338:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  348:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/InstallPrompt.tsx
+   5:10  error  Unsafe array destructuring of a tuple element with an `any` value                                                    @typescript-eslint/no-unsafe-assignment
+   5:56  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  10:7   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  12:7   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  27:7   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  28:7   error  Unsafe call of a(n) `any` typed value                                                                                @typescript-eslint/no-unsafe-call
+  28:22  error  Unsafe member access .prompt on an `any` value                                                                       @typescript-eslint/no-unsafe-member-access
+  29:7   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  30:13  error  Unsafe assignment of an `any` value                                                                                  @typescript-eslint/no-unsafe-assignment
+  30:13  error  'choice' is assigned a value but never used                                                                          @typescript-eslint/no-unused-vars
+  30:43  error  Unsafe member access .userChoice on an `any` value                                                                   @typescript-eslint/no-unsafe-member-access
+  35:14  error  'e' is defined but never used                                                                                        @typescript-eslint/no-unused-vars
+  48:19  error  Promise-returning function provided to attribute where a void return was expected                                    @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/MobileNavigation.tsx
+  30:9  error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  34:9  error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  37:9  error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/OcrResultDialog.tsx
+  187:19  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/PasswordGeneratorDialog.tsx
+   88:7   error  `PaperProps` is deprecated. Use `slotProps.paper` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details                 @typescript-eslint/no-deprecated
+  118:15  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  130:33  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/SwipeableCredentialCard.tsx
+  184:37  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+  276:30  error  Invalid type "number" of template literal expression  @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/TagInput.tsx
+  69:17  error  Unsafe assignment of an `any` value       @typescript-eslint/no-unsafe-assignment
+  69:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/TotpDisplay.tsx
+  176:19  error  Promise-returning function provided to attribute where a void return was expected  @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/UnlockDialog.tsx
+   76:7   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                        @typescript-eslint/no-floating-promises
+  130:11  error  `onKeyPress` is deprecated. Use `onKeyUp` or `onKeyDown` instead                                                                                                                                                          @typescript-eslint/no-deprecated
+  134:11  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  160:19  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/UpdateAvailableSnackbar.tsx
+  11:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  40:16  error  'e' is defined but never used                                                                                                                                       @typescript-eslint/no-unused-vars
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/components/UpdateNotification.tsx
+   74:9   error  `TransitionComponent` is deprecated. Use `slots.transition` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  105:7   error  `TransitionComponent` is deprecated. Use `slots.transition` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  155:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                    @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/hooks/__tests__/useAutoLock.test.ts
+  156:26  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  184:26  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  204:26  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  242:26  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  263:26  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+  284:26  error  Async arrow function has no 'await' expression  @typescript-eslint/require-await
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/hooks/__tests__/usePasswordGenerator.test.ts
+  185:44  error  Async arrow function has no 'await' expression            @typescript-eslint/require-await
+  197:44  error  Async arrow function has no 'await' expression            @typescript-eslint/require-await
+  209:42  error  Async arrow function has no 'await' expression            @typescript-eslint/require-await
+  221:42  error  Async arrow function has no 'await' expression            @typescript-eslint/require-await
+  233:52  error  Async arrow function has no 'await' expression            @typescript-eslint/require-await
+  276:56  error  Async arrow function has no 'await' expression            @typescript-eslint/require-await
+  289:13  error  Unsafe assignment of an `any` value                       @typescript-eslint/no-unsafe-assignment
+  289:33  error  Forbidden non-null assertion                              @typescript-eslint/no-non-null-assertion
+  290:21  error  Unsafe member access .length on an `any` value            @typescript-eslint/no-unsafe-member-access
+  291:21  error  Unsafe member access .excludeAmbiguous on an `any` value  @typescript-eslint/no-unsafe-member-access
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/hooks/useAutoLock.ts
+  36:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  47:5   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  94:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  97:16  error    Unnecessary conditional, comparison is always true, since `"visible" === "visible"` is true                                                                         @typescript-eslint/no-unnecessary-condition
+  99:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/hooks/useServiceWorkerUpdate.ts
+   63:14  error    Returning an awaited promise is required in this context                                                                                                            @typescript-eslint/return-await
+   65:40  error    Unsafe member access .type on an `any` value                                                                                                                        @typescript-eslint/no-unsafe-member-access
+   66:21  error    Unsafe argument of type `any` assigned to a parameter of type `string | PromiseLike<string | null> | null`                                                          @typescript-eslint/no-unsafe-argument
+   66:32  error    Unsafe member access .version on an `any` value                                                                                                                     @typescript-eslint/no-unsafe-member-access
+   93:14  error    Returning an awaited promise is required in this context                                                                                                            @typescript-eslint/return-await
+   95:40  error    Unsafe member access .type on an `any` value                                                                                                                        @typescript-eslint/no-unsafe-member-access
+   96:21  error    Unsafe argument of type `any` assigned to a parameter of type `string | PromiseLike<string | null> | null`                                                          @typescript-eslint/no-unsafe-argument
+   96:32  error    Unsafe member access .version on an `any` value                                                                                                                     @typescript-eslint/no-unsafe-member-access
+  123:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  131:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  170:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  183:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  197:46  error    Async arrow function has no 'await' expression                                                                                                                      @typescript-eslint/require-await
+  220:9   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  245:5   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  264:11  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  286:11  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  324:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/AddCredentialPage.tsx
+  191:24  error  Unexpected any. Specify a different type                                                                                                                                                                                      @typescript-eslint/no-explicit-any
+  201:19  error  Unsafe member access .username on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  202:19  error  Unsafe member access .password on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  203:19  error  Unsafe member access .cardNumber on an `any` value                                                                                                                                                                            @typescript-eslint/no-unsafe-member-access
+  204:19  error  Unsafe member access .cardholderName on an `any` value                                                                                                                                                                        @typescript-eslint/no-unsafe-member-access
+  205:19  error  Unsafe member access .expiryMonth on an `any` value                                                                                                                                                                           @typescript-eslint/no-unsafe-member-access
+  206:19  error  Unsafe member access .expiryYear on an `any` value                                                                                                                                                                            @typescript-eslint/no-unsafe-member-access
+  207:19  error  Unsafe member access .cvv on an `any` value                                                                                                                                                                                   @typescript-eslint/no-unsafe-member-access
+  208:19  error  Unsafe member access .cardType on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  209:19  error  Unsafe member access .billingAddress on an `any` value                                                                                                                                                                        @typescript-eslint/no-unsafe-member-access
+  212:19  error  Unsafe member access .username on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  213:19  error  Unsafe member access .password on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  214:19  error  Unsafe member access .totpSecret on an `any` value                                                                                                                                                                            @typescript-eslint/no-unsafe-member-access
+  217:60  error  Unsafe argument of type `any` assigned to a parameter of type `CredentialInput`                                                                                                                                               @typescript-eslint/no-unsafe-argument
+  242:7   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                            @typescript-eslint/no-floating-promises
+  256:31  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+  326:17  error  `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  416:17  error  `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  417:17  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details      @typescript-eslint/no-deprecated
+  470:17  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details      @typescript-eslint/no-deprecated
+  566:23  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+  574:23  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/DashboardPage.tsx
+  118:5   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                             @typescript-eslint/no-floating-promises
+  121:9   warning  The 'showSnackbar' function makes the dependencies of useCallback Hook (at line 134) change on every render. To fix this, wrap the definition of 'showSnackbar' in its own useCallback() Hook  react-hooks/exhaustive-deps
+  121:9   warning  The 'showSnackbar' function makes the dependencies of useCallback Hook (at line 161) change on every render. To fix this, wrap the definition of 'showSnackbar' in its own useCallback() Hook  react-hooks/exhaustive-deps
+  137:5   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                             @typescript-eslint/no-floating-promises
+  243:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                             @typescript-eslint/no-floating-promises
+  371:27  error    Unnecessary optional chain on a non-nullish value                                                                                                                                              @typescript-eslint/no-unnecessary-condition
+  382:17  error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                             @typescript-eslint/no-floating-promises
+  423:37  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  429:37  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  435:37  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  441:37  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  541:26  error    Invalid type "number" of template literal expression                                                                                                                                           @typescript-eslint/restrict-template-expressions
+  560:42  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  580:25  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  625:32  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  642:32  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  657:36  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  674:34  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  686:17  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  705:24  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  706:24  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+  720:19  error    Promise-returning function provided to attribute where a void return was expected                                                                                                              @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/EditCredentialPage.tsx
+  130:17  error  Unnecessary conditional, value is always truthy                                                                                                                                                                               @typescript-eslint/no-unnecessary-condition
+  153:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                            @typescript-eslint/no-floating-promises
+  252:25  error  Unexpected any. Specify a different type                                                                                                                                                                                      @typescript-eslint/no-explicit-any
+  263:20  error  Unsafe member access .username on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  264:20  error  Unsafe member access .password on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  265:20  error  Unsafe member access .cardNumber on an `any` value                                                                                                                                                                            @typescript-eslint/no-unsafe-member-access
+  266:20  error  Unsafe member access .cardholderName on an `any` value                                                                                                                                                                        @typescript-eslint/no-unsafe-member-access
+  267:20  error  Unsafe member access .expiryMonth on an `any` value                                                                                                                                                                           @typescript-eslint/no-unsafe-member-access
+  268:20  error  Unsafe member access .expiryYear on an `any` value                                                                                                                                                                            @typescript-eslint/no-unsafe-member-access
+  269:20  error  Unsafe member access .cvv on an `any` value                                                                                                                                                                                   @typescript-eslint/no-unsafe-member-access
+  270:20  error  Unsafe member access .cardType on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  271:20  error  Unsafe member access .billingAddress on an `any` value                                                                                                                                                                        @typescript-eslint/no-unsafe-member-access
+  274:20  error  Unsafe member access .username on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  275:20  error  Unsafe member access .password on an `any` value                                                                                                                                                                              @typescript-eslint/no-unsafe-member-access
+  276:20  error  Unsafe member access .totpSecret on an `any` value                                                                                                                                                                            @typescript-eslint/no-unsafe-member-access
+  279:71  error  Unsafe argument of type `any` assigned to a parameter of type `Partial<CredentialInput>`                                                                                                                                      @typescript-eslint/no-unsafe-argument
+  299:7   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                            @typescript-eslint/no-floating-promises
+  319:7   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                            @typescript-eslint/no-floating-promises
+  345:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+  360:31  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+  440:17  error  `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  530:17  error  `inputProps` is deprecated. Use `slotProps.htmlInput` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  531:17  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details      @typescript-eslint/no-deprecated
+  584:17  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details      @typescript-eslint/no-deprecated
+  680:23  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+  688:23  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+  704:19  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                             @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/FavoritesPage.tsx
+   91:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                        @typescript-eslint/no-floating-promises
+  105:22  error  Unnecessary optional chain on a non-nullish value                                                                                                                                                                         @typescript-eslint/no-unnecessary-condition
+  107:18  error  Unnecessary optional chain on a non-nullish value                                                                                                                                                                         @typescript-eslint/no-unnecessary-condition
+  175:60  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  183:23  error  Invalid type "number" of template literal expression                                                                                                                                                                      @typescript-eslint/restrict-template-expressions
+  198:11  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  232:49  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  253:12  error  `Grid` is deprecated. Use the [`Grid2`](https://mui.com/material-ui/react-grid2/) component instead                                                                                                                       @typescript-eslint/no-deprecated
+  255:16  error  `Grid` is deprecated. Use the [`Grid2`](https://mui.com/material-ui/react-grid2/) component instead                                                                                                                       @typescript-eslint/no-deprecated
+  278:34  error  Unsafe assignment of an `any` value                                                                                                                                                                                       @typescript-eslint/no-unsafe-assignment
+  278:75  error  Unexpected any. Specify a different type                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+  300:39  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  343:39  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  368:64  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  375:66  error  Forbidden non-null assertion                                                                                                                                                                                              @typescript-eslint/no-non-null-assertion
+  385:22  error  Unnecessary conditional, value is always truthy                                                                                                                                                                           @typescript-eslint/no-unnecessary-condition
+  399:31  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/LoginPage.tsx
+   82:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  121:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  164:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error  no-console
+  301:29  error    Promise-returning function provided to attribute where a void return was expected  @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/PasswordGeneratorPage.tsx
+  176:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  195:15  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  214:25  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+  247:33  error  Invalid type "number" of template literal expression                                                                                                                                                                      @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/SecurityAuditPage.tsx
+   84:5    error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+   85:5    error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+   86:6    warning  React Hook useEffect has a missing dependency: 'analyzeCredentials'. Either include it or remove the dependency array                                               react-hooks/exhaustive-deps
+  137:13   error    Unsafe assignment of an `any` value                                                                                                                                 @typescript-eslint/no-unsafe-assignment
+  137:42   error    Unexpected any. Specify a different type                                                                                                                            @typescript-eslint/no-explicit-any
+  175:9    error    Forbidden non-null assertion                                                                                                                                        @typescript-eslint/no-non-null-assertion
+  181:11   error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  194:37   error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  212:48   error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  301:13   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  301:69   error    Invalid type "number | undefined" of template literal expression                                                                                                    @typescript-eslint/restrict-template-expressions
+  308:13   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  308:36   error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  308:52   error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  319:39   error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  350:60   error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+  406:24   error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  406:107  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  424:25   error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+  553:34   error    Unsafe assignment of an `any` value                                                                                                                                 @typescript-eslint/no-unsafe-assignment
+  553:70   error    Unexpected any. Specify a different type                                                                                                                            @typescript-eslint/no-explicit-any
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/SettingsPage.tsx
+   49:27  error    Unnecessary optional chain on a non-nullish value                                                                                                                   @typescript-eslint/no-unnecessary-condition
+   52:27  error    Unnecessary optional chain on a non-nullish value                                                                                                                   @typescript-eslint/no-unnecessary-condition
+  106:9   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  111:6   warning  React Hook useEffect has missing dependencies: 'saveSettings' and 'user'. Either include them or remove the dependency array                                        react-hooks/exhaustive-deps
+  136:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  163:60  error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+  393:61  error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+  454:18  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  494:51  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/SigninPage.tsx
+   51:9   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+   74:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+   77:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  122:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+  125:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  224:29  error    Promise-returning function provided to attribute where a void return was expected                                                                                   @typescript-eslint/no-misused-promises
+  237:44  error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/SignupPage.tsx
+   61:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+   73:9   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  189:44  error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/pages/UnlockPage.tsx
+   59:7   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                        @typescript-eslint/no-floating-promises
+   70:7   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                        @typescript-eslint/no-floating-promises
+   76:5   error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator                                                        @typescript-eslint/no-floating-promises
+  148:13  error  `onKeyPress` is deprecated. Use `onKeyUp` or `onKeyDown` instead                                                                                                                                                          @typescript-eslint/no-deprecated
+  152:13  error  `InputProps` is deprecated. Use `slotProps.input` instead. This prop will be removed in v7. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details  @typescript-eslint/no-deprecated
+  178:21  error  Promise-returning function provided to attribute where a void return was expected                                                                                                                                         @typescript-eslint/no-misused-promises
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/utils/__tests__/clipboard.test.ts
+   12:14  error  Promise returned in function argument where a void return was expected                                                                                                                                                                                                                                                                      @typescript-eslint/no-misused-promises
+   40:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   45:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   52:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   57:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   63:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   67:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   68:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   75:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   84:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   86:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+   92:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  100:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  108:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  112:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  122:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  126:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  141:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  148:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  159:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  162:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  172:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  173:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  177:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  191:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  209:31  error  Promise returned in function argument where a void return was expected                                                                                                                                                                                                                                                                      @typescript-eslint/no-misused-promises
+  264:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  276:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  285:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  290:17  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  298:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  310:14  error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/utils/clipboard.ts
+   25:9   error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+   25:32  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+   30:20  error    Promise returned in function argument where a void return was expected                                                                                              @typescript-eslint/no-misused-promises
+   39:13  warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+   78:33  error    `execCommand` is deprecated. [MDN Reference](https://developer.mozilla.org/docs/Web/API/Document/execCommand)                                                       @typescript-eslint/no-deprecated
+  117:13  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  145:15  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  152:15  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  155:13  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  155:25  error    Invalid type "number" of template literal expression                                                                                                                @typescript-eslint/restrict-template-expressions
+  187:11  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  187:34  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  224:9   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  230:7   error    Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises
+  240:11  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  240:34  error    Unnecessary conditional, value is always truthy                                                                                                                     @typescript-eslint/no-unnecessary-condition
+  250:7   warning  Unexpected console statement. Only these console methods are allowed: warn, error                                                                                   no-console
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/presentation/utils/performance.ts
+   22:46   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   22:56   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   44:46   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   44:56   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   65:26   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+   65:31   error  Unsafe member access .standalone on an `any` value                                        @typescript-eslint/no-unsafe-member-access
+   73:7    error  Unnecessary conditional, value is always falsy                                            @typescript-eslint/no-unnecessary-condition
+   73:30   error  Unnecessary conditional, value is always falsy                                            @typescript-eslint/no-unnecessary-condition
+   79:7    error  Unnecessary conditional, value is always falsy                                            @typescript-eslint/no-unnecessary-condition
+  168:9    error  Unsafe assignment of an `any` value                                                       @typescript-eslint/no-unsafe-assignment
+  168:36   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  168:41   error  Unsafe member access .connection on an `any` value                                        @typescript-eslint/no-unsafe-member-access
+  168:69   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  168:74   error  Unsafe member access .mozConnection on an `any` value                                     @typescript-eslint/no-unsafe-member-access
+  168:105  error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  168:110  error  Unsafe member access .webkitConnection on an `any` value                                  @typescript-eslint/no-unsafe-member-access
+  174:9    error  Unsafe assignment of an `any` value                                                       @typescript-eslint/no-unsafe-assignment
+  174:36   error  Unsafe member access .effectiveType on an `any` value                                     @typescript-eslint/no-unsafe-member-access
+  192:5    error  Unsafe call of a(n) `any` typed value                                                     @typescript-eslint/no-unsafe-call
+  192:16   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  192:21   error  Unsafe member access .requestIdleCallback on an `any` value                               @typescript-eslint/no-unsafe-member-access
+  218:12   error  'e' is defined but never used                                                             @typescript-eslint/no-unused-vars
+  240:12   error  'e' is defined but never used                                                             @typescript-eslint/no-unused-vars
+  256:24   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  256:29   error  Unsafe member access .hadRecentInput on an `any` value                                    @typescript-eslint/no-unsafe-member-access
+  257:23   error  Invalid operand for a '+' operation. Operands must each be a number or string. Got `any`  @typescript-eslint/restrict-plus-operands
+  257:33   error  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  257:38   error  Unsafe member access .value on an `any` value                                             @typescript-eslint/no-unsafe-member-access
+  265:12   error  'e' is defined but never used                                                             @typescript-eslint/no-unused-vars
+
+/home/runner/work/TrustVault-PWA/TrustVault-PWA/src/test/integration.test.ts
+   16:103  error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+   73:63   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  103:58   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  113:71   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  142:73   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  175:74   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  222:14   error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  225:17   error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+  238:75   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  266:57   error  Unnecessary conditional, value is always truthy                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unnecessary-condition
+  272:84   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  306:72   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  320:11   error  Unnecessary conditional, value is always truthy                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unnecessary-condition
+  336:64   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  401:20   error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+  411:57   error  Async arrow function has no 'await' expression                                                                                                                                                                                                                                                                                              @typescript-eslint/require-await
+  416:14   error  A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.
+Consider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. 
+If a function does not access `this`, it can be annotated with `this: void`  @typescript-eslint/unbound-method
+
+✖ 562 problems (500 errors, 62 warnings)
+

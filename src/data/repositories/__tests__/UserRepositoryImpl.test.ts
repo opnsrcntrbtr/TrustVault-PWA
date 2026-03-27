@@ -7,7 +7,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
 import { db } from '../../storage/database';
-import type { User } from '@/domain/entities/User';
 
 describe('UserRepositoryImpl', () => {
   let repository: UserRepositoryImpl;
@@ -198,8 +197,8 @@ describe('UserRepositoryImpl', () => {
       const user = await repository.findByEmail(testEmail);
 
       expect(user?.lastLoginAt).toBeDefined();
-      expect(user!.lastLoginAt.getTime()).toBeGreaterThanOrEqual(beforeAuth);
-      expect(user!.lastLoginAt.getTime()).toBeLessThanOrEqual(afterAuth);
+      expect((user?.lastLoginAt as Date).getTime()).toBeGreaterThanOrEqual(beforeAuth);
+      expect((user?.lastLoginAt as Date).getTime()).toBeLessThanOrEqual(afterAuth);
     });
 
     it('should set session as unlocked', async () => {

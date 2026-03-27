@@ -88,9 +88,8 @@ export async function terminateWorker(): Promise<void> {
  * Check if the browser supports required APIs for OCR capture.
  */
 export function isOCRSupported(): boolean {
-  return !!(
+  return (
     typeof navigator !== 'undefined' &&
-    navigator.mediaDevices &&
     typeof navigator.mediaDevices.getUserMedia === 'function'
   );
 }
@@ -112,7 +111,7 @@ export async function prefetchTesseractAssets(): Promise<void> {
   if (
     !('serviceWorker' in navigator) ||
     typeof process !== 'undefined' &&
-      (process.env?.NODE_ENV === 'test' || process.env?.VITEST === 'true')
+      (process.env.NODE_ENV === 'test' || process.env.VITEST === 'true')
   ) {
     return;
   }
@@ -139,13 +138,13 @@ export async function prefetchTesseractAssets(): Promise<void> {
         });
       } catch {
         // Ignore individual fetch failures - user can still download on first scan
-        console.debug(`[OCR] Prefetch skipped: ${url}`);
+        console.warn(`[OCR] Prefetch skipped: ${url}`);
       }
     }
 
-    console.debug('[OCR] Tesseract assets prefetched for faster first-scan');
+    console.warn('[OCR] Tesseract assets prefetched for faster first-scan');
   } catch {
     // Prefetch is best-effort; don't block app on failure
-    console.debug('[OCR] Prefetch unavailable');
+    console.warn('[OCR] Prefetch unavailable');
   }
 }

@@ -20,7 +20,7 @@ export async function saveBreachResult(
   const expiresAt = now + CACHE_DURATION;
 
   const storedResult: StoredBreachResult = {
-    id: `${credentialId}-${checkType}-${now}`,
+    id: `${credentialId}-${checkType}-${String(now)}`,
     credentialId,
     checkType,
     breached: result.breached,

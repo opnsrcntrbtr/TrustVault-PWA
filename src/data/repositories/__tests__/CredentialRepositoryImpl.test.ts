@@ -340,7 +340,6 @@ describe('CredentialRepositoryImpl', () => {
       await repository.save(credential, vaultKey);
 
       // Create another user with different vault key
-      const anotherUser = await userRepository.createUser('another@example.com', 'Password123!');
       const anotherSession = await userRepository.authenticateWithPassword('another@example.com', 'Password123!');
 
       // With a different vault key, decryption will fail and return placeholder
@@ -574,8 +573,8 @@ describe('CredentialRepositoryImpl', () => {
       const updated = await repository.findById(credential.id, vaultKey);
 
       expect(updated?.lastAccessedAt).toBeDefined();
-      expect(updated!.lastAccessedAt.getTime()).toBeGreaterThanOrEqual(beforeUpdate);
-      expect(updated!.lastAccessedAt.getTime()).toBeLessThanOrEqual(afterUpdate);
+      expect((updated?.lastAccessedAt as Date).getTime()).toBeGreaterThanOrEqual(beforeUpdate);
+      expect((updated?.lastAccessedAt as Date).getTime()).toBeLessThanOrEqual(afterUpdate);
     });
 
     it('should not throw error for non-existent ID', async () => {
@@ -646,11 +645,11 @@ describe('CredentialRepositoryImpl', () => {
       const retrieved = await repository.findById(credential.id, vaultKey);
 
       expect(retrieved?.password).toBe(longPassword);
-      expect(retrieved?.password?.length).toBe(1008);
+      expect(retrieved?.password.length).toBe(1008);
     }, 30000); // 30 second timeout for long password encryption
 
     it('should handle many tags', async () => {
-      const manyTags = Array.from({ length: 50 }, (_, i) => `tag${i}`);
+      const manyTags = Array.from({ length: 50 }, (_, i) => `tag${String(i)}`);
       const credential: Credential = {
         id: crypto.randomUUID(),
         userId,

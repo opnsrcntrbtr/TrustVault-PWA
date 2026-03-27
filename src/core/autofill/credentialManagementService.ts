@@ -9,6 +9,27 @@
 import type { Credential } from '@/domain/entities/Credential';
 
 /**
+ * Typed interface for PasswordCredential constructor (Credential Management API)
+ */
+interface PasswordCredentialInit {
+  id: string;
+  password: string;
+  name?: string | undefined;
+  iconURL?: string | undefined;
+}
+interface PasswordCredentialConstructorType {
+  new(init: PasswordCredentialInit): globalThis.Credential;
+}
+
+/**
+ * Typed interface for accessing password from a browser Credential object
+ */
+interface BrowserPasswordCredential {
+  readonly id: string;
+  readonly password: string;
+}
+
+/**
  * Browser credential object matching Credential Management API spec
  */
 export interface BrowserCredential {
@@ -178,8 +199,8 @@ export async function storeCredentialInBrowser(
       return false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
-    const passwordCredential = new (PasswordCredentialConstructor as any)({
+    const PasswordCtor = PasswordCredentialConstructor as unknown as PasswordCredentialConstructorType;
+    const passwordCredential = new PasswordCtor({
       id: credential.id,
       password: credential.password,
       name: credential.name,
@@ -215,10 +236,10 @@ export async function getCredentialFromBrowser(): Promise<{
     } as CredentialRequestOptions);
 
     if (credential && credential.type === 'password') {
-      const passwordCred = credential as any;
+      const passwordCred = credential as unknown as BrowserPasswordCredential;
       return {
-        id: passwordCred.id || '',
-        password: passwordCred.password || '',
+        id: passwordCred.id,
+        password: passwordCred.password,
       };
     }
 
@@ -248,10 +269,10 @@ export async function getCredentialWithUI(): Promise<{
     } as CredentialRequestOptions);
 
     if (credential && credential.type === 'password') {
-      const passwordCred = credential as any;
+      const passwordCred = credential as unknown as BrowserPasswordCredential;
       return {
-        id: passwordCred.id || '',
-        password: passwordCred.password || '',
+        id: passwordCred.id,
+        password: passwordCred.password,
       };
     }
 

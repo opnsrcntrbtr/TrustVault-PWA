@@ -27,7 +27,7 @@ export interface HashedPassword {
  * Hashes a password using scrypt
  * Returns the hash in a custom encoded format: scrypt$N$r$p$salt$hash
  */
-export async function hashPassword(password: string): Promise<string> {
+export function hashPassword(password: string): Promise<string> {
   try {
     // Generate random salt (16 bytes)
     const salt = randomBytes(16);
@@ -40,36 +40,36 @@ export async function hashPassword(password: string): Promise<string> {
     const hashB64 = btoa(String.fromCharCode(...hash));
 
     // Return in PHC-like format
-    return `scrypt$${SCRYPT_CONFIG.N}$${SCRYPT_CONFIG.r}$${SCRYPT_CONFIG.p}$${saltB64}$${hashB64}`;
+    return Promise.resolve(`scrypt$${String(SCRYPT_CONFIG.N)}$${String(SCRYPT_CONFIG.r)}$${String(SCRYPT_CONFIG.p)}$${saltB64}$${hashB64}`);
   } catch (error) {
     console.error('Password hashing failed:', error);
-    throw new Error('Failed to hash password');
+    return Promise.reject(new Error('Failed to hash password'));
   }
 }
 
 /**
  * Verifies a password against a scrypt hash
  */
-export async function verifyPassword(
+export function verifyPassword(
   password: string,
   hashedPassword: string
 ): Promise<boolean> {
   try {
-    console.log('Verifying password...');
+    console.warn('Verifying password...');
 
     // Parse the hash format: scrypt$N$r$p$salt$hash
     const parts = hashedPassword.split('$');
     if (parts.length !== 6 || parts[0] !== 'scrypt') {
       console.error('Invalid hash format. Expected scrypt hash but got:', hashedPassword.substring(0, 50));
       console.error('This might be an old argon2 hash. Please clear the database using: window.debugDB.clearAllData()');
-      return false;
+      return Promise.resolve(false);
     }
 
-    const N = parseInt(parts[1] || '0', 10);
-    const r = parseInt(parts[2] || '0', 10);
-    const p = parseInt(parts[3] || '0', 10);
-    const saltB64 = parts[4] || '';
-    const hashB64 = parts[5] || '';
+    const N = parseInt(parts[1] ?? '0', 10);
+    const r = parseInt(parts[2] ?? '0', 10);
+    const p = parseInt(parts[3] ?? '0', 10);
+    const saltB64 = parts[4] ?? '';
+    const hashB64 = parts[5] ?? '';
 
     // Decode salt and hash
     const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
@@ -86,11 +86,11 @@ export async function verifyPassword(
       }
     }
 
-    console.log('Password verification result:', match);
-    return match;
+    console.warn('Password verification result:', match);
+    return Promise.resolve(match);
   } catch (error) {
     console.error('Password verification failed:', error);
-    return false;
+    return Promise.resolve(false);
   }
 }
 

@@ -6,7 +6,7 @@
  * HIBP API Documentation: https://haveibeenpwned.com/API/v3
  */
 
-import { sha1 } from '@noble/hashes/sha1';
+import { sha1 } from '@noble/hashes/legacy';
 import { bytesToHex } from '@noble/hashes/utils';
 import type {
   BreachData,
@@ -69,7 +69,7 @@ async function handleApiError(response: Response, retryCount = 0): Promise<never
     // Rate limited - use exponential backoff
     if (retryCount < maxRetries) {
       const backoffDelay = RATE_LIMIT_DELAY * Math.pow(2, retryCount);
-      console.warn(`Rate limited, retrying in ${backoffDelay}ms...`);
+      console.warn(`Rate limited, retrying in ${String(backoffDelay)}ms...`);
       await new Promise(resolve => setTimeout(resolve, backoffDelay));
       throw new Error('RETRY'); // Signal to retry
     }
@@ -85,7 +85,7 @@ async function handleApiError(response: Response, retryCount = 0): Promise<never
     throw new Error('Service temporarily unavailable. Please try again later.');
   }
 
-  throw new Error(`API error: ${response.status} ${response.statusText}`);
+  throw new Error(`API error: ${String(response.status)} ${response.statusText}`);
 }
 
 /**
@@ -117,7 +117,7 @@ export async function checkPasswordBreach(
     const cached = breachCache.get(cacheKey);
 
     if (cached && !options.forceRefresh && Date.now() < cached.expiresAt) {
-      console.log('Returning cached breach result');
+      console.warn('Returning cached breach result');
       return cached.result;
     }
 
@@ -130,10 +130,10 @@ export async function checkPasswordBreach(
     await enforceRateLimit();
 
     // Query HIBP API with hash prefix (k-anonymity)
-    const userAgent = import.meta.env.VITE_HIBP_USER_AGENT;
+    const userAgent = import.meta.env.VITE_HIBP_USER_AGENT as string | undefined;
     const response = await fetch(`${HIBP_API_BASE}/range/${hashPrefix}`, {
       headers: {
-        'User-Agent': userAgent || 'TrustVault-PWA',
+        'User-Agent': userAgent ?? 'TrustVault-PWA',
         'Add-Padding': 'true', // Request padding for additional privacy
       },
     });
@@ -247,7 +247,7 @@ export async function checkEmailBreach(
     const cached = breachCache.get(cacheKey);
 
     if (cached && !options.forceRefresh && Date.now() < cached.expiresAt) {
-      console.log('Returning cached email breach result');
+      console.warn('Returning cached email breach result');
       return cached.result;
     }
 
@@ -262,7 +262,7 @@ export async function checkEmailBreach(
     // Note: Email breach checking requires an API key for production use
     // For now, we'll implement password-only checking
     // In production, set VITE_HIBP_API_KEY environment variable
-    const apiKey = import.meta.env.VITE_HIBP_API_KEY;
+    const apiKey = import.meta.env.VITE_HIBP_API_KEY as string | undefined;
 
     if (!apiKey) {
       console.warn('HIBP API key not configured. Email breach checking disabled.');
@@ -274,13 +274,13 @@ export async function checkEmailBreach(
       };
     }
 
-    const userAgent = import.meta.env.VITE_HIBP_USER_AGENT;
+    const userAgent = import.meta.env.VITE_HIBP_USER_AGENT as string | undefined;
     const response = await fetch(
       `${HIBP_BREACH_API_BASE}/breachedaccount/${encodeURIComponent(email)}?${params}`,
       {
         headers: {
           'hibp-api-key': apiKey,
-          'User-Agent': userAgent || 'TrustVault-PWA',
+          'User-Agent': userAgent ?? 'TrustVault-PWA',
         },
       }
     );
@@ -306,7 +306,7 @@ export async function checkEmailBreach(
       await handleApiError(response);
     }
 
-    const breaches: BreachData[] = await response.json();
+    const breaches = (await response.json()) as BreachData[];
 
     // Filter out unverified breaches if requested
     const filteredBreaches = options.includeUnverified
@@ -375,7 +375,7 @@ export async function checkEmailBreach(
  */
 export function clearBreachCache(): void {
   breachCache.clear();
-  console.log('Breach cache cleared');
+      console.warn('Breach cache cleared');
 }
 
 /**
@@ -411,7 +411,7 @@ export function cleanupExpiredCache(): void {
   }
 
   if (removedCount > 0) {
-    console.log(`Cleaned up ${removedCount} expired cache entries`);
+    console.warn(`Cleaned up ${String(removedCount)} expired cache entries`);
   }
 }
 
@@ -419,6 +419,6 @@ export function cleanupExpiredCache(): void {
  * Checks if HIBP service is enabled
  */
 export function isHibpEnabled(): boolean {
-  const enabled = import.meta.env.VITE_HIBP_API_ENABLED;
+  const enabled = import.meta.env.VITE_HIBP_API_ENABLED as string | boolean | undefined;
   return enabled === 'true' || enabled === true;
 }

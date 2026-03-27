@@ -4,7 +4,7 @@
  */
 
 import { hashPassword, verifyPassword } from '@/core/crypto/password';
-import { deriveKeyFromPassword, encrypt, decrypt } from '@/core/crypto/encryption';
+import { deriveKeyFromPassword, encrypt, decrypt, type EncryptedData } from '@/core/crypto/encryption';
 import { decodeBase64ToUint8Array, encodeUint8ArrayToBase64 } from '@/core/utils/base64';
 import { db, type StoredUser } from '../storage/database';
 import type { User, AuthSession, SecuritySettings } from '@/domain/entities/User';
@@ -68,7 +68,7 @@ export class UserRepositoryImpl implements IUserRepository {
     };
 
     await db.users.add(storedUser);
-    console.log('User created successfully:', email);
+    console.warn('User created successfully:', email);
 
     return user;
   }
@@ -94,7 +94,7 @@ export class UserRepositoryImpl implements IUserRepository {
     const tempKey = await deriveKeyFromPassword(masterPassword, salt);
 
     // Decrypt the actual vault key (masterVaultKey) from storage
-    const encryptedVaultKeyData = JSON.parse(storedUser.encryptedVaultKey);
+    const encryptedVaultKeyData = JSON.parse(storedUser.encryptedVaultKey) as EncryptedData;
     const masterVaultKeyBase64 = await decrypt(encryptedVaultKeyData, tempKey);
 
     // Convert base64 master vault key to raw bytes
@@ -307,7 +307,7 @@ export class UserRepositoryImpl implements IUserRepository {
       biometricEnabled: true,
     });
 
-    console.log('Biometric credential registered successfully with encrypted vault key');
+    console.warn('Biometric credential registered successfully with encrypted vault key');
   }
 
   /**
@@ -330,7 +330,7 @@ export class UserRepositoryImpl implements IUserRepository {
       biometricEnabled,
     });
 
-    console.log('Biometric credential removed successfully');
+    console.warn('Biometric credential removed successfully');
   }
 
   /**
@@ -353,9 +353,9 @@ export class UserRepositoryImpl implements IUserRepository {
   /**
    * Get current session (placeholder)
    */
-  async getSession(): Promise<AuthSession | null> {
+  getSession(): Promise<AuthSession | null> {
     // Sessions are managed by Zustand store
-    return null;
+    return Promise.resolve(null);
   }
 
   /**
@@ -401,7 +401,7 @@ export class UserRepositoryImpl implements IUserRepository {
     const currentSalt = Uint8Array.from(atob(user.salt), c => c.charCodeAt(0));
     const currentVaultKey = await deriveKeyFromPassword(currentPassword, currentSalt);
 
-    const encryptedVaultKeyData = JSON.parse(user.encryptedVaultKey);
+    const encryptedVaultKeyData = JSON.parse(user.encryptedVaultKey) as EncryptedData;
     const masterVaultKey = await decrypt(encryptedVaultKeyData, currentVaultKey);
 
     const newSalt = new Uint8Array(32);
@@ -436,7 +436,7 @@ export class UserRepositoryImpl implements IUserRepository {
     // Use filter instead of indexed query to avoid index dependency
     const allUsers = await db.users.toArray();
     const users = allUsers.filter(user => user.biometricEnabled);
-    return users.map(this.mapStoredUserToUser);
+    return users.map(u => this.mapStoredUserToUser(u));
   }
 
   /**

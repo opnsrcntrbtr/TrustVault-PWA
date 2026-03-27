@@ -6,7 +6,7 @@
 import { ICredentialRepository } from '@/domain/repositories/ICredentialRepository';
 import { Credential, CredentialInput } from '@/domain/entities/Credential';
 import { db, type StoredCredential } from '../storage/database';
-import { encrypt, decrypt } from '@/core/crypto/encryption';
+import { encrypt, decrypt, type EncryptedData } from '@/core/crypto/encryption';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 
 export class CredentialRepository implements ICredentialRepository {
@@ -165,7 +165,8 @@ export class CredentialRepository implements ICredentialRepository {
     await db.credentials.update(id, updates);
 
     const updated = await db.credentials.get(id);
-    return this.mapToDomain(updated!);
+    if (!updated) throw new Error('Credential not found after update');
+    return this.mapToDomain(updated);
   }
 
   async delete(id: string): Promise<void> {
@@ -204,7 +205,7 @@ export class CredentialRepository implements ICredentialRepository {
     const decrypted = await Promise.all(
       credentials.map(async (c) => {
         try {
-          const encData = JSON.parse(c.encryptedPassword);
+          const encData = JSON.parse(c.encryptedPassword) as EncryptedData;
           const password = await decrypt(encData, decryptionKey);
           return {
             ...c,
@@ -269,7 +270,7 @@ export class CredentialRepository implements ICredentialRepository {
     }
 
     try {
-      const encData = JSON.parse(credential.encryptedPassword);
+      const encData = JSON.parse(credential.encryptedPassword) as EncryptedData;
       const password = await decrypt(encData, decryptionKey);
       const analysis = analyzePasswordStrength(password);
       
@@ -288,14 +289,14 @@ export class CredentialRepository implements ICredentialRepository {
   ): Promise<Credential> {
     try {
       // Decrypt the password
-      const encryptedPasswordData = JSON.parse(stored.encryptedPassword);
+      const encryptedPasswordData = JSON.parse(stored.encryptedPassword) as EncryptedData;
       const password = await decrypt(encryptedPasswordData, vaultKey);
 
       // Decrypt notes if present (support both encrypted and legacy plaintext)
       let notes: string | undefined;
       if (stored.encryptedNotes) {
         try {
-          const encryptedNotesData = JSON.parse(stored.encryptedNotes);
+          const encryptedNotesData = JSON.parse(stored.encryptedNotes) as EncryptedData;
           notes = await decrypt(encryptedNotesData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt notes:', error);
@@ -311,7 +312,7 @@ export class CredentialRepository implements ICredentialRepository {
       let totpSecret: string | undefined;
       if (stored.encryptedTotpSecret) {
         try {
-          const encryptedTotpData = JSON.parse(stored.encryptedTotpSecret);
+          const encryptedTotpData = JSON.parse(stored.encryptedTotpSecret) as EncryptedData;
           totpSecret = await decrypt(encryptedTotpData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt TOTP secret:', error);
@@ -323,7 +324,7 @@ export class CredentialRepository implements ICredentialRepository {
       let cardNumber: string | undefined;
       if (stored.encryptedCardNumber) {
         try {
-          const encryptedCardData = JSON.parse(stored.encryptedCardNumber);
+          const encryptedCardData = JSON.parse(stored.encryptedCardNumber) as EncryptedData;
           cardNumber = await decrypt(encryptedCardData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt card number:', error);
@@ -333,7 +334,7 @@ export class CredentialRepository implements ICredentialRepository {
       let cvv: string | undefined;
       if (stored.encryptedCvv) {
         try {
-          const encryptedCvvData = JSON.parse(stored.encryptedCvv);
+          const encryptedCvvData = JSON.parse(stored.encryptedCvv) as EncryptedData;
           cvv = await decrypt(encryptedCvvData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt CVV:', error);
@@ -461,11 +462,11 @@ export class CredentialRepository implements ICredentialRepository {
         url: credential.url ?? undefined,
         notes: encryptedNotes, // Store encrypted notes
         category: credential.category,
-        tags: credential.tags || [],
-        createdAt: credential.createdAt?.getTime() || Date.now(),
-        updatedAt: credential.updatedAt?.getTime() || Date.now(),
+        tags: credential.tags,
+        createdAt: credential.createdAt.getTime(),
+        updatedAt: credential.updatedAt.getTime(),
         lastAccessedAt: credential.lastAccessedAt?.getTime(),
-        isFavorite: credential.isFavorite || false,
+        isFavorite: credential.isFavorite,
         securityScore: credential.password ? analyzePasswordStrength(credential.password).score : 0,
         encryptedCardNumber,
         cardholderName: credential.cardholderName,
