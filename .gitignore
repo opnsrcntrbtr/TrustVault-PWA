@@ -319,3 +319,4 @@ recordings/
 !.editorconfig
 !.nvmrc
 !.node-version
+.aider*
