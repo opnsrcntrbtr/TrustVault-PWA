@@ -9,7 +9,7 @@ import { usePasswordGenerator } from '../usePasswordGenerator';
 
 describe('usePasswordGenerator', () => {
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
     vi.clearAllMocks();
   });
 
@@ -273,25 +273,25 @@ describe('usePasswordGenerator', () => {
   });
 
   describe('Preferences Persistence', () => {
-    it('should save options to localStorage', async () => {
+    it('should save options to sessionStorage', async () => {
       const { result } = renderHook(() => usePasswordGenerator());
-      
+
       act(() => {
         result.current.updateOptions({
           length: 32,
           excludeAmbiguous: true,
         });
       });
-      
-      const saved = localStorage.getItem('trustvault_password_generator_prefs');
+
+      const saved = sessionStorage.getItem('trustvault_password_generator_prefs');
       expect(saved).toBeTruthy();
-      
+
       const parsed = JSON.parse(saved!);
       expect(parsed.length).toBe(32);
       expect(parsed.excludeAmbiguous).toBe(true);
     });
 
-    it('should restore options from localStorage', () => {
+    it('should restore options from sessionStorage', () => {
       const savedOptions = {
         length: 24,
         uppercase: true,
@@ -300,8 +300,8 @@ describe('usePasswordGenerator', () => {
         symbols: true,
         excludeAmbiguous: true,
       };
-      
-      localStorage.setItem('trustvault_password_generator_prefs', JSON.stringify(savedOptions));
+
+      sessionStorage.setItem('trustvault_password_generator_prefs', JSON.stringify(savedOptions));
       
       const { result } = renderHook(() => usePasswordGenerator());
       
