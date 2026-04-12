@@ -59,8 +59,21 @@ const DICEWARE_WORDS = [
  * Get cryptographically secure random index
  */
 function getRandomIndex(max: number): number {
-  const randomBytes = crypto.getRandomValues(new Uint32Array(1));
-  return (randomBytes[0] ?? 0) % max;
+  if (max <= 0) {
+    throw new Error('max must be greater than 0');
+  }
+
+  const maxUint32 = 0x100000000; // 2^32
+  const limit = maxUint32 - (maxUint32 % max);
+
+  while (true) {
+    const randomBytes = crypto.getRandomValues(new Uint32Array(1));
+    const value = randomBytes[0] ?? 0;
+
+    if (value < limit) {
+      return value % max;
+    }
+  }
 }
 
 /**
