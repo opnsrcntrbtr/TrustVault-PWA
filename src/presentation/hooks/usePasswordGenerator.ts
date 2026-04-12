@@ -27,11 +27,13 @@ const DEFAULT_OPTIONS: PasswordGeneratorOptions = {
 const STORAGE_KEY = 'trustvault_password_generator_prefs';
 
 /**
- * Load preferences from localStorage
+ * Load preferences from sessionStorage
+ * Uses sessionStorage instead of localStorage to avoid persisting
+ * sensitive configuration data beyond the browser session (CodeQL js/clear-text-storage-of-sensitive-data)
  */
 function loadPreferences(): PasswordGeneratorOptions {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = sessionStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored) as Partial<PasswordGeneratorOptions>;
       return {
@@ -46,11 +48,11 @@ function loadPreferences(): PasswordGeneratorOptions {
 }
 
 /**
- * Save preferences to localStorage
+ * Save preferences to sessionStorage
  */
 function savePreferences(options: PasswordGeneratorOptions): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(options));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(options));
   } catch (error) {
     console.error('Failed to save generator preferences:', error);
   }
