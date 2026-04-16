@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustVault Autofill</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .header {
+      background: #1976d2;
+      color: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .content {
+      padding: 16px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .setting {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .setting label {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #1976d2;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #1565c0;
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #e3f2fd;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1976d2;
+      margin-bottom: 12px;
+    }
+
+    .status.error {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .status svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .credentials-count {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1976d2;
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .credentials-label {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    .footer {
+      padding: 12px 16px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+      font-size: 11px;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+    </svg>
+    <div>
+      <h1>TrustVault</h1>
+    </div>
+  </div>
+
+  <div class="content">
+    <div id="status" class="status" style="display: none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 16v-4"></path>
+        <path d="M12 8h.01"></path>
+      </svg>
+      <span id="status-text">Checking connection...</span>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Current Site</div>
+      <div class="credentials-count" id="credentials-count">0</div>
+      <div class="credentials-label">Saved Credentials</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Settings</div>
+
+      <div class="setting">
+        <label for="autofill-enabled">Enable Autofill</label>
+        <label class="toggle">
+          <input type="checkbox" id="autofill-enabled">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting">
+        <label for="require-confirmation">Require Confirmation</label>
+        <label class="toggle">
+          <input type="checkbox" id="require-confirmation" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting">
+        <label for="https-only">HTTPS Sites Only</label>
+        <label class="toggle">
+          <input type="checkbox" id="https-only" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <button class="btn" id="open-trustvault">
+      Open TrustVault
+    </button>
+
+    <button class="btn btn-secondary" id="manage-credentials">
+      Manage Credentials
+    </button>
+  </div>
+
+  <div class="footer">
+    TrustVault Autofill v1.0.0
+  </div>
+
+  <script src="scripts/popup.js"></script>
+</body>
+</html>

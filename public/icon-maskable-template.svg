@@ -1,0 +1,47 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Full bleed background for maskable -->
+  <rect width="512" height="512" fill="#1a1a2e"/>
+
+  <!-- Safe zone guide (40% from edges = 102.4px padding, content in 307.2px center) -->
+  <!-- Background circle within safe zone -->
+  <circle cx="256" cy="256" r="140" fill="#1a1a2e" stroke="#0f3460" stroke-width="6"/>
+
+  <!-- Vault shield shape (scaled down for safe zone) -->
+  <path d="M 256 140
+           L 180 166
+           C 180 166, 180 220, 180 270
+           C 180 320, 220 360, 256 374
+           C 292 360, 332 320, 332 270
+           C 332 220, 332 166, 332 166
+           L 256 140 Z"
+        fill="#1a1a2e"
+        stroke="#16c79a"
+        stroke-width="8"
+        stroke-linejoin="round"/>
+
+  <!-- Inner shield detail -->
+  <path d="M 256 154
+           L 192 174
+           C 192 174, 192 220, 192 264
+           C 192 308, 228 344, 256 356
+           C 284 344, 320 308, 320 264
+           C 320 220, 320 174, 320 174
+           L 256 154 Z"
+        fill="none"
+        stroke="#16c79a"
+        stroke-width="1.5"
+        opacity="0.3"/>
+
+  <!-- TV Text (scaled for safe zone) -->
+  <text x="256" y="280"
+        font-family="Arial, sans-serif"
+        font-size="90"
+        font-weight="bold"
+        fill="#16c79a"
+        text-anchor="middle"
+        dominant-baseline="middle">TV</text>
+
+  <!-- Lock keyhole detail -->
+  <circle cx="256" cy="320" r="12" fill="#16c79a" opacity="0.8"/>
+  <rect x="250" y="320" width="12" height="16" rx="1.5" fill="#16c79a" opacity="0.8"/>
+</svg>

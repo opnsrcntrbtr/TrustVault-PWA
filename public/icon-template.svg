@@ -1,0 +1,43 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle for better visibility on all backgrounds -->
+  <circle cx="256" cy="256" r="240" fill="#1a1a2e" stroke="#0f3460" stroke-width="8"/>
+
+  <!-- Vault shield shape -->
+  <path d="M 256 80
+           L 140 120
+           C 140 120, 140 200, 140 280
+           C 140 360, 200 420, 256 440
+           C 312 420, 372 360, 372 280
+           C 372 200, 372 120, 372 120
+           L 256 80 Z"
+        fill="#1a1a2e"
+        stroke="#16c79a"
+        stroke-width="12"
+        stroke-linejoin="round"/>
+
+  <!-- Inner shield detail for depth -->
+  <path d="M 256 100
+           L 160 132
+           C 160 132, 160 200, 160 270
+           C 160 340, 210 390, 256 408
+           C 302 390, 352 340, 352 270
+           C 352 200, 352 132, 352 132
+           L 256 100 Z"
+        fill="none"
+        stroke="#16c79a"
+        stroke-width="2"
+        opacity="0.3"/>
+
+  <!-- TV Text -->
+  <text x="256" y="290"
+        font-family="Arial, sans-serif"
+        font-size="140"
+        font-weight="bold"
+        fill="#16c79a"
+        text-anchor="middle"
+        dominant-baseline="middle">TV</text>
+
+  <!-- Lock keyhole detail at bottom -->
+  <circle cx="256" cy="340" r="18" fill="#16c79a" opacity="0.8"/>
+  <rect x="248" y="340" width="16" height="24" rx="2" fill="#16c79a" opacity="0.8"/>
+</svg>

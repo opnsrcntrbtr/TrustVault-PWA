@@ -1,0 +1,322 @@
+# ====================================
+# TrustVault PWA - .gitignore
+# React 19 + TypeScript 5.7 + Vite 6
+# ====================================
+
+# ============================================================
+# Dependencies
+# ============================================================
+node_modules/
+.pnp/
+.pnp.js
+.yarn/install-state.gz
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# ============================================================
+# Build Outputs
+# ============================================================
+# Vite
+dist/
+dist-ssr/
+*.local
+
+# Production builds
+build/
+out/
+.output/
+
+# ============================================================
+# Environment Variables & Configuration
+# ============================================================
+# Never commit actual environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Keep example file
+!.env.example
+
+# Local configuration
+.npmrc
+.yarnrc
+.pnpmrc
+
+# ============================================================
+# Testing & Coverage
+# ============================================================
+coverage/
+.nyc_output/
+*.lcov
+.vitest/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ============================================================
+# Logs
+# ============================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log
+.turbo/
+
+# ============================================================
+# TypeScript
+# ============================================================
+*.tsbuildinfo
+next-env.d.ts
+.tsbuildinfo
+
+# ============================================================
+# PWA (Vite PWA Plugin)
+# ============================================================
+# Service Worker files (auto-generated)
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+sw.js
+sw.js.map
+workbox-*.js
+workbox-*.js.map
+
+# PWA assets cache
+public/dev-sw.js
+dev-dist/
+
+# ============================================================
+# Editor & IDE
+# ============================================================
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# JetBrains IDEs (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ============================================================
+# Operating System
+# ============================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ============================================================
+# Package Managers
+# ============================================================
+# npm
+npm-debug.log*
+.npm
+
+# Yarn
+yarn-error.log*
+.yarn-integrity
+.pnp.*
+
+# pnpm
+pnpm-lock.yaml
+pnpm-debug.log*
+
+# Bun
+bun.lockb
+
+# ============================================================
+# Cache & Temp Files
+# ============================================================
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.temp/
+.tmp/
+*.tmp
+*.temp
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# ============================================================
+# Deployment & Cloud
+# ============================================================
+# Vercel
+.vercel
+.vercel/*
+
+# Netlify
+.netlify
+.netlify/*
+
+# Firebase
+.firebase/
+.firebaserc
+firebase-debug.log*
+firebaserc.json
+
+# AWS
+.aws-sam/
+samconfig.toml
+
+# ============================================================
+# Security & Sensitive Data
+# ============================================================
+# CRITICAL: Never commit these!
+secrets/
+secrets.json
+*.secrets
+credentials/
+credentials.json
+
+# SSL certificates
+*.key
+*.pem
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# Private keys
+id_rsa
+id_dsa
+*.ssh
+
+# Authentication tokens
+.auth
+auth.json
+token.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================
+# Project-Specific
+# ============================================================
+# Lighthouse reports
+lighthouse-report.html
+lighthouse-report.json
+*.lighthouse-report.*
+
+# Storybook
+storybook-static/
+.storybook/build/
+
+# Debug files
+debug/
+*.debug
+
+# Backup files
+*.backup
+*.bak
+*.orig
+backup/
+
+# Local development
+local/
+.local/
+
+# Benchmark results
+benchmark/
+*.bench
+
+# Screenshots & recordings
+screenshots/
+recordings/
+*.mov
+*.mp4
+*.webm
+
+# ============================================================
+# Keep Important Files (Explicitly Allow)
+# ============================================================
+# These ensure important config files aren't ignored
+!.gitkeep
+!.editorconfig
+!.nvmrc
+!.node-version
+.aider*

@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    
+    /* Modules */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    
+    /* Emit */
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmit": true,
+    
+    /* Interop Constraints */
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    /* Type Checking - Strict Mode */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    
+    /* Advanced Security */
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    
+    /* Path Mapping for Clean Architecture */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/presentation/*": ["./src/presentation/*"],
+      "@/domain/*": ["./src/domain/*"],
+      "@/data/*": ["./src/data/*"],
+      "@/core/*": ["./src/core/*"]
+    }
+  },
+  "include": ["src", "src/types"],
+  "exclude": ["node_modules", "dist", "build", "**/__tests__", "**/*.test.ts", "**/*.test.tsx"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
