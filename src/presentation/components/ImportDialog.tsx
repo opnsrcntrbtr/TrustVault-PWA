@@ -25,7 +25,11 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, Upload, Warning } from '@mui/icons-material';
 import { decryptImport, readImportFile } from '@/core/crypto/exportEncryption';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
+import {
+  createCredential,
+  deleteCredential,
+  listCredentialSummaries,
+} from '@/application/services/credentialService';
 import { useAuthStore } from '../store/authStore';
 import { Credential, CredentialInput } from '@/domain/entities/Credential';
 
@@ -109,9 +113,9 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
     try {
       // Replace mode: delete all existing credentials first
       if (importMode === 'replace') {
-        const existing = await credentialRepository.findAll(session.vaultKey);
+        const existing = await listCredentialSummaries();
         for (const cred of existing) {
-          await credentialRepository.delete(cred.id);
+          await deleteCredential(cred.id);
         }
       }
 
@@ -121,7 +125,7 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
 
         // In merge mode, check for duplicates (same title + username)
         if (importMode === 'merge') {
-          const existing = await credentialRepository.findAll(session.vaultKey);
+          const existing = await listCredentialSummaries();
           const duplicate = existing.find(
             (c) =>
               c.title.toLowerCase() === credential!.title.toLowerCase() &&
@@ -149,7 +153,7 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
         };
 
         // Save credential
-        await credentialRepository.create(newCredential, session.vaultKey);
+        await createCredential(newCredential, session.vaultKey);
 
         // Update progress
         setProgress({ current: i + 1, total: credentials.length });

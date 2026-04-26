@@ -16,6 +16,17 @@ export interface User {
   securitySettings: SecuritySettings;
 }
 
+export interface PublicUser {
+  id: string;
+  email: string;
+  displayName?: string | undefined;
+  biometricEnabled: boolean;
+  webAuthnCredentialCount: number;
+  createdAt: Date;
+  lastLoginAt: Date;
+  securitySettings: SecuritySettings;
+}
+
 export interface WebAuthnCredential {
   id: string;
   publicKey: string;
@@ -46,4 +57,17 @@ export interface AuthSession {
   vaultKey: CryptoKey; // Decrypted master key for session
   expiresAt: Date;
   isLocked: boolean;
+}
+
+export function toPublicUser(user: User): PublicUser {
+  return {
+    id: user.id,
+    email: user.email,
+    displayName: user.displayName,
+    biometricEnabled: user.biometricEnabled,
+    webAuthnCredentialCount: user.webAuthnCredentials.length,
+    createdAt: user.createdAt,
+    lastLoginAt: user.lastLoginAt,
+    securitySettings: user.securitySettings,
+  };
 }

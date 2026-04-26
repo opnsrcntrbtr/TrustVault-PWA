@@ -213,8 +213,7 @@ export async function initializeDatabase(): Promise<void> {
     console.log('TrustVault database initialized successfully');
   } catch (error) {
     console.error('Failed to initialize database:', error);
-    // Don't throw - allow app to continue without persistence
-    console.warn('App will continue without persistent storage');
+    throw new Error('TrustVault could not open encrypted local storage');
   }
 }
 

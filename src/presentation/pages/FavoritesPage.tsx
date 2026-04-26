@@ -35,21 +35,25 @@ import {
   VisibilityOff,
   OpenInNew,
 } from '@mui/icons-material';
-import { Credential } from '@/domain/entities/Credential';
+import type { CredentialSummary } from '@/domain/entities/Credential';
 import { useAuthStore } from '../store/authStore';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { copyToClipboard } from '../utils/clipboard';
+import {
+  listCredentialSummaries,
+  revealCredentialSecret,
+} from '@/application/services/credentialService';
 
 export default function FavoritesPage() {
   const navigate = useNavigate();
   const { vaultKey } = useAuthStore();
 
-  const [credentials, setCredentials] = useState<Credential[]>([]);
-  const [filteredCredentials, setFilteredCredentials] = useState<Credential[]>([]);
+  const [credentials, setCredentials] = useState<CredentialSummary[]>([]);
+  const [filteredCredentials, setFilteredCredentials] = useState<CredentialSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(new Set());
+  const [revealedPasswords, setRevealedPasswords] = useState<Map<string, string>>(new Map());
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // Load favorite credentials function
@@ -64,7 +68,7 @@ export default function FavoritesPage() {
       setLoading(true);
       setError(null);
 
-      const allCredentials = await credentialRepository.findAll(vaultKey);
+      const allCredentials = await listCredentialSummaries();
 
       // Filter only favorites
       const favorites = allCredentials.filter((cred) => cred.isFavorite);
@@ -109,25 +113,49 @@ export default function FavoritesPage() {
     setFilteredCredentials(filtered);
   }, [searchQuery, credentials]);
 
-  const handleCopyUsername = async (credential: Credential) => {
+  const handleCopyUsername = async (credential: CredentialSummary) => {
     if (!credential.username) return;
     await copyToClipboard(credential.username, 0); // No auto-clear for usernames
     showSnackbar(`Username copied: ${credential.username}`);
   };
 
-  const handleCopyPassword = async (credential: Credential) => {
-    if (!credential.password) return;
-    await copyToClipboard(credential.password, 30000); // 30 seconds in milliseconds
+  const handleCopyPassword = async (credential: CredentialSummary) => {
+    if (!vaultKey) return;
+
+    const secret = await revealCredentialSecret(credential.id, vaultKey);
+    if (!secret) return;
+
+    await copyToClipboard(secret.password, 30000); // 30 seconds in milliseconds
     showSnackbar('Password copied to clipboard (will clear in 30s)');
   };
 
-  const togglePasswordVisibility = (credentialId: string) => {
+  const togglePasswordVisibility = async (credentialId: string) => {
+    if (!vaultKey) return;
+
     setVisiblePasswords((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(credentialId)) {
         newSet.delete(credentialId);
+        setRevealedPasswords((passwords) => {
+          const next = new Map(passwords);
+          next.delete(credentialId);
+          return next;
+        });
       } else {
         newSet.add(credentialId);
+        revealCredentialSecret(credentialId, vaultKey)
+          .then((secret) => {
+            if (!secret) return;
+            setRevealedPasswords((passwords) => {
+              const next = new Map(passwords);
+              next.set(credentialId, secret.password);
+              return next;
+            });
+          })
+          .catch((err: unknown) => {
+            console.error('Failed to reveal password:', err);
+            showSnackbar('Failed to reveal password');
+          });
       }
       return newSet;
     });
@@ -307,7 +335,7 @@ export default function FavoritesPage() {
                     )}
 
                     {/* Password */}
-                    {credential.password && (
+                    {credential.hasPassword && (
                       <Box sx={{ mb: 1 }}>
                         <Typography variant="caption" color="text.secondary">
                           Password
@@ -322,13 +350,13 @@ export default function FavoritesPage() {
                             }}
                           >
                             {visiblePasswords.has(credential.id)
-                              ? credential.password
+                              ? revealedPasswords.get(credential.id) ?? 'Loading...'
                               : '••••••••••••'}
                           </Typography>
                           <Tooltip title={visiblePasswords.has(credential.id) ? 'Hide' : 'Show'}>
                             <IconButton
                               size="small"
-                              onClick={() => { togglePasswordVisibility(credential.id); }}
+                              onClick={() => { void togglePasswordVisibility(credential.id); }}
                             >
                               {visiblePasswords.has(credential.id) ? (
                                 <VisibilityOff fontSize="small" />

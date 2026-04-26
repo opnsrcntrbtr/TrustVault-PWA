@@ -44,7 +44,6 @@ import {
   VpnKey as VpnKeyIcon,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import CredentialCard from '@/presentation/components/CredentialCard';
 import SwipeableCredentialCard from '@/presentation/components/SwipeableCredentialCard';
 import CredentialDetailsDialog from '@/presentation/components/CredentialDetailsDialog';
@@ -55,9 +54,17 @@ import FilterChips from '@/presentation/components/FilterChips';
 import SortDropdown, { type SortOption } from '@/presentation/components/SortDropdown';
 import ThemeToggle from '@/presentation/components/ThemeToggle';
 import TourHelpButton from '@/components/TourHelpButton';
-import type { Credential, CredentialCategory } from '@/domain/entities/Credential';
+import type { Credential, CredentialCategory, CredentialSummary } from '@/domain/entities/Credential';
 import { clipboardManager } from '@/presentation/utils/clipboard';
 import BreachAlertBanner from '@/presentation/components/BreachAlertBanner';
+import {
+  deleteCredential,
+  getCredentialForEdit,
+  listCredentialSummaries,
+  revealCredentialSecret,
+  toggleCredentialFavorite,
+  updateCredentialAccessTime,
+} from '@/application/services/credentialService';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -83,7 +90,7 @@ export default function DashboardPage() {
   const [sortBy, setSortBy] = useState<SortOption>('updated-desc');
 
   // Credentials state
-  const [credentials, setCredentials] = useState<Credential[]>([]);
+  const [credentials, setCredentials] = useState<CredentialSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -103,7 +110,7 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const creds = await credentialRepository.findAll(vaultKey);
+      const creds = await listCredentialSummaries();
       setCredentials(creds);
     } catch (err) {
       console.error('Failed to load credentials:', err);
@@ -147,7 +154,7 @@ export default function DashboardPage() {
 
     setDeleting(true);
     try {
-      await credentialRepository.delete(credentialToDelete);
+      await deleteCredential(credentialToDelete);
       setCredentials((prev) => prev.filter((c) => c.id !== credentialToDelete));
       showSnackbar('Credential deleted successfully');
       setDeleteDialogOpen(false);
@@ -169,11 +176,7 @@ export default function DashboardPage() {
 
       const newFavoriteState = !credential.isFavorite;
 
-      await credentialRepository.update(
-        id,
-        { isFavorite: newFavoriteState },
-        vaultKey
-      );
+      await toggleCredentialFavorite(id, newFavoriteState, vaultKey);
 
       // Update local state
       setCredentials((prev) =>
@@ -192,19 +195,19 @@ export default function DashboardPage() {
   };
 
   // Mobile-specific handlers
-  const handleCredentialTap = (id: string) => {
-    if (isMobile) {
-      const credential = credentials.find((c) => c.id === id);
-      if (credential) {
-        setSelectedCredential(credential);
-        setDetailsDialogOpen(true);
-      }
+  const handleCredentialTap = async (id: string) => {
+    if (isMobile && vaultKey) {
+      const credential = await getCredentialForEdit(id, vaultKey);
+      if (!credential) return;
+
+      setSelectedCredential(credential);
+      setDetailsDialogOpen(true);
     }
   };
 
   const handleCopyUsername = async () => {
     if (!selectedCredential) return;
-    await credentialRepository.updateAccessTime(selectedCredential.id);
+    await updateCredentialAccessTime(selectedCredential.id);
     const success = await clipboardManager.copy(selectedCredential.username, false, 0);
     if (success) {
       showSnackbar(`Username copied: ${selectedCredential.username}`);
@@ -215,8 +218,18 @@ export default function DashboardPage() {
 
   const handleCopyPassword = async () => {
     if (!selectedCredential) return;
-    await credentialRepository.updateAccessTime(selectedCredential.id);
-    const success = await clipboardManager.copy(selectedCredential.password, true, 30);
+    if (!vaultKey) {
+      showSnackbar('Vault is locked');
+      return;
+    }
+
+    const secret = await revealCredentialSecret(selectedCredential.id, vaultKey);
+    if (!secret) {
+      showSnackbar('Password not found');
+      return;
+    }
+
+    const success = await clipboardManager.copy(secret.password, true, 30);
     if (success) {
       showSnackbar('Password copied! Auto-clearing in 30 seconds');
     } else {

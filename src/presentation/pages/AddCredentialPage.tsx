@@ -27,7 +27,7 @@ import {
   AutoAwesome,
   CameraAlt,
 } from '@mui/icons-material';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
+import { createCredential, updateCredential } from '@/application/services/credentialService';
 import { useAuthStore } from '@/presentation/store/authStore';
 import PasswordStrengthIndicator from '@/presentation/components/PasswordStrengthIndicator';
 import PasswordGeneratorDialog from '@/presentation/components/PasswordGeneratorDialog';
@@ -35,11 +35,6 @@ import TotpDisplay from '@/presentation/components/TotpDisplay';
 import TagInput from '@/presentation/components/TagInput';
 import { isValidTOTPSecret } from '@/core/auth/totp';
 import type { CredentialCategory } from '@/domain/entities/Credential';
-import {
-  storeCredentialInBrowser,
-  toBrowserCredential,
-  isCredentialManagementSupported,
-} from '@/core/autofill/credentialManagementService';
 import { CameraScanDialog } from '@/presentation/components/CameraScanDialog';
 import { OcrResultDialog } from '@/presentation/components/OcrResultDialog';
 import { isCameraSupported, type ParsedCredential } from '@/core/ocr';
@@ -214,28 +209,11 @@ export default function AddCredentialPage() {
         inputData.totpSecret = totpSecret.trim() || undefined;
       }
 
-      const credential = await credentialRepository.create(inputData, vaultKey);
+      const credential = await createCredential(inputData, vaultKey);
 
       // Update favorite status after creation if needed
       if (isFavorite) {
-        await credentialRepository.update(credential.id, { isFavorite: true }, vaultKey);
-      }
-
-      // Store credential in browser for autofill (if supported and applicable)
-      if (
-        credential.category === 'login' &&
-        credential.url &&
-        isCredentialManagementSupported()
-      ) {
-        try {
-          const browserCred = toBrowserCredential(credential);
-          if (browserCred) {
-            await storeCredentialInBrowser(browserCred);
-          }
-        } catch (err) {
-          // Non-critical: autofill storage failed, but credential was saved
-          console.warn('Failed to store credential in browser for autofill:', err);
-        }
+        await updateCredential(credential.id, { isFavorite: true }, vaultKey);
       }
 
       // Navigate back to dashboard

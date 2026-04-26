@@ -18,12 +18,12 @@ import {
   Star,
   StarBorder,
 } from '@mui/icons-material';
-import type { Credential } from '@/domain/entities/Credential';
+import type { CredentialSummary } from '@/domain/entities/Credential';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
 import CategoryIcon, { getCategoryColor, getCategoryName } from './CategoryIcon';
 
 interface SwipeableCredentialCardProps {
-  credential: Credential;
+  credential: CredentialSummary;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onToggleFavorite: (id: string) => void;

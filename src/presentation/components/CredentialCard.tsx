@@ -28,17 +28,17 @@ import {
   StarBorder,
   GppBad,
 } from '@mui/icons-material';
-import type { Credential } from '@/domain/entities/Credential';
+import type { CredentialSummary } from '@/domain/entities/Credential';
 import { clipboardManager } from '@/presentation/utils/clipboard';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
-import { getBreachResult } from '@/data/repositories/breachResultsRepository';
-import TotpDisplay from './TotpDisplay';
+import { revealCredentialSecret, updateCredentialAccessTime } from '@/application/services/credentialService';
+import { getBreachResult } from '@/application/services/breachResultService';
 import CategoryIcon, { getCategoryColor, getCategoryName } from './CategoryIcon';
 import type { BreachSeverity } from '@/core/breach/breachTypes';
+import { useAuthStore } from '@/presentation/store/authStore';
 
 interface CredentialCardProps {
-  credential: Credential;
+  credential: CredentialSummary;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onToggleFavorite: (id: string) => void;
@@ -55,6 +55,7 @@ const CredentialCard = memo(function CredentialCard({
   onCopySuccess,
   showBreachStatus = true,
 }: CredentialCardProps) {
+  const { vaultKey } = useAuthStore();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [breachStatus, setBreachStatus] = useState<{
     breached: boolean;
@@ -90,7 +91,7 @@ const CredentialCard = memo(function CredentialCard({
 
   const handleCopyUsername = async () => {
     // Update access time
-    await credentialRepository.updateAccessTime(credential.id);
+    await updateCredentialAccessTime(credential.id);
     
     const success = await clipboardManager.copy(credential.username, false, 0);
     if (success) {
@@ -101,10 +102,18 @@ const CredentialCard = memo(function CredentialCard({
   };
 
   const handleCopyPassword = async () => {
-    // Update access time
-    await credentialRepository.updateAccessTime(credential.id);
-    
-    const success = await clipboardManager.copy(credential.password, true, 30);
+    if (!vaultKey) {
+      onCopySuccess('Vault is locked');
+      return;
+    }
+
+    const secret = await revealCredentialSecret(credential.id, vaultKey);
+    if (!secret) {
+      onCopySuccess('Password not found');
+      return;
+    }
+
+    const success = await clipboardManager.copy(secret.password, true, 30);
     if (success) {
       onCopySuccess('Password copied! Auto-clearing in 30 seconds');
     } else {
@@ -178,10 +187,10 @@ const CredentialCard = memo(function CredentialCard({
           </Typography>
         )}
 
-        {/* TOTP Display */}
-        {credential.totpSecret && (
+        {/* TOTP presence indicator */}
+        {credential.hasTotpSecret && (
           <Box sx={{ mb: 2 }}>
-            <TotpDisplay totpSecret={credential.totpSecret} />
+            <Chip size="small" label="TOTP enabled" variant="outlined" />
           </Box>
         )}
 

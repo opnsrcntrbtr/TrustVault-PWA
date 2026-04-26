@@ -4,9 +4,14 @@
  */
 
 import { ICredentialRepository } from '@/domain/repositories/ICredentialRepository';
-import { Credential, CredentialInput } from '@/domain/entities/Credential';
+import {
+  Credential,
+  CredentialInput,
+  CredentialSecret,
+  CredentialSummary,
+} from '@/domain/entities/Credential';
 import { db, type StoredCredential } from '../storage/database';
-import { encrypt, decrypt } from '@/core/crypto/encryption';
+import { encrypt, decrypt, type EncryptedData } from '@/core/crypto/encryption';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 
 export class CredentialRepository implements ICredentialRepository {
@@ -68,7 +73,7 @@ export class CredentialRepository implements ICredentialRepository {
 
     await db.credentials.add(credential);
 
-    return this.mapToDomain(credential);
+    return this.decryptCredential(credential, encryptionKey);
   }
 
   async findById(id: string, decryptionKey: CryptoKey): Promise<Credential | null> {
@@ -86,6 +91,34 @@ export class CredentialRepository implements ICredentialRepository {
   async findAll(decryptionKey: CryptoKey): Promise<Credential[]> {
     const storedCredentials = await db.credentials.toArray();
     return Promise.all(storedCredentials.map((c) => this.decryptCredential(c, decryptionKey)));
+  }
+
+  async findSummaryById(id: string): Promise<CredentialSummary | null> {
+    const stored = await db.credentials.get(id);
+    return stored ? this.mapToSummary(stored) : null;
+  }
+
+  async findAllSummaries(): Promise<CredentialSummary[]> {
+    const storedCredentials = await db.credentials.toArray();
+    return storedCredentials.map((credential) => this.mapToSummary(credential));
+  }
+
+  async findSecretById(id: string, decryptionKey: CryptoKey): Promise<CredentialSecret | null> {
+    const stored = await db.credentials.get(id);
+    if (!stored) {
+      return null;
+    }
+
+    await this.updateAccessTime(id);
+    const credential = await this.decryptCredential(stored, decryptionKey);
+    return {
+      id: credential.id,
+      password: credential.password,
+      notes: credential.notes,
+      totpSecret: credential.totpSecret,
+      cardNumber: credential.cardNumber,
+      cvv: credential.cvv,
+    };
   }
 
   async update(
@@ -165,7 +198,11 @@ export class CredentialRepository implements ICredentialRepository {
     await db.credentials.update(id, updates);
 
     const updated = await db.credentials.get(id);
-    return this.mapToDomain(updated!);
+    if (!updated) {
+      throw new Error('Credential not found after update');
+    }
+
+    return this.decryptCredential(updated, encryptionKey);
   }
 
   async delete(id: string): Promise<void> {
@@ -204,7 +241,7 @@ export class CredentialRepository implements ICredentialRepository {
     const decrypted = await Promise.all(
       credentials.map(async (c) => {
         try {
-          const encData = JSON.parse(c.encryptedPassword);
+          const encData = parseEncryptedData(c.encryptedPassword);
           const password = await decrypt(encData, decryptionKey);
           return {
             ...c,
@@ -288,14 +325,14 @@ export class CredentialRepository implements ICredentialRepository {
   ): Promise<Credential> {
     try {
       // Decrypt the password
-      const encryptedPasswordData = JSON.parse(stored.encryptedPassword);
+      const encryptedPasswordData = parseEncryptedData(stored.encryptedPassword);
       const password = await decrypt(encryptedPasswordData, vaultKey);
 
       // Decrypt notes if present (support both encrypted and legacy plaintext)
       let notes: string | undefined;
       if (stored.encryptedNotes) {
         try {
-          const encryptedNotesData = JSON.parse(stored.encryptedNotes);
+          const encryptedNotesData = parseEncryptedData(stored.encryptedNotes);
           notes = await decrypt(encryptedNotesData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt notes:', error);
@@ -311,7 +348,7 @@ export class CredentialRepository implements ICredentialRepository {
       let totpSecret: string | undefined;
       if (stored.encryptedTotpSecret) {
         try {
-          const encryptedTotpData = JSON.parse(stored.encryptedTotpSecret);
+          const encryptedTotpData = parseEncryptedData(stored.encryptedTotpSecret);
           totpSecret = await decrypt(encryptedTotpData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt TOTP secret:', error);
@@ -323,7 +360,7 @@ export class CredentialRepository implements ICredentialRepository {
       let cardNumber: string | undefined;
       if (stored.encryptedCardNumber) {
         try {
-          const encryptedCardData = JSON.parse(stored.encryptedCardNumber);
+          const encryptedCardData = parseEncryptedData(stored.encryptedCardNumber);
           cardNumber = await decrypt(encryptedCardData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt card number:', error);
@@ -333,7 +370,7 @@ export class CredentialRepository implements ICredentialRepository {
       let cvv: string | undefined;
       if (stored.encryptedCvv) {
         try {
-          const encryptedCvvData = JSON.parse(stored.encryptedCvv);
+          const encryptedCvvData = parseEncryptedData(stored.encryptedCvv);
           cvv = await decrypt(encryptedCvvData, vaultKey);
         } catch (error) {
           console.error('Failed to decrypt CVV:', error);
@@ -386,13 +423,24 @@ export class CredentialRepository implements ICredentialRepository {
     }
   }
 
-  private mapToDomain(stored: StoredCredential): Credential {
+  private mapToSummary(stored: StoredCredential): CredentialSummary {
     return {
-      ...stored,
-      password: stored.encryptedPassword, // This will show encrypted data - used only in create() which returns immediately
+      id: stored.id,
+      title: stored.title,
+      username: stored.username,
+      url: stored.url,
+      category: stored.category,
+      tags: stored.tags,
       createdAt: new Date(stored.createdAt),
       updatedAt: new Date(stored.updatedAt),
       lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
+      isFavorite: stored.isFavorite,
+      securityScore: stored.securityScore,
+      hasPassword: stored.encryptedPassword.length > 0,
+      hasNotes: Boolean(stored.encryptedNotes || stored.notes),
+      hasTotpSecret: Boolean(stored.encryptedTotpSecret),
+      hasCardDetails: Boolean(stored.encryptedCardNumber || stored.encryptedCvv),
+      cardType: stored.cardType,
     };
   }
 
@@ -483,3 +531,24 @@ export class CredentialRepository implements ICredentialRepository {
 }
 
 export const credentialRepository = new CredentialRepository();
+
+function parseEncryptedData(serialized: string): EncryptedData {
+  const parsed = JSON.parse(serialized) as Partial<EncryptedData>;
+  if (typeof parsed.ciphertext !== 'string' || typeof parsed.iv !== 'string') {
+    throw new Error('Invalid encrypted data');
+  }
+
+  const encryptedData: EncryptedData = {
+    ciphertext: parsed.ciphertext,
+    iv: parsed.iv,
+  };
+
+  if (typeof parsed.salt === 'string') {
+    encryptedData.salt = parsed.salt;
+  }
+  if (typeof parsed.authTag === 'string') {
+    encryptedData.authTag = parsed.authTag;
+  }
+
+  return encryptedData;
+}

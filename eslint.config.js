@@ -36,4 +36,53 @@ export default tseslint.config(
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   }
+  ,
+  {
+    files: ['src/presentation/**/*.{ts,tsx}', 'src/components/**/*.{ts,tsx}', 'src/hooks/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/data/*'],
+              message: 'Presentation code must use application services instead of importing data adapters directly.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/core/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/features/*', '@/presentation/*', '@/data/*'],
+              message: 'Core modules must stay low-level and cannot depend on feature, presentation, or data layers.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/domain/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/application/*', '@/data/*', '@/presentation/*', '@/features/*', '@/core/*'],
+              message: 'Domain modules must remain independent of outer architecture layers.',
+            },
+          ],
+        },
+      ],
+    },
+  }
 );

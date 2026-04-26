@@ -40,16 +40,18 @@ import {
   Refresh,
   Visibility,
 } from '@mui/icons-material';
-import { useCredentialStore } from '../store/credentialStore';
+import { useAuthStore } from '../store/authStore';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import {
   saveBreachResult,
   getBreachStatistics,
   getAllBreachedCredentials,
-} from '@/data/repositories/breachResultsRepository';
+} from '@/application/services/breachResultService';
 import type { BreachCheckResult } from '@/core/breach/breachTypes';
 import BreachDetailsModal from '../components/BreachDetailsModal';
+import type { Credential } from '@/domain/entities/Credential';
+import { listDecryptedCredentials } from '@/application/services/credentialService';
 
 interface SecurityIssue {
   id: string;
@@ -64,7 +66,8 @@ interface SecurityIssue {
 
 export default function SecurityAuditPage() {
   const navigate = useNavigate();
-  const { credentials } = useCredentialStore();
+  const { vaultKey } = useAuthStore();
+  const [credentials, setCredentials] = useState<Credential[]>([]);
   const [loading, setLoading] = useState(true);
   const [securityScore, setSecurityScore] = useState(0);
   const [issues, setIssues] = useState<SecurityIssue[]>([]);
@@ -81,17 +84,29 @@ export default function SecurityAuditPage() {
   } | null>(null);
 
   useEffect(() => {
-    analyzeCredentials();
-    loadBreachStats();
-  }, [credentials]);
+    void refreshAuditData();
+  }, [vaultKey]);
 
-  const analyzeCredentials = async () => {
+  const refreshAuditData = async () => {
+    if (!vaultKey) {
+      setCredentials([]);
+      setLoading(false);
+      return;
+    }
+
+    const decryptedCredentials = await listDecryptedCredentials(vaultKey);
+    setCredentials(decryptedCredentials);
+    await analyzeCredentials(decryptedCredentials);
+    await loadBreachStats();
+  };
+
+  const analyzeCredentials = async (credentialsToAnalyze: Credential[] = credentials) => {
     setLoading(true);
 
     const foundIssues: SecurityIssue[] = [];
     const passwordMap = new Map<string, string[]>(); // password -> [credential titles]
     let totalScore = 0;
-    const credentialCount = credentials.length;
+    const credentialCount = credentialsToAnalyze.length;
 
     // Load breach data if available
     let breachedCredentials: Array<{
@@ -112,7 +127,7 @@ export default function SecurityAuditPage() {
     }
 
     // Analyze each credential
-    credentials.forEach((cred) => {
+    credentialsToAnalyze.forEach((cred) => {
       // Check for breaches first (highest priority)
       const breach = breachedCredentials.find(b => b.credentialId === cred.id && b.checkType === 'password');
       if (breach) {
@@ -286,9 +301,10 @@ export default function SecurityAuditPage() {
 
     try {
       let scannedCount = 0;
-      const totalCount = credentials.length;
+      const credentialsToScan = vaultKey ? await listDecryptedCredentials(vaultKey) : [];
+      const totalCount = credentialsToScan.length;
 
-      for (const credential of credentials) {
+      for (const credential of credentialsToScan) {
         if (!credential.password || credential.password.trim() === '') {
           continue;
         }
@@ -314,7 +330,7 @@ export default function SecurityAuditPage() {
 
       // Reload stats and issues
       await loadBreachStats();
-      await analyzeCredentials();
+      await refreshAuditData();
 
       alert(`Scan complete! Checked ${scannedCount} credentials.`);
     } catch (error) {

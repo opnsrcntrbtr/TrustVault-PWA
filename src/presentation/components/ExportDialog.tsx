@@ -23,7 +23,7 @@ import {
 import { Visibility, VisibilityOff, Warning, Download } from '@mui/icons-material';
 import PasswordStrengthIndicator from './PasswordStrengthIndicator';
 import { encryptExport, generateExportFilename, downloadExportFile } from '@/core/crypto/exportEncryption';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
+import { listDecryptedCredentials } from '@/application/services/credentialService';
 import { useAuthStore } from '../store/authStore';
 
 interface ExportDialogProps {
@@ -60,7 +60,7 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
 
     try {
       // Get all credentials
-      const credentials = await credentialRepository.findAll(session.vaultKey);
+      const credentials = await listDecryptedCredentials(session.vaultKey);
 
       if (credentials.length === 0) {
         setError('No credentials to export');

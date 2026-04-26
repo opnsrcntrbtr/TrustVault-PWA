@@ -10,8 +10,8 @@ import { createAppTheme } from './theme/theme';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 import { useEffect, useState, useMemo, lazy, Suspense } from 'react';
-import { initializeDatabase } from '@/data/storage/database';
-import { Box, CircularProgress } from '@mui/material';
+import { initializeApplicationStorage } from '@/application/services/storageService';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAutoLock, getDefaultAutoLockConfig } from './hooks/useAutoLock';
 import ClipboardNotification from './components/ClipboardNotification';
 import MobileNavigation from './components/MobileNavigation';
@@ -22,6 +22,7 @@ import CryptoAPIError from './components/CryptoAPIError';
 import { initPerformanceMonitoring } from './utils/performance';
 import { prefetchTesseractAssets } from '@/core/ocr';
 import OnboardingTour from '@/components/OnboardingTour';
+import { handleExtensionCredentialBridge } from '@/application/services/extensionBridgeService';
 import '@/styles/driver-custom.css';
 
 // Lazy load page components for code splitting
@@ -240,7 +241,9 @@ function AppRoutes() {
 
 function AppContent() {
   const { isAuthenticated, isLocked } = useAuthStore();
+  const vaultKey = useAuthStore((state) => state.vaultKey);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [initializationError, setInitializationError] = useState<string | null>(null);
   const [cryptoAPIAvailable, setCryptoAPIAvailable] = useState<boolean | null>(null);
 
   // Check if Web Crypto API is available (required for encryption)
@@ -257,6 +260,14 @@ function AppContent() {
   useEffect(() => {
     initPerformanceMonitoring();
   }, []);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    handleExtensionCredentialBridge({ isAuthenticated, isLocked, vaultKey }).catch((error) => {
+      console.error('Extension credential bridge failed:', error);
+    });
+  }, [isAuthenticated, isInitialized, isLocked, vaultKey]);
 
   // Prefetch Tesseract OCR assets on idle for faster first-scan UX
   useEffect(() => {
@@ -295,12 +306,12 @@ function AppContent() {
 
     // Initialize database with a timeout (2 seconds max)
     const initTimeout = setTimeout(() => {
-      console.warn('Database initialization timeout - proceeding without persistence');
-      completeInitialization('timeout');
+      console.error('Database initialization timeout');
+      setInitializationError('TrustVault could not open encrypted local storage in time.');
     }, 2000);
 
     // Try to initialize database
-    initializeDatabase()
+    initializeApplicationStorage()
       .then(() => {
         clearTimeout(initTimeout);
         completeInitialization('success');
@@ -308,7 +319,9 @@ function AppContent() {
       .catch((error) => {
         console.error('Database initialization error:', error);
         clearTimeout(initTimeout);
-        completeInitialization('error');
+        setInitializationError(
+          error instanceof Error ? error.message : 'TrustVault could not open encrypted local storage.'
+        );
       });
 
     // Cleanup
@@ -343,6 +356,30 @@ function AppContent() {
   }
 
   if (!isInitialized) {
+    if (initializationError) {
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            backgroundColor: '#121212',
+            flexDirection: 'column',
+            gap: 2,
+            color: 'white',
+            textAlign: 'center',
+            px: 3,
+          }}
+        >
+          <Typography variant="h5">TrustVault storage is unavailable</Typography>
+          <Typography variant="body2" sx={{ maxWidth: 520 }}>
+            {initializationError}
+          </Typography>
+        </Box>
+      );
+    }
+
     return (
       <Box
         sx={{

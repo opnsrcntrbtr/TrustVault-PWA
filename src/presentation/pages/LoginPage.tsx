@@ -28,7 +28,14 @@ import {
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { isBiometricAvailable } from '@/core/auth/webauthn';
-import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import {
+  getFirstBiometricCredential,
+  getUserByEmail,
+  hasAnyUsers,
+  signInWithBiometric,
+  signInWithPassword,
+  signUpWithPassword,
+} from '@/application/services/authService';
 
 type AuthMode = 'login' | 'signup';
 
@@ -51,7 +58,7 @@ export default function LoginPage() {
     isBiometricAvailable().then(setBiometricEnabled).catch(console.error);
 
     // Check if any users exist
-    userRepository.hasAnyUsers().then((hasUsers) => {
+    hasAnyUsers().then((hasUsers) => {
       setHasExistingAccount(hasUsers);
       // Default to signup if no users exist
       if (!hasUsers) {
@@ -77,12 +84,7 @@ export default function LoginPage() {
         throw new Error('Password must be at least 12 characters long');
       }
 
-      // Create new user
-      const user = await userRepository.createUser(email, password);
-      console.log('User created successfully');
-
-      // Automatically authenticate after signup
-      const session = await userRepository.authenticateWithPassword(email, password);
+      const { user, session } = await signUpWithPassword(email, password);
 
       setUser(user);
       setSession(session);
@@ -106,14 +108,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Authenticate with user repository
-      const session = await userRepository.authenticateWithPassword(email, password);
-
-      // Get user details
-      const user = await userRepository.findByEmail(email);
-      if (!user) {
-        throw new Error('User not found');
-      }
+      const { user, session } = await signInWithPassword(email, password);
 
       setUser(user);
       setSession(session);
@@ -138,29 +133,29 @@ export default function LoginPage() {
 
     try {
       // Find user by email
-      const targetUser = await userRepository.findByEmail(email);
+      const targetUser = await getUserByEmail(email);
       if (!targetUser) {
         throw new Error('User not found. Please sign in with your password first.');
       }
 
       // Check if biometric is enabled
-      if (!targetUser.biometricEnabled || targetUser.webAuthnCredentials.length === 0) {
+      if (!targetUser.biometricEnabled || targetUser.webAuthnCredentialCount === 0) {
         throw new Error('Biometric authentication is not set up for this account. Please sign in with your password first.');
       }
 
       // Get the first biometric credential ID for authentication
-      const credentialId = targetUser.webAuthnCredentials[0]?.id;
+      const credentialId = await getFirstBiometricCredential(targetUser.id);
       if (!credentialId) {
         throw new Error('No biometric credential found. Please sign in with your password and re-enable biometric in Settings.');
       }
 
       // Perform full biometric authentication (WebAuthn + vault key decryption)
-      const session = await userRepository.authenticateWithBiometric(targetUser.id, credentialId);
+      const result = await signInWithBiometric(targetUser.id, credentialId);
 
       // Set authentication state with vault key
-      setUser(targetUser);
-      setSession(session);
-      setVaultKey(session.vaultKey);
+      setUser(result.user);
+      setSession(result.session);
+      setVaultKey(result.session.vaultKey);
       console.log('Biometric login successful');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Biometric authentication failed');

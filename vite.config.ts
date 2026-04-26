@@ -5,6 +5,15 @@ import path from 'path';
 
 // Determine base path based on deployment target
 const BASE_PATH = process.env.VERCEL ? '/' : '/TrustVault-PWA/';
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'X-XSS-Protection': '1; mode=block',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()',
+};
+const DEV_CSP = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' wasm-unsafe-eval https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' ws: wss: https://cdn.jsdelivr.net https://api.pwnedpasswords.com https://haveibeenpwned.com; worker-src 'self' blob:;";
+const PROD_CSP = "default-src 'self'; script-src 'self' wasm-unsafe-eval https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://api.pwnedpasswords.com https://haveibeenpwned.com; worker-src 'self' blob:;";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -72,7 +81,7 @@ export default defineConfig({
           },
           // Tesseract.js WASM core and worker scripts
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js@.*/i,
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js@5\//i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'tesseract-core-cache',
@@ -87,7 +96,7 @@ export default defineConfig({
           },
           // Tesseract.js language data (eng.traineddata ~15MB)
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js-data@.*/i,
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js-data@5\//i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'tesseract-lang-cache',
@@ -102,7 +111,7 @@ export default defineConfig({
           },
           // Tesseract.js WASM core from tessdata CDN
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js-core@.*/i,
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js-core@5\//i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'tesseract-wasm-cache',
@@ -167,12 +176,8 @@ export default defineConfig({
     port: 3000,
     strictPort: false,
     headers: {
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()',
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net; worker-src 'self' blob:;"
+      ...SECURITY_HEADERS,
+      'Content-Security-Policy': DEV_CSP
     }
   },
 
@@ -180,12 +185,8 @@ export default defineConfig({
     port: 4173,
     strictPort: false,
     headers: {
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()',
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net; worker-src 'self' blob:;"
+      ...SECURITY_HEADERS,
+      'Content-Security-Policy': PROD_CSP
     }
   }
 });

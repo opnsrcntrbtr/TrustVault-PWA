@@ -21,11 +21,11 @@ import {
 } from '@mui/material';
 import { Lock, Visibility, VisibilityOff, LockOpen } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
-import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import { unlockWithPassword } from '@/application/services/authService';
 
 export default function UnlockPage() {
   const navigate = useNavigate();
-  const { user, unlockVault, signout } = useAuthStore();
+  const { user, unlockVault, setSession, setUser, signout } = useAuthStore();
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,11 +46,12 @@ export default function UnlockPage() {
     setError(null);
 
     try {
-      // Authenticate with password to get vault key
-      const session = await userRepository.authenticateWithPassword(user.email, password);
+      const result = await unlockWithPassword(user.email, password);
 
       // Unlock vault with the vault key
-      unlockVault(session.vaultKey);
+      setUser(result.user);
+      setSession(result.session);
+      unlockVault(result.session.vaultKey);
 
       // Clear password from memory
       setPassword('');

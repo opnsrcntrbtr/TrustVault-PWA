@@ -21,7 +21,8 @@ import {
 import { ArrowBack, SystemUpdate, CheckCircle, Refresh } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { useCredentialStore } from '../store/credentialStore';
-import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import { updateSecuritySettings } from '@/application/services/authService';
+import { clearAllLocalVaultData } from '@/application/services/storageService';
 import AutoLockSettings from '../components/AutoLockSettings';
 import ClipboardSettings from '../components/ClipboardSettings';
 import ChangeMasterPasswordDialog from '../components/ChangeMasterPasswordDialog';
@@ -72,21 +73,12 @@ export default function SettingsPage() {
 
     try {
       // Update security settings
-      await userRepository.updateSecuritySettings(user.id, {
+      const updatedUser = await updateSecuritySettings(user.id, {
         sessionTimeoutMinutes: sessionTimeout,
         clipboardClearSeconds: clipboardClearSeconds,
       });
 
       // Update user in store
-      const updatedUser = {
-        ...user,
-        securitySettings: {
-          ...user.securitySettings,
-          sessionTimeoutMinutes: sessionTimeout,
-          clipboardClearSeconds: clipboardClearSeconds,
-        },
-      };
-
       setUser(updatedUser);
 
       setSaveMessage('Settings saved successfully');
@@ -124,9 +116,7 @@ export default function SettingsPage() {
     if (!secondConfirm) return;
 
     try {
-      // Clear all data
-      const { clearAllData } = await import('@/data/storage/debugUtils');
-      await clearAllData();
+      await clearAllLocalVaultData();
 
       // Clear stores
       clearCredentials();
@@ -214,10 +204,10 @@ export default function SettingsPage() {
             Your master password is still required for initial setup and critical operations.
           </Typography>
           
-          {user.biometricEnabled && user.webAuthnCredentials.length > 0 ? (
+          {user.biometricEnabled && user.webAuthnCredentialCount > 0 ? (
             <Alert severity="success" sx={{ mb: 2 }}>
               <Typography variant="body2">
-                ✓ Biometric authentication is enabled ({user.webAuthnCredentials.length} {user.webAuthnCredentials.length === 1 ? 'device' : 'devices'} registered)
+                ✓ Biometric authentication is enabled ({user.webAuthnCredentialCount} {user.webAuthnCredentialCount === 1 ? 'device' : 'devices'} registered)
               </Typography>
             </Alert>
           ) : (

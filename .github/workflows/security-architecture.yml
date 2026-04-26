@@ -1,0 +1,35 @@
+name: Security Architecture
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Type Check
+        run: npm run type-check
+
+      - name: Architecture Tests
+        run: npx vitest run src/__tests__/architecture/architecture-boundaries.test.ts
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit
+        run: npm run security:audit

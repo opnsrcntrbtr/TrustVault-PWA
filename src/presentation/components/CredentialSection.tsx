@@ -5,13 +5,13 @@
 
 import { Box, Typography, Divider } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import type { Credential } from '@/domain/entities/Credential';
+import type { CredentialSummary } from '@/domain/entities/Credential';
 import CredentialCard from './CredentialCard';
 
 interface CredentialSectionProps {
   title: string;
   subtitle?: string;
-  credentials: Credential[];
+  credentials: CredentialSummary[];
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onToggleFavorite: (id: string) => void;

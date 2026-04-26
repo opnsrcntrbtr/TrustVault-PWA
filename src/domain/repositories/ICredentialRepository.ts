@@ -2,13 +2,21 @@
  * Domain Repository Interface: CredentialRepository
  * Defines contract for credential storage operations
  */
-import { Credential, CredentialInput } from '../entities/Credential';
+import {
+  Credential,
+  CredentialInput,
+  CredentialSecret,
+  CredentialSummary,
+} from '../entities/Credential';
 
 export interface ICredentialRepository {
   // CRUD operations
   create(input: CredentialInput, encryptionKey: CryptoKey): Promise<Credential>;
   findById(id: string, decryptionKey: CryptoKey): Promise<Credential | null>;
   findAll(decryptionKey: CryptoKey): Promise<Credential[]>;
+  findSummaryById(id: string): Promise<CredentialSummary | null>;
+  findAllSummaries(): Promise<CredentialSummary[]>;
+  findSecretById(id: string, decryptionKey: CryptoKey): Promise<CredentialSecret | null>;
   update(id: string, input: Partial<CredentialInput>, encryptionKey: CryptoKey): Promise<Credential>;
   delete(id: string): Promise<void>;
   

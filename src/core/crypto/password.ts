@@ -6,9 +6,7 @@
 
 import { scrypt } from '@noble/hashes/scrypt';
 import { randomBytes } from '@noble/hashes/utils';
-import { analyzePasswordStrength as advancedAnalyzer } from '@/features/vault/generator/strengthAnalyzer';
-import { generatePassword } from '@/features/vault/generator/passwordGenerator';
-import { generatePassphrase as advancedPassphraseGenerator } from '@/features/vault/generator/passphraseGenerator';
+import zxcvbn from 'zxcvbn';
 
 // Scrypt parameters (OWASP recommended for password hashing)
 const SCRYPT_CONFIG = {
@@ -103,30 +101,26 @@ export function analyzePasswordStrength(password: string): {
   feedback: string[];
   strength: 'very_weak' | 'weak' | 'fair' | 'strong' | 'very_strong';
 } {
-  const result = advancedAnalyzer(password);
+  const result = zxcvbn(password);
 
-  // Map the new strength format to the old format for backward compatibility
-  const strengthMap: Record<string, 'very_weak' | 'weak' | 'fair' | 'strong' | 'very_strong'> = {
-    'weak': 'weak',
-    'medium': 'fair',
-    'strong': 'strong',
-    'very-strong': 'very_strong',
+  const strengthMap: Record<number, 'very_weak' | 'weak' | 'fair' | 'strong' | 'very_strong'> = {
+    0: 'very_weak',
+    1: 'weak',
+    2: 'fair',
+    3: 'strong',
+    4: 'very_strong',
   };
 
-  // Build feedback array from new format
   const feedback: string[] = [];
   if (result.feedback.warning) {
     feedback.push(result.feedback.warning);
   }
   feedback.push(...result.feedback.suggestions);
 
-  // Add weaknesses to feedback
-  feedback.push(...result.weaknesses);
-
   return {
-    score: result.score,
+    score: result.score * 25,
     feedback,
-    strength: strengthMap[result.strength] || 'weak',
+    strength: strengthMap[result.score] ?? 'very_weak',
   };
 }
 
@@ -151,33 +145,108 @@ export function generateSecurePassword(
     excludeAmbiguous = false,
   } = options;
 
-  // Use the advanced generator with the provided options
-  const result = generatePassword({
-    length,
-    includeUppercase: uppercase,
-    includeLowercase: lowercase,
-    includeNumbers: numbers,
-    includeSymbols: symbols,
-    excludeAmbiguous,
-  });
+  const sets = [
+    lowercase ? 'abcdefghijklmnopqrstuvwxyz' : '',
+    uppercase ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : '',
+    numbers ? '0123456789' : '',
+    symbols ? '!@#$%^&*()_+-=[]{}|;:,.<>?' : '',
+  ]
+    .filter((set) => set.length > 0)
+    .map((set) => excludeAmbiguous ? removeAmbiguousCharacters(set) : set)
+    .filter((set) => set.length > 0);
 
-  return result.password;
+  if (sets.length === 0) {
+    throw new Error('At least one character set must be selected');
+  }
+
+  const targetLength = Math.max(length, sets.length);
+  const allCharacters = sets.join('');
+  const requiredCharacters = sets.map((set) => getRandomCharacter(set));
+  const remainingCharacters = Array.from({ length: targetLength - requiredCharacters.length }, () =>
+    getRandomCharacter(allCharacters)
+  );
+
+  return shuffleCharacters([...requiredCharacters, ...remainingCharacters]).join('');
 }
 
 /**
  * Generates a memorable passphrase using diceware method
  */
 export function generatePassphrase(wordCount: number = 6): string {
-  // Clamp word count to valid range (4-8)
   const validWordCount = Math.max(4, Math.min(8, wordCount));
-
-  // Use the advanced generator with default options
-  const result = advancedPassphraseGenerator({
-    wordCount: validWordCount,
-    separator: 'dash',
-    capitalize: 'first',
-    includeNumbers: true,
+  const words = Array.from({ length: validWordCount }, () => {
+    const word = PASSPHRASE_WORDS[getRandomInt(PASSPHRASE_WORDS.length)] ?? 'vault';
+    return word.charAt(0).toUpperCase() + word.slice(1);
   });
+  const suffix = String(getRandomInt(90) + 10);
 
-  return result.password;
+  return `${words.join('-')}-${suffix}`;
 }
+
+function removeAmbiguousCharacters(characters: string): string {
+  return characters.replace(/[0O1Il|]/g, '');
+}
+
+function getRandomCharacter(characters: string): string {
+  return characters[getRandomInt(characters.length)] ?? characters[0] ?? '';
+}
+
+function getRandomInt(maxExclusive: number): number {
+  if (maxExclusive <= 0) {
+    throw new Error('maxExclusive must be positive');
+  }
+
+  const randomValues = new Uint32Array(1);
+  const maxUnbiased = Math.floor(0x100000000 / maxExclusive) * maxExclusive;
+
+  let value = 0;
+  do {
+    crypto.getRandomValues(randomValues);
+    value = randomValues[0] ?? 0;
+  } while (value >= maxUnbiased);
+
+  return value % maxExclusive;
+}
+
+function shuffleCharacters(characters: string[]): string[] {
+  const shuffled = [...characters];
+  for (let index = shuffled.length - 1; index > 0; index--) {
+    const swapIndex = getRandomInt(index + 1);
+    const current = shuffled[index];
+    const swap = shuffled[swapIndex];
+    if (current === undefined || swap === undefined) {
+      continue;
+    }
+    shuffled[index] = swap;
+    shuffled[swapIndex] = current;
+  }
+  return shuffled;
+}
+
+const PASSPHRASE_WORDS = [
+  'anchor',
+  'beacon',
+  'canyon',
+  'delta',
+  'ember',
+  'forest',
+  'harbor',
+  'island',
+  'jigsaw',
+  'keystone',
+  'lantern',
+  'meadow',
+  'nebula',
+  'onyx',
+  'prairie',
+  'quartz',
+  'river',
+  'summit',
+  'thunder',
+  'uplift',
+  'velvet',
+  'willow',
+  'xenon',
+  'yonder',
+  'zenith',
+];

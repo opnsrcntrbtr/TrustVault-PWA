@@ -33,9 +33,13 @@ import {
   Key,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
-import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 import { getDeviceName, isBiometricAvailable, getAuthenticatorInfo } from '@/core/auth/webauthn';
 import type { WebAuthnCredential } from '@/domain/entities/User';
+import {
+  getBiometricCredentials,
+  registerBiometricCredential,
+  removeBiometricCredential,
+} from '@/application/services/authService';
 
 interface BiometricSetupDialogProps {
   open: boolean;
@@ -43,7 +47,7 @@ interface BiometricSetupDialogProps {
 }
 
 export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDialogProps) {
-  const { user, vaultKey } = useAuthStore();
+  const { user, vaultKey, updateUser } = useAuthStore();
   const [credentials, setCredentials] = useState<WebAuthnCredential[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -65,10 +69,8 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
     if (!user) return;
 
     try {
-      const fullUser = await userRepository.findById(user.id);
-      if (fullUser) {
-        setCredentials(fullUser.webAuthnCredentials);
-      }
+      const nextCredentials = await getBiometricCredentials(user.id);
+      setCredentials(nextCredentials);
     } catch (err) {
       console.error('Failed to load credentials:', err);
     }
@@ -99,7 +101,8 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
 
     try {
       const deviceName = getDeviceName();
-      await userRepository.registerBiometric(user.id, vaultKey, deviceName);
+      const publicUser = await registerBiometricCredential(user.id, vaultKey, deviceName);
+      updateUser(publicUser);
 
       setSuccess(`${deviceName} registered successfully!`);
       await loadCredentials();
@@ -120,7 +123,8 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
     setIsLoading(true);
 
     try {
-      await userRepository.removeBiometric(user.id, credentialId);
+      const publicUser = await removeBiometricCredential(user.id, credentialId);
+      updateUser(publicUser);
       setSuccess('Biometric credential removed');
       await loadCredentials();
     } catch (err) {

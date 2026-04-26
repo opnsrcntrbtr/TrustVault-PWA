@@ -20,7 +20,7 @@ import {
   Security,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { getAllBreachedCredentials } from '@/data/repositories/breachResultsRepository';
+import { getAllBreachedCredentials } from '@/application/services/breachResultService';
 
 const DISMISS_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
 const STORAGE_KEY = 'breach-alert-dismissed';

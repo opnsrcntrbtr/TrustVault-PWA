@@ -28,6 +28,35 @@ export interface Credential {
   billingAddress?: string | undefined;
 }
 
+export interface CredentialSummary {
+  id: string;
+  title: string;
+  username: string;
+  url?: string | undefined;
+  category: CredentialCategory;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  lastAccessedAt?: Date | undefined;
+  isFavorite: boolean;
+  securityScore?: number | undefined;
+  hasPassword: boolean;
+  hasNotes: boolean;
+  hasTotpSecret: boolean;
+  hasCardDetails: boolean;
+  cardLast4?: string | undefined;
+  cardType?: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | undefined;
+}
+
+export interface CredentialSecret {
+  id: string;
+  password: string;
+  notes?: string | undefined;
+  totpSecret?: string | undefined;
+  cardNumber?: string | undefined;
+  cvv?: string | undefined;
+}
+
 export type CredentialCategory = 
   | 'login'
   | 'credit_card'
@@ -56,4 +85,28 @@ export interface CredentialInput {
   cvv?: string | undefined;
   cardType?: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | undefined;
   billingAddress?: string | undefined;
+}
+
+export type CredentialWriteInput = CredentialInput;
+
+export function toCredentialSummary(credential: Credential): CredentialSummary {
+  return {
+    id: credential.id,
+    title: credential.title,
+    username: credential.username,
+    url: credential.url,
+    category: credential.category,
+    tags: credential.tags,
+    createdAt: credential.createdAt,
+    updatedAt: credential.updatedAt,
+    lastAccessedAt: credential.lastAccessedAt,
+    isFavorite: credential.isFavorite,
+    securityScore: credential.securityScore,
+    hasPassword: credential.password.length > 0,
+    hasNotes: Boolean(credential.notes),
+    hasTotpSecret: Boolean(credential.totpSecret),
+    hasCardDetails: Boolean(credential.cardNumber || credential.cvv),
+    cardLast4: credential.cardNumber ? credential.cardNumber.slice(-4) : undefined,
+    cardType: credential.cardType,
+  };
 }

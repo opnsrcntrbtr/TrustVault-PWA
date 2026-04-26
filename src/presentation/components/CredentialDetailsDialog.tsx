@@ -46,7 +46,7 @@ import {
 import type { Credential } from '@/domain/entities/Credential';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
-import { getBreachResult, saveBreachResult } from '@/data/repositories/breachResultsRepository';
+import { getBreachResult, saveBreachResult } from '@/application/services/breachResultService';
 import type { BreachCheckResult } from '@/core/breach/breachTypes';
 import TotpDisplay from './TotpDisplay';
 import BreachDetailsModal from './BreachDetailsModal';

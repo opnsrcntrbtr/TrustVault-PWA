@@ -1,129 +1,158 @@
 /**
  * TrustVault Autofill - Background Service Worker
- * Handles communication between content scripts and TrustVault PWA
+ * Coordinates explicit, short-lived credential requests between content scripts
+ * and the unlocked TrustVault PWA. Credentials are never written to extension storage.
  */
 
-const TRUSTVAULT_ORIGIN = 'https://trust-vault-pwa.vercel.app';
-const TRUSTVAULT_LOCAL = 'http://localhost:3000';
+const TRUSTVAULT_ORIGINS = [
+  'https://trust-vault-pwa.vercel.app',
+  'http://localhost:3000',
+];
+const REQUEST_TTL_MS = 60_000;
+const pendingRequests = new Map();
 
-/**
- * Check if TrustVault PWA is accessible
- */
-async function isTrustVaultAccessible() {
+function getTrustVaultOrigin() {
+  return TRUSTVAULT_ORIGINS[0];
+}
+
+function createNonce() {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function getOrigin(url) {
   try {
-    const response = await fetch(`${TRUSTVAULT_ORIGIN}/`, { method: 'HEAD' });
-    return response.ok;
-  } catch (error) {
-    // Try local development
-    try {
-      const response = await fetch(`${TRUSTVAULT_LOCAL}/`, { method: 'HEAD' });
-      return response.ok;
-    } catch {
-      return false;
+    return new URL(url).origin;
+  } catch {
+    return null;
+  }
+}
+
+function cleanupExpiredRequests() {
+  const now = Date.now();
+  for (const [nonce, request] of pendingRequests.entries()) {
+    if (now >= request.expiresAt) {
+      pendingRequests.delete(nonce);
     }
   }
 }
 
-/**
- * Get credentials for specific origin from TrustVault
- */
-async function getCredentialsForOrigin(origin) {
-  try {
-    // In production, this would communicate with TrustVault PWA
-    // via chrome.runtime.sendMessage to a TrustVault extension component
-    // or use cross-origin messaging with proper security
-
-    // For now, return stored credentials from extension storage
-    const result = await chrome.storage.local.get('credentials');
-    const allCredentials = result.credentials || [];
-
-    // Filter by origin
-    return allCredentials.filter(cred => {
-      if (!cred.url) return false;
-
-      try {
-        const credUrl = new URL(cred.url);
-        return credUrl.origin === origin;
-      } catch {
-        return false;
-      }
-    });
-  } catch (error) {
-    console.error('Failed to get credentials:', error);
-    return [];
-  }
+async function injectContentScript(tabId) {
+  await chrome.scripting.executeScript({
+    target: { tabId },
+    files: ['scripts/content.js'],
+  });
 }
 
-/**
- * Listen for messages from content script
- */
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'GET_CREDENTIALS') {
-    getCredentialsForOrigin(request.origin)
-      .then(credentials => {
-        sendResponse({ success: true, credentials });
-      })
-      .catch(error => {
-        sendResponse({ success: false, error: error.message });
-      });
-    return true; // Will respond asynchronously
+async function startCredentialRequest(tab) {
+  if (!tab?.id || !tab.url) {
+    throw new Error('No active tab available');
   }
 
-  if (request.type === 'STORE_CREDENTIAL') {
-    chrome.storage.local.get('credentials', (result) => {
-      const credentials = result.credentials || [];
-      credentials.push(request.credential);
+  const tabOrigin = getOrigin(tab.url);
+  if (!tabOrigin || tabOrigin.startsWith('chrome://')) {
+    throw new Error('Autofill is not available on this page');
+  }
 
-      chrome.storage.local.set({ credentials }, () => {
-        sendResponse({ success: true });
-      });
-    });
+  const nonce = createNonce();
+  pendingRequests.set(nonce, {
+    tabId: tab.id,
+    tabOrigin,
+    expiresAt: Date.now() + REQUEST_TTL_MS,
+  });
+
+  await injectContentScript(tab.id);
+  await chrome.tabs.sendMessage(tab.id, {
+    type: 'TRUSTVAULT_REQUEST_STARTED',
+    nonce,
+    tabOrigin,
+    expiresAt: Date.now() + REQUEST_TTL_MS,
+  });
+
+  const bridgeUrl = `${getTrustVaultOrigin()}/?extensionRequest=${encodeURIComponent(nonce)}&origin=${encodeURIComponent(tabOrigin)}&extensionId=${encodeURIComponent(chrome.runtime.id)}`;
+  await chrome.tabs.create({ url: bridgeUrl, active: true });
+
+  return { nonce, tabOrigin };
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'START_CREDENTIAL_REQUEST') {
+    chrome.tabs.query({ active: true, currentWindow: true })
+      .then(([tab]) => startCredentialRequest(tab))
+      .then((result) => sendResponse({ success: true, ...result }))
+      .catch((error) => sendResponse({ success: false, error: error.message }));
     return true;
   }
 
   if (request.type === 'OPEN_TRUSTVAULT') {
-    chrome.tabs.create({ url: TRUSTVAULT_ORIGIN });
+    chrome.tabs.create({ url: getTrustVaultOrigin() });
     sendResponse({ success: true });
     return false;
   }
 
   if (request.type === 'CHECK_ACCESSIBILITY') {
-    isTrustVaultAccessible()
-      .then(accessible => {
-        sendResponse({ accessible });
-      });
+    fetch(`${getTrustVaultOrigin()}/`, { method: 'HEAD' })
+      .then((response) => sendResponse({ accessible: response.ok }))
+      .catch(() => sendResponse({ accessible: false }));
     return true;
   }
+
+  if (request.type === 'GET_REQUEST_STATUS') {
+    cleanupExpiredRequests();
+    const nonce = typeof request.nonce === 'string' ? request.nonce : '';
+    sendResponse({ active: pendingRequests.has(nonce) });
+    return false;
+  }
+
+  return false;
 });
 
-/**
- * Handle extension icon click
- */
-chrome.action.onClicked.addListener((tab) => {
-  // Open TrustVault PWA in new tab
-  chrome.tabs.create({ url: TRUSTVAULT_ORIGIN });
+chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+  cleanupExpiredRequests();
+
+  if (!TRUSTVAULT_ORIGINS.includes(sender.origin || '')) {
+    sendResponse({ success: false, error: 'Untrusted origin' });
+    return false;
+  }
+
+  if (request.type !== 'TRUSTVAULT_CREDENTIAL_RESPONSE') {
+    return false;
+  }
+
+  const nonce = typeof request.nonce === 'string' ? request.nonce : '';
+  const pending = pendingRequests.get(nonce);
+  if (!pending) {
+    sendResponse({ success: false, error: 'Unknown or expired request' });
+    return false;
+  }
+
+  const credentials = Array.isArray(request.credentials) ? request.credentials : [];
+  const scopedCredentials = credentials.filter((credential) => {
+    const credentialOrigin = getOrigin(credential?.url);
+    return credentialOrigin === pending.tabOrigin;
+  });
+
+  chrome.tabs.sendMessage(pending.tabId, {
+    type: 'TRUSTVAULT_CREDENTIALS_AVAILABLE',
+    nonce,
+    credentials: scopedCredentials,
+  });
+
+  pendingRequests.delete(nonce);
+  sendResponse({ success: true, delivered: scopedCredentials.length });
+  return false;
 });
 
-/**
- * Initialize extension
- */
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
-    console.log('TrustVault Autofill installed');
-
-    // Set up default settings
     chrome.storage.local.set({
       settings: {
-        enabled: false,
+        enabled: true,
         autoSubmit: false,
         requireConfirmation: true,
       },
-      credentials: [],
     });
-
-    // Open welcome page
-    chrome.tabs.create({ url: TRUSTVAULT_ORIGIN });
+    chrome.tabs.create({ url: getTrustVaultOrigin() });
   }
 });
-
-console.log('TrustVault Autofill background service worker loaded');

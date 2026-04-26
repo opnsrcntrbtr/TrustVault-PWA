@@ -25,7 +25,7 @@ import {
   Shield,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
-import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import { signUpWithPassword } from '@/application/services/authService';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -56,12 +56,7 @@ export default function SignupPage() {
         throw new Error('Password must be at least 12 characters long');
       }
 
-      // Create new user
-      const user = await userRepository.createUser(email, password);
-      console.log('User created successfully');
-
-      // Automatically authenticate after signup
-      const session = await userRepository.authenticateWithPassword(email, password);
+      const { user, session } = await signUpWithPassword(email, password);
 
       setUser(user);
       setSession(session);

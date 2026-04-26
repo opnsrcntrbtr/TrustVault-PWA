@@ -29,7 +29,11 @@ import {
   AutoAwesome,
   CameraAlt,
 } from '@mui/icons-material';
-import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
+import {
+  deleteCredential,
+  getCredentialForEdit,
+  updateCredential,
+} from '@/application/services/credentialService';
 import { useAuthStore } from '@/presentation/store/authStore';
 import PasswordStrengthIndicator from '@/presentation/components/PasswordStrengthIndicator';
 import DeleteConfirmDialog from '@/presentation/components/DeleteConfirmDialog';
@@ -38,11 +42,6 @@ import TotpDisplay from '@/presentation/components/TotpDisplay';
 import TagInput from '@/presentation/components/TagInput';
 import { isValidTOTPSecret } from '@/core/auth/totp';
 import type { CredentialCategory, Credential } from '@/domain/entities/Credential';
-import {
-  storeCredentialInBrowser,
-  toBrowserCredential,
-  isCredentialManagementSupported,
-} from '@/core/autofill/credentialManagementService';
 import { CameraScanDialog } from '@/presentation/components/CameraScanDialog';
 import { OcrResultDialog } from '@/presentation/components/OcrResultDialog';
 import { isCameraSupported, type ParsedCredential } from '@/core/ocr';
@@ -112,7 +111,7 @@ export default function EditCredentialPage() {
       }
 
       try {
-        const cred = await credentialRepository.findById(id, vaultKey);
+        const cred = await getCredentialForEdit(id, vaultKey);
         if (!cred) {
           setError('Credential not found');
           setLoadingCredential(false);
@@ -276,24 +275,7 @@ export default function EditCredentialPage() {
         updateData.totpSecret = totpSecret.trim() || undefined;
       }
 
-      const updatedCredential = await credentialRepository.update(id, updateData, vaultKey);
-
-      // Store credential in browser for autofill (if supported and applicable)
-      if (
-        updatedCredential.category === 'login' &&
-        updatedCredential.url &&
-        isCredentialManagementSupported()
-      ) {
-        try {
-          const browserCred = toBrowserCredential(updatedCredential);
-          if (browserCred) {
-            await storeCredentialInBrowser(browserCred);
-          }
-        } catch (err) {
-          // Non-critical: autofill storage failed, but credential was updated
-          console.warn('Failed to store credential in browser for autofill:', err);
-        }
-      }
+      await updateCredential(id, updateData, vaultKey);
 
       // Navigate back to dashboard
       navigate('/dashboard');
@@ -315,7 +297,7 @@ export default function EditCredentialPage() {
     setError(null);
 
     try {
-      await credentialRepository.delete(id);
+      await deleteCredential(id);
       navigate('/dashboard');
     } catch (err) {
       console.error('Failed to delete credential:', err);

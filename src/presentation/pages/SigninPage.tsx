@@ -28,7 +28,13 @@ import {
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { isBiometricAvailable } from '@/core/auth/webauthn';
-import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import {
+  getFirstBiometricCredential,
+  getUsersWithBiometric,
+  hasAnyUsers,
+  signInWithBiometric,
+  signInWithPassword,
+} from '@/application/services/authService';
 
 export default function SigninPage() {
   const navigate = useNavigate();
@@ -46,8 +52,8 @@ export default function SigninPage() {
     isBiometricAvailable().then(setBiometricEnabled).catch(console.error);
 
     // Check if any users exist - redirect to signup if none
-    userRepository.hasAnyUsers().then((hasUsers) => {
-      if (!hasUsers) {
+    hasAnyUsers().then((hasUsersExist) => {
+      if (!hasUsersExist) {
         navigate('/signup', { replace: true });
       }
     }).catch(console.error);
@@ -59,14 +65,7 @@ export default function SigninPage() {
     setIsLoading(true);
 
     try {
-      // Authenticate with user repository
-      const session = await userRepository.authenticateWithPassword(email, password);
-
-      // Get user details
-      const user = await userRepository.findByEmail(email);
-      if (!user) {
-        throw new Error('User not found');
-      }
+      const { user, session } = await signInWithPassword(email, password);
 
       setUser(user);
       setSession(session);
@@ -89,7 +88,7 @@ export default function SigninPage() {
 
     try {
       // Get all users with biometric enabled
-      const biometricUsers = await userRepository.getUsersWithBiometric();
+      const biometricUsers = await getUsersWithBiometric();
 
       if (biometricUsers.length === 0) {
         setError('No biometric credentials found. Please sign in with your password first and enable biometric in Settings.');
@@ -104,7 +103,7 @@ export default function SigninPage() {
       }
 
       // Get the first biometric credential for this user
-      const credentialId = await userRepository.getFirstBiometricCredential(user.id);
+      const credentialId = await getFirstBiometricCredential(user.id);
       if (!credentialId) {
         setError('No biometric credentials found for this user.');
         setIsLoading(false);
@@ -112,12 +111,12 @@ export default function SigninPage() {
       }
 
       // Authenticate with biometric
-      const session = await userRepository.authenticateWithBiometric(user.id, credentialId);
+      const result = await signInWithBiometric(user.id, credentialId);
 
       // Set auth state
-      setUser(user);
-      setSession(session);
-      setVaultKey(session.vaultKey);
+      setUser(result.user);
+      setSession(result.session);
+      setVaultKey(result.session.vaultKey);
 
       console.log('Biometric login successful');
 
