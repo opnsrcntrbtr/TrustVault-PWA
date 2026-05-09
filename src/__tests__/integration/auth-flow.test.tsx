@@ -16,6 +16,7 @@ describe('Authentication Flow Integration', () => {
     useAuthStore.getState().clearSession();
     localStorage.clear();
     sessionStorage.clear();
+    window.history.pushState({}, '', '/');
     
     // Clear database tables
     await db.users.clear();
@@ -27,6 +28,21 @@ describe('Authentication Flow Integration', () => {
   });
 
   describe('Signup Flow', () => {
+    it('should keep direct /signin deep links on sign-in even with no local users', async () => {
+      window.history.pushState({}, '', '/signin');
+      render(
+        
+          <App />
+        
+      );
+
+      await waitFor(() => {
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      }, { timeout: 5000 });
+
+      expect(screen.queryByRole('heading', { name: /create account/i })).not.toBeInTheDocument();
+    });
+
     it('should complete signup with valid credentials', async () => {
       const user = userEvent.setup();
       render(

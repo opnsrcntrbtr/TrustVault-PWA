@@ -228,7 +228,16 @@ function AppRoutes() {
         <Route path="/login" element={<Navigate to="/signin" replace />} />
 
         {/* Root redirect */}
-        <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/signin"} replace />} />
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Navigate to="/signin" replace state={{ autoRedirectToSignup: true }} />
+            )
+          }
+        />
 
         {/* Catch all */}
         <Route path="*" element={<Navigate to="/signin" replace />} />

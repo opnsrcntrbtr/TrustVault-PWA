@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -32,6 +32,7 @@ import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
 export default function SigninPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -40,18 +41,20 @@ export default function SigninPage() {
   const [biometricEnabled, setBiometricEnabled] = useState(false);
 
   const { setUser, setSession, setVaultKey } = useAuthStore();
+  const shouldAutoRedirectToSignup =
+    Boolean((location.state as { autoRedirectToSignup?: boolean } | null)?.autoRedirectToSignup);
 
   // Check biometric availability and redirect if no accounts exist
   useEffect(() => {
     isBiometricAvailable().then(setBiometricEnabled).catch(console.error);
 
-    // Check if any users exist - redirect to signup if none
+    // Only auto-redirect from root ("/") so direct /signin deep links stay on sign-in.
     userRepository.hasAnyUsers().then((hasUsers) => {
-      if (!hasUsers) {
+      if (shouldAutoRedirectToSignup && !hasUsers) {
         navigate('/signup', { replace: true });
       }
     }).catch(console.error);
-  }, [navigate]);
+  }, [navigate, shouldAutoRedirectToSignup]);
 
   const handleSignin = async (e: React.FormEvent) => {
     e.preventDefault();
