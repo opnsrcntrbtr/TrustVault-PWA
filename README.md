@@ -84,9 +84,9 @@ Document manual verifications (biometrics, auto-lock, breach triage) in `TEST_ST
 ---
 
 ## Support & Links
-- **Primary URL:** https://trust-vault-pwa.vercel.app (staging)
+- **Staging app accessible from Vercel URL:** https://trust-vault-pwa.vercel.app
+- **Staging app also accessible from Github.iO URL:** https://opnsrcntrbtr.github.io/TrustVault-PWA
 - **Issue tracking:** GitHub Issues + `KEY_FINDINGS.md`
-- **Security contact:** security@trustvault.app (PGP fingerprint in `SECURITY.md`)
 - **Emergency procedure:** Follow `DEPLOYMENT_VERIFICATION.md` and log incidents in `SECURITY_AUDIT_REPORT.md`
 
 Let us know when you land new capabilities so we can update the roadmap and verification docs immediately.
