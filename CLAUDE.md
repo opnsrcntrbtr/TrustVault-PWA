@@ -312,12 +312,12 @@ file public/pwa-192x192.png  # Should show: PNG image data, 192 x 192
 - M1: Improper Platform Usage → PWA security headers
 - M2: Insecure Data Storage → Dexie encryption
 - M3: Insecure Communication → CSP, HTTPS only
-- M4: Insecure Authentication → Argon2id + WebAuthn
+- M4: Insecure Authentication → Scrypt + WebAuthn
 - M5: Insufficient Cryptography → @noble/hashes
 
 **Sensitive Operations:**
-- Master password hashing: Argon2id (3 iterations, 64MB memory)
-- Vault key derivation: PBKDF2 (100k iterations)
+- Master password hashing: Scrypt via `@noble/hashes/scrypt` (N=32768, r=8, p=1, dkLen=32). Migrated from Argon2id to avoid CSP/WASM issues — see `DATABASE_MIGRATION.md`.
+- Vault key derivation: PBKDF2-SHA256 (600,000 iterations, OWASP 2025)
 - Biometric: WebAuthn with platform authenticator
 
 ---

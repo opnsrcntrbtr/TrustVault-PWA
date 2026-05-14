@@ -11,7 +11,7 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 - ✅ **M2: Insecure Data Storage** - AES-256-GCM encrypted IndexedDB
 - ✅ **M3: Insecure Communication** - HTTPS-only with CSP headers
 - ✅ **M4: Insecure Authentication** - Biometric + Master Password
-- ✅ **M5: Insufficient Cryptography** - PBKDF2 600k+ iterations, Argon2id
+- ✅ **M5: Insufficient Cryptography** - PBKDF2 600k+ iterations, Scrypt
 - ✅ **M6: Insecure Authorization** - Zero-knowledge architecture
 - ✅ **M7: Client Code Quality** - TypeScript strict mode, ESLint
 - ✅ **M8: Code Tampering** - Service Worker integrity checks
@@ -23,12 +23,15 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 ## 🛡️ Cryptographic Implementation
 
 ### Master Password Hashing
-- **Algorithm**: Argon2id (memory-hard)
-- **Parameters**: 
-  - Time cost: 3 iterations
-  - Memory cost: 64 MB
-  - Parallelism: 4 threads
-  - Hash length: 32 bytes
+- **Algorithm**: Scrypt (memory-hard, RFC 7914) via `@noble/hashes/scrypt`
+- **Parameters**:
+  - N (CPU/memory cost): 32768 (2^15, ~32 MB working memory)
+  - r (block size): 8
+  - p (parallelism): 1
+  - Derived key length: 32 bytes
+  - Salt: 128-bit cryptographically secure random
+- **Storage format**: `scrypt$N$r$p$saltB64$hashB64` (PHC-like)
+- **History**: Originally Argon2id via `argon2-browser` — migrated to Scrypt to resolve CSP/WASM loading issues. See `DATABASE_MIGRATION.md`.
 
 ### Key Derivation
 - **Algorithm**: PBKDF2-SHA256
@@ -54,7 +57,7 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 
 ### Master Password Authentication
 1. User enters email and master password
-2. Password hashed with Argon2id (client-side)
+2. Password hashed with Scrypt (client-side)
 3. Vault key derived using PBKDF2 with user's salt
 4. Session created with encrypted vault key
 5. Auto-lock after 15 minutes of inactivity
@@ -84,7 +87,7 @@ TrustVaultDB (v1)
 ├── users
 │   ├── id (primary key)
 │   ├── email
-│   ├── hashedMasterPassword (Argon2id)
+│   ├── hashedMasterPassword (Scrypt)
 │   ├── encryptedVaultKey
 │   ├── salt
 │   └── webAuthnCredentials

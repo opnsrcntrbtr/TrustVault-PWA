@@ -1,0 +1,16 @@
+# Machine-specific config
+.graphify_python
+.graphify_root
+
+# API cost tracking (personal/ephemeral)
+cost.json
+
+# Regeneratable cache (semantic + AST embeddings)
+cache/
+
+# Large generated outputs (regeneratable from source)
+graph.html
+graph.json
+
+# File manifest — machine-specific (absolute path keys + mtime timestamps)
+manifest.json

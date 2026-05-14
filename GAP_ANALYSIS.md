@@ -920,11 +920,11 @@ async getDatabaseSize(): Promise<{...}>
 
 #### `src/data/repositories/CredentialRepositoryImpl.ts` (209 lines) ⚠️
 - **Quality**: Good CRUD pattern
-- **Issues**:
-  1. Passwords not decrypted (line 37-49)
-  2. Export unencrypted (line 113-138)
-- **Testing**: None visible
-- **Recommendation**: Fix decryption, encrypt exports
+- **Issues** (historical — both resolved):
+  1. ~~Passwords not decrypted (line 37-49)~~ — repository now returns decrypted plaintext on read
+  2. ~~Export unencrypted (line 113-138)~~ — exports now flow through `src/core/crypto/exportEncryption.ts` (AES-256-GCM + PBKDF2 600k) via `ExportDialog.tsx`
+- **Testing**: Covered by `CredentialRepositoryImpl.test.ts` and `import-export.test.tsx`
+- **Recommendation**: Closed.
 
 #### `src/data/storage/database.ts` (170 lines) ✅
 - **Quality**: Clean Dexie setup

@@ -203,7 +203,9 @@ useEffect(() => {
 
 ---
 
-### Issue #6: Credential Exports Unencrypted ⚠️ HIGH
+### Issue #6: Credential Exports Unencrypted ⚠️ HIGH — ✅ RESOLVED
+
+> **Status (2026-05-13):** Implemented. `src/core/crypto/exportEncryption.ts:36-74` encrypts the export with AES-256-GCM + PBKDF2 (600,000 iterations) using a separate export password. `src/presentation/components/ExportDialog.tsx:72` wires the UI to `encryptExport()`. Original audit context preserved below for history.
 
 **Location**: `/src/data/repositories/CredentialRepositoryImpl.ts:113-138`
 

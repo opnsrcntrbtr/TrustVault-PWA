@@ -16,7 +16,7 @@ TrustVault PWA is a **production-ready, enterprise-grade credential manager** bu
 ### Key Achievements
 
 ✅ **Complete Clean Architecture** - Separated layers (presentation/domain/data/core)  
-✅ **Enterprise Security** - AES-256-GCM, PBKDF2 600k+, Argon2id, WebAuthn  
+✅ **Enterprise Security** - AES-256-GCM, PBKDF2 600k+, Scrypt, WebAuthn  
 ✅ **Modern Tech Stack** - React 19, TypeScript 5.7, Vite 6, Material-UI v6  
 ✅ **PWA Compliance** - Offline-first, installable, responsive  
 ✅ **Zero Telemetry** - Complete privacy, no tracking  
@@ -86,7 +86,7 @@ trustvault-pwa/
         └── core/                 # Core Utilities ✅
             ├── crypto/
             │   ├── encryption.ts       # AES-256-GCM ✅
-            │   └── password.ts         # Argon2id + strength ✅
+            │   └── password.ts         # Scrypt + strength ✅
             └── auth/
                 └── webauthn.ts         # Biometric auth ✅
 ```
@@ -105,7 +105,7 @@ trustvault-pwa/
 |-----------|-----------|----------|--------|
 | **Encryption** | AES-256-GCM | NIST FIPS 197 | ✅ |
 | **Key Derivation** | PBKDF2-SHA256 | NIST SP 800-132 | ✅ |
-| **Password Hashing** | Argon2id | RFC 9106 | ✅ |
+| **Password Hashing** | Scrypt (N=32768, r=8, p=1) | RFC 7914 | ✅ |
 | **Random Generation** | Web Crypto API | W3C | ✅ |
 | **Biometric Auth** | WebAuthn FIDO2 | W3C Level 2 | ✅ |
 
@@ -113,7 +113,7 @@ trustvault-pwa/
 
 - ✅ **Zero-Knowledge Architecture** - Master password never leaves device
 - ✅ **End-to-End Encryption** - All credentials encrypted client-side
-- ✅ **Memory-Hard Hashing** - Argon2id with 64MB memory, 3 iterations
+- ✅ **Memory-Hard Hashing** - Scrypt with N=32768 (~32MB memory), r=8, p=1
 - ✅ **OWASP 2025 Compliant** - 600,000+ PBKDF2 iterations
 - ✅ **Secure Storage** - IndexedDB with transparent encryption
 - ✅ **Auto-Lock** - Configurable session timeout
@@ -129,7 +129,7 @@ trustvault-pwa/
 | M2: Insecure Data Storage | AES-256-GCM encrypted IndexedDB | ✅ |
 | M3: Insecure Communication | HTTPS-only, CSP headers | ✅ |
 | M4: Insecure Authentication | Biometric + Master Password | ✅ |
-| M5: Insufficient Cryptography | PBKDF2 600k+, Argon2id | ✅ |
+| M5: Insufficient Cryptography | PBKDF2 600k+, Scrypt | ✅ |
 | M6: Insecure Authorization | Zero-knowledge architecture | ✅ |
 | M7: Client Code Quality | TypeScript strict, ESLint | ✅ |
 | M8: Code Tampering | Service Worker integrity | ✅ |
@@ -155,8 +155,7 @@ trustvault-pwa/
 
 ### Security Libraries
 - **@simplewebauthn/browser**: 10.0.0 (WebAuthn)
-- **@noble/hashes**: 1.5.0 (cryptographic hashing)
-- **argon2-browser**: 1.18.0 (password hashing)
+- **@noble/hashes**: 1.5.0 (cryptographic hashing — provides Scrypt for password hashing)
 
 ### Storage
 - **Dexie**: 4.0.11 (IndexedDB wrapper)
@@ -230,7 +229,7 @@ npm run security:audit # Security scan
 ### Security Metrics
 - **Encryption**: AES-256-GCM (256-bit keys)
 - **Key Derivation**: 600,000+ iterations
-- **Password Hashing**: Argon2id (64MB memory)
+- **Password Hashing**: Scrypt (N=32768, r=8, p=1, ~32MB memory)
 - **Random Generation**: Cryptographically secure
 - **Authentication**: Multi-factor (password + biometric)
 

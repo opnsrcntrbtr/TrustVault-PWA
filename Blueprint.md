@@ -215,10 +215,10 @@ This roadmap consolidates all enhancement gaps from existing documentation into 
 
 ---
 
-### Use Case 5: Encrypted Import/Export & Disaster Recovery (Week 6)
+### Use Case 5: Encrypted Import/Export & Disaster Recovery (Week 6) ✅ shipped
 **User Story**: "I can export my vault to a password-protected `.tvault` file and re-import/merge safely."
 
-**Business Value**: Closes high-risk plaintext export gap; enables disaster recovery; supports vault migration.
+**Business Value**: Closed the historical plaintext export gap (see `KEY_FINDINGS.md` Issue #6); enables disaster recovery; supports vault migration.
 
 **Technical Components**:
 1. Create `exportEncryption.ts` with AES-256-GCM encryption

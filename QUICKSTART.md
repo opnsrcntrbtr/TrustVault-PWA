@@ -18,7 +18,7 @@ This will install:
 - Vite 6 with PWA plugin
 - TypeScript 5.7
 - Material-UI v6
-- Security libraries (@noble/hashes, argon2-browser, @simplewebauthn/browser)
+- Security libraries (@noble/hashes for Scrypt + AES-GCM helpers, @simplewebauthn/browser)
 - Dexie for encrypted storage
 - Zustand for state management
 
@@ -130,7 +130,7 @@ trustvault-pwa/
 
 ✅ **AES-256-GCM Encryption** - All passwords encrypted  
 ✅ **PBKDF2 (600k iterations)** - OWASP 2025 compliant key derivation  
-✅ **Argon2id** - Memory-hard password hashing  
+✅ **Scrypt (N=32768)** - Memory-hard password hashing  
 ✅ **WebAuthn** - Biometric authentication support  
 ✅ **IndexedDB** - Secure local storage  
 ✅ **Zero telemetry** - No tracking, complete privacy  

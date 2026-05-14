@@ -74,7 +74,7 @@ trustvault-pwa/
         └── ⚡ core/              (3 files)
             ├── crypto/
             │   ├── encryption.ts         ✅ AES-256-GCM
-            │   └── password.ts           ✅ Argon2id + strength
+            │   └── password.ts           ✅ Scrypt + strength
             └── auth/
                 └── webauthn.ts           ✅ Biometric auth
 ```
@@ -88,7 +88,7 @@ trustvault-pwa/
 #### ✅ Cryptography
 - **AES-256-GCM** - Military-grade encryption
 - **PBKDF2-SHA256** - 600,000+ iterations (OWASP 2025)
-- **Argon2id** - Memory-hard password hashing (64MB, 3 iterations)
+- **Scrypt** - Memory-hard password hashing (N=32768, r=8, p=1, ~32MB)
 - **Web Crypto API** - Cryptographically secure random generation
 
 #### ✅ Authentication
@@ -121,8 +121,7 @@ All 10 risks mitigated ✅
 
 ### **Security**
 - 🔐 @simplewebauthn/browser 10.0.0
-- 🔑 @noble/hashes 1.5.0
-- 🛡️ argon2-browser 1.18.0
+- 🔑 @noble/hashes 1.5.0 (Scrypt + AES-GCM helpers)
 
 ### **Storage**
 - 💾 Dexie 4.0.11 (IndexedDB)
