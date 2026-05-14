@@ -69,6 +69,13 @@ export interface StoredBreachResult {
   expiresAt: number;
 }
 
+export interface StoredLoginAttempt {
+  email: string;        // primary key
+  attempts: number;
+  lockedUntil: number;  // epoch ms; 0 = not locked
+  lastAttemptAt: number;
+}
+
 /**
  * TrustVault Database
  * Manages all local storage with encryption
@@ -79,6 +86,7 @@ export class TrustVaultDB extends Dexie {
   sessions!: Table<StoredSession, string>;
   settings!: Table<{ id: string; data: SecuritySettings }, string>;
   breachResults!: Table<StoredBreachResult, string>;
+  loginAttempts!: Table<StoredLoginAttempt, string>;
 
   constructor() {
     super('TrustVaultDB');
@@ -127,6 +135,16 @@ export class TrustVaultDB extends Dexie {
             }
           });
     });
+
+    // Version 4 - Add login attempts table for brute-force rate limiting
+    this.version(4).stores({
+      credentials: credentialStoreSchema,
+      users: userStoreSchema,
+      sessions: sessionStoreSchema,
+      settings: 'id',
+      breachResults: breachStoreSchema,
+      loginAttempts: 'email, lockedUntil',
+    });
   }
 
   /**
@@ -136,6 +154,7 @@ export class TrustVaultDB extends Dexie {
     await this.credentials.clear();
     await this.sessions.clear();
     await this.breachResults.clear();
+    await this.loginAttempts.clear();
     // Keep users table for re-login
   }
 
