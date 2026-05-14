@@ -9,6 +9,7 @@ import { decodeBase64ToUint8Array, encodeUint8ArrayToBase64 } from '@/core/utils
 import { db, type StoredUser } from '../storage/database';
 import type { User, AuthSession, SecuritySettings } from '@/domain/entities/User';
 import type { IUserRepository } from '@/domain/repositories/IUserRepository';
+import { checkRateLimit, recordFailedAttempt, clearAttempts } from '@/core/auth/rateLimiter';
 
 export class UserRepositoryImpl implements IUserRepository {
   /**
@@ -77,17 +78,25 @@ export class UserRepositoryImpl implements IUserRepository {
    * Authenticate user with email and password
    */
   async authenticateWithPassword(email: string, masterPassword: string): Promise<AuthSession> {
+    // Rate-limit check before the expensive Scrypt verification
+    await checkRateLimit(email);
+
     // Find user by email
     const storedUser = await db.users.where('email').equals(email).first();
     if (!storedUser) {
+      await recordFailedAttempt(email);
       throw new Error('Invalid email or password');
     }
 
     // Verify master password
     const isValid = await verifyPassword(masterPassword, storedUser.hashedMasterPassword);
     if (!isValid) {
+      await recordFailedAttempt(email);
       throw new Error('Invalid email or password');
     }
+
+    // Auth succeeded — clear any accumulated attempt record
+    await clearAttempts(email);
 
     // Derive temporary key from password + salt (used to decrypt the vault key)
     const salt = Uint8Array.from(atob(storedUser.salt), c => c.charCodeAt(0));

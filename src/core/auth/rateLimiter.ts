@@ -20,9 +20,9 @@ function formatRemaining(lockedUntil: number): string {
   const minutes = Math.ceil(ms / 60_000);
   if (minutes < 1) {
     const seconds = Math.ceil(ms / 1_000);
-    return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+    return `${String(seconds)} second${seconds !== 1 ? 's' : ''}`;
   }
-  return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+  return `${String(minutes)} minute${minutes !== 1 ? 's' : ''}`;
 }
 
 export async function checkRateLimit(email: string): Promise<void> {
