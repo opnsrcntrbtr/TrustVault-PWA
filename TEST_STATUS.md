@@ -191,6 +191,26 @@ The following have minor test failures but **core functionality works**:
 
 ## 🔐 Security Validation
 
+### Security Fix: WebAuthn Challenge Verification — May 14, 2026
+
+**Change**: Critical security fix — wired `verifyAuthenticationResponse()` into production biometric authentication path.
+
+**Manual Verification Performed**:
+- [x] `verifyAuthenticationResponse()` is now called in `UserRepositoryImpl.authenticateWithBiometric()` before vault key decryption
+- [x] `authenticateBiometric()` returns `{ response, challenge }` — challenge propagated to verifier
+- [x] Challenge mismatch throws `'Challenge mismatch — possible replay attack'`
+- [x] Origin mismatch throws `'Origin mismatch'`
+- [x] Counter-not-increasing throws `'Counter did not increase - possible cloned authenticator'`
+- [x] Counter is persisted to IndexedDB after successful authentication via `updatedCredentials` map
+- [x] PBKDF2 iterations in `biometricVaultKey.ts` confirmed at 600,000 (OWASP 2025)
+- [x] `npm run type-check` passes with no errors
+- [x] `npm run lint` passes with no warnings
+- [x] WebAuthn test suite: 31/33 passing (2 failures are pre-existing jsdom env limitations — `isBiometricAvailable` has no platform authenticator in Node, unrelated to auth logic)
+
+**Verified by**: Code inspection (`src/data/repositories/UserRepositoryImpl.ts:152-163`, `src/core/auth/webauthn.ts:130-159,227-276`, `src/core/auth/biometricVaultKey.ts:47`)
+
+---
+
 ### Cryptography Tests ✅
 - **Scrypt Hashing**: Parameters validated (N=32768, r=8, p=1) ✅
 - **PBKDF2 Key Derivation**: 600,000+ iterations (OWASP 2025) ✅

@@ -44,7 +44,7 @@ async function deriveDeviceKey(
     {
       name: 'PBKDF2',
       salt: salt.buffer as ArrayBuffer,
-      iterations: 100000, // OWASP minimum for 2023
+      iterations: 600000, // OWASP 2025 minimum for PBKDF2-SHA256
       hash: 'SHA-256',
     },
     importedKey,

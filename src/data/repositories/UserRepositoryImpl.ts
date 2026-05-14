@@ -143,24 +143,16 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('Biometric authentication not configured. Please sign in with your password and enable biometric in Settings.');
     }
 
-    // Perform WebAuthn authentication
-    const { authenticateBiometric } = await import('@/core/auth/webauthn');
+    const { authenticateBiometric, verifyAuthenticationResponse } = await import('@/core/auth/webauthn');
 
-    // Use 'localhost' for local dev, otherwise use hostname
     const rpId = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'localhost'
       : window.location.hostname;
 
-    const authResponse = await authenticateBiometric(
-      credentialId,
-      rpId
-    );
+    const { response: authResponse, challenge } = await authenticateBiometric(credentialId, rpId);
 
-    // Verify the signature (simplified - in production, verify the full authenticatorData)
-    // For now, we trust the WebAuthn API's internal verification
-    if (!authResponse.response.authenticatorData) {
-      throw new Error('Invalid authentication response');
-    }
+    // Verify challenge, origin, and counter — throws on any mismatch
+    const newCounter = verifyAuthenticationResponse(authResponse, challenge, credential.counter);
 
     // Decrypt vault key using biometric-specific encryption
     const { decryptVaultKeyFromBiometric } = await import('@/core/auth/biometricVaultKey');
@@ -171,10 +163,10 @@ export class UserRepositoryImpl implements IUserRepository {
       userId
     );
 
-    // Update credential counter and last used time
+    // Update credential with verified counter and last used time
     const updatedCredentials = user.webAuthnCredentials.map(c =>
       c.id === credentialId
-        ? { ...c, counter: credential.counter + 1, lastUsedAt: new Date() }
+        ? { ...c, counter: newCounter, lastUsedAt: new Date() }
         : c
     );
 

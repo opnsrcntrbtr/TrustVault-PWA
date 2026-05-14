@@ -8,9 +8,14 @@ cost.json
 # Regeneratable cache (semantic + AST embeddings)
 cache/
 
-# Large generated outputs (regeneratable from source)
-graph.html
-graph.json
-
 # File manifest — machine-specific (absolute path keys + mtime timestamps)
 manifest.json
+
+# temporary files
+*.tmp
+
+# ✅ Explicitly ensure tracking of core map artifacts
+!graph.json
+!GRAPH_REPORT.md
+!graph.html
+!*labels.json

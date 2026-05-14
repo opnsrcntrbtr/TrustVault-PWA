@@ -1,8 +1,9 @@
 # Phase 4.1: Biometric Authentication Implementation Summary
 
-**Status**: ✅ COMPLETE (Core + UI)  
+**Status**: ✅ COMPLETE (Core + UI + Vault Key Encryption + Challenge Verification)  
 **Implementation Date**: October 25, 2025  
-**Test Status**: ⏳ In Progress (webauthn.test.ts has syntax issues to fix)
+**Security Fix**: May 14, 2026 — WebAuthn challenge/counter verification wired into production path  
+**Test Status**: ✅ 31/33 tests passing (2 pre-existing jsdom environment failures unrelated to auth logic)
 
 ---
 
@@ -20,7 +21,7 @@ Implemented **WebAuthn biometric authentication** supporting Touch ID, Windows H
 - ✅ `isWebAuthnSupported()` - Check browser support
 - ✅ `isBiometricAvailable()` - Check platform authenticator availability
 - ✅ `registerBiometric(options)` - Register new biometric credential
-- ✅ `authenticateBiometric(credentialId, rpId)` - Authenticate with biometric
+- ✅ `authenticateBiometric(credentialId, rpId)` - Authenticate with biometric; returns `{ response, challenge }` so the caller can verify the challenge
 - ✅ `verifyRegistrationResponse(response, challenge)` - Validate registration
 - ✅ `verifyAuthenticationResponse(response, challenge, counter)` - Validate authentication
 - ✅ `getAuthenticatorInfo()` - Get device capabilities
@@ -30,9 +31,10 @@ Implemented **WebAuthn biometric authentication** supporting Touch ID, Windows H
 - Platform authenticator only (biometric/PIN required)
 - User verification required
 - Cryptographically secure challenge generation (32-byte random)
-- Counter-based replay attack prevention
-- Origin and challenge verification
+- Counter-based replay attack prevention (enforced in production — throws if counter does not increase)
+- Origin and challenge verification (enforced in production — throws on mismatch)
 - Support for ES256 and RS256 public key algorithms
+- Vault key encrypted specifically for each biometric credential (PBKDF2-SHA256, 600k iterations)
 
 ###  2. User Repository Integration (`src/data/repositories/UserRepositoryImpl.ts`)
 
@@ -43,9 +45,9 @@ Implemented **WebAuthn biometric authentication** supporting Touch ID, Windows H
   - Updates user.biometricEnabled flag
   
 - ✅ `authenticateBiometric(userId, credentialId)`
-  - Verifies WebAuthn authentication
-  - Updates counter and lastUsedAt
-  - Currently requires password unlock first (vault key not yet biometric-encrypted)
+  - Calls `authenticateBiometric()` then `verifyAuthenticationResponse()` (challenge + origin + counter)
+  - Decrypts vault key from biometric-specific encrypted storage
+  - Updates counter and lastUsedAt on success
   
 - ✅ `removeBiometric(userId, credentialId)`
   - Deletes specific credential
@@ -145,15 +147,13 @@ Biometric Authentication
 6. Device registered successfully
 7. Can now use biometric for quick unlock
 
-### Biometric Login (Future)
+### Biometric Login
 1. User opens app
-2. Enters email
-3. Clicks "Use Biometric"
-4. Browser prompts for biometric
-5. Vault unlocked instantly
-
-**Current Limitation:**  
-Biometric quick unlock requires vault key to be encrypted specifically for biometric access. Currently, users must unlock with password first, then can register biometric devices. Full biometric-only unlock will be added in a future update.
+2. Clicks "Use Biometric" (button visible when credentials are registered in DB)
+3. Browser prompts for biometric (Touch ID / Windows Hello / Face ID)
+4. Challenge, origin, and counter are verified — throws on any mismatch
+5. Vault key decrypted from biometric-specific encrypted storage
+6. Vault unlocked instantly
 
 ---
 
@@ -170,18 +170,11 @@ Biometric quick unlock requires vault key to be encrypted specifically for biome
 - **Revocation**: Users can remove compromised devices
 
 ### ⚠️ Limitations
-- **No biometric-only unlock yet**: Requires password first (vault key not biometric-encrypted)
 - **No rate limiting**: Could implement account lockout after X failed biometric attempts
 - **No attestation verification**: Currently accepts all authenticators (could verify manufacturer)
 
 ### 🔒 Production Recommendations
-1. **Implement vault key encryption for biometric**:  
-   ```typescript
-   // Encrypt vault key with user's PIN/biometric for quick unlock
-   const biometricVaultKey = await encryptForBiometric(vaultKey, userId);
-   ```
-
-2. **Add rate limiting**:  
+1. **Add rate limiting**:  
    ```typescript
    if (failedBiometricAttempts >= 5) {
      lockAccountFor(15 * 60 * 1000); // 15 minutes
@@ -254,11 +247,6 @@ Created comprehensive test suite (⚠️ syntax errors to fix):
 **Issue**: Missing closing braces causing parse error  
 **Status**: Needs cleanup
 
-### ⚠️ Biometric-Only Unlock Not Implemented
-**Issue**: Users must unlock with password first before registering biometric  
-**Reason**: Vault key not yet encrypted for biometric access  
-**Solution**: Implement vault key encryption tied to WebAuthn credential
-
 ### 💡 Future Enhancements
 1. **Passkeys support**: Implement discoverable credentials (resident keys)
 2. **Cross-device sync**: Sync biometric setup across devices
@@ -271,8 +259,10 @@ Created comprehensive test suite (⚠️ syntax errors to fix):
 ## Deployment Checklist
 
 ### Pre-Deployment
-- [ ] Fix webauthn.test.ts syntax errors
-- [ ] Run all WebAuthn tests (33 tests should pass)
+- [x] Fix webauthn.test.ts syntax errors
+- [x] Run all WebAuthn tests (31/33 passing; 2 failures are jsdom env limitations, not auth logic)
+- [x] Wire challenge/counter verification into production authentication path
+- [x] Encrypt vault key for biometric credential (PBKDF2 600k iterations)
 - [ ] Test biometric registration on macOS/Windows
 - [ ] Test multiple device management
 - [ ] Verify counter increment on each use
@@ -294,9 +284,9 @@ Created comprehensive test suite (⚠️ syntax errors to fix):
 
 ## Next Steps
 
-1. **Fix Test Suite** → Resolve syntax errors in webauthn.test.ts
-2. **Manual Testing** → Test biometric on real devices
-3. **Implement Biometric-Only Unlock** → Encrypt vault key for WebAuthn
+1. **Manual Testing** → Test biometric registration and login on macOS/Windows/iOS real devices
+2. **Wire `verifyRegistrationResponse()`** → Call it in `UserRepositoryImpl.registerBiometric()` (requires returning challenge from `registerBiometric()` in webauthn.ts)
+3. **Add rate limiting** → Account lockout after repeated failed biometric attempts
 4. **Phase 6.1: Performance** → Optimize bundle size and Lighthouse score
 
 ---
@@ -312,4 +302,5 @@ Created comprehensive test suite (⚠️ syntax errors to fix):
 
 **Implementation Complete**: October 25, 2025  
 **Next Phase**: Performance Optimization (Phase 6.1)  
-**Production Ready**: ⚠️ After vault key encryption + test fixes
+**Security Fix Applied**: May 14, 2026 — Challenge/counter verification wired; vault key encryption confirmed; PBKDF2 at 600k iterations  
+**Production Ready**: ⚠️ After real-device testing + `verifyRegistrationResponse()` wired in registration path

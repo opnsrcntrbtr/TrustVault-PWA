@@ -60,9 +60,10 @@ This checklist ensures compliance with OWASP Mobile Top 10, OWASP Web Top 10, an
 - [x] WebAuthn (FIDO2) implementation
 - [x] Platform authenticator (fingerprint/face)
 - [x] User verification required
-- [x] Counter verification (cloned device detection)
-- [x] Challenge-response (anti-replay)
+- [x] Counter verification (cloned device detection) — **verified wired in production (May 2026); was dead code before fix**
+- [x] Challenge-response (anti-replay) — **verified wired in production (May 2026); was dead code before fix**
 - [x] Credential attestation optional (privacy)
+- [x] Vault key encrypted per-credential (PBKDF2-SHA256, 600k iterations)
 
 **Session Management:**
 - [x] Session timeout: 15 minutes default (configurable)
@@ -84,7 +85,7 @@ This checklist ensures compliance with OWASP Mobile Top 10, OWASP Web Top 10, an
 - [x] No deprecated algorithms
 
 **Key Derivation:**
-- [x] PBKDF2 (100,000 iterations) for exports
+- [x] PBKDF2 (600,000 iterations) for exports and biometric device key (OWASP 2025)
 - [x] Scrypt for master password (memory-hard)
 - [x] Unique salts for each user
 - [x] No hardcoded keys/secrets

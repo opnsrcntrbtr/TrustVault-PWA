@@ -130,15 +130,15 @@ export async function registerBiometric(
 export async function authenticateBiometric(
   credentialId: string,
   rpId: string
-): Promise<AuthenticationResponseJSON> {
+): Promise<{ response: AuthenticationResponseJSON; challenge: string }> {
   if (!isWebAuthnSupported()) {
     throw new Error('WebAuthn is not supported in this browser');
   }
 
   try {
-    // Create authentication options
+    const challenge = generateChallenge();
     const authenticationOptions = {
-      challenge: generateChallenge(),
+      challenge,
       timeout: 60000,
       rpId: rpId,
       allowCredentials: [
@@ -151,9 +151,8 @@ export async function authenticateBiometric(
       userVerification: 'required' as const,
     };
 
-    // Start authentication ceremony
     const response = await startAuthentication(authenticationOptions);
-    return response;
+    return { response, challenge };
   } catch (error) {
     console.error('Biometric authentication failed:', error);
     throw new Error('Failed to authenticate with biometric');
@@ -203,16 +202,12 @@ export function verifyRegistrationResponse(
       return false;
     }
 
-    // Verify challenge (simplified)
     if (clientData.challenge !== expectedChallenge) {
-      console.warn('Challenge mismatch');
-      // Note: In production, this should be a hard failure
+      throw new Error('Challenge mismatch — possible replay attack');
     }
 
-    // Verify origin
     if (clientData.origin !== window.location.origin) {
-      console.warn('Origin mismatch');
-      return false;
+      throw new Error('Origin mismatch');
     }
 
     return true;
@@ -231,15 +226,13 @@ export function verifyRegistrationResponse(
  */
 export function verifyAuthenticationResponse(
   response: AuthenticationResponseJSON,
-  _expectedChallenge: string,
+  expectedChallenge: string,
   storedCounter: number
 ): number {
-  // Basic validation
   if (!response.id || !response.response.authenticatorData) {
     throw new Error('Invalid authentication response');
   }
 
-  // Decode client data
   try {
     const clientDataJSON = decodeBase64ToString(response.response.clientDataJSON);
     const clientData = JSON.parse(clientDataJSON) as {
@@ -248,12 +241,14 @@ export function verifyAuthenticationResponse(
       origin: string;
     };
 
-    // Verify type
     if (clientData.type !== 'webauthn.get') {
       throw new Error('Invalid authentication type');
     }
 
-    // Verify origin
+    if (clientData.challenge !== expectedChallenge) {
+      throw new Error('Challenge mismatch — possible replay attack');
+    }
+
     if (clientData.origin !== window.location.origin) {
       throw new Error('Origin mismatch');
     }

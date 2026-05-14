@@ -18,6 +18,9 @@ TrustVault PWA has undergone comprehensive security testing aligned with **OWASP
 - **Input Validation**: ✅ Strong (4/5)
 - **Dependency Security**: ✅ Excellent (5/5)
 
+> **⚠️ Security Fix Applied — May 14, 2026**  
+> A critical-severity issue was identified and resolved after the initial audit: WebAuthn `verifyAuthenticationResponse()` was never called during biometric login, making challenge, origin, and counter checks dead code. Replay and forgery attacks against biometric authentication were possible. The fix wires full verification into the production authentication path. See Vulnerability Assessment section for full details.
+
 ---
 
 ## Test Coverage Summary
@@ -277,11 +280,30 @@ IV_LENGTH = 12     // 96 bits (GCM standard)
 
 ## Vulnerability Assessment
 
-### 🟢 Critical: 0 Issues
-No critical vulnerabilities identified.
+### 🟢 Critical: 0 Issues (1 found and resolved post-audit)
 
-### 🟡 High: 0 Issues
-No high-severity vulnerabilities identified.
+#### ~~C1: WebAuthn Verification Dead Code~~ ✅ FIXED (May 14, 2026)
+**Severity**: Critical  
+**OWASP Category**: M3 (Insecure Authentication)  
+**Impact**: `verifyAuthenticationResponse()` was never called during biometric login. The `expectedChallenge` parameter was silently unused (`_expectedChallenge`). Any replayed or forged WebAuthn assertion would have been accepted, bypassing challenge, origin, and counter checks entirely.  
+**Fix**:
+- `authenticateBiometric()` now returns `{ response, challenge }` (previously returned only `response`)
+- `authenticateWithBiometric()` calls `verifyAuthenticationResponse(authResponse, challenge, credential.counter)` before decrypting the vault key
+- Throws `'Challenge mismatch — possible replay attack'` on challenge failure
+- Throws `'Origin mismatch'` on origin failure
+- Throws `'Counter did not increase - possible cloned authenticator'` on counter failure
+- Counter is persisted to IndexedDB after each successful authentication
+
+**Files**: `src/core/auth/webauthn.ts`, `src/data/repositories/UserRepositoryImpl.ts`
+
+### 🟡 High: 0 Issues (1 found and resolved post-audit)
+
+#### ~~H1: PBKDF2 Below OWASP 2025 Minimum for Biometric Device Key~~ ✅ FIXED (May 14, 2026)
+**Severity**: High  
+**OWASP Category**: M10 (Insufficient Cryptography)  
+**Impact**: `biometricVaultKey.ts` used 100,000 PBKDF2-SHA256 iterations for the device-specific key wrapping the vault key — 6× below the OWASP 2025 minimum of 600,000.  
+**Fix**: Increased to 600,000 iterations, consistent with all other PBKDF2 key derivation in the codebase.  
+**File**: `src/core/auth/biometricVaultKey.ts`
 
 ### 🟡 Medium: 2 Issues
 

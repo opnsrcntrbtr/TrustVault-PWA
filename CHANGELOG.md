@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-05-14
+
+### 🔒 Security Fixes
+
+#### Critical: WebAuthn Challenge Verification Wired into Production Path
+- **Issue**: `verifyAuthenticationResponse()` existed in `webauthn.ts` but was **never called** during biometric authentication. The `expectedChallenge` parameter was named `_expectedChallenge` (unused), meaning challenge, origin, and counter checks were dead code. Any replayed or forged WebAuthn assertion would have been accepted.
+- **Fix**: `authenticateBiometric()` now returns `{ response, challenge }` (previously returned only `response`). `authenticateWithBiometric()` in `UserRepositoryImpl` now calls `verifyAuthenticationResponse(authResponse, challenge, credential.counter)` before decrypting the vault key. Throws on challenge mismatch, origin mismatch, or counter not increasing.
+- **Impact**: Replay attacks and forged assertions against biometric authentication are now blocked.
+- **Files**: `src/core/auth/webauthn.ts`, `src/data/repositories/UserRepositoryImpl.ts`
+
+#### High: PBKDF2 Iterations Aligned to OWASP 2025 for Biometric Device Key
+- **Issue**: `biometricVaultKey.ts` used 100,000 PBKDF2-SHA256 iterations for the device-specific key wrapping the vault key — below the OWASP 2025 minimum of 600,000.
+- **Fix**: Increased to 600,000 iterations, consistent with all other PBKDF2 key derivation in the codebase.
+- **File**: `src/core/auth/biometricVaultKey.ts`
+
+#### Fix: Biometric Button Visibility on Sign-in Page
+- **Issue**: `SigninPage` and `LoginPage` drove biometric button visibility via `isBiometricAvailable()` (hardware/HTTPS check), which returns `false` in non-HTTPS contexts even when WebAuthn credentials are registered. Users with valid biometric credentials saw no button.
+- **Fix**: Button visibility is now driven by `userRepository.getUsersWithBiometric()` (DB credential state). Applied React 19 `mounted` flag cleanup pattern.
+- **Files**: `src/presentation/pages/SigninPage.tsx`, `src/presentation/pages/LoginPage.tsx`
+
+---
+
 ## [1.0.0] - 2025-10-25
 
 ### 🎉 Initial Production Release
