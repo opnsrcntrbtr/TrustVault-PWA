@@ -9,7 +9,7 @@ import {
 } from '../timeFormat';
 
 describe('timeFormat utilities', () => {
-  const baseTime = new Date('2026-01-15T12:00:00.000Z').getTime();
+  const baseTime = new Date(2026, 0, 15, 12, 0, 0).getTime();
 
   beforeEach(() => {
     vi.useFakeTimers();
@@ -41,7 +41,7 @@ describe('timeFormat utilities', () => {
   });
 
   it('formats absolute dates with and without time', () => {
-    const date = new Date('2026-01-15T12:34:56.000Z');
+    const date = new Date(2026, 0, 15, 12, 34, 56);
 
     expect(formatAbsoluteDate(date)).toBe('Jan 15, 2026');
 
@@ -51,7 +51,7 @@ describe('timeFormat utilities', () => {
   });
 
   it('formats full date time with descriptive separator', () => {
-    const formatted = formatFullDateTime(new Date('2026-02-01T08:09:10.000Z'));
+    const formatted = formatFullDateTime(new Date(2026, 1, 1, 8, 9, 10));
 
     expect(formatted).toContain('2026');
     expect(formatted).toContain(' at ');
