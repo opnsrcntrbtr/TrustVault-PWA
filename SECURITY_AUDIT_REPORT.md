@@ -305,36 +305,15 @@ IV_LENGTH = 12     // 96 bits (GCM standard)
 **Fix**: Increased to 600,000 iterations, consistent with all other PBKDF2 key derivation in the codebase.  
 **File**: `src/core/auth/biometricVaultKey.ts`
 
-### 🟡 Medium: 2 Issues
+### 🟡 Medium: 1 Issue
 
-#### M1: Rate Limiting Not Implemented
+#### ~~M1: Rate Limiting Not Implemented~~ ✅ FIXED (May 14, 2026)
 **Severity**: Medium  
 **OWASP Category**: M3 (Insecure Authentication)  
-**Impact**: Allows unlimited brute force attempts on master password  
-**Recommendation**:
-```typescript
-// Implement exponential backoff
-let failedAttempts = 0;
-let lockoutUntil: Date | null = null;
-
-async function authenticateWithRateLimit(email: string, password: string) {
-  if (lockoutUntil && new Date() < lockoutUntil) {
-    throw new Error('Account temporarily locked. Try again later.');
-  }
-  
-  try {
-    const result = await authenticateWithPassword(email, password);
-    failedAttempts = 0; // Reset on success
-    return result;
-  } catch (error) {
-    failedAttempts++;
-    if (failedAttempts >= 5) {
-      lockoutUntil = new Date(Date.now() + Math.pow(2, failedAttempts) * 60000);
-    }
-    throw error;
-  }
-}
-```
+**Fix**: `src/core/auth/rateLimiter.ts` — IndexedDB-backed exponential backoff, surviving page refresh.  
+Thresholds: 5 failures→30s, 10→5min, 15→30min, 20+→1hr lockout.  
+`checkRateLimit()` called before Scrypt verification (fast fail). `recordFailedAttempt()` called for unknown email and wrong password (uniform error path prevents user enumeration). `clearAttempts()` called on successful login.  
+**Files**: `src/core/auth/rateLimiter.ts`, `src/data/repositories/UserRepositoryImpl.ts`, `src/data/storage/database.ts` (v4 migration).
 
 #### M2: Non-Extractable Vault Keys
 **Severity**: Medium  
