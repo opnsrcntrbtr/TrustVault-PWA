@@ -27,7 +27,6 @@ import {
   Shield,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
-import { isBiometricAvailable } from '@/core/auth/webauthn';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
 export default function SigninPage() {
@@ -44,16 +43,24 @@ export default function SigninPage() {
   const shouldAutoRedirectToSignup =
     Boolean((location.state as { autoRedirectToSignup?: boolean } | null)?.autoRedirectToSignup);
 
-  // Check biometric availability and redirect if no accounts exist
+  // Drive biometric button visibility from DB state, not platform hardware check.
+  // isUserVerifyingPlatformAuthenticatorAvailable() returns false in non-HTTPS
+  // contexts even when credentials are registered — so we ask the DB instead.
   useEffect(() => {
-    isBiometricAvailable().then(setBiometricEnabled).catch(console.error);
+    let mounted = true;
+
+    userRepository.getUsersWithBiometric()
+      .then(users => { if (mounted) setBiometricEnabled(users.length > 0); })
+      .catch(console.error);
 
     // Only auto-redirect from root ("/") so direct /signin deep links stay on sign-in.
     userRepository.hasAnyUsers().then((hasUsers) => {
-      if (shouldAutoRedirectToSignup && !hasUsers) {
+      if (mounted && shouldAutoRedirectToSignup && !hasUsers) {
         navigate('/signup', { replace: true });
       }
     }).catch(console.error);
+
+    return () => { mounted = false; };
   }, [navigate, shouldAutoRedirectToSignup]);
 
   const handleSignin = async (e: React.FormEvent) => {

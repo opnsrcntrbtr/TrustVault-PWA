@@ -27,7 +27,6 @@ import {
   PersonAdd,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
-import { isBiometricAvailable } from '@/core/auth/webauthn';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
 type AuthMode = 'login' | 'signup';
@@ -46,18 +45,23 @@ export default function LoginPage() {
 
   const { setUser, setSession, setVaultKey } = useAuthStore();
 
-  // Check biometric availability and existing accounts on mount
+  // Drive biometric button visibility from DB state, not platform hardware check.
+  // isUserVerifyingPlatformAuthenticatorAvailable() returns false in non-HTTPS
+  // contexts even when credentials are registered — so we ask the DB instead.
   useEffect(() => {
-    isBiometricAvailable().then(setBiometricEnabled).catch(console.error);
+    let mounted = true;
 
-    // Check if any users exist
+    userRepository.getUsersWithBiometric()
+      .then(users => { if (mounted) setBiometricEnabled(users.length > 0); })
+      .catch(console.error);
+
     userRepository.hasAnyUsers().then((hasUsers) => {
+      if (!mounted) return;
       setHasExistingAccount(hasUsers);
-      // Default to signup if no users exist
-      if (!hasUsers) {
-        setMode('signup');
-      }
+      if (!hasUsers) setMode('signup');
     }).catch(console.error);
+
+    return () => { mounted = false; };
   }, []);
 
   const handleSignup = async (e: React.FormEvent) => {
