@@ -1,3 +1,12 @@
+# ⚠️ ARCHIVED — See ARCHIVED_REPORTS.md
+
+This report is historical and no longer actively maintained.
+
+→ For current status: **[ARCHIVED_REPORTS.md](./ARCHIVED_REPORTS.md)**
+→ For active reports: **[TEST_STATUS.md](./TEST_STATUS.md)**, **[IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md)**
+
+---
+
 # TrustVault PWA - Test Automation Summary
 
 ## Overview

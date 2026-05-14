@@ -5,6 +5,19 @@
 
 ---
 
+## 📚 Documentation Quick Reference
+
+For first-time context, follow this order:
+1. **[README.md](./README.md)** — Project overview (2 min)
+2. **[GETTING_STARTED.md](./GETTING_STARTED.md)** — Setup, deployment, PWA (10 min)
+3. **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)** — Architecture, security, stack (10 min)
+4. **[SECURITY.md](./SECURITY.md)** — Crypto details & threat model (20 min)
+5. **[ROADMAP.md](./ROADMAP.md)** — Current features & next steps
+
+**For specific info**: Use PROJECT_CONTEXT.md as your hub — it links to all analysis reports and deep-dives.
+
+---
+
 ## Current Mission (Nov 2025)
 - **Vault Trust Hardening** – Fix vault key decrypt flow, ensure credential reads return plaintext in memory only, and wire auto-lock/session visibility guards.
 - **CredOps Experience** – Complete credential forms, dashboard/search, password generator, secure clipboard manager, TOTP components, and responsive layouts.
