@@ -14,6 +14,18 @@ manifest.json
 # temporary files
 *.tmp
 
+# Chunk manifests (machine-specific, regeneratable)
+.chunk_*
+
+# Intermediate analysis artifacts (regeneratable)
+.graphify_analysis.json
+.graphify_ast.json
+.graphify_cached.json
+.graphify_detect.json
+.graphify_extract.json
+.graphify_incremental.json
+.graphify_uncached.txt
+
 # ✅ Explicitly ensure tracking of core map artifacts
 !graph.json
 !GRAPH_REPORT.md
