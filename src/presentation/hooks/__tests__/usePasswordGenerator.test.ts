@@ -272,42 +272,35 @@ describe('usePasswordGenerator', () => {
     });
   });
 
-  describe('Preferences Persistence', () => {
-    it('should save options to localStorage', async () => {
+  describe('Preferences (in-memory only)', () => {
+    it('should not write generator preferences to localStorage', () => {
       const { result } = renderHook(() => usePasswordGenerator());
-      
+
       act(() => {
-        result.current.updateOptions({
-          length: 32,
-          excludeAmbiguous: true,
-        });
+        result.current.updateOptions({ length: 32, excludeAmbiguous: true });
       });
-      
-      const saved = localStorage.getItem('trustvault_password_generator_prefs');
-      expect(saved).toBeTruthy();
-      
-      const parsed = JSON.parse(saved!);
-      expect(parsed.length).toBe(32);
-      expect(parsed.excludeAmbiguous).toBe(true);
+
+      // Generator preferences must not be written to localStorage — they are
+      // non-persistent UI state to avoid leaking behavioural metadata to disk.
+      expect(localStorage.getItem('trustvault_password_generator_prefs')).toBeNull();
     });
 
-    it('should restore options from localStorage', () => {
-      const savedOptions = {
-        length: 24,
+    it('should always start with default options regardless of localStorage content', () => {
+      localStorage.setItem(
+        'trustvault_password_generator_prefs',
+        JSON.stringify({ length: 99, numbers: false })
+      );
+
+      const { result } = renderHook(() => usePasswordGenerator());
+
+      expect(result.current.options).toEqual({
+        length: 20,
         uppercase: true,
         lowercase: true,
-        numbers: false,
+        numbers: true,
         symbols: true,
-        excludeAmbiguous: true,
-      };
-      
-      localStorage.setItem('trustvault_password_generator_prefs', JSON.stringify(savedOptions));
-      
-      const { result } = renderHook(() => usePasswordGenerator());
-      
-      expect(result.current.options.length).toBe(24);
-      expect(result.current.options.numbers).toBe(false);
-      expect(result.current.options.excludeAmbiguous).toBe(true);
+        excludeAmbiguous: false,
+      });
     });
   });
 

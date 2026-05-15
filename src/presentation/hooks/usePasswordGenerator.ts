@@ -24,41 +24,10 @@ const DEFAULT_OPTIONS: PasswordGeneratorOptions = {
   excludeAmbiguous: false,
 };
 
-const STORAGE_KEY = 'trustvault_password_generator_prefs';
-
-/**
- * Load preferences from localStorage
- */
-function loadPreferences(): PasswordGeneratorOptions {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored) as Partial<PasswordGeneratorOptions>;
-      return {
-        ...DEFAULT_OPTIONS,
-        ...parsed,
-      };
-    }
-  } catch (error) {
-    console.error('Failed to load generator preferences:', error);
-  }
-  return DEFAULT_OPTIONS;
-}
-
-/**
- * Save preferences to localStorage
- */
-function savePreferences(options: PasswordGeneratorOptions): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(options));
-  } catch (error) {
-    console.error('Failed to save generator preferences:', error);
-  }
-}
-
 export function usePasswordGenerator() {
-  // Load initial preferences
-  const [options, setOptions] = useState<PasswordGeneratorOptions>(loadPreferences);
+  // Preferences are kept in-memory only — generator options are behavioural
+  // metadata that must not be persisted to disk (CWE-312).
+  const [options, setOptions] = useState<PasswordGeneratorOptions>(DEFAULT_OPTIONS);
   const [password, setPassword] = useState<string>('');
   const [strength, setStrength] = useState<ReturnType<typeof analyzePasswordStrength> | null>(
     null
@@ -86,14 +55,9 @@ export function usePasswordGenerator() {
     setStrength(analysis);
   }, [options]);
 
-  // Update options and save to localStorage
   const updateOptions = useCallback(
     (newOptions: Partial<PasswordGeneratorOptions>) => {
-      setOptions((prev) => {
-        const updated = { ...prev, ...newOptions };
-        savePreferences(updated);
-        return updated;
-      });
+      setOptions((prev) => ({ ...prev, ...newOptions }));
     },
     []
   );

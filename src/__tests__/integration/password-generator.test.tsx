@@ -116,12 +116,12 @@ describe('Password Generator Integration', () => {
       }
     });
 
-    it('should persist generator preferences across sessions', async () => {
+    it('should not persist generator preferences to localStorage', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       await setupAuthenticatedUser(user);
@@ -142,11 +142,6 @@ describe('Password Generator Integration', () => {
         expect(screen.getByText(/password generator/i)).toBeInTheDocument();
       });
 
-      // Change settings: set length to 24
-      const lengthSlider = screen.getByRole('slider', { name: /length/i });
-      await user.click(lengthSlider);
-      await user.type(lengthSlider, '24');
-
       // Toggle exclude ambiguous characters
       const excludeAmbiguousCheckbox = screen.getByRole('checkbox', { name: /exclude ambiguous/i });
       await user.click(excludeAmbiguousCheckbox);
@@ -155,15 +150,9 @@ describe('Password Generator Integration', () => {
       const closeButton = screen.getByRole('button', { name: /close|cancel/i });
       await user.click(closeButton);
 
-      // Verify preferences saved to localStorage
-      const savedPrefs = localStorage.getItem('passwordGeneratorPreferences');
-      expect(savedPrefs).toBeTruthy();
-
-      if (savedPrefs) {
-        const prefs = JSON.parse(savedPrefs) as { length: number; excludeAmbiguous: boolean };
-        expect(prefs.length).toBe(24);
-        expect(prefs.excludeAmbiguous).toBe(true);
-      }
+      // Verify generator preferences are NOT written to localStorage (CWE-312 fix)
+      expect(localStorage.getItem('trustvault_password_generator_prefs')).toBeNull();
+      expect(localStorage.getItem('passwordGeneratorPreferences')).toBeNull();
     });
   });
 

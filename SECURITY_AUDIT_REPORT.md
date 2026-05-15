@@ -334,7 +334,15 @@ const key = await crypto.subtle.deriveKey(/* ... */, { extractable: false });
 
 ---
 
-### 🔵 Low: 3 Issues
+### 🔵 Low: 3 Issues (1 found and resolved post-audit)
+
+#### ~~L0: Generator Preferences Written to localStorage (CWE-312)~~ ✅ FIXED (May 15, 2026)
+**Severity**: Low (CodeQL classified: High — `js/clear-text-storage-of-sensitive-data`)
+**OWASP Category**: M9 (Insecure Data Storage)
+**GitHub Code Scanning**: Alert #1
+**Finding**: `usePasswordGenerator` persisted `PasswordGeneratorOptions` (`length`, `lowercase`, `uppercase`, `numbers`, `symbols`, `excludeAmbiguous`) to `localStorage`. The data itself contained no cryptographic secrets; however: (1) generator settings are behavioural metadata that can fingerprint a user's password habits, (2) the pattern contradicted the app's own security model where all persisted state lives in encrypted IndexedDB, and (3) CodeQL's taint analysis correctly flagged `localStorage.getItem` → `localStorage.setItem` as CWE-312/315.
+**Fix**: Removed `loadPreferences()`, `savePreferences()`, and the `STORAGE_KEY` constant from `src/presentation/hooks/usePasswordGenerator.ts`. Preferences are now in-memory only — they reset to `DEFAULT_OPTIONS` each session. Tests updated to assert localStorage is **not** written. Net result: zero localStorage writes in the hook.
+**Files**: `src/presentation/hooks/usePasswordGenerator.ts`, `src/presentation/hooks/__tests__/usePasswordGenerator.test.ts`, `src/__tests__/integration/password-generator.test.tsx`.
 
 #### L1: Error Messages May Leak Information
 **Severity**: Low  
