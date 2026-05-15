@@ -320,3 +320,4 @@ recordings/
 !.nvmrc
 !.node-version
 .aider*
+.superpowers/
