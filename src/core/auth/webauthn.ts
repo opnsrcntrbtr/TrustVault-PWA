@@ -335,14 +335,20 @@ interface PRFExtensionOutputs {
 }
 
 /**
- * Best-effort check for PRF support, used for UI gating. Authoritative
- * confirmation happens at enroll time via `prf.enabled` (see
- * registerCredentialWithPRF). When client capabilities can't be queried we are
- * optimistic and let enrollment hard-verify.
+ * Tri-state PRF capability detection for UI gating.
+ *  - 'supported'   : client capabilities positively report the PRF extension
+ *  - 'unsupported' : WebAuthn is absent, or capabilities report PRF unavailable
+ *  - 'unknown'     : capabilities can't be queried (PublicKeyCredential.
+ *                    getClientCapabilities is not yet universal). Enrollment is
+ *                    still attempted and hard-verifies PRF via `prf.enabled` and
+ *                    the assertion's PRF result, falling back to the master
+ *                    password with a clear message if PRF turns out unavailable.
  */
-export async function isPRFSupported(): Promise<boolean> {
+export type PRFSupport = 'supported' | 'unsupported' | 'unknown';
+
+export async function detectPRFSupport(): Promise<PRFSupport> {
   if (!isWebAuthnSupported()) {
-    return false;
+    return 'unsupported';
   }
   try {
     const pkc = window.PublicKeyCredential as unknown as {
@@ -352,13 +358,22 @@ export async function isPRFSupported(): Promise<boolean> {
       const caps = await pkc.getClientCapabilities();
       const prf = caps['extension:prf'] ?? caps['prf'];
       if (typeof prf === 'boolean') {
-        return prf;
+        return prf ? 'supported' : 'unsupported';
       }
     }
   } catch {
-    // fall through to optimistic default
+    // capability query failed — treat as unknown, not a hard "no"
   }
-  return true;
+  return 'unknown';
+}
+
+/**
+ * Boolean convenience for the enrollment pre-check: false only when PRF is
+ * *known* to be unsupported, so 'unknown' clients still attempt enrollment
+ * (which hard-verifies PRF) instead of being denied biometric outright.
+ */
+export async function isPRFSupported(): Promise<boolean> {
+  return (await detectPRFSupport()) !== 'unsupported';
 }
 
 export interface PRFRegistrationResult {
@@ -406,8 +421,18 @@ export async function registerCredentialWithPRF(
   try {
     credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential | null;
   } catch (error) {
-    if (error instanceof Error && error.name === 'NotAllowedError') {
-      throw new Error('Biometric registration was cancelled or not allowed.');
+    // Translate common WebAuthn failures into actionable messages (parity with
+    // the legacy registerBiometric() UX).
+    if (error instanceof Error) {
+      if (error.name === 'NotAllowedError') {
+        throw new Error('Biometric registration was cancelled or not allowed. Please ensure you are using HTTPS or localhost and try again.');
+      }
+      if (error.name === 'NotSupportedError') {
+        throw new Error('Your device does not support biometric authentication.');
+      }
+      if (error.name === 'InvalidStateError') {
+        throw new Error('This biometric credential is already registered on this device.');
+      }
     }
     throw new Error('Failed to register biometric credential. Please try again.');
   }
@@ -473,7 +498,17 @@ export async function getPRFOutput(
     extensions: ({ prf: { eval: { first: prfSalt as BufferSource } } } as PRFExtensionInputs) as AuthenticationExtensionsClientInputs,
   };
 
-  const assertion = (await navigator.credentials.get({ publicKey })) as PublicKeyCredential | null;
+  let assertion: PublicKeyCredential | null;
+  try {
+    assertion = (await navigator.credentials.get({ publicKey })) as PublicKeyCredential | null;
+  } catch (error) {
+    // Translate user-driven failures (cancel/timeout) instead of leaking a raw
+    // DOMException into the unlock/enroll UI.
+    if (error instanceof Error && error.name === 'NotAllowedError') {
+      throw new Error('Biometric authentication was cancelled or timed out. Please try again or use your master password.');
+    }
+    throw new Error('Biometric authentication failed. Please try again or use your master password.');
+  }
   if (!assertion) {
     throw new Error('Biometric authentication returned no assertion');
   }

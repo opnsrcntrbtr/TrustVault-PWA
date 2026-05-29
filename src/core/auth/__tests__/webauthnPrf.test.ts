@@ -9,6 +9,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   isPRFSupported,
+  detectPRFSupport,
   registerCredentialWithPRF,
   getPRFOutput,
 } from '@/core/auth/webauthn';
@@ -203,5 +204,75 @@ describe('getPRFOutput', () => {
     installNavigator({ get: makeFakeGet(3, true) as unknown as CredentialsContainer['get'] });
     const credentialId = encodeUint8ArrayToBase64Url(new Uint8Array([1, 2, 3, 4]));
     await expect(getPRFOutput(credentialId, new Uint8Array(32), 'localhost', 5)).rejects.toThrow(/Counter/);
+  });
+});
+
+describe('detectPRFSupport (tri-state)', () => {
+  it("returns 'supported' when capabilities report extension:prf", async () => {
+    installWindow({ getClientCapabilities: () => Promise.resolve({ 'extension:prf': true }) });
+    installNavigator({});
+    expect(await detectPRFSupport()).toBe('supported');
+  });
+
+  it("returns 'unsupported' when capabilities report no prf", async () => {
+    installWindow({ getClientCapabilities: () => Promise.resolve({ 'extension:prf': false }) });
+    installNavigator({});
+    expect(await detectPRFSupport()).toBe('unsupported');
+  });
+
+  it("returns 'unknown' when capabilities cannot be queried", async () => {
+    installWindow(); // no getClientCapabilities
+    installNavigator({});
+    expect(await detectPRFSupport()).toBe('unknown');
+  });
+
+  it("returns 'unsupported' when WebAuthn is absent", async () => {
+    (global as unknown as { window: unknown }).window = { location: { origin: ORIGIN } };
+    expect(await detectPRFSupport()).toBe('unsupported');
+  });
+
+  it('isPRFSupported is false only when known-unsupported (optimistic on unknown)', async () => {
+    installWindow(); // unknown
+    installNavigator({});
+    expect(await isPRFSupported()).toBe(true);
+    installWindow({ getClientCapabilities: () => Promise.resolve({ 'extension:prf': false }) });
+    expect(await isPRFSupported()).toBe(false);
+  });
+});
+
+describe('error translation', () => {
+  beforeEach(() => {
+    installWindow();
+  });
+
+  function rejectWith(name: string) {
+    return vi.fn(() => Promise.reject(Object.assign(new Error('low-level DOMException'), { name })));
+  }
+
+  it('registerCredentialWithPRF maps NotAllowedError to an actionable message', async () => {
+    installNavigator({ create: rejectWith('NotAllowedError') as unknown as CredentialsContainer['create'] });
+    await expect(
+      registerCredentialWithPRF({ rpName: 'TrustVault', rpId: 'localhost', userId: 'u', userName: 'n', userDisplayName: 'd' }),
+    ).rejects.toThrow(/cancelled|HTTPS/i);
+  });
+
+  it('registerCredentialWithPRF maps NotSupportedError', async () => {
+    installNavigator({ create: rejectWith('NotSupportedError') as unknown as CredentialsContainer['create'] });
+    await expect(
+      registerCredentialWithPRF({ rpName: 'TrustVault', rpId: 'localhost', userId: 'u', userName: 'n', userDisplayName: 'd' }),
+    ).rejects.toThrow(/does not support/i);
+  });
+
+  it('registerCredentialWithPRF maps InvalidStateError', async () => {
+    installNavigator({ create: rejectWith('InvalidStateError') as unknown as CredentialsContainer['create'] });
+    await expect(
+      registerCredentialWithPRF({ rpName: 'TrustVault', rpId: 'localhost', userId: 'u', userName: 'n', userDisplayName: 'd' }),
+    ).rejects.toThrow(/already registered/i);
+  });
+
+  it('getPRFOutput maps NotAllowedError (cancel/timeout)', async () => {
+    installNavigator({ get: rejectWith('NotAllowedError') as unknown as CredentialsContainer['get'] });
+    const credentialId = encodeUint8ArrayToBase64Url(new Uint8Array([1, 2, 3, 4]));
+    await expect(getPRFOutput(credentialId, new Uint8Array(32), 'localhost', 5)).rejects.toThrow(/cancelled|timed out/i);
   });
 });
