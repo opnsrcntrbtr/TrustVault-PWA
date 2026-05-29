@@ -17,28 +17,58 @@ import type { CredentialCategory } from '@/domain/entities/Credential';
 
 export interface StoredCredential {
   id: string;
-  title: string;
-  username: string;
-  encryptedPassword: string;
-  encryptedTotpSecret?: string | undefined; // Encrypted TOTP secret
-  encryptedNotes?: string | undefined; // Encrypted notes
-  url?: string | undefined;
-  notes?: string | undefined; // Legacy unencrypted notes (for backward compat)
-  category: CredentialCategory;
-  tags: string[];
-  createdAt: number; // Store as timestamp
+
+  // ── Non-sensitive index fields (not user-identifying) ──────────────────────
+  category: CredentialCategory; // kept for findByCategory() index
+  isFavorite: boolean;          // kept for findFavorites() index
+  createdAt: number;
   updatedAt: number;
   lastAccessedAt?: number | undefined;
-  isFavorite: boolean;
   securityScore?: number | undefined;
 
-  // Card-specific fields (encrypted)
+  // ── Always-encrypted sensitive fields (v5+) ────────────────────────────────
+  encryptedPassword: string;
+  encryptedTitle?: string | undefined;    // AES-256-GCM encrypted title
+  encryptedUsername?: string | undefined; // AES-256-GCM encrypted username
+  encryptedUrl?: string | undefined;      // AES-256-GCM encrypted url
+  encryptedTags?: string | undefined;     // AES-256-GCM encrypted JSON tag array
+  encryptedNotes?: string | undefined;
+  encryptedTotpSecret?: string | undefined;
   encryptedCardNumber?: string | undefined;
-  cardholderName?: string | undefined;
-  expiryMonth?: string | undefined;
-  expiryYear?: string | undefined;
   encryptedCvv?: string | undefined;
+  // Card fields newly encrypted in v5 (were plaintext before)
+  encryptedCardholderName?: string | undefined;
+  encryptedExpiryMonth?: string | undefined;
+  encryptedExpiryYear?: string | undefined;
+  encryptedCardType?: string | undefined;
+  encryptedBillingAddress?: string | undefined;
+
+  // ── Migration sentinel ─────────────────────────────────────────────────────
+  /** true = all metadata fields are encrypted; absent/false = pre-v5 legacy record */
+  isSealed?: boolean | undefined;
+
+  // ── Legacy plaintext fields — present only on pre-v5 records ──────────────
+  // These are cleared by sealLegacyMetadata() after encryption.
+  // They remain in the type so Dexie can read and migrate old rows.
+  /** @deprecated Use encryptedTitle instead */
+  title?: string | undefined;
+  /** @deprecated Use encryptedUsername instead */
+  username?: string | undefined;
+  /** @deprecated Use encryptedUrl instead */
+  url?: string | undefined;
+  /** @deprecated Use encryptedTags instead */
+  tags?: string[] | undefined;
+  /** @deprecated Legacy unencrypted notes */
+  notes?: string | undefined;
+  /** @deprecated Use encryptedCardholderName instead */
+  cardholderName?: string | undefined;
+  /** @deprecated Use encryptedExpiryMonth instead */
+  expiryMonth?: string | undefined;
+  /** @deprecated Use encryptedExpiryYear instead */
+  expiryYear?: string | undefined;
+  /** @deprecated Use encryptedCardType instead */
   cardType?: 'visa' | 'mastercard' | 'amex' | 'discover' | 'other' | undefined;
+  /** @deprecated Use encryptedBillingAddress instead */
   billingAddress?: string | undefined;
 }
 
@@ -91,8 +121,13 @@ export class TrustVaultDB extends Dexie {
   constructor() {
     super('TrustVaultDB');
 
-    const credentialStoreSchema =
+    // v4 schema (kept for migration history — DO NOT USE for new code)
+    const credentialStoreSchemaV4 =
       'id, title, username, category, isFavorite, *tags, createdAt, updatedAt';
+    // v5 schema: title/username/tags removed from index (they are encrypted blobs now).
+    // category + isFavorite remain for findByCategory() / findFavorites() queries.
+    const credentialStoreSchema =
+      'id, category, isFavorite, createdAt, updatedAt';
     const userStoreSchema = 'id, email, createdAt, biometricEnabled';
     const sessionStoreSchema = 'id, userId, expiresAt, isLocked';
     const breachStoreSchema =
@@ -100,7 +135,7 @@ export class TrustVaultDB extends Dexie {
 
     // Define database schema - version 1
     this.version(1).stores({
-      credentials: credentialStoreSchema,
+      credentials: credentialStoreSchemaV4,
       users: 'id, email, createdAt',
       sessions: sessionStoreSchema,
       settings: 'id',
@@ -108,7 +143,7 @@ export class TrustVaultDB extends Dexie {
 
     // Version 2 - Add breach results table
     this.version(2).stores({
-      credentials: credentialStoreSchema,
+      credentials: credentialStoreSchemaV4,
       users: 'id, email, createdAt',
       sessions: sessionStoreSchema,
       settings: 'id',
@@ -118,7 +153,7 @@ export class TrustVaultDB extends Dexie {
     // Version 3 - Index biometricEnabled flag for fast lookups
     this.version(3)
       .stores({
-        credentials: credentialStoreSchema,
+        credentials: credentialStoreSchemaV4,
         users: userStoreSchema,
         sessions: sessionStoreSchema,
         settings: 'id',
@@ -138,6 +173,19 @@ export class TrustVaultDB extends Dexie {
 
     // Version 4 - Add login attempts table for brute-force rate limiting
     this.version(4).stores({
+      credentials: credentialStoreSchemaV4,
+      users: userStoreSchema,
+      sessions: sessionStoreSchema,
+      settings: 'id',
+      breachResults: breachStoreSchema,
+      loginAttempts: 'email, lockedUntil',
+    });
+
+    // Version 5 - Metadata encryption (S5)
+    // title/username/*tags indexes are dropped: they are now AES-256-GCM blobs.
+    // Existing rows keep their plaintext fields; sealLegacyMetadata() (called
+    // after every login) encrypts and clears them in the background.
+    this.version(5).stores({
       credentials: credentialStoreSchema,
       users: userStoreSchema,
       sessions: sessionStoreSchema,

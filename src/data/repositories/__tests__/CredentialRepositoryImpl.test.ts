@@ -108,8 +108,11 @@ describe('CredentialRepositoryImpl', () => {
 
       const stored = await db.credentials.get(credential.id);
 
-      expect(stored?.notes).not.toBe('Sensitive notes here');
-      expect(stored?.notes).toBeTruthy();
+      // S5: notes are stored in encryptedNotes (AES-256-GCM), never in the
+      // legacy plaintext notes column.
+      expect(stored?.notes).toBeFalsy();
+      expect(stored?.encryptedNotes).toBeTruthy();
+      expect(stored?.encryptedNotes).not.toBe('Sensitive notes here');
     });
 
     it('should handle credentials without password', async () => {
@@ -129,7 +132,10 @@ describe('CredentialRepositoryImpl', () => {
       const saved = await repository.save(credential, vaultKey);
 
       expect(saved).toBeDefined();
-      expect(saved.password).toBeUndefined();
+      // save() now returns the fully round-tripped record (create → decrypt).
+      // An absent password encrypts as the empty string and decrypts back as ''.
+      // Both '' and undefined are falsy; the credential must not expose a real secret.
+      expect(saved.password).toBeFalsy();
     });
 
     it('should handle credentials without notes', async () => {
