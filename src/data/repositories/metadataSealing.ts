@@ -80,10 +80,14 @@ export async function sealLegacyMetadata(vaultKey: CryptoKey): Promise<number> {
         updates.billingAddress = undefined;
       }
 
-      // Legacy plaintext notes — move to encryptedNotes if not already done
-      if (record.notes && !record.encryptedNotes) {
-        updates.encryptedNotes = await encryptOptional(record.notes, vaultKey);
-        updates.notes = undefined;
+      // Legacy plaintext notes: always clear the plaintext column; only
+      // encrypt to encryptedNotes when there isn't already an encrypted value
+      // present (fixes 3324556176 — plaintext was kept when encryptedNotes existed).
+      if (record.notes) {
+        if (!record.encryptedNotes) {
+          updates.encryptedNotes = await encryptOptional(record.notes, vaultKey);
+        }
+        updates.notes = undefined; // always clear the plaintext column
       }
 
       await db.credentials.update(record.id, updates);
