@@ -6,16 +6,18 @@
 
 import { scrypt } from '@noble/hashes/scrypt';
 import { randomBytes } from '@noble/hashes/utils';
+import { constantTimeEqual } from '@/core/crypto/encryption';
 import { analyzePasswordStrength as advancedAnalyzer } from '@/features/vault/generator/strengthAnalyzer';
 import { generatePassword } from '@/features/vault/generator/passwordGenerator';
 import { generatePassphrase as advancedPassphraseGenerator } from '@/features/vault/generator/passphraseGenerator';
 
-// Scrypt parameters (OWASP recommended for password hashing)
+// Scrypt parameters (OWASP Password Storage Cheat Sheet, 2025)
+// Minimum: N=2^17, r=8, p=1. See SECURITY_PWA_ENHANCEMENT_PLAN.md (S4).
 const SCRYPT_CONFIG = {
-  N: 32768, // CPU/memory cost parameter (2^15)
-  r: 8,     // Block size parameter
-  p: 1,     // Parallelization parameter
-  dkLen: 32 // Derived key length in bytes
+  N: 131072, // CPU/memory cost parameter (2^17)
+  r: 8,      // Block size parameter
+  p: 1,      // Parallelization parameter
+  dkLen: 32  // Derived key length in bytes
 };
 
 export interface HashedPassword {
@@ -55,13 +57,10 @@ export async function verifyPassword(
   hashedPassword: string
 ): Promise<boolean> {
   try {
-    console.log('Verifying password...');
-
     // Parse the hash format: scrypt$N$r$p$salt$hash
     const parts = hashedPassword.split('$');
     if (parts.length !== 6 || parts[0] !== 'scrypt') {
-      console.error('Invalid hash format. Expected scrypt hash but got:', hashedPassword.substring(0, 50));
-      console.error('This might be an old argon2 hash. Please clear the database using: window.debugDB.clearAllData()');
+      // Not a recognised scrypt hash (e.g. a legacy argon2 record).
       return false;
     }
 
@@ -78,20 +77,30 @@ export async function verifyPassword(
     // Hash the provided password with the same parameters
     const actualHash = scrypt(password, salt, { N, r, p, dkLen: expectedHash.length });
 
-    // Constant-time comparison
-    let match = true;
-    for (let i = 0; i < expectedHash.length; i++) {
-      if (expectedHash[i] !== actualHash[i]) {
-        match = false;
-      }
-    }
-
-    console.log('Password verification result:', match);
-    return match;
-  } catch (error) {
-    console.error('Password verification failed:', error);
+    // Constant-time comparison (shared helper — S8)
+    return constantTimeEqual(expectedHash, actualHash);
+  } catch {
     return false;
   }
+}
+
+/**
+ * Determines whether a stored password hash should be re-hashed with the
+ * current (stronger) scrypt parameters. Returns true for any hash that is not
+ * a current-strength scrypt hash, so legacy/foreign hashes are upgraded on the
+ * next successful login. See SECURITY_PWA_ENHANCEMENT_PLAN.md (S4).
+ */
+export function needsRehash(hashedPassword: string): boolean {
+  const parts = hashedPassword.split('$');
+  if (parts.length !== 6 || parts[0] !== 'scrypt') {
+    return true;
+  }
+
+  const N = parseInt(parts[1] || '0', 10);
+  const r = parseInt(parts[2] || '0', 10);
+  const p = parseInt(parts[3] || '0', 10);
+
+  return N < SCRYPT_CONFIG.N || r < SCRYPT_CONFIG.r || p < SCRYPT_CONFIG.p;
 }
 
 /**

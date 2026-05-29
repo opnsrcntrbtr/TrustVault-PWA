@@ -5,13 +5,27 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { scrypt } from '@noble/hashes/scrypt';
 import {
   hashPassword,
   verifyPassword,
+  needsRehash,
   analyzePasswordStrength,
   generateSecurePassword,
   generatePassphrase
 } from '../password';
+
+/**
+ * Builds a legacy scrypt hash (pre-S4 parameters) so we can prove backward
+ * compatibility and the rehash-on-login upgrade path.
+ */
+function makeLegacyScryptHash(password: string, N = 32768): string {
+  const salt = new Uint8Array(16);
+  crypto.getRandomValues(salt);
+  const hash = scrypt(password, salt, { N, r: 8, p: 1, dkLen: 32 });
+  const b64 = (u: Uint8Array) => btoa(String.fromCharCode(...u));
+  return `scrypt$${String(N)}$8$1$${b64(salt)}$${b64(hash)}`;
+}
 
 describe('Password Hashing (Scrypt)', () => {
   describe('Hash Generation', () => {
@@ -32,11 +46,42 @@ describe('Password Hashing (Scrypt)', () => {
       const parts = hash.split('$');
       
       expect(parts[0]).toBe('scrypt');
-      expect(parts[1]).toBe('32768'); // N parameter
+      expect(parts[1]).toBe('131072'); // N parameter (2^17, OWASP 2025 minimum)
       expect(parts[2]).toBe('8');     // r parameter
       expect(parts[3]).toBe('1');     // p parameter
       expect(parts[4]).toBeDefined(); // salt
       expect(parts[5]).toBeDefined(); // hash
+    });
+
+    it('uses an N at or above the OWASP minimum of 2^17 (S4)', async () => {
+      const hash = await hashPassword('TestPassword123!');
+      const N = parseInt(hash.split('$')[1] ?? '0', 10);
+      expect(N).toBeGreaterThanOrEqual(131072);
+    });
+
+    it('still verifies a legacy (N=32768) hash for the correct password (S4 backward compat)', async () => {
+      const password = 'TestPassword123!';
+      const legacy = makeLegacyScryptHash(password, 32768);
+
+      expect(await verifyPassword(password, legacy)).toBe(true);
+      expect(await verifyPassword('wrong-password', legacy)).toBe(false);
+    });
+
+    describe('needsRehash() (S4 migration)', () => {
+      it('flags a legacy hash below the current N as needing rehash', () => {
+        const legacy = makeLegacyScryptHash('TestPassword123!', 32768);
+        expect(needsRehash(legacy)).toBe(true);
+      });
+
+      it('does not flag a freshly created hash', async () => {
+        const fresh = await hashPassword('TestPassword123!');
+        expect(needsRehash(fresh)).toBe(false);
+      });
+
+      it('flags a malformed/non-scrypt hash as needing rehash', () => {
+        expect(needsRehash('not-a-real-hash')).toBe(true);
+        expect(needsRehash('$argon2id$v=19$m=65536$...')).toBe(true);
+      });
     });
 
     it('should generate different hashes for same password', async () => {

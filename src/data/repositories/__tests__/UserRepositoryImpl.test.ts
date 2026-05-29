@@ -5,9 +5,20 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
+import { needsRehash } from '@/core/crypto/password';
 import { db } from '../../storage/database';
 import type { User } from '@/domain/entities/User';
+
+/** Builds a legacy (pre-S4) scrypt hash for a password. */
+function makeLegacyScryptHash(password: string, N = 32768): string {
+  const salt = new Uint8Array(16);
+  crypto.getRandomValues(salt);
+  const hash = scrypt(password, salt, { N, r: 8, p: 1, dkLen: 32 });
+  const b64 = (u: Uint8Array) => btoa(String.fromCharCode(...u));
+  return `scrypt$${String(N)}$8$1$${b64(salt)}$${b64(hash)}`;
+}
 
 describe('UserRepositoryImpl', () => {
   let repository: UserRepositoryImpl;
@@ -499,6 +510,48 @@ describe('UserRepositoryImpl', () => {
       const session = await repository.authenticateWithPassword('test@example.com', longPassword);
 
       expect(session).toBeDefined();
+    });
+  });
+
+  describe('rehash-on-login (S4)', () => {
+    const email = 'rehash@example.com';
+    const password = 'TestPassword123!';
+
+    it('upgrades a stale password hash on successful login without breaking vault decryption', async () => {
+      const created = await repository.createUser(email, password);
+
+      // Simulate an account created under the old (weak) scrypt parameters by
+      // overwriting only the stored hash. Salt + encryptedVaultKey are left
+      // intact, so vault-key derivation must still succeed.
+      await db.users.update(created.id, {
+        hashedMasterPassword: makeLegacyScryptHash(password, 32768),
+      });
+
+      const before = await db.users.get(created.id);
+      if (!before) throw new Error('expected stored user');
+      expect(needsRehash(before.hashedMasterPassword)).toBe(true);
+
+      // Logging in must succeed AND silently upgrade the hash.
+      const session = await repository.authenticateWithPassword(email, password);
+      expect(session).toBeDefined();
+      expect(session.vaultKey).toBeDefined();
+
+      const after = await db.users.get(created.id);
+      if (!after) throw new Error('expected stored user');
+      expect(needsRehash(after.hashedMasterPassword)).toBe(false);
+      expect(after.hashedMasterPassword).not.toBe(before.hashedMasterPassword);
+    });
+
+    it('does not rewrite the hash when it is already current', async () => {
+      const created = await repository.createUser(email, password);
+      const before = await db.users.get(created.id);
+      if (!before) throw new Error('expected stored user');
+
+      await repository.authenticateWithPassword(email, password);
+
+      const after = await db.users.get(created.id);
+      if (!after) throw new Error('expected stored user');
+      expect(after.hashedMasterPassword).toBe(before.hashedMasterPassword);
     });
   });
 });

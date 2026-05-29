@@ -137,6 +137,33 @@ describe('recordFailedAttempt', () => {
     expect(record?.lockedUntil).toBeGreaterThanOrEqual(before + 59 * 60_000);
     expect(record?.lockedUntil).toBeLessThanOrEqual(before + 61 * 60_000);
   });
+
+  // S8: counter must decay so a returning legitimate user is not permanently
+  // escalated by stale failures from long ago.
+  it('resets the attempt counter after the decay window elapses', async () => {
+    await db.loginAttempts.put({
+      email: EMAIL,
+      attempts: 18,
+      lockedUntil: 0,
+      lastAttemptAt: Date.now() - 61 * 60_000, // 61 minutes ago
+    });
+    await recordFailedAttempt(EMAIL);
+    const record = await db.loginAttempts.get(EMAIL);
+    expect(record?.attempts).toBe(1);
+    expect(record?.lockedUntil).toBe(0);
+  });
+
+  it('keeps escalating for failures within the decay window', async () => {
+    await db.loginAttempts.put({
+      email: EMAIL,
+      attempts: 4,
+      lockedUntil: 0,
+      lastAttemptAt: Date.now() - 1_000, // 1 second ago
+    });
+    await recordFailedAttempt(EMAIL);
+    const record = await db.loginAttempts.get(EMAIL);
+    expect(record?.attempts).toBe(5);
+  });
 });
 
 describe('clearAttempts', () => {

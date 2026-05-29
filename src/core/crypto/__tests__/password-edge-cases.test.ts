@@ -560,7 +560,7 @@ describe('Password Edge Cases and Security', () => {
       const r = parseInt(parts[2] ?? '0');
       const p = parseInt(parts[3] ?? '0');
 
-      expect(N).toBe(32768); // 2^15
+      expect(N).toBe(131072); // 2^17 (OWASP 2025 minimum)
       expect(r).toBe(8);
       expect(p).toBe(1);
     });

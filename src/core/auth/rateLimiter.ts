@@ -7,6 +7,10 @@ const THRESHOLDS: Array<{ minAttempts: number; lockMs: number }> = [
   { minAttempts:  5, lockMs:       30_000 },  // 30 seconds
 ];
 
+// After this idle period since the last failed attempt, the counter resets so
+// a returning legitimate user starts from a clean slate (S8 — attempt decay).
+const ATTEMPT_DECAY_MS = 60 * 60_000; // 1 hour
+
 function lockoutMs(attempts: number): number {
   for (const { minAttempts, lockMs } of THRESHOLDS) {
     if (attempts >= minAttempts) return lockMs;
@@ -37,7 +41,13 @@ export async function checkRateLimit(email: string): Promise<void> {
 
 export async function recordFailedAttempt(email: string): Promise<void> {
   const existing = await db.loginAttempts.get(email);
-  const attempts = (existing?.attempts ?? 0) + 1;
+
+  // Decay: if the previous failure was long enough ago, start counting fresh.
+  const isStale =
+    existing !== undefined &&
+    Date.now() - existing.lastAttemptAt >= ATTEMPT_DECAY_MS;
+  const priorAttempts = isStale ? 0 : (existing?.attempts ?? 0);
+  const attempts = priorAttempts + 1;
   const ms = lockoutMs(attempts);
   await db.loginAttempts.put({
     email,
