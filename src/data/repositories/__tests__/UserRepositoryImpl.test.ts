@@ -9,6 +9,7 @@ import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
 import { needsRehash } from '@/core/crypto/password';
 import { db } from '../../storage/database';
+import { encrypt } from '@/core/crypto/encryption';
 import type { User } from '@/domain/entities/User';
 
 /** Builds a legacy (pre-S4) scrypt hash for a password. */
@@ -552,6 +553,42 @@ describe('UserRepositoryImpl', () => {
       const after = await db.users.get(created.id);
       if (!after) throw new Error('expected stored user');
       expect(after.hashedMasterPassword).toBe(before.hashedMasterPassword);
+    });
+  });
+
+  describe('post-login metadata sealing (S5)', () => {
+    const sealEmail = 'seal@example.com';
+    const sealPassword = 'TestPassword123!';
+
+    it('seals any unsealed credentials automatically on login', async () => {
+      await repository.createUser(sealEmail, sealPassword);
+
+      // Insert a pre-v5 legacy credential with plaintext title/username
+      // (encryptedPassword can be a stub since sealing doesn't touch it)
+      await db.credentials.add({
+        id: crypto.randomUUID(),
+        title: 'LegacyTitle',
+        username: 'legacy@example.com',
+        encryptedPassword: JSON.stringify({ ciphertext: 'stub', iv: 'stub' }),
+        category: 'login' as const,
+        tags: ['old'],
+        isFavorite: false,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        // isSealed intentionally absent → pre-v5 record
+      });
+
+      const before = await db.credentials.toArray();
+      expect(before[0]?.isSealed).toBeFalsy();
+      expect(before[0]?.title).toBe('LegacyTitle');
+
+      // Login should trigger sealing in the background
+      await repository.authenticateWithPassword(sealEmail, sealPassword);
+
+      const after = await db.credentials.toArray();
+      expect(after[0]?.isSealed).toBe(true);
+      expect(after[0]?.title).toBeFalsy();            // plaintext cleared
+      expect(after[0]?.encryptedTitle).toBeTruthy();  // encrypted blob present
     });
   });
 });

@@ -1,6 +1,18 @@
 /**
  * Credential Repository Implementation
  * Implements ICredentialRepository with encrypted storage
+ *
+ * S5 (SECURITY_PWA_ENHANCEMENT_PLAN.md): all sensitive metadata — title,
+ * username, url, tags, and card fields — is stored encrypted with the vault
+ * key. Only non-identifying index fields (category, isFavorite, timestamps)
+ * remain in plaintext. Pre-v5 records are upgraded by sealLegacyMetadata().
+ *
+ * Copilot review fixes (PR #34):
+ *  3324555923 — update() no longer sets isSealed:true on partial updates
+ *  3324556024 — update() clears plaintext title/username/url/tags when encrypting
+ *  3324556049 — update() clears plaintext card columns when encrypting
+ *  3324556082 — save() uses createWithId() so the caller's id is set synchronously
+ *  3324556108 — exportAll() decrypts fully before export so import round-trips work
  */
 
 import { ICredentialRepository } from '@/domain/repositories/ICredentialRepository';
@@ -10,82 +22,97 @@ import { encrypt, decrypt } from '@/core/crypto/encryption';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 
 export class CredentialRepository implements ICredentialRepository {
-  async create(input: CredentialInput, encryptionKey: CryptoKey): Promise<Credential> {
-    // Encrypt the password
-    const encryptedPassword = await encrypt(input.password, encryptionKey);
 
-    // Encrypt notes if provided
-    let encryptedNotes: string | undefined;
-    if (input.notes) {
-      const notesEncrypted = await encrypt(input.notes, encryptionKey);
-      encryptedNotes = JSON.stringify(notesEncrypted);
-    }
+  // ── Private crypto helpers ─────────────────────────────────────────────────
 
-    // Encrypt TOTP secret if provided
-    let encryptedTotpSecret: string | undefined;
-    if (input.totpSecret) {
-      const totpSecretEncrypted = await encrypt(input.totpSecret, encryptionKey);
-      encryptedTotpSecret = JSON.stringify(totpSecretEncrypted);
-    }
+  private async encryptField(value: string, key: CryptoKey): Promise<string> {
+    return JSON.stringify(await encrypt(value, key));
+  }
 
-    // Encrypt card-specific fields if provided
-    let encryptedCardNumber: string | undefined;
-    if (input.cardNumber) {
-      const cardNumberEncrypted = await encrypt(input.cardNumber, encryptionKey);
-      encryptedCardNumber = JSON.stringify(cardNumberEncrypted);
-    }
+  private async encryptOptional(
+    value: string | undefined,
+    key: CryptoKey
+  ): Promise<string | undefined> {
+    if (!value) return undefined;
+    return this.encryptField(value, key);
+  }
 
-    let encryptedCvv: string | undefined;
-    if (input.cvv) {
-      const cvvEncrypted = await encrypt(input.cvv, encryptionKey);
-      encryptedCvv = JSON.stringify(cvvEncrypted);
-    }
+  private async decryptField(blob: string, key: CryptoKey): Promise<string> {
+    return decrypt(JSON.parse(blob) as Parameters<typeof decrypt>[0], key);
+  }
 
-    const credential: StoredCredential = {
-      id: crypto.randomUUID(),
-      title: input.title,
-      username: input.username,
-      encryptedPassword: JSON.stringify(encryptedPassword),
-      encryptedTotpSecret,
-      encryptedNotes,
-      url: input.url ?? undefined,
-      notes: undefined, // Don't store plaintext notes
+  private async decryptOptional(
+    blob: string | undefined,
+    key: CryptoKey
+  ): Promise<string | undefined> {
+    if (!blob) return undefined;
+    try { return await this.decryptField(blob, key); }
+    catch { return undefined; }
+  }
+
+  // ── Internal create with explicit id ──────────────────────────────────────
+  // create() generates a UUID; save() passes credential.id directly so there
+  // is never a race between the DB write and the caller's findById() call
+  // (fixes 3324556082 — primary-key rewrite was fire-and-forget).
+
+  private async createWithId(
+    id: string,
+    input: CredentialInput,
+    encryptionKey: CryptoKey
+  ): Promise<Credential> {
+    const encryptedPassword       = await this.encryptField(input.password, encryptionKey);
+    const encryptedTitle          = await this.encryptField(input.title, encryptionKey);
+    const encryptedUsername       = await this.encryptOptional(input.username, encryptionKey);
+    const encryptedUrl            = await this.encryptOptional(input.url, encryptionKey);
+    const encryptedTags           = (input.tags?.length ?? 0) > 0
+      ? await this.encryptField(JSON.stringify(input.tags), encryptionKey)
+      : undefined;
+    const encryptedNotes          = await this.encryptOptional(input.notes, encryptionKey);
+    const encryptedTotpSecret     = await this.encryptOptional(input.totpSecret, encryptionKey);
+    const encryptedCardNumber     = await this.encryptOptional(input.cardNumber, encryptionKey);
+    const encryptedCvv            = await this.encryptOptional(input.cvv, encryptionKey);
+    const encryptedCardholderName = await this.encryptOptional(input.cardholderName, encryptionKey);
+    const encryptedExpiryMonth    = await this.encryptOptional(input.expiryMonth, encryptionKey);
+    const encryptedExpiryYear     = await this.encryptOptional(input.expiryYear, encryptionKey);
+    const encryptedCardType       = await this.encryptOptional(input.cardType, encryptionKey);
+    const encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey);
+
+    const stored: StoredCredential = {
+      id,
+      encryptedPassword,
+      encryptedTitle, encryptedUsername, encryptedUrl, encryptedTags,
+      encryptedNotes, encryptedTotpSecret, encryptedCardNumber, encryptedCvv,
+      encryptedCardholderName, encryptedExpiryMonth, encryptedExpiryYear,
+      encryptedCardType, encryptedBillingAddress,
       category: input.category,
-      tags: input.tags || [],
+      tags: [],        // real tags live in encryptedTags
+      isFavorite: input.isFavorite ?? false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      isFavorite: false,
       securityScore: analyzePasswordStrength(input.password).score,
-      // Card-specific fields
-      encryptedCardNumber,
-      cardholderName: input.cardholderName,
-      expiryMonth: input.expiryMonth,
-      expiryYear: input.expiryYear,
-      encryptedCvv,
-      cardType: input.cardType,
-      billingAddress: input.billingAddress,
+      isSealed: true,
     };
 
-    await db.credentials.add(credential);
+    await db.credentials.add(stored);
+    return this.decryptCredential(stored, encryptionKey);
+  }
 
-    return this.mapToDomain(credential);
+  // ── CRUD ──────────────────────────────────────────────────────────────────
+
+  async create(input: CredentialInput, encryptionKey: CryptoKey): Promise<Credential> {
+    return this.createWithId(crypto.randomUUID(), input, encryptionKey);
   }
 
   async findById(id: string, decryptionKey: CryptoKey): Promise<Credential | null> {
     const stored = await db.credentials.get(id);
-    if (!stored) {
-      return null;
-    }
-
-    // Update last accessed timestamp
+    if (!stored) return null;
     await this.updateAccessTime(id);
-
     return this.decryptCredential(stored, decryptionKey);
   }
 
   async findAll(decryptionKey: CryptoKey): Promise<Credential[]> {
-    const storedCredentials = await db.credentials.toArray();
-    return Promise.all(storedCredentials.map((c) => this.decryptCredential(c, decryptionKey)));
+    const all = await db.credentials.toArray();
+    return Promise.all(all.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
   async update(
@@ -94,78 +121,81 @@ export class CredentialRepository implements ICredentialRepository {
     encryptionKey: CryptoKey
   ): Promise<Credential> {
     const existing = await db.credentials.get(id);
-    if (!existing) {
-      throw new Error('Credential not found');
-    }
+    if (!existing) throw new Error('Credential not found');
 
+    // Start with only the timestamp.
+    // isSealed is preserved from the existing record; it is NOT set to true here
+    // for a partial update on a pre-v5 row — sealLegacyMetadata() owns the full
+    // sealing lifecycle (fixes 3324555923).
     const updates: Partial<StoredCredential> = {
       updatedAt: Date.now(),
+      ...(existing.isSealed ? { isSealed: true } : {}),
     };
 
-    if (input.title) updates.title = input.title;
-    if (input.username) updates.username = input.username;
-    if (input.url !== undefined) updates.url = input.url;
-    if (input.category) updates.category = input.category;
-    if (input.tags) updates.tags = input.tags;
+    // For each metadata field in the update, write the encrypted version AND
+    // clear the legacy plaintext column (fixes 3324556024 and 3324556049).
+    if (input.title !== undefined) {
+      updates.encryptedTitle = await this.encryptField(input.title, encryptionKey);
+      updates.title = undefined;
+    }
+    if (input.username !== undefined) {
+      updates.encryptedUsername = await this.encryptOptional(input.username, encryptionKey);
+      updates.username = undefined;
+    }
+    if (input.url !== undefined) {
+      updates.encryptedUrl = await this.encryptOptional(input.url, encryptionKey);
+      updates.url = undefined;
+    }
+    if (input.tags !== undefined) {
+      updates.encryptedTags = input.tags.length > 0
+        ? await this.encryptField(JSON.stringify(input.tags), encryptionKey)
+        : undefined;
+      updates.tags = [];
+    }
+    if (input.category !== undefined) updates.category = input.category;
     if (input.isFavorite !== undefined) updates.isFavorite = input.isFavorite;
 
-    // Encrypt notes if provided
     if (input.notes !== undefined) {
-      if (input.notes) {
-        const notesEncrypted = await encrypt(input.notes, encryptionKey);
-        updates.encryptedNotes = JSON.stringify(notesEncrypted);
-        updates.notes = undefined; // Clear legacy plaintext notes
-      } else {
-        updates.encryptedNotes = undefined;
-        updates.notes = undefined;
-      }
+      updates.encryptedNotes = await this.encryptOptional(input.notes, encryptionKey);
+      updates.notes = undefined;
     }
-
-    if (input.password) {
-      const encryptedPassword = await encrypt(input.password, encryptionKey);
-      updates.encryptedPassword = JSON.stringify(encryptedPassword);
+    if (input.password !== undefined) {
+      updates.encryptedPassword = await this.encryptField(input.password, encryptionKey);
       updates.securityScore = analyzePasswordStrength(input.password).score;
     }
+    if (input.totpSecret !== undefined)
+      updates.encryptedTotpSecret = await this.encryptOptional(input.totpSecret, encryptionKey);
+    if (input.cardNumber !== undefined)
+      updates.encryptedCardNumber = await this.encryptOptional(input.cardNumber, encryptionKey);
+    if (input.cvv !== undefined)
+      updates.encryptedCvv = await this.encryptOptional(input.cvv, encryptionKey);
 
-    if (input.totpSecret !== undefined) {
-      if (input.totpSecret) {
-        const totpSecretEncrypted = await encrypt(input.totpSecret, encryptionKey);
-        updates.encryptedTotpSecret = JSON.stringify(totpSecretEncrypted);
-      } else {
-        // Empty string means remove TOTP secret
-        updates.encryptedTotpSecret = undefined;
-      }
+    // Card metadata — encrypt AND clear plaintext counterpart (fixes 3324556049)
+    if (input.cardholderName !== undefined) {
+      updates.encryptedCardholderName = await this.encryptOptional(input.cardholderName, encryptionKey);
+      updates.cardholderName = undefined;
     }
-
-    // Handle card-specific field updates
-    if (input.cardNumber !== undefined) {
-      if (input.cardNumber) {
-        const cardNumberEncrypted = await encrypt(input.cardNumber, encryptionKey);
-        updates.encryptedCardNumber = JSON.stringify(cardNumberEncrypted);
-      } else {
-        updates.encryptedCardNumber = undefined;
-      }
+    if (input.expiryMonth !== undefined) {
+      updates.encryptedExpiryMonth = await this.encryptOptional(input.expiryMonth, encryptionKey);
+      updates.expiryMonth = undefined;
     }
-
-    if (input.cvv !== undefined) {
-      if (input.cvv) {
-        const cvvEncrypted = await encrypt(input.cvv, encryptionKey);
-        updates.encryptedCvv = JSON.stringify(cvvEncrypted);
-      } else {
-        updates.encryptedCvv = undefined;
-      }
+    if (input.expiryYear !== undefined) {
+      updates.encryptedExpiryYear = await this.encryptOptional(input.expiryYear, encryptionKey);
+      updates.expiryYear = undefined;
     }
-
-    if (input.cardholderName !== undefined) updates.cardholderName = input.cardholderName;
-    if (input.expiryMonth !== undefined) updates.expiryMonth = input.expiryMonth;
-    if (input.expiryYear !== undefined) updates.expiryYear = input.expiryYear;
-    if (input.cardType !== undefined) updates.cardType = input.cardType;
-    if (input.billingAddress !== undefined) updates.billingAddress = input.billingAddress;
+    if (input.cardType !== undefined) {
+      updates.encryptedCardType = await this.encryptOptional(input.cardType, encryptionKey);
+      updates.cardType = undefined;
+    }
+    if (input.billingAddress !== undefined) {
+      updates.encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey);
+      updates.billingAddress = undefined;
+    }
 
     await db.credentials.update(id, updates);
-
     const updated = await db.credentials.get(id);
-    return this.mapToDomain(updated!);
+    if (!updated) throw new Error('Credential not found after update');
+    return this.decryptCredential(updated, encryptionKey);
   }
 
   async delete(id: string): Promise<void> {
@@ -173,87 +203,97 @@ export class CredentialRepository implements ICredentialRepository {
   }
 
   async search(query: string, decryptionKey: CryptoKey): Promise<Credential[]> {
-    const lowerQuery = query.toLowerCase();
-    const allCredentials = await db.credentials.toArray();
-
-    const filtered = allCredentials.filter(
+    const all = await this.findAll(decryptionKey);
+    const lq = query.toLowerCase();
+    return all.filter(
       (c) =>
-        c.title.toLowerCase().includes(lowerQuery) ||
-        c.username.toLowerCase().includes(lowerQuery) ||
-        c.url?.toLowerCase().includes(lowerQuery) ||
-        c.tags.some((tag) => tag.toLowerCase().includes(lowerQuery))
+        c.title.toLowerCase().includes(lq) ||
+        (c.username ?? '').toLowerCase().includes(lq) ||
+        (c.url ?? '').toLowerCase().includes(lq) ||
+        c.tags.some((t) => t.toLowerCase().includes(lq))
     );
-
-    return Promise.all(filtered.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
   async findByCategory(category: string, decryptionKey: CryptoKey): Promise<Credential[]> {
-    const credentials = await db.credentials.where('category').equals(category).toArray();
-    return Promise.all(credentials.map((c) => this.decryptCredential(c, decryptionKey)));
+    const stored = await db.credentials.where('category').equals(category).toArray();
+    return Promise.all(stored.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
   async findFavorites(decryptionKey: CryptoKey): Promise<Credential[]> {
-    const credentials = await db.credentials.where('isFavorite').equals(1).toArray();
-    return Promise.all(credentials.map((c) => this.decryptCredential(c, decryptionKey)));
+    const stored = await db.credentials.where('isFavorite').equals(1).toArray();
+    return Promise.all(stored.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
   async exportAll(decryptionKey: CryptoKey): Promise<string> {
-    const credentials = await db.credentials.toArray();
-    
-    // Decrypt passwords for export
-    const decrypted = await Promise.all(
-      credentials.map(async (c) => {
-        try {
-          const encData = JSON.parse(c.encryptedPassword);
-          const password = await decrypt(encData, decryptionKey);
-          return {
-            ...c,
-            password, // Include plain password for export
-            encryptedPassword: undefined,
-          };
-        } catch {
-          return {
-            ...c,
-            password: '[DECRYPTION_FAILED]',
-            encryptedPassword: undefined,
-          };
-        }
-      })
-    );
-
-    return JSON.stringify(decrypted, null, 2);
+    // Fully decrypt before export so that importFromJson() receives plaintext
+    // title/username/url/tags rather than the encrypted blobs (fixes 3324556108).
+    const credentials = await this.findAll(decryptionKey);
+    const exportable = credentials.map((c) => ({
+      id: c.id,
+      title: c.title,
+      username: c.username,
+      password: c.password !== '[Decryption Failed]' ? c.password : undefined,
+      url: c.url,
+      notes: c.notes,
+      category: c.category,
+      tags: c.tags,
+      isFavorite: c.isFavorite,
+      createdAt: c.createdAt,
+      updatedAt: c.updatedAt,
+      totpSecret: c.totpSecret,
+      cardNumber: c.cardNumber,
+      cardholderName: c.cardholderName,
+      expiryMonth: c.expiryMonth,
+      expiryYear: c.expiryYear,
+      cvv: c.cvv,
+      cardType: c.cardType,
+      billingAddress: c.billingAddress,
+      securityScore: c.securityScore,
+    }));
+    return JSON.stringify(exportable, null, 2);
   }
 
   async importFromJson(data: string, encryptionKey: CryptoKey): Promise<number> {
     try {
-      const parsed = JSON.parse(data) as Array<
-        Omit<StoredCredential, 'encryptedPassword'> & { password: string }
-      >;
-
+      const parsed = JSON.parse(data) as Array<{
+        title?: string; username?: string; password?: string;
+        url?: string; notes?: string; category?: Credential['category'];
+        tags?: string[]; isFavorite?: boolean; totpSecret?: string;
+        cardNumber?: string; cardholderName?: string; expiryMonth?: string;
+        expiryYear?: string; cvv?: string;
+        cardType?: Credential['cardType']; billingAddress?: string;
+      }>;
       let imported = 0;
       for (const item of parsed) {
         try {
           await this.create(
             {
-              title: item.title,
-              username: item.username,
-              password: item.password,
-              url: item.url ?? undefined,
-              notes: item.notes ?? undefined,
-              category: item.category,
-              tags: item.tags,
+              title: item.title ?? '',
+              username: item.username ?? '',
+              password: item.password ?? '',
+              url: item.url,
+              notes: item.notes,
+              category: item.category ?? 'login',
+              tags: item.tags ?? [],
+              isFavorite: item.isFavorite ?? false,
+              totpSecret: item.totpSecret,
+              cardNumber: item.cardNumber,
+              cardholderName: item.cardholderName,
+              expiryMonth: item.expiryMonth,
+              expiryYear: item.expiryYear,
+              cvv: item.cvv,
+              cardType: item.cardType,
+              billingAddress: item.billingAddress,
             },
             encryptionKey
           );
           imported++;
-        } catch (error) {
-          console.error('Failed to import credential:', error);
+        } catch {
+          // skip bad rows
         }
       }
-
       return imported;
-    } catch (error) {
-      console.error('Failed to parse import data:', error);
+    } catch {
       throw new Error('Invalid import data format');
     }
   }
@@ -264,155 +304,146 @@ export class CredentialRepository implements ICredentialRepository {
 
   async analyzeSecurityScore(id: string, decryptionKey: CryptoKey): Promise<number> {
     const credential = await db.credentials.get(id);
-    if (!credential) {
-      throw new Error('Credential not found');
-    }
-
+    if (!credential) throw new Error('Credential not found');
     try {
-      const encData = JSON.parse(credential.encryptedPassword);
-      const password = await decrypt(encData, decryptionKey);
+      const password = await this.decryptField(credential.encryptedPassword, decryptionKey);
       const analysis = analyzePasswordStrength(password);
-      
-      // Update the security score
       await db.credentials.update(id, { securityScore: analysis.score });
-      
       return analysis.score;
     } catch {
       return 0;
     }
   }
 
-  private async decryptCredential(
-    stored: StoredCredential,
-    vaultKey: CryptoKey
-  ): Promise<Credential> {
-    try {
-      // Decrypt the password
-      const encryptedPasswordData = JSON.parse(stored.encryptedPassword);
-      const password = await decrypt(encryptedPasswordData, vaultKey);
+  // ── Decrypt a stored row into a domain Credential ─────────────────────────
 
-      // Decrypt notes if present (support both encrypted and legacy plaintext)
+  async decryptCredential(stored: StoredCredential, vaultKey: CryptoKey): Promise<Credential> {
+    try {
+      const password = await this.decryptField(stored.encryptedPassword, vaultKey);
+
+      const title = stored.encryptedTitle
+        ? await this.decryptField(stored.encryptedTitle, vaultKey)
+        : (stored.title ?? '');
+
+      const username = stored.encryptedUsername
+        ? await this.decryptField(stored.encryptedUsername, vaultKey)
+        : (stored.username ?? '');
+
+      const url = stored.encryptedUrl
+        ? await this.decryptField(stored.encryptedUrl, vaultKey)
+        : stored.url;
+
+      let tags: string[] = stored.tags ?? [];
+      if (stored.encryptedTags) {
+        try {
+          tags = JSON.parse(
+            await this.decryptField(stored.encryptedTags, vaultKey)
+          ) as string[];
+        } catch {
+          // keep legacy tags
+        }
+      }
+
       let notes: string | undefined;
       if (stored.encryptedNotes) {
-        try {
-          const encryptedNotesData = JSON.parse(stored.encryptedNotes);
-          notes = await decrypt(encryptedNotesData, vaultKey);
-        } catch (error) {
-          console.error('Failed to decrypt notes:', error);
-          // Fall back to legacy plaintext notes if present
-          notes = stored.notes;
-        }
+        try { notes = await this.decryptField(stored.encryptedNotes, vaultKey); }
+        catch { notes = stored.notes; }
       } else {
-        // Legacy unencrypted notes
         notes = stored.notes;
       }
 
-      // Decrypt TOTP secret if present
-      let totpSecret: string | undefined;
-      if (stored.encryptedTotpSecret) {
-        try {
-          const encryptedTotpData = JSON.parse(stored.encryptedTotpSecret);
-          totpSecret = await decrypt(encryptedTotpData, vaultKey);
-        } catch (error) {
-          console.error('Failed to decrypt TOTP secret:', error);
-          // Continue without TOTP secret if decryption fails
-        }
-      }
+      const totpSecret = await this.decryptOptional(stored.encryptedTotpSecret, vaultKey);
+      const cardNumber = await this.decryptOptional(stored.encryptedCardNumber, vaultKey);
+      const cvv        = await this.decryptOptional(stored.encryptedCvv, vaultKey);
 
-      // Decrypt card-specific fields if present
-      let cardNumber: string | undefined;
-      if (stored.encryptedCardNumber) {
-        try {
-          const encryptedCardData = JSON.parse(stored.encryptedCardNumber);
-          cardNumber = await decrypt(encryptedCardData, vaultKey);
-        } catch (error) {
-          console.error('Failed to decrypt card number:', error);
-        }
-      }
-
-      let cvv: string | undefined;
-      if (stored.encryptedCvv) {
-        try {
-          const encryptedCvvData = JSON.parse(stored.encryptedCvv);
-          cvv = await decrypt(encryptedCvvData, vaultKey);
-        } catch (error) {
-          console.error('Failed to decrypt CVV:', error);
-        }
-      }
+      const cardholderName = stored.encryptedCardholderName
+        ? await this.decryptOptional(stored.encryptedCardholderName, vaultKey)
+        : stored.cardholderName;
+      const expiryMonth = stored.encryptedExpiryMonth
+        ? await this.decryptOptional(stored.encryptedExpiryMonth, vaultKey)
+        : stored.expiryMonth;
+      const expiryYear = stored.encryptedExpiryYear
+        ? await this.decryptOptional(stored.encryptedExpiryYear, vaultKey)
+        : stored.expiryYear;
+      const cardType = stored.encryptedCardType
+        ? (await this.decryptOptional(stored.encryptedCardType, vaultKey)) as Credential['cardType']
+        : stored.cardType;
+      const billingAddress = stored.encryptedBillingAddress
+        ? await this.decryptOptional(stored.encryptedBillingAddress, vaultKey)
+        : stored.billingAddress;
 
       return {
-        id: stored.id,
-        title: stored.title,
-        username: stored.username,
-        password, // Decrypted password
-        url: stored.url,
-        notes, // Decrypted notes
-        category: stored.category,
-        tags: stored.tags,
+        id: stored.id, title, username, password, url, notes,
+        category: stored.category, tags,
         createdAt: new Date(stored.createdAt),
         updatedAt: new Date(stored.updatedAt),
         lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
         isFavorite: stored.isFavorite,
         securityScore: stored.securityScore,
-        totpSecret, // Decrypted TOTP secret
-        // Card-specific fields
-        cardNumber,
-        cardholderName: stored.cardholderName,
-        expiryMonth: stored.expiryMonth,
-        expiryYear: stored.expiryYear,
-        cvv,
-        cardType: stored.cardType,
-        billingAddress: stored.billingAddress,
+        totpSecret, cardNumber, cardholderName, expiryMonth, expiryYear,
+        cvv, cardType, billingAddress,
       };
-    } catch (error) {
-      console.error('Failed to decrypt credential:', error);
-      // Return credential with placeholder password if decryption fails
+    } catch {
       return {
         id: stored.id,
-        title: stored.title,
-        username: stored.username,
+        title: stored.title ?? '',
+        username: stored.username ?? '',
         password: '[Decryption Failed]',
         url: stored.url,
         notes: stored.notes,
         category: stored.category,
-        tags: stored.tags,
+        tags: stored.tags ?? [],
         createdAt: new Date(stored.createdAt),
         updatedAt: new Date(stored.updatedAt),
         lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
         isFavorite: stored.isFavorite,
         securityScore: stored.securityScore,
-        totpSecret: undefined, // Don't include failed TOTP secret
       };
     }
   }
 
-  private mapToDomain(stored: StoredCredential): Credential {
-    return {
-      ...stored,
-      password: stored.encryptedPassword, // This will show encrypted data - used only in create() which returns immediately
-      createdAt: new Date(stored.createdAt),
-      updatedAt: new Date(stored.updatedAt),
-      lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
-    };
-  }
+  // ── save() — backward-compat convenience (uses createWithId for new records)
 
-  /**
-   * Save a credential - creates if new, updates if existing
-   * This is a convenience method for tests and backwards compatibility
-   */
   async save(credential: Credential, encryptionKey: CryptoKey): Promise<Credential> {
     const existing = await db.credentials.get(credential.id);
-    
+
     if (existing) {
-      // Update existing credential
-      return this.update(credential.id, {
+      return this.update(
+        credential.id,
+        {
+          title: credential.title,
+          username: credential.username,
+          password: credential.password,
+          url: credential.url,
+          notes: credential.notes,
+          category: credential.category,
+          tags: credential.tags,
+          isFavorite: credential.isFavorite,
+          totpSecret: credential.totpSecret,
+          cardNumber: credential.cardNumber,
+          cardholderName: credential.cardholderName,
+          expiryMonth: credential.expiryMonth,
+          expiryYear: credential.expiryYear,
+          cvv: credential.cvv,
+          cardType: credential.cardType,
+          billingAddress: credential.billingAddress,
+        },
+        encryptionKey
+      );
+    }
+
+    // New record: use createWithId so the row is immediately findable by
+    // credential.id — no async primary-key rewrite needed (fixes 3324556082).
+    return this.createWithId(
+      credential.id,
+      {
         title: credential.title,
-        username: credential.username,
-        password: credential.password,
+        username: credential.username ?? '',
+        password: credential.password ?? '',
         url: credential.url,
         notes: credential.notes,
         category: credential.category,
-        tags: credential.tags,
+        tags: credential.tags ?? [],
         isFavorite: credential.isFavorite,
         totpSecret: credential.totpSecret,
         cardNumber: credential.cardNumber,
@@ -422,63 +453,9 @@ export class CredentialRepository implements ICredentialRepository {
         cvv: credential.cvv,
         cardType: credential.cardType,
         billingAddress: credential.billingAddress,
-      }, encryptionKey);
-    } else {
-      // Create new credential with specified ID
-      const encryptedPassword = await encrypt(credential.password || '', encryptionKey);
-
-      let encryptedTotpSecret: string | undefined;
-      if (credential.totpSecret) {
-        const totpSecretEncrypted = await encrypt(credential.totpSecret, encryptionKey);
-        encryptedTotpSecret = JSON.stringify(totpSecretEncrypted);
-      }
-
-      let encryptedNotes: string | undefined;
-      if (credential.notes) {
-        const notesEncrypted = await encrypt(credential.notes, encryptionKey);
-        encryptedNotes = JSON.stringify(notesEncrypted);
-      }
-
-      let encryptedCardNumber: string | undefined;
-      if (credential.cardNumber) {
-        const cardNumberEncrypted = await encrypt(credential.cardNumber, encryptionKey);
-        encryptedCardNumber = JSON.stringify(cardNumberEncrypted);
-      }
-
-      let encryptedCvv: string | undefined;
-      if (credential.cvv) {
-        const cvvEncrypted = await encrypt(credential.cvv, encryptionKey);
-        encryptedCvv = JSON.stringify(cvvEncrypted);
-      }
-
-      const stored: StoredCredential = {
-        id: credential.id,
-        title: credential.title,
-        username: credential.username,
-        encryptedPassword: JSON.stringify(encryptedPassword),
-        encryptedTotpSecret,
-        encryptedNotes,
-        url: credential.url ?? undefined,
-        notes: encryptedNotes, // Store encrypted notes
-        category: credential.category,
-        tags: credential.tags || [],
-        createdAt: credential.createdAt?.getTime() || Date.now(),
-        updatedAt: credential.updatedAt?.getTime() || Date.now(),
-        lastAccessedAt: credential.lastAccessedAt?.getTime(),
-        isFavorite: credential.isFavorite || false,
-        securityScore: credential.password ? analyzePasswordStrength(credential.password).score : 0,
-        encryptedCardNumber,
-        cardholderName: credential.cardholderName,
-        expiryMonth: credential.expiryMonth,
-        expiryYear: credential.expiryYear,
-        encryptedCvv,
-        cardType: credential.cardType,
-        billingAddress: credential.billingAddress,
-      };
-
-      await db.credentials.add(stored);
-      return credential;
-    }
+      },
+      encryptionKey
+    );
   }
 }
 
