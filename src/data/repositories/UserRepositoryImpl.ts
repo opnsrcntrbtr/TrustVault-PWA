@@ -3,7 +3,7 @@
  * Handles user authentication and management with IndexedDB storage
  */
 
-import { hashPassword, verifyPassword } from '@/core/crypto/password';
+import { hashPassword, verifyPassword, needsRehash } from '@/core/crypto/password';
 import { deriveKeyFromPassword, encrypt, decrypt } from '@/core/crypto/encryption';
 import { decodeBase64ToUint8Array, encodeUint8ArrayToBase64 } from '@/core/utils/base64';
 import { db, type StoredUser } from '../storage/database';
@@ -97,6 +97,17 @@ export class UserRepositoryImpl implements IUserRepository {
 
     // Auth succeeded — clear any accumulated attempt record
     await clearAttempts(email);
+
+    // Transparently upgrade legacy/weak password hashes to current scrypt
+    // parameters (S4). Best-effort: a rehash failure must never block login.
+    if (needsRehash(storedUser.hashedMasterPassword)) {
+      try {
+        const upgradedHash = await hashPassword(masterPassword);
+        await db.users.update(storedUser.id, { hashedMasterPassword: upgradedHash });
+      } catch {
+        // Non-fatal: the user is already authenticated with their valid password.
+      }
+    }
 
     // Derive temporary key from password + salt (used to decrypt the vault key)
     const salt = Uint8Array.from(atob(storedUser.salt), c => c.charCodeAt(0));

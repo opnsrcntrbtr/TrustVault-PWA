@@ -130,8 +130,7 @@ export async function encrypt(
       ciphertext: arrayBufferToBase64(ciphertext),
       iv: arrayBufferToBase64(iv),
     };
-  } catch (error) {
-    console.error('Encryption failed:', error);
+  } catch {
     throw new Error('Failed to encrypt data');
   }
 }
@@ -160,9 +159,10 @@ export async function decrypt(
 
     const decoder = new TextDecoder();
     return decoder.decode(decrypted);
-  } catch (error) {
-    console.error('Decryption failed:', error);
-    throw new Error('Failed to decrypt data - invalid key or corrupted data');
+  } catch {
+    // Generic message — never disclose whether the key was wrong vs. the data
+    // was corrupted (S8/L1). Avoid logging the underlying error.
+    throw new Error('Failed to decrypt data');
   }
 }
 

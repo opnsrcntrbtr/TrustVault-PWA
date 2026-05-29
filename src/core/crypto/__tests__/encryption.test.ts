@@ -199,14 +199,22 @@ describe('Encryption Core', () => {
 
     it('should fail decryption with tampered ciphertext', async () => {
       const plaintext = 'sensitive data';
-      
+
       const encrypted = await encrypt(plaintext, key);
       const tampered = {
         ...encrypted,
         ciphertext: encrypted.ciphertext.slice(0, -4) + 'AAAA'
       };
-      
+
       await expect(decrypt(tampered, key)).rejects.toThrow();
+    });
+
+    it('does not leak key/state details in the decryption error (S8/L1)', async () => {
+      const wrongKey = await generateEncryptionKey();
+      const encrypted = await encrypt('sensitive data', key);
+
+      await expect(decrypt(encrypted, wrongKey)).rejects.toThrow('Failed to decrypt data');
+      await expect(decrypt(encrypted, wrongKey)).rejects.not.toThrow(/key|corrupt/i);
     });
   });
 
