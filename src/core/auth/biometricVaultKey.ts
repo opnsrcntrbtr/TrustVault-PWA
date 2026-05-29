@@ -1,147 +1,113 @@
 /**
- * Biometric Vault Key Management
- * Handles secure storage and retrieval of vault keys for biometric authentication
+ * Biometric Vault Key Wrapping (WebAuthn PRF — S1)
  *
- * Strategy:
- * 1. When user enables biometric, encrypt their vault key with a device-specific key
- * 2. Store the encrypted vault key with the WebAuthn credential
- * 3. On biometric auth, decrypt the vault key using the device-specific key
+ * The vault key is wrapped with a key derived from the authenticator's
+ * **PRF (HMAC-secret) output** via HKDF-SHA256. The PRF output is produced by
+ * the authenticator hardware ONLY after user verification (biometric) and is
+ * NEVER stored anywhere. Therefore neither an XSS payload nor a full IndexedDB
+ * dump can re-derive the wrapping key — unlike the previous device-key scheme,
+ * whose inputs (credentialId, userId, salt) were all stored and recomputable.
  *
- * The device-specific key is derived from:
- * - Credential ID (unique per device/biometric)
- * - User ID
- * - A random salt stored with the credential
+ * Storage layout (per WebAuthn credential):
+ *   - prfSalt:          random per-credential PRF input (non-secret)
+ *   - wrappedVaultKey:  JSON.stringify(EncryptedData) of the AES-GCM-wrapped vault key
+ *   - vaultKeyScheme:   'prf-v1'
+ *
+ * The PRF output and the derived wrap key are transient and only ever live in
+ * memory during an enroll or unlock ceremony.
  */
 
-import { encrypt, decrypt } from '@/core/crypto/encryption';
-import type { EncryptedData } from '@/core/crypto/encryption';
+import { encrypt, decrypt, type EncryptedData } from '@/core/crypto/encryption';
+import { encodeUint8ArrayToBase64, decodeBase64ToUint8Array } from '@/core/utils/base64';
+
+/** Domain-separation label for HKDF — binds the derived key to this exact purpose. */
+const HKDF_INFO = 'TrustVault Vault Key Wrapping v1';
+
+/** PRF salt length in bytes (the PRF "input"/"first" evaluation point). */
+const PRF_SALT_LENGTH = 32;
 
 /**
- * Derives a device-specific encryption key from credential metadata
- * This key is deterministic based on the credential ID and user ID
+ * Generates a random per-credential PRF salt. This is the non-secret input that
+ * is fed to the authenticator's PRF; the same salt always yields the same PRF
+ * output from the same credential, but only the authenticator can compute it.
  */
-async function deriveDeviceKey(
-  credentialId: string,
-  userId: string,
-  salt: Uint8Array
-): Promise<CryptoKey> {
-  // Combine credential ID and user ID
-  const keyMaterial = `${credentialId}:${userId}`;
-  const encoder = new TextEncoder();
-  const keyMaterialBytes = encoder.encode(keyMaterial);
+export function generatePrfSalt(): Uint8Array {
+  const salt = new Uint8Array(PRF_SALT_LENGTH);
+  crypto.getRandomValues(salt);
+  return salt;
+}
 
-  // Import as key material
-  const importedKey = await crypto.subtle.importKey(
+/**
+ * Derives a non-extractable AES-256-GCM wrapping key from the raw PRF output
+ * using HKDF-SHA256. The PRF output is treated as Input Keying Material (IKM),
+ * never as the final key directly.
+ */
+export async function deriveWrapKeyFromPRF(prfOutput: Uint8Array): Promise<CryptoKey> {
+  const ikm = await crypto.subtle.importKey(
     'raw',
-    keyMaterialBytes,
-    { name: 'PBKDF2' },
+    prfOutput as BufferSource,
+    'HKDF',
     false,
-    ['deriveBits', 'deriveKey']
+    ['deriveKey'],
   );
 
-  // Derive AES-GCM key using PBKDF2
   return crypto.subtle.deriveKey(
     {
-      name: 'PBKDF2',
-      salt: salt.buffer as ArrayBuffer,
-      iterations: 600000, // OWASP 2025 minimum for PBKDF2-SHA256
+      name: 'HKDF',
       hash: 'SHA-256',
+      // RFC 5869: an empty salt is valid (treated as zeros). Per-credential
+      // domain separation already comes from the unique PRF salt → unique IKM.
+      salt: new Uint8Array(0) as BufferSource,
+      info: new TextEncoder().encode(HKDF_INFO) as BufferSource,
     },
-    importedKey,
+    ikm,
     { name: 'AES-GCM', length: 256 },
-    false, // Not extractable
-    ['encrypt', 'decrypt']
+    false, // non-extractable — the wrap key never leaves WebCrypto
+    ['encrypt', 'decrypt'],
   );
 }
 
 /**
- * Encrypts a vault key for storage with a biometric credential
- * Returns the encrypted data as a JSON string
+ * Wraps (encrypts) the vault key with a PRF-derived key.
+ * Returns a JSON string (EncryptedData) suitable for storage in
+ * WebAuthnCredential.wrappedVaultKey. The raw vault key is never persisted.
  */
-export async function encryptVaultKeyForBiometric(
+export async function wrapVaultKeyWithPRF(
   vaultKey: CryptoKey,
-  credentialId: string,
-  userId: string
-): Promise<{ encryptedVaultKey: string; salt: string }> {
-  // Generate a random salt for this credential
-  const salt = new Uint8Array(32);
-  crypto.getRandomValues(salt);
+  prfOutput: Uint8Array,
+): Promise<string> {
+  const wrapKey = await deriveWrapKeyFromPRF(prfOutput);
 
-  // Derive device-specific key
-  const deviceKey = await deriveDeviceKey(credentialId, userId, salt);
+  // Export the vault key and encrypt its raw bytes (base64) with the wrap key.
+  const raw = await crypto.subtle.exportKey('raw', vaultKey);
+  const rawBase64 = encodeUint8ArrayToBase64(new Uint8Array(raw));
 
-  // Export the vault key to encrypt it
-  const vaultKeyData = await crypto.subtle.exportKey('raw', vaultKey);
-  const vaultKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(vaultKeyData)));
-
-  // Encrypt the vault key
-  const encrypted = await encrypt(vaultKeyBase64, deviceKey);
-
-  // Return encrypted data and salt (both base64 encoded)
-  return {
-    encryptedVaultKey: JSON.stringify(encrypted),
-    salt: btoa(String.fromCharCode(...salt)),
-  };
+  const encrypted = await encrypt(rawBase64, wrapKey);
+  return JSON.stringify(encrypted);
 }
 
 /**
- * Decrypts a vault key from biometric credential storage
- * Returns the decrypted vault key
+ * Unwraps (decrypts) the vault key using a PRF-derived key.
+ * Throws if the PRF output is wrong (AES-GCM authentication failure) — there is
+ * no fallback path, so an incorrect/forged PRF output can never unlock the vault.
  */
-export async function decryptVaultKeyFromBiometric(
-  encryptedVaultKeyJson: string,
-  salt: string,
-  credentialId: string,
-  userId: string
+export async function unwrapVaultKeyWithPRF(
+  wrappedVaultKeyJson: string,
+  prfOutput: Uint8Array,
 ): Promise<CryptoKey> {
-  // Parse encrypted data
-  const encryptedData = JSON.parse(encryptedVaultKeyJson) as EncryptedData;
+  const wrapKey = await deriveWrapKeyFromPRF(prfOutput);
 
-  // Decode salt
-  const saltBytes = Uint8Array.from(atob(salt), c => c.charCodeAt(0));
+  const encrypted = JSON.parse(wrappedVaultKeyJson) as EncryptedData;
+  const rawBase64 = await decrypt(encrypted, wrapKey); // throws on wrong key
+  const rawBytes = decodeBase64ToUint8Array(rawBase64);
 
-  // Derive the same device-specific key
-  const deviceKey = await deriveDeviceKey(credentialId, userId, saltBytes);
-
-  // Decrypt the vault key
-  const vaultKeyBase64 = await decrypt(encryptedData, deviceKey);
-
-  // Convert from base64 to bytes
-  const vaultKeyBytes = Uint8Array.from(atob(vaultKeyBase64), c => c.charCodeAt(0));
-
-  // Import as CryptoKey
-  const vaultKey = await crypto.subtle.importKey(
+  // Import as an extractable AES-GCM key to match the password-unlock path
+  // (UserRepositoryImpl.authenticateWithPassword imports the vault key the same way).
+  return crypto.subtle.importKey(
     'raw',
-    vaultKeyBytes,
+    rawBytes as BufferSource,
     { name: 'AES-GCM', length: 256 },
-    false,
-    ['encrypt', 'decrypt']
+    true,
+    ['encrypt', 'decrypt'],
   );
-
-  return vaultKey;
-}
-
-/**
- * Stores encrypted vault key in IndexedDB with the credential
- * This is called when user enables biometric authentication
- */
-export async function storeBiometricVaultKey(
-  userId: string,
-  credentialId: string,
-  vaultKey: CryptoKey
-): Promise<{ encryptedVaultKey: string; salt: string }> {
-  return encryptVaultKeyForBiometric(vaultKey, credentialId, userId);
-}
-
-/**
- * Retrieves and decrypts vault key from IndexedDB credential
- * This is called during biometric authentication
- */
-export async function retrieveBiometricVaultKey(
-  userId: string,
-  credentialId: string,
-  encryptedVaultKey: string,
-  salt: string
-): Promise<CryptoKey> {
-  return decryptVaultKeyFromBiometric(encryptedVaultKey, salt, credentialId, userId);
 }

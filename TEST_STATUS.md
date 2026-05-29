@@ -6,6 +6,37 @@
 
 ---
 
+## S1: WebAuthn PRF Vault Unlock — May 30, 2026
+
+**Change**: Replaced the insecure biometric device-key scheme (vault-key wrap key
+recomputable from stored `credentialId`/`userId`/`salt`) with the **WebAuthn PRF
+extension**. The wrap key is now derived (HKDF-SHA256) from an authenticator
+secret that is never stored, making biometric unlock demonstrably zero-knowledge.
+
+**New / updated tests:**
+- [x] `src/core/auth/__tests__/biometricVaultKey.test.ts` — 9/9 (HKDF determinism,
+      wrap/unwrap round-trip, wrong-PRF rejection, **non-recomputability from stored data**)
+- [x] `src/core/auth/__tests__/webauthnPrf.test.ts` — 10/10 (PRF support detection,
+      `registerCredentialWithPRF`, `getPRFOutput` incl. replay/counter checks)
+- [x] `src/core/auth/__tests__/biometricMigration.test.ts` — 8/8 (legacy strip + flag recompute)
+- [x] `src/data/repositories/__tests__/UserRepositoryImpl.test.ts` — added 6 PRF tests
+      (enroll stores `prf-v1` and no legacy key material; PRF unlock round-trips the
+      vault key and seals S5 metadata; non-PRF enroll refused; legacy unlock rejected;
+      legacy strip on password login)
+
+**Verification:**
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run build`: success (PWA generated)
+- [x] Production source adds **0 new lint problems** (repo baseline is pre-existing)
+- [x] No regressions: pre-existing failures unchanged (1 TOCTOU concurrent-create race;
+      2 `webauthn.test.ts` env mocks where `PublicKeyCredential` is an object, not a function)
+
+**Manual (pending real device):** over HTTPS, enroll biometric (two UV prompts =
+two-ceremony enroll) → lock → unlock; confirm IndexedDB stores only
+`wrappedVaultKey`+`prfSalt`+`vaultKeyScheme` and no recomputable key material.
+
+---
+
 ## Summary
 
 | Category | Passing | Failed | Total | Status |

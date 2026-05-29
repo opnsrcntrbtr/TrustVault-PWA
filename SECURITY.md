@@ -62,12 +62,35 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 4. Session created with encrypted vault key
 5. Auto-lock after 15 minutes of inactivity
 
-### Biometric Authentication (WebAuthn)
-1. Platform authenticator verification
+### Biometric Authentication (WebAuthn PRF — S1)
+1. Platform authenticator verification (Touch ID / Face ID / Windows Hello)
 2. Challenge generation (256-bit random)
 3. User verification required (UV flag)
-4. Public key credential creation/validation
-5. Counter-based replay attack prevention
+4. Counter-based replay attack prevention
+5. **Demonstrable zero-knowledge vault unlock via the WebAuthn PRF extension**
+
+**How the vault key is protected (`vaultKeyScheme: 'prf-v1'`):**
+- On enroll, the credential is created with the PRF extension, then a second
+  assertion evaluates the PRF at a random per-credential salt to obtain a 32‑byte
+  secret that lives only in the authenticator hardware.
+- That secret is run through **HKDF‑SHA256** (`info: "TrustVault Vault Key Wrapping v1"`)
+  to derive a non‑extractable AES‑256‑GCM **wrap key**, which encrypts the vault key.
+- Storage holds only `{ wrappedVaultKey, prfSalt, vaultKeyScheme }`. The PRF output
+  and the wrap key are **never persisted**.
+
+**Why this is zero-knowledge (threat model):** the wrap key can only be reproduced
+by the physical authenticator after a biometric user‑verification gesture. Neither
+an XSS payload nor a full IndexedDB dump can derive it from stored values. This
+replaces the previous device‑key scheme, whose inputs (`credentialId`, `userId`,
+`salt`) were all stored and therefore recomputable offline — an exploitable flaw
+that let stored data alone unlock the vault.
+
+**Migration & fallback:**
+- Legacy device‑key credentials are removed by the DB **v6** migration and on the
+  next password login; affected users re‑enroll biometric once (master password
+  unlock is unaffected and remains the recovery path).
+- On devices/browsers without PRF support, biometric unlock is **not offered** —
+  the UI falls back to master password (no insecure scheme is ever used).
 
 ---
 

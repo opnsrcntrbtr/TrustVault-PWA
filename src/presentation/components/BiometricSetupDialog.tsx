@@ -34,7 +34,7 @@ import {
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
-import { getDeviceName, isBiometricAvailable, getAuthenticatorInfo } from '@/core/auth/webauthn';
+import { getDeviceName, isBiometricAvailable, getAuthenticatorInfo, isPRFSupported } from '@/core/auth/webauthn';
 import type { WebAuthnCredential } from '@/domain/entities/User';
 
 interface BiometricSetupDialogProps {
@@ -49,6 +49,8 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [biometricAvailable, setBiometricAvailable] = useState(false);
+  // S1: PRF extension is required for secure biometric unlock on this device.
+  const [prfSupported, setPrfSupported] = useState(true);
   const [authenticatorInfo, setAuthenticatorInfo] = useState<{
     biometricAvailable: boolean;
     conditionalMediationAvailable: boolean;
@@ -78,6 +80,9 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
     try {
       const available = await isBiometricAvailable();
       setBiometricAvailable(available);
+
+      const prf = await isPRFSupported();
+      setPrfSupported(prf);
 
       const info = await getAuthenticatorInfo();
       setAuthenticatorInfo(info);
@@ -190,6 +195,18 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
         {!biometricAvailable && (
           <Alert severity="warning" sx={{ mb: 2 }}>
             Biometric authentication is not available on this device or browser.
+          </Alert>
+        )}
+
+        {biometricAvailable && !prfSupported && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            <Typography variant="body2" fontWeight={600}>
+              Secure biometric unlock unavailable
+            </Typography>
+            <Typography variant="caption">
+              This browser or device doesn&apos;t support the WebAuthn PRF extension required to
+              protect your vault key in hardware. Please continue using your master password.
+            </Typography>
           </Alert>
         )}
 
@@ -315,7 +332,7 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
           variant={credentials.length === 0 ? 'contained' : 'outlined'}
           startIcon={isLoading ? <CircularProgress size={20} /> : <Add />}
           onClick={handleRegisterBiometric}
-          disabled={!biometricAvailable || !vaultKey || isLoading}
+          disabled={!biometricAvailable || !prfSupported || !vaultKey || isLoading}
           sx={{ mt: 2 }}
         >
           {isLoading ? 'Registering...' : 'Register New Device'}

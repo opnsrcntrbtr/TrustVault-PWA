@@ -331,7 +331,7 @@ file public/pwa-192x192.png  # Should show: PNG image data, 192 x 192
 **Sensitive Operations:**
 - Master password hashing: Scrypt via `@noble/hashes/scrypt` (N=32768, r=8, p=1, dkLen=32). Migrated from Argon2id to avoid CSP/WASM issues — see `DATABASE_MIGRATION.md`.
 - Vault key derivation: PBKDF2-SHA256 (600,000 iterations, OWASP 2025)
-- Biometric: WebAuthn with platform authenticator
+- Biometric: WebAuthn platform authenticator with the **PRF extension (S1)**. The vault key is wrapped with an HKDF-SHA256 key derived from the authenticator's PRF output (never stored), so biometric unlock is demonstrably zero-knowledge — stored data alone cannot unlock the vault. Scheme `vaultKeyScheme: 'prf-v1'`; legacy device-key credentials are stripped by the DB v6 migration; non-PRF devices fall back to master password. See `SECURITY.md`.
 
 ---
 

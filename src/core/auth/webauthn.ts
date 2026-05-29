@@ -16,6 +16,7 @@ import type {
 import {
   decodeBase64ToString,
   decodeBase64ToUint8Array,
+  encodeUint8ArrayToBase64,
   encodeUint8ArrayToBase64Url,
 } from '@/core/utils/base64';
 
@@ -312,6 +313,200 @@ export function getDeviceName(userAgentOverride?: string): string {
   if (ua.includes('Mac')) return 'Mac Touch ID';
   if (ua.includes('Windows')) return 'Windows Hello';
   if (ua.includes('Android')) return 'Android Biometric';
-  
+
   return 'Biometric Device';
+}
+
+// ───────────────────────────── WebAuthn PRF (S1) ─────────────────────────────
+// Native-API helpers for the PRF extension. We bypass @simplewebauthn/browser
+// here because v10 does not surface the binary PRF results; the native
+// PublicKeyCredential.getClientExtensionResults() gives us the raw bytes.
+
+/** Minimal local typing for the PRF extension inputs (avoids lib.dom version drift). */
+interface PRFExtensionInputs {
+  prf?: { eval?: { first: BufferSource; second?: BufferSource } };
+}
+/** Minimal local typing for the PRF extension outputs. */
+interface PRFExtensionOutputs {
+  prf?: {
+    enabled?: boolean;
+    results?: { first?: ArrayBuffer | Uint8Array; second?: ArrayBuffer | Uint8Array };
+  };
+}
+
+/**
+ * Best-effort check for PRF support, used for UI gating. Authoritative
+ * confirmation happens at enroll time via `prf.enabled` (see
+ * registerCredentialWithPRF). When client capabilities can't be queried we are
+ * optimistic and let enrollment hard-verify.
+ */
+export async function isPRFSupported(): Promise<boolean> {
+  if (!isWebAuthnSupported()) {
+    return false;
+  }
+  try {
+    const pkc = window.PublicKeyCredential as unknown as {
+      getClientCapabilities?: () => Promise<Record<string, boolean | undefined>>;
+    };
+    if (typeof pkc.getClientCapabilities === 'function') {
+      const caps = await pkc.getClientCapabilities();
+      const prf = caps['extension:prf'] ?? caps['prf'];
+      if (typeof prf === 'boolean') {
+        return prf;
+      }
+    }
+  } catch {
+    // fall through to optimistic default
+  }
+  return true;
+}
+
+export interface PRFRegistrationResult {
+  credentialId: string; // base64url
+  publicKey: string; // base64 (best-effort SPKI)
+  transports: AuthenticatorTransport[];
+  prfEnabled: boolean;
+}
+
+/**
+ * Registers a new platform credential with the PRF extension enabled (native API).
+ * Registration only *enables* the authenticator's PRF key — it does not yield the
+ * secret. Callers MUST check `prfEnabled` and abort enrollment if it is false.
+ */
+export async function registerCredentialWithPRF(
+  options: RegistrationOptions,
+): Promise<PRFRegistrationResult> {
+  if (!isWebAuthnSupported()) {
+    throw new Error('WebAuthn is not supported in this browser');
+  }
+
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const userIdBytes = new TextEncoder().encode(options.userId);
+
+  const publicKey: PublicKeyCredentialCreationOptions = {
+    rp: { name: options.rpName, id: options.rpId },
+    user: { id: userIdBytes as BufferSource, name: options.userName, displayName: options.userDisplayName },
+    challenge: challenge as BufferSource,
+    pubKeyCredParams: [
+      { type: 'public-key', alg: -7 }, // ES256
+      { type: 'public-key', alg: -257 }, // RS256
+    ],
+    timeout: options.timeout ?? 60000,
+    attestation: options.attestationType ?? 'none',
+    authenticatorSelection: {
+      authenticatorAttachment: 'platform',
+      residentKey: 'preferred',
+      requireResidentKey: false,
+      userVerification: 'required',
+    },
+    extensions: ({ prf: {} } as unknown) as AuthenticationExtensionsClientInputs,
+  };
+
+  let credential: PublicKeyCredential | null;
+  try {
+    credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential | null;
+  } catch (error) {
+    if (error instanceof Error && error.name === 'NotAllowedError') {
+      throw new Error('Biometric registration was cancelled or not allowed.');
+    }
+    throw new Error('Failed to register biometric credential. Please try again.');
+  }
+  if (!credential) {
+    throw new Error('Biometric registration returned no credential');
+  }
+
+  const ext = credential.getClientExtensionResults() as unknown as PRFExtensionOutputs;
+  const prfEnabled = ext.prf?.enabled === true;
+
+  const response = credential.response as AuthenticatorAttestationResponse;
+  const transports =
+    typeof response.getTransports === 'function'
+      ? (response.getTransports() as AuthenticatorTransport[])
+      : [];
+  const spki = typeof response.getPublicKey === 'function' ? response.getPublicKey() : null;
+  const publicKeyB64 = spki ? encodeUint8ArrayToBase64(new Uint8Array(spki)) : '';
+
+  return {
+    credentialId: encodeUint8ArrayToBase64Url(new Uint8Array(credential.rawId)),
+    publicKey: publicKeyB64,
+    transports,
+    prfEnabled,
+  };
+}
+
+export interface PRFAuthResult {
+  prfOutput: Uint8Array;
+  counter: number;
+}
+
+/**
+ * Performs an assertion ceremony that evaluates the PRF at `prfSalt` and returns
+ * the raw PRF output plus the verified signature counter. Throws if the
+ * authenticator does not return a PRF result (PRF unsupported) or if the
+ * challenge/origin/counter verification fails (replay protection).
+ *
+ * `storedCounter` defaults to -1 so the counter check is a no-op during the
+ * enroll second-ceremony (brand-new credential); unlock passes the real counter.
+ */
+export async function getPRFOutput(
+  credentialId: string,
+  prfSalt: Uint8Array,
+  rpId: string,
+  storedCounter = -1,
+): Promise<PRFAuthResult> {
+  if (!isWebAuthnSupported()) {
+    throw new Error('WebAuthn is not supported in this browser');
+  }
+
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const challengeB64Url = encodeUint8ArrayToBase64Url(challenge);
+  const credIdBytes = decodeBase64ToUint8Array(credentialId);
+
+  const publicKey: PublicKeyCredentialRequestOptions = {
+    challenge: challenge as BufferSource,
+    timeout: 60000,
+    rpId,
+    allowCredentials: [
+      { id: credIdBytes as BufferSource, type: 'public-key', transports: ['internal'] },
+    ],
+    userVerification: 'required',
+    extensions: ({ prf: { eval: { first: prfSalt as BufferSource } } } as PRFExtensionInputs) as AuthenticationExtensionsClientInputs,
+  };
+
+  const assertion = (await navigator.credentials.get({ publicKey })) as PublicKeyCredential | null;
+  if (!assertion) {
+    throw new Error('Biometric authentication returned no assertion');
+  }
+
+  const ext = assertion.getClientExtensionResults() as unknown as PRFExtensionOutputs;
+  const first = ext.prf?.results?.first;
+  if (!first) {
+    throw new Error(
+      'Authenticator did not return a PRF result. This device does not support PRF; please use your master password.',
+    );
+  }
+  const prfOutput = first instanceof Uint8Array ? first : new Uint8Array(first);
+
+  // Replay protection: verify challenge/origin/counter via the existing verifier
+  // by mapping the native assertion into the JSON shape it expects.
+  const response = assertion.response as AuthenticatorAssertionResponse;
+  const authResponseJSON = {
+    id: assertion.id,
+    rawId: encodeUint8ArrayToBase64Url(new Uint8Array(assertion.rawId)),
+    response: {
+      clientDataJSON: encodeUint8ArrayToBase64Url(new Uint8Array(response.clientDataJSON)),
+      authenticatorData: encodeUint8ArrayToBase64Url(new Uint8Array(response.authenticatorData)),
+      signature: encodeUint8ArrayToBase64Url(new Uint8Array(response.signature)),
+      userHandle: response.userHandle
+        ? encodeUint8ArrayToBase64Url(new Uint8Array(response.userHandle))
+        : undefined,
+    },
+    type: assertion.type,
+    clientExtensionResults: {},
+    authenticatorAttachment: assertion.authenticatorAttachment ?? undefined,
+  } as AuthenticationResponseJSON;
+
+  const counter = verifyAuthenticationResponse(authResponseJSON, challengeB64Url, storedCounter);
+
+  return { prfOutput, counter };
 }

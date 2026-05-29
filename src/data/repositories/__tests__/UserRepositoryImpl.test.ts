@@ -4,12 +4,40 @@
  * Phase 5.1 - Repository tests (90% coverage target)
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
 import { needsRehash } from '@/core/crypto/password';
+import { isPRFSupported, registerCredentialWithPRF } from '@/core/auth/webauthn';
 import { db } from '../../storage/database';
 import type { User } from '@/domain/entities/User';
+
+// S1: mock the WebAuthn boundary so biometric enroll/unlock can be exercised
+// without a real authenticator. getPRFOutput returns sha256(salt) — a stable,
+// deterministic stand-in for the hardware PRF, so the same stored salt yields
+// the same secret at enroll and unlock. The crypto wrap/unwrap stays real.
+vi.mock('@/core/auth/webauthn', () => ({
+  isBiometricAvailable: vi.fn(() => Promise.resolve(true)),
+  isPRFSupported: vi.fn(() => Promise.resolve(true)),
+  registerCredentialWithPRF: vi.fn(() =>
+    Promise.resolve({
+      credentialId: 'prf-cred-1',
+      publicKey: 'cHVibGljLWtleQ==',
+      transports: ['internal'] as AuthenticatorTransport[],
+      prfEnabled: true,
+    }),
+  ),
+  // Echo the salt as the PRF output: deterministic per salt, so the same stored
+  // salt yields the same secret at enroll and unlock (models a stable hardware PRF).
+  getPRFOutput: vi.fn((_credentialId: string, salt: Uint8Array, _rpId: string, storedCounter: number = -1) =>
+    Promise.resolve({ prfOutput: salt, counter: storedCounter + 2 }),
+  ),
+}));
+
+async function exportRaw(key: CryptoKey): Promise<string> {
+  const raw = await crypto.subtle.exportKey('raw', key);
+  return btoa(String.fromCharCode(...new Uint8Array(raw)));
+}
 
 /** Builds a legacy (pre-S4) scrypt hash for a password. */
 function makeLegacyScryptHash(password: string, N = 32768): string {
@@ -589,17 +617,53 @@ describe('UserRepositoryImpl', () => {
       expect(after[0]?.title).toBeFalsy();            // plaintext cleared
       expect(after[0]?.encryptedTitle).toBeTruthy();  // encrypted blob present
     });
+  });
 
-    it('seals any unsealed credentials on biometric login (S5)', async () => {
-      // Create a user and get their vault key
-      const bioEmail = 'bio@example.com';
-      const bioPassword = 'TestPassword123!';
-      const user = await repository.createUser(bioEmail, bioPassword);
-      const session = await repository.authenticateWithPassword(bioEmail, bioPassword);
-      const vaultKey = session.vaultKey;
+  describe('biometric PRF unlock (S1)', () => {
+    const email = 'prf@example.com';
+    const password = 'TestPassword123!';
 
-      // Insert a pre-v5 legacy credential
-      await db.credentials.add({
+    beforeEach(() => {
+      vi.stubGlobal('window', {
+        location: { hostname: 'localhost', origin: 'http://localhost:3000' },
+      });
+      vi.mocked(isPRFSupported).mockResolvedValue(true);
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      vi.clearAllMocks();
+    });
+
+    it('enrolls a PRF credential and stores no legacy key material', async () => {
+      const user = await repository.createUser(email, password);
+      const session = await repository.authenticateWithPassword(email, password);
+
+      await repository.registerBiometric(user.id, session.vaultKey, 'Test Device');
+
+      const stored = await db.users.get(user.id);
+      const cred = stored?.webAuthnCredentials[0];
+      expect(cred?.vaultKeyScheme).toBe('prf-v1');
+      expect(cred?.wrappedVaultKey).toBeTruthy();
+      expect(cred?.prfSalt).toBeTruthy();
+      // no insecure device-key material remains (view avoids deprecated-field access)
+      const credView = cred as { encryptedVaultKey?: unknown; salt?: unknown } | undefined;
+      expect(credView?.encryptedVaultKey).toBeUndefined();
+      expect(credView?.salt).toBeUndefined();
+      expect(stored?.biometricEnabled).toBe(true);
+    });
+
+    it('unlocks the vault via PRF and seals legacy metadata', async () => {
+      const user = await repository.createUser(email, password);
+      const session = await repository.authenticateWithPassword(email, password);
+      await repository.registerBiometric(user.id, session.vaultKey, 'Dev');
+
+      const stored = await db.users.get(user.id);
+      const credentialId = stored?.webAuthnCredentials[0]?.id ?? '';
+      expect(credentialId).toBeTruthy();
+
+      // a pre-v5 legacy credential to prove sealing fires on the biometric path
+      const legacyRow = {
         id: crypto.randomUUID(),
         title: 'LegacyBio',
         username: 'legacybio@example.com',
@@ -609,31 +673,77 @@ describe('UserRepositoryImpl', () => {
         isFavorite: false,
         createdAt: Date.now(),
         updatedAt: Date.now(),
-        // isSealed intentionally absent → pre-v5 record
+      };
+      await db.credentials.add(legacyRow as unknown as Parameters<typeof db.credentials.add>[0]);
+
+      const bioSession = await repository.authenticateWithBiometric(user.id, credentialId);
+
+      expect(bioSession.userId).toBe(user.id);
+      // the unwrapped vault key is byte-identical to the password-derived one
+      expect(await exportRaw(bioSession.vaultKey)).toBe(await exportRaw(session.vaultKey));
+
+      const after = await db.credentials.toArray();
+      const sealed = after[0] as { isSealed?: boolean; title?: unknown; encryptedTitle?: unknown } | undefined;
+      expect(sealed?.isSealed).toBe(true);
+      expect(sealed?.title).toBeFalsy();           // plaintext cleared by S5 sealing
+      expect(sealed?.encryptedTitle).toBeTruthy(); // encrypted blob present
+    });
+
+    it('refuses enrollment when PRF is unsupported (password-only)', async () => {
+      const user = await repository.createUser(email, password);
+      const session = await repository.authenticateWithPassword(email, password);
+      vi.mocked(isPRFSupported).mockResolvedValueOnce(false);
+
+      await expect(
+        repository.registerBiometric(user.id, session.vaultKey),
+      ).rejects.toThrow(/PRF|master password/i);
+
+      const stored = await db.users.get(user.id);
+      expect(stored?.webAuthnCredentials.length).toBe(0);
+      expect(stored?.biometricEnabled).toBe(false);
+    });
+
+    it('refuses enrollment when the authenticator does not enable PRF', async () => {
+      const user = await repository.createUser(email, password);
+      const session = await repository.authenticateWithPassword(email, password);
+      vi.mocked(registerCredentialWithPRF).mockResolvedValueOnce({
+        credentialId: 'c',
+        publicKey: 'p',
+        transports: [],
+        prfEnabled: false,
       });
 
-      // Mock WebAuthn and biometric vault key decryption to simulate biometric auth
-      // This verifies sealLegacyMetadata is called in the biometric path
-      const { authenticateBiometric, verifyAuthenticationResponse } = await import('@/core/auth/webauthn');
-      const { decryptVaultKeyFromBiometric } = await import('@/core/auth/biometricVaultKey');
+      await expect(
+        repository.registerBiometric(user.id, session.vaultKey),
+      ).rejects.toThrow(/PRF/);
+    });
 
-      // Record the before state
-      const before = await db.credentials.toArray();
-      expect(before[0]?.isSealed).toBeFalsy();
-      expect(before[0]?.title).toBe('LegacyBio');
+    it('rejects biometric unlock for a legacy (non-PRF) credential', async () => {
+      const user = await repository.createUser(email, password);
+      const legacyCred = { id: 'legacy', publicKey: 'pk', counter: 0, createdAt: new Date(), encryptedVaultKey: 'blob', salt: 's' };
+      await db.users.update(user.id, {
+        biometricEnabled: true,
+        webAuthnCredentials: [legacyCred] as unknown as User['webAuthnCredentials'],
+      });
 
-      // To properly test authenticateWithBiometric, we'd need full WebAuthn setup.
-      // For now, verify the sealing works by calling it directly after password auth
-      // (which proves the function chain works; biometric uses the same sealLegacyMetadata call)
-      await repository.authenticateWithPassword(bioEmail, bioPassword);
+      await expect(
+        repository.authenticateWithBiometric(user.id, 'legacy'),
+      ).rejects.toThrow(/re-enabl/i);
+    });
 
-      // Verify sealing occurred
-      const after = await db.credentials.toArray();
-      expect(after[0]?.isSealed).toBe(true);
-      expect(after[0]?.title).toBeFalsy();            // plaintext cleared
-      expect(after[0]?.encryptedTitle).toBeTruthy();  // encrypted blob present
+    it('strips legacy biometric credentials on password login', async () => {
+      const user = await repository.createUser(email, password);
+      const legacyCred = { id: 'legacy', publicKey: 'pk', counter: 0, createdAt: new Date(), encryptedVaultKey: 'blob', salt: 's' };
+      await db.users.update(user.id, {
+        biometricEnabled: true,
+        webAuthnCredentials: [legacyCred] as unknown as User['webAuthnCredentials'],
+      });
 
-      void user; void vaultKey; // suppress unused warnings
+      await repository.authenticateWithPassword(email, password);
+
+      const stored = await db.users.get(user.id);
+      expect(stored?.webAuthnCredentials.length).toBe(0);
+      expect(stored?.biometricEnabled).toBe(false);
     });
   });
 });
