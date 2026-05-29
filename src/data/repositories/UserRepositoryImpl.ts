@@ -205,6 +205,15 @@ export class UserRepositoryImpl implements IUserRepository {
       lastLoginAt: Date.now(),
     });
 
+    // Seal any pre-v5 credentials that still carry plaintext metadata (S5).
+    // Awaited so the session is returned with a fully sealed vault, but wrapped
+    // in try/catch so a sealing failure never blocks the login itself.
+    try {
+      await sealLegacyMetadata(vaultKey);
+    } catch {
+      // Non-fatal: user is already authenticated; sealing will retry next login.
+    }
+
     // Create session with the decrypted vault key
     return {
       userId: user.id,
