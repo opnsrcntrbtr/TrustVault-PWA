@@ -28,6 +28,7 @@ import {
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import { isPRFSupported } from '@/core/auth/webauthn';
 
 type AuthMode = 'login' | 'signup';
 
@@ -41,6 +42,8 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
+  // S1: biometric unlock requires the WebAuthn PRF extension on this device.
+  const [prfSupported, setPrfSupported] = useState(false);
   const [hasExistingAccount, setHasExistingAccount] = useState<boolean | null>(null);
 
   const { setUser, setSession, setVaultKey } = useAuthStore();
@@ -54,6 +57,10 @@ export default function LoginPage() {
     userRepository.getUsersWithBiometric()
       .then(users => { if (mounted) setBiometricEnabled(users.length > 0); })
       .catch(console.error);
+
+    isPRFSupported()
+      .then(supported => { if (mounted) setPrfSupported(supported); })
+      .catch(() => { if (mounted) setPrfSupported(false); });
 
     userRepository.hasAnyUsers().then((hasUsers) => {
       if (!mounted) return;
@@ -290,7 +297,7 @@ export default function LoginPage() {
                   : (mode === 'signup' ? 'Create Account' : 'Unlock Vault')}
               </Button>
 
-              {mode === 'login' && biometricEnabled && (
+              {mode === 'login' && biometricEnabled && prfSupported && (
                 <>
                   <Divider>
                     <Typography variant="body2" color="text.secondary">

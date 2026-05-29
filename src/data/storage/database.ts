@@ -11,6 +11,7 @@
 
 import Dexie, { type Table } from 'dexie';
 import { User, SecuritySettings } from '@/domain/entities/User';
+import { stripLegacyBiometric } from '@/core/auth/biometricMigration';
 
 // Database schema interfaces
 import type { CredentialCategory } from '@/domain/entities/Credential';
@@ -193,6 +194,33 @@ export class TrustVaultDB extends Dexie {
       breachResults: breachStoreSchema,
       loginAttempts: 'email, lockedUntil',
     });
+
+    // Version 6 - WebAuthn PRF vault unlock (S1)
+    // Hard cutover from the insecure device-key biometric scheme. Any credential
+    // not using the PRF scheme ('prf-v1') is stripped and biometricEnabled is
+    // recomputed, so only demonstrably zero-knowledge credentials remain.
+    // Affected users re-enroll biometric once; master-password unlock is
+    // unaffected. Schema is otherwise identical to v5 (webAuthnCredentials is a
+    // nested array on the users row, so no index change is required).
+    this.version(6)
+      .stores({
+        credentials: credentialStoreSchema,
+        users: userStoreSchema,
+        sessions: sessionStoreSchema,
+        settings: 'id',
+        breachResults: breachStoreSchema,
+        loginAttempts: 'email, lockedUntil',
+      })
+      .upgrade(async (tx) => {
+        await tx
+          .table<StoredUser>('users')
+          .toCollection()
+          .modify((user) => {
+            const { credentials, biometricEnabled } = stripLegacyBiometric(user.webAuthnCredentials);
+            user.webAuthnCredentials = credentials;
+            user.biometricEnabled = biometricEnabled;
+          });
+      });
   }
 
   /**

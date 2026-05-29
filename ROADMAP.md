@@ -14,14 +14,23 @@ This roadmap provides a structured, phased approach to incrementally develop Tru
 
 ✅ **Complete (100%)**
 - Clean Architecture (Domain/Data/Presentation/Core)
-- Scrypt password hashing (N=32768, r=8, p=1)
+- Scrypt password hashing (N=2^17, r=8, p=1 — OWASP 2025)
 - AES-256-GCM field encryption
+- Metadata-at-rest encryption (S5: title/username/url/tags/card fields)
 - PBKDF2 key derivation (600k iterations)
-- IndexedDB with Dexie
+- **Biometric vault unlock via WebAuthn PRF (S1) — demonstrable zero-knowledge**
+- IndexedDB with Dexie (v6 schema)
 - Basic authentication (signin/signup)
 - Zustand state management
 - PWA infrastructure (service worker, manifest)
 - TypeScript strict mode compliance
+
+> **S1 — WebAuthn PRF Vault Unlock (May 2026, complete):** The biometric wrap key
+> is derived (HKDF-SHA256) from the authenticator's PRF output, which is never
+> stored, so neither XSS nor an IndexedDB dump can unlock the vault. Replaces the
+> insecure device-key scheme (recomputable from stored values). Legacy credentials
+> are stripped by the DB v6 migration; non-PRF devices fall back to master password.
+> See `SECURITY.md` → "Biometric Authentication (WebAuthn PRF — S1)".
 
 🟡 **Partial (20-70%)**
 - Credential CRUD operations (backend 90%, UI 10%)

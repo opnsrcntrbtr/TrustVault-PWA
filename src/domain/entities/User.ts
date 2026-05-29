@@ -24,10 +24,24 @@ export interface WebAuthnCredential {
   createdAt: Date;
   lastUsedAt?: Date;
   deviceName?: string;
-  // Encrypted vault key specifically for this biometric credential
-  // Encrypted using a device-specific key derived from the credential
+
+  // ── PRF vault-key wrapping (S1) ────────────────────────────────────────────
+  // Vault key wrapped with a key derived from the authenticator's PRF output via
+  // HKDF. The PRF output is held in hardware and never stored, so these fields
+  // alone cannot unlock the vault — that is the zero-knowledge guarantee.
+  /** Scheme marker; only 'prf-v1' credentials can unlock the vault. */
+  vaultKeyScheme?: 'prf-v1';
+  /** Vault key wrapped with the PRF-derived key (JSON.stringify of EncryptedData). */
+  wrappedVaultKey?: string;
+  /** Per-credential PRF salt (base64) — the non-secret PRF evaluation input. */
+  prfSalt?: string;
+
+  // ── Legacy device-key scheme (pre-S1) ──────────────────────────────────────
+  // Recomputable from stored values and therefore insecure. Read-only; the DB v6
+  // migration and password-login strip remove these and require PRF re-enrollment.
+  /** @deprecated Insecure device-key scheme; removed by the v6 migration. */
   encryptedVaultKey?: string;
-  // Salt used for deriving the device-specific encryption key
+  /** @deprecated Insecure device-key salt; removed by the v6 migration. */
   salt?: string;
 }
 

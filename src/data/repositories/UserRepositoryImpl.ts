@@ -11,6 +11,7 @@ import type { User, AuthSession, SecuritySettings } from '@/domain/entities/User
 import type { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { checkRateLimit, recordFailedAttempt, clearAttempts } from '@/core/auth/rateLimiter';
 import { sealLegacyMetadata } from '@/data/repositories/metadataSealing';
+import { stripLegacyBiometric } from '@/core/auth/biometricMigration';
 
 export class UserRepositoryImpl implements IUserRepository {
   /**
@@ -144,6 +145,25 @@ export class UserRepositoryImpl implements IUserRepository {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
 
+    // S1: enforce the PRF-only invariant by removing any legacy (insecure)
+    // biometric credentials that slipped past the v6 migration. Non-fatal.
+    try {
+      const fresh = await db.users.get(storedUser.id);
+      if (fresh) {
+        const { credentials, biometricEnabled, changed } = stripLegacyBiometric(
+          fresh.webAuthnCredentials,
+        );
+        if (changed) {
+          await db.users.update(storedUser.id, {
+            webAuthnCredentials: credentials,
+            biometricEnabled,
+          });
+        }
+      }
+    } catch {
+      // Non-fatal: legacy strip will retry next login.
+    }
+
     // Create session with the actual vault key
     return {
       userId: storedUser.id,
@@ -168,30 +188,36 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('Biometric credential not found');
     }
 
-    // Check if vault key is stored with this credential
-    if (!credential.encryptedVaultKey || !credential.salt) {
-      throw new Error('Biometric authentication not configured. Please sign in with your password and enable biometric in Settings.');
+    // S1: only PRF-scheme credentials can unlock the vault. Legacy device-key
+    // credentials were removed by the v6 migration; ask the user to re-enroll.
+    if (
+      credential.vaultKeyScheme !== 'prf-v1' ||
+      !credential.wrappedVaultKey ||
+      !credential.prfSalt
+    ) {
+      throw new Error('Biometric needs to be re-enabled on this device. Please sign in with your master password and re-enable biometric in Settings.');
     }
-
-    const { authenticateBiometric, verifyAuthenticationResponse } = await import('@/core/auth/webauthn');
 
     const rpId = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'localhost'
       : window.location.hostname;
 
-    const { response: authResponse, challenge } = await authenticateBiometric(credentialId, rpId);
+    const { getPRFOutput } = await import('@/core/auth/webauthn');
+    const { unwrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
 
-    // Verify challenge, origin, and counter — throws on any mismatch
-    const newCounter = verifyAuthenticationResponse(authResponse, challenge, credential.counter);
-
-    // Decrypt vault key using biometric-specific encryption
-    const { decryptVaultKeyFromBiometric } = await import('@/core/auth/biometricVaultKey');
-    const vaultKey = await decryptVaultKeyFromBiometric(
-      credential.encryptedVaultKey,
-      credential.salt,
+    // Assertion ceremony: evaluate the PRF at the stored salt. getPRFOutput also
+    // verifies challenge/origin and that the counter increased (replay protection).
+    const prfSaltBytes = decodeBase64ToUint8Array(credential.prfSalt);
+    const { prfOutput, counter: newCounter } = await getPRFOutput(
       credentialId,
-      userId
+      prfSaltBytes,
+      rpId,
+      credential.counter,
     );
+
+    // Unwrap the vault key with the PRF-derived key. Throws on a wrong/forged PRF
+    // output (AES-GCM auth failure) — there is no insecure fallback path.
+    const vaultKey = await unwrapVaultKeyWithPRF(credential.wrappedVaultKey, prfOutput);
 
     // Update credential with verified counter and last used time
     const updatedCredentials = user.webAuthnCredentials.map(c =>
@@ -281,22 +307,30 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('User not found');
     }
 
+    const { isBiometricAvailable, isPRFSupported, registerCredentialWithPRF, getPRFOutput } =
+      await import('@/core/auth/webauthn');
+
     // Check if biometric is available
-    const { isBiometricAvailable } = await import('@/core/auth/webauthn');
     const available = await isBiometricAvailable();
     if (!available) {
       throw new Error('Biometric authentication is not available on this device');
     }
 
-    // Register with WebAuthn
-    const { registerBiometric } = await import('@/core/auth/webauthn');
+    // S1: biometric unlock REQUIRES the WebAuthn PRF extension. Without it we
+    // cannot bind the vault key to the authenticator hardware, so we refuse to
+    // enroll and the user keeps using their master password.
+    const prfSupported = await isPRFSupported();
+    if (!prfSupported) {
+      throw new Error('This browser or device does not support the secure PRF extension required for biometric unlock. Please continue using your master password.');
+    }
 
     // Use 'localhost' for local dev, otherwise use hostname
     const rpId = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'localhost'
       : window.location.hostname;
 
-    const registrationResponse = await registerBiometric({
+    // Ceremony 1 — create the credential with PRF enabled.
+    const registration = await registerCredentialWithPRF({
       rpName: 'TrustVault',
       rpId,
       userId: user.id,
@@ -304,30 +338,29 @@ export class UserRepositoryImpl implements IUserRepository {
       userDisplayName: user.displayName || user.email,
     });
 
-    // Extract credential data
-    const credentialId = registrationResponse.id;
-    const rawPublicKey = registrationResponse.response.publicKey ?? '';
-    const publicKeyBytes = decodeBase64ToUint8Array(rawPublicKey);
-    const publicKeyBase64 = encodeUint8ArrayToBase64(publicKeyBytes);
+    // Registration only *enables* PRF; if the authenticator didn't, abort and
+    // store nothing (no insecure fallback).
+    if (!registration.prfEnabled) {
+      throw new Error('Your authenticator did not enable the PRF extension required for secure biometric unlock. Please use your master password.');
+    }
 
-    // Encrypt vault key for this biometric credential
-    const { encryptVaultKeyForBiometric } = await import('@/core/auth/biometricVaultKey');
-    const { encryptedVaultKey, salt } = await encryptVaultKeyForBiometric(
-      vaultKey,
-      credentialId,
-      userId
-    );
+    // Ceremony 2 — evaluate the PRF to obtain the wrapping secret, then wrap the
+    // vault key. The PRF output and wrap key are transient (never stored).
+    const { generatePrfSalt, wrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
+    const prfSalt = generatePrfSalt();
+    const { prfOutput } = await getPRFOutput(registration.credentialId, prfSalt, rpId);
+    const wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKey, prfOutput);
 
-    // Create new credential record with encrypted vault key
     const newCredential = {
-      id: credentialId,
-      publicKey: publicKeyBase64,
+      id: registration.credentialId,
+      publicKey: registration.publicKey,
       counter: 0,
-      transports: registrationResponse.response.transports ?? [],
+      transports: registration.transports,
       createdAt: new Date(),
       deviceName: deviceName || 'Biometric Device',
-      encryptedVaultKey,
-      salt,
+      vaultKeyScheme: 'prf-v1' as const,
+      wrappedVaultKey,
+      prfSalt: encodeUint8ArrayToBase64(prfSalt),
     };
 
     // Store updated credentials
@@ -337,8 +370,6 @@ export class UserRepositoryImpl implements IUserRepository {
       webAuthnCredentials: updatedCredentials as typeof user.webAuthnCredentials,
       biometricEnabled: true,
     });
-
-    console.log('Biometric credential registered successfully with encrypted vault key');
   }
 
   /**

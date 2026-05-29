@@ -210,8 +210,10 @@ export default function SettingsPage() {
             Biometric Authentication
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Use your fingerprint, face, or security key (YubiKey, Titan) to unlock TrustVault faster.
-            Your master password is still required for initial setup and critical operations.
+            Use your fingerprint or face to unlock TrustVault. Your vault key is wrapped with a
+            secret held inside your device&apos;s secure hardware (WebAuthn PRF) and is never stored,
+            so only your verified biometric can unlock it. Your master password always works as a
+            recovery method and is required for initial setup.
           </Typography>
           
           {user.biometricEnabled && user.webAuthnCredentials.length > 0 ? (
