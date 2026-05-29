@@ -89,8 +89,15 @@ that let stored data alone unlock the vault.
 - Legacy device‑key credentials are removed by the DB **v6** migration and on the
   next password login; affected users re‑enroll biometric once (master password
   unlock is unaffected and remains the recovery path).
-- On devices/browsers without PRF support, biometric unlock is **not offered** —
-  the UI falls back to master password (no insecure scheme is ever used).
+- PRF support is detected as a tri-state (`detectPRFSupport()`):
+  - **Known unsupported** (no WebAuthn, or client capabilities report no PRF):
+    biometric is **not offered** — the UI disables enrollment and hides the
+    unlock button, falling back to master password.
+  - **Unknown** (`PublicKeyCredential.getClientCapabilities` unavailable — still
+    common in 2026): enrollment is **attempted and hard-verifies PRF** via
+    `prf.enabled` and the assertion's PRF result. If PRF turns out unavailable,
+    it aborts with a clear "use your master password" message.
+  - No insecure (recomputable) scheme is ever used on any path.
 
 ---
 

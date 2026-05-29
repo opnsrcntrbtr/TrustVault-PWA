@@ -34,7 +34,7 @@ import {
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
-import { getDeviceName, isBiometricAvailable, getAuthenticatorInfo, isPRFSupported } from '@/core/auth/webauthn';
+import { getDeviceName, isBiometricAvailable, getAuthenticatorInfo, detectPRFSupport, type PRFSupport } from '@/core/auth/webauthn';
 import type { WebAuthnCredential } from '@/domain/entities/User';
 
 interface BiometricSetupDialogProps {
@@ -49,8 +49,9 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [biometricAvailable, setBiometricAvailable] = useState(false);
-  // S1: PRF extension is required for secure biometric unlock on this device.
-  const [prfSupported, setPrfSupported] = useState(true);
+  // S1: PRF extension is required for secure biometric unlock. Tri-state so we
+  // only block/warn when PRF is *known* unsupported (not merely unverifiable).
+  const [prfSupport, setPrfSupport] = useState<PRFSupport>('unknown');
   const [authenticatorInfo, setAuthenticatorInfo] = useState<{
     biometricAvailable: boolean;
     conditionalMediationAvailable: boolean;
@@ -81,8 +82,8 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
       const available = await isBiometricAvailable();
       setBiometricAvailable(available);
 
-      const prf = await isPRFSupported();
-      setPrfSupported(prf);
+      const prf = await detectPRFSupport();
+      setPrfSupport(prf);
 
       const info = await getAuthenticatorInfo();
       setAuthenticatorInfo(info);
@@ -198,7 +199,7 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
           </Alert>
         )}
 
-        {biometricAvailable && !prfSupported && (
+        {biometricAvailable && prfSupport === 'unsupported' && (
           <Alert severity="warning" sx={{ mb: 2 }}>
             <Typography variant="body2" fontWeight={600}>
               Secure biometric unlock unavailable
@@ -332,7 +333,7 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
           variant={credentials.length === 0 ? 'contained' : 'outlined'}
           startIcon={isLoading ? <CircularProgress size={20} /> : <Add />}
           onClick={handleRegisterBiometric}
-          disabled={!biometricAvailable || !prfSupported || !vaultKey || isLoading}
+          disabled={!biometricAvailable || prfSupport === 'unsupported' || !vaultKey || isLoading}
           sx={{ mt: 2 }}
         >
           {isLoading ? 'Registering...' : 'Register New Device'}
