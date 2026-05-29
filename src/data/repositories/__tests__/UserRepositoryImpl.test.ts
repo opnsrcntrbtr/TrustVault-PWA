@@ -9,7 +9,6 @@ import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
 import { needsRehash } from '@/core/crypto/password';
 import { db } from '../../storage/database';
-import { encrypt } from '@/core/crypto/encryption';
 import type { User } from '@/domain/entities/User';
 
 /** Builds a legacy (pre-S4) scrypt hash for a password. */
