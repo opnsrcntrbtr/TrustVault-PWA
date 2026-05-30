@@ -12,6 +12,7 @@
 import Dexie, { type Table } from 'dexie';
 import { User, SecuritySettings } from '@/domain/entities/User';
 import { stripLegacyBiometric } from '@/core/auth/biometricMigration';
+import { deriveUniqueUsernames } from '@/core/auth/usernameMigration';
 
 // Database schema interfaces
 import type { CredentialCategory } from '@/domain/entities/Credential';
@@ -76,6 +77,12 @@ export interface StoredCredential {
 export interface StoredUser extends Omit<User, 'createdAt' | 'lastLoginAt'> {
   createdAt: number;
   lastLoginAt: number;
+  /**
+   * Lowercased `username`, used as the unique (`&usernameLower`) lookup index
+   * for case-insensitive identity. Backfilled for existing rows by the v7
+   * migration; optional only during the transition.
+   */
+  usernameLower?: string;
 }
 
 export interface StoredSession {
@@ -130,6 +137,11 @@ export class TrustVaultDB extends Dexie {
     const credentialStoreSchema =
       'id, category, isFavorite, createdAt, updatedAt';
     const userStoreSchema = 'id, email, createdAt, biometricEnabled';
+    // v7 schema: add a unique index on the lowercased username. `&` enforces
+    // uniqueness; rows with an undefined usernameLower are simply not indexed,
+    // so the index coexists with not-yet-migrated rows until the upgrade runs.
+    const userStoreSchemaV7 =
+      'id, &usernameLower, email, createdAt, biometricEnabled';
     const sessionStoreSchema = 'id, userId, expiresAt, isLocked';
     const breachStoreSchema =
       'id, credentialId, checkType, breached, severity, checkedAt, expiresAt';
@@ -220,6 +232,40 @@ export class TrustVaultDB extends Dexie {
             user.webAuthnCredentials = credentials;
             user.biometricEnabled = biometricEnabled;
           });
+      });
+
+    // Version 7 - Username identity (PII privacy)
+    // Email becomes optional and a unique, case-insensitive username becomes the
+    // primary login key. Existing accounts are backfilled: each gets a username
+    // derived from its email local-part, with deterministic collision suffixes
+    // so the new `&usernameLower` unique index never conflicts. Collision
+    // resolution must see all rows at once, so we load the batch, compute the
+    // assignment with the pure deriveUniqueUsernames(), then write each row.
+    // loginAttempts is cleared to purge the email addresses it stored as keys.
+    this.version(7)
+      .stores({
+        credentials: credentialStoreSchema,
+        users: userStoreSchemaV7,
+        sessions: sessionStoreSchema,
+        settings: 'id',
+        breachResults: breachStoreSchema,
+        loginAttempts: 'email, lockedUntil',
+      })
+      .upgrade(async (tx) => {
+        const usersTable = tx.table<StoredUser>('users');
+        const existing = await usersTable.toArray();
+        const assignments = deriveUniqueUsernames(existing);
+        for (const user of existing) {
+          const assigned = assignments.get(user.id);
+          if (assigned) {
+            await usersTable.update(user.id, {
+              username: assigned.username,
+              usernameLower: assigned.usernameLower,
+            });
+          }
+        }
+        // Purge stored PII: loginAttempts keyed rows by email address.
+        await tx.table('loginAttempts').clear();
       });
   }
 

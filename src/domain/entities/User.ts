@@ -4,6 +4,13 @@
  */
 export interface User {
   id: string;
+  /**
+   * Primary, unique login identity (case-insensitive via `usernameLower`).
+   * Optional on the type during the email→username transition (DB v7 backfills
+   * existing rows); `createUser` makes it mandatory for new accounts.
+   */
+  username?: string;
+  /** Optional recovery hint only. Never transmitted — stored locally. */
   email: string;
   displayName?: string;
   hashedMasterPassword: string; // Argon2id hash
