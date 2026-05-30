@@ -63,6 +63,8 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 5. Auto-lock after 15 minutes of inactivity
 
 ### Biometric Authentication (WebAuthn PRF — S1)
+This section describes the concrete cryptographic instantiation of the **[Zero-Knowledge Architecture](./README.md#architecture-snapshot)** principle documented in README.md.
+
 1. Platform authenticator verification (Touch ID / Face ID / Windows Hello)
 2. Challenge generation (256-bit random)
 3. User verification required (UV flag)

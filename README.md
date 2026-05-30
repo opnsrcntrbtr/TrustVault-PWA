@@ -32,6 +32,8 @@ Progress for each pillar lives in `ROADMAP.md` with granular prompts, dependenci
 - **Storage**: Dexie-backed IndexedDB schemas for credentials, sessions, settings. All sensitive fields encrypted before persistence.
 - **Security**: CSP + security headers enforced via Vite middleware + `vercel.json`. WebAuthn, clipboard scrubbing, and audit tooling tracked in roadmap.
 
+**Zero-Knowledge Architecture:** Vault unlock is demonstrably zero-knowledge via WebAuthn PRF. See [SECURITY.md § Biometric Authentication (WebAuthn PRF — S1)](./SECURITY.md#biometric-authentication-webauthn-prf--s1) for the cryptographic proof that stored data alone cannot unlock the vault.
+
 ---
 
 ## Getting Started
