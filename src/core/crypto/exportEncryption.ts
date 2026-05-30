@@ -3,7 +3,8 @@
  * Handles encryption and decryption of vault exports with a separate password
  */
 
-import { deriveKeyFromPassword, encrypt, decrypt } from './encryption';
+import { deriveKeyFromPassword, encrypt, decrypt, PBKDF2_ITERATIONS } from './encryption';
+import { encodeUint8ArrayToBase64, decodeBase64ToUint8Array } from '@/core/utils/base64';
 import type { Credential } from '@/domain/entities/Credential';
 
 /**
@@ -62,11 +63,11 @@ export async function encryptExport(
   const vaultExport: VaultExport = {
     version: '1.0',
     exportDate: new Date().toISOString(),
-    salt: btoa(String.fromCharCode(...salt)),
+    salt: encodeUint8ArrayToBase64(salt),
     encryptedData: JSON.stringify(encryptedData),
     encryptionParams: {
       algorithm: 'AES-256-GCM',
-      iterations: 600000, // PBKDF2 iterations
+      iterations: PBKDF2_ITERATIONS,
     },
   };
 
@@ -107,11 +108,7 @@ export async function decryptImport(
   }
 
   // Decode salt
-  const saltString = atob(vaultExport.salt);
-  const salt = new Uint8Array(saltString.length);
-  for (let i = 0; i < saltString.length; i++) {
-    salt[i] = saltString.charCodeAt(i);
-  }
+  const salt = decodeBase64ToUint8Array(vaultExport.salt);
 
   // Derive decryption key
   const key = await deriveKeyFromPassword(exportPassword, salt);

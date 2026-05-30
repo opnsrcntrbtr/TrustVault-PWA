@@ -10,6 +10,7 @@ import { deriveKeyFromPassword, encrypt } from '../encryption';
 import type { Credential } from '@/domain/entities/Credential';
 
 vi.mock('../encryption', () => ({
+  PBKDF2_ITERATIONS: 600_000,
   deriveKeyFromPassword: vi.fn((password: string, salt: Uint8Array) => Promise.resolve({
     password,
     salt: Array.from(salt),
