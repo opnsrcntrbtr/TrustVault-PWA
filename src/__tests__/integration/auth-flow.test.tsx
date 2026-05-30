@@ -17,7 +17,7 @@ describe('Authentication Flow Integration', () => {
     localStorage.clear();
     sessionStorage.clear();
     window.history.pushState({}, '', '/');
-    
+
     // Clear database tables
     await db.users.clear();
     await db.credentials.clear();
@@ -31,9 +31,9 @@ describe('Authentication Flow Integration', () => {
     it('should keep direct /signin deep links on sign-in even with no local users', async () => {
       window.history.pushState({}, '', '/signin');
       render(
-        
+
           <App />
-        
+
       );
 
       await waitFor(() => {
@@ -46,9 +46,9 @@ describe('Authentication Flow Integration', () => {
     it('should complete signup with valid credentials', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       // Wait for app to initialize - with no users, it auto-redirects to signup
@@ -56,14 +56,14 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      // Fill signup form
-      const emailInput = screen.getByLabelText(/email/i);
+      // Fill signup form — username is the required identity field (email is optional)
+      const usernameInput = screen.getByLabelText(/username/i);
       // Both password fields have "Master Password" in label, so we use getAllByLabelText
       const passwordInputs = screen.getAllByLabelText(/master password/i);
       const passwordInput = passwordInputs[0]; // First one is the password field
       const confirmInput = passwordInputs[1]; // Second one is confirm field
 
-      await user.type(emailInput, 'newuser@example.com');
+      await user.type(usernameInput, 'newuser');
       await user.type(passwordInput, 'SecurePassword123!');
       await user.type(confirmInput, 'SecurePassword123!');
 
@@ -80,15 +80,15 @@ describe('Authentication Flow Integration', () => {
       // Verify authenticated state
       const state = useAuthStore.getState();
       expect(state.isAuthenticated).toBe(true);
-      expect(state.user?.email).toBe('newuser@example.com');
+      expect(state.user?.username).toBe('newuser');
     });
 
     it('should reject signup with weak password', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       // With no users, app auto-redirects to signup
@@ -97,12 +97,12 @@ describe('Authentication Flow Integration', () => {
       }, { timeout: 5000 });
 
       // Try weak password
-      const emailInput = screen.getByLabelText(/email/i);
+      const usernameInput = screen.getByLabelText(/username/i);
       const passwordInputs = screen.getAllByLabelText(/master password/i);
       const passwordInput = passwordInputs[0];
       const confirmInput = passwordInputs[1];
 
-      await user.type(emailInput, 'test@example.com');
+      await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, '123456');
       await user.type(confirmInput, '123456');
 
@@ -118,9 +118,9 @@ describe('Authentication Flow Integration', () => {
     it('should reject signup with mismatched passwords', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       // With no users, app auto-redirects to signup
@@ -128,12 +128,12 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      const emailInput = screen.getByLabelText(/email/i);
+      const usernameInput = screen.getByLabelText(/username/i);
       const passwordInputs = screen.getAllByLabelText(/master password/i);
       const passwordInput = passwordInputs[0];
       const confirmInput = passwordInputs[1];
 
-      await user.type(emailInput, 'test@example.com');
+      await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'SecurePassword123!');
       await user.type(confirmInput, 'DifferentPassword123!');
 
@@ -153,9 +153,9 @@ describe('Authentication Flow Integration', () => {
     it.skip('should signin with correct credentials after signup', async () => {
       const user = userEvent.setup();
       const { unmount } = render(
-        
+
           <App />
-        
+
       );
 
       // With no users, app auto-redirects to signup
@@ -163,11 +163,11 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      let emailInput = screen.getByLabelText(/email/i);
+      let usernameInput = screen.getByLabelText(/username/i);
       let passwordInput = screen.getByLabelText(/^master password/i);
       const confirmInput = screen.getByLabelText(/confirm.*master.*password/i);
 
-      await user.type(emailInput, 'testuser@example.com');
+      await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'TestPassword123!');
       await user.type(confirmInput, 'TestPassword123!');
 
@@ -184,31 +184,29 @@ describe('Authentication Flow Integration', () => {
 
       // Sign out and clear persisted state
       useAuthStore.getState().clearSession();
-      localStorage.clear(); // Clear persisted auth state
+      localStorage.clear();
       unmount();
-      
+
       // Verify user still in database after unmount
       const userCountAfter = await db.users.count();
-      // Debug: Users in DB after unmount
       expect(userCountAfter).toBe(1);
 
       // Now sign back in - user exists so should show signin page
       render(
-        
+
           <App />
-        
+
       );
-      
+
       // Wait for initialization to complete first, then look for sign in button
       await waitFor(() => {
-        // With user in database, app should show signin page after initialization
         expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
       }, { timeout: 10000 });
 
-      emailInput = screen.getByLabelText(/email/i);
-      passwordInput = screen.getByLabelText(/^password$/i);
+      usernameInput = screen.getByLabelText(/username/i);
+      passwordInput = screen.getByLabelText(/^master password$/i);
 
-      await user.type(emailInput, 'testuser@example.com');
+      await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'TestPassword123!');
 
       submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -221,16 +219,16 @@ describe('Authentication Flow Integration', () => {
 
       const state = useAuthStore.getState();
       expect(state.isAuthenticated).toBe(true);
-      expect(state.user?.email).toBe('testuser@example.com');
+      expect(state.user?.username).toBe('testuser');
     });
 
     // Skip: Complex cross-session tests require proper Zustand store reset between renders
     it.skip('should reject signin with incorrect password', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       // With no users, app auto-redirects to signup
@@ -238,11 +236,11 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      let emailInput = screen.getByLabelText(/email/i);
+      let usernameInput = screen.getByLabelText(/username/i);
       let passwordInput = screen.getByLabelText(/^master password/i);
       const confirmInput = screen.getByLabelText(/confirm.*master.*password/i);
 
-      await user.type(emailInput, 'test@example.com');
+      await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'CorrectPassword123!');
       await user.type(confirmInput, 'CorrectPassword123!');
 
@@ -260,10 +258,10 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByText(/sign in/i)).toBeInTheDocument();
       });
 
-      emailInput = screen.getByLabelText(/email/i);
-      passwordInput = screen.getByLabelText(/password/i);
+      usernameInput = screen.getByLabelText(/username/i);
+      passwordInput = screen.getByLabelText(/master password/i);
 
-      await user.type(emailInput, 'test@example.com');
+      await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'WrongPassword123!');
 
       submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -271,7 +269,7 @@ describe('Authentication Flow Integration', () => {
 
       // Should show error
       await waitFor(() => {
-        expect(screen.getByText(/incorrect.*password/i)).toBeInTheDocument();
+        expect(screen.getByText(/invalid username or password/i)).toBeInTheDocument();
       });
 
       // Should still be on signin page
@@ -279,22 +277,22 @@ describe('Authentication Flow Integration', () => {
     });
 
     // Skip: Requires user in database from different session
-    it.skip('should reject signin with non-existent email', async () => {
+    it.skip('should reject signin with non-existent username', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       await waitFor(() => {
         expect(screen.getByText(/sign in/i)).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      const emailInput = screen.getByLabelText(/email/i);
-      const passwordInput = screen.getByLabelText(/password/i);
+      const usernameInput = screen.getByLabelText(/username/i);
+      const passwordInput = screen.getByLabelText(/master password/i);
 
-      await user.type(emailInput, 'nonexistent@example.com');
+      await user.type(usernameInput, 'nobody');
       await user.type(passwordInput, 'AnyPassword123!');
 
       const submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -302,7 +300,7 @@ describe('Authentication Flow Integration', () => {
 
       // Should show error
       await waitFor(() => {
-        expect(screen.getByText(/user.*not found/i)).toBeInTheDocument();
+        expect(screen.getByText(/invalid username or password/i)).toBeInTheDocument();
       });
     });
   });
@@ -312,9 +310,9 @@ describe('Authentication Flow Integration', () => {
     it.skip('should clear session and redirect to signin on signout', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       // With no users, app auto-redirects to signup
@@ -322,11 +320,11 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      const emailInput = screen.getByLabelText(/email/i);
+      const usernameInput = screen.getByLabelText(/username/i);
       const passwordInput = screen.getByLabelText(/^master password/i);
       const confirmInput = screen.getByLabelText(/confirm.*master.*password/i);
 
-      await user.type(emailInput, 'signouttest@example.com');
+      await user.type(usernameInput, 'signouttest');
       await user.type(passwordInput, 'TestPassword123!');
       await user.type(confirmInput, 'TestPassword123!');
 
@@ -369,7 +367,7 @@ describe('Authentication Flow Integration', () => {
     // Skip: Complex cross-session tests require proper Zustand store reset between renders
     it.skip('should complete signup → signin → signout → signin cycle', async () => {
       const user = userEvent.setup();
-      const testEmail = 'cycle@example.com';
+      const testUsername = 'cycleuser';
       const testPassword = 'CycleTest123!';
 
       // Render app
@@ -384,11 +382,11 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      let emailInput = screen.getByLabelText(/email/i);
+      let usernameInput = screen.getByLabelText(/username/i);
       let passwordInput = screen.getByLabelText(/^master password/i);
       const confirmInput = screen.getByLabelText(/confirm.*master.*password/i);
 
-      await user.type(emailInput, testEmail);
+      await user.type(usernameInput, testUsername);
       await user.type(passwordInput, testPassword);
       await user.type(confirmInput, testPassword);
 
@@ -414,10 +412,10 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByText(/sign in/i)).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      emailInput = screen.getByLabelText(/email/i);
-      passwordInput = screen.getByLabelText(/password/i);
+      usernameInput = screen.getByLabelText(/username/i);
+      passwordInput = screen.getByLabelText(/master password/i);
 
-      await user.type(emailInput, testEmail);
+      await user.type(usernameInput, testUsername);
       await user.type(passwordInput, testPassword);
 
       submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -429,7 +427,7 @@ describe('Authentication Flow Integration', () => {
 
       let state = useAuthStore.getState();
       expect(state.isAuthenticated).toBe(true);
-      expect(state.user?.email).toBe(testEmail);
+      expect(state.user?.username).toBe(testUsername);
 
       // STEP 4: SIGNOUT AGAIN
       useAuthStore.getState().clearSession();
@@ -439,10 +437,10 @@ describe('Authentication Flow Integration', () => {
       });
 
       // STEP 5: SIGNIN #2
-      emailInput = screen.getByLabelText(/email/i);
-      passwordInput = screen.getByLabelText(/password/i);
+      usernameInput = screen.getByLabelText(/username/i);
+      passwordInput = screen.getByLabelText(/master password/i);
 
-      await user.type(emailInput, testEmail);
+      await user.type(usernameInput, testUsername);
       await user.type(passwordInput, testPassword);
 
       submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -454,14 +452,14 @@ describe('Authentication Flow Integration', () => {
 
       state = useAuthStore.getState();
       expect(state.isAuthenticated).toBe(true);
-      expect(state.user?.email).toBe(testEmail);
+      expect(state.user?.username).toBe(testUsername);
     });
   });
 
   describe('Lock/Unlock Flow (Use Case 1)', () => {
     it('should lock vault on inactivity and require unlock without losing data', async () => {
       const user = userEvent.setup();
-      const testEmail = 'locktest@example.com';
+      const testUsername = 'locktest';
       const testPassword = 'LockTest123!';
 
       render(
@@ -475,11 +473,11 @@ describe('Authentication Flow Integration', () => {
         expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
-      const emailInput = screen.getByLabelText(/email/i);
+      const usernameInput = screen.getByLabelText(/username/i);
       const passwordInput = screen.getByLabelText(/^master password/i);
       const confirmInput = screen.getByLabelText(/confirm.*master.*password/i);
 
-      await user.type(emailInput, testEmail);
+      await user.type(usernameInput, testUsername);
       await user.type(passwordInput, testPassword);
       await user.type(confirmInput, testPassword);
 
@@ -517,12 +515,10 @@ describe('Authentication Flow Integration', () => {
     });
 
     it('should clear vault keys and credentials on lock', async () => {
-      const testEmail = 'datalock@example.com';
-
-      // Create account and sign in
+      // Create account and sign in via store directly (no form — tests store behaviour)
       useAuthStore.getState().setUser({
         id: 'test-id',
-        email: testEmail,
+        username: 'lockuser',
         hashedMasterPassword: 'hashed',
         encryptedVaultKey: 'encrypted',
         salt: 'salt',
