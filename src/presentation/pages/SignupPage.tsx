@@ -1,6 +1,7 @@
 /**
  * Signup Page Component
- * Handles new account creation with master password
+ * Handles new account creation with username (required) and master password.
+ * Email is optional — a local-only recovery hint, never shared.
  */
 
 import { useState } from 'react';
@@ -26,9 +27,12 @@ import {
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
+import { validateUsername } from '@/core/auth/usernameValidation';
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [usernameError, setUsernameError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -43,38 +47,42 @@ export default function SignupPage() {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    const usernameResult = validateUsername(username);
+    if (!usernameResult.valid) {
+      setUsernameError(usernameResult.error ?? 'Invalid username');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 12) {
+      setError('Password must be at least 12 characters long');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // Validate passwords match
-      if (password !== confirmPassword) {
-        throw new Error('Passwords do not match');
-      }
+      const user = await userRepository.createUser(
+        username,
+        password,
+        email.trim() !== '' ? email.trim() : undefined,
+      );
 
-      // Validate password strength (minimum requirements)
-      if (password.length < 12) {
-        throw new Error('Password must be at least 12 characters long');
-      }
-
-      // Create new user
-      const user = await userRepository.createUser(email, password);
-      console.log('User created successfully');
-
-      // Automatically authenticate after signup
-      const session = await userRepository.authenticateWithPassword(email, password);
+      const session = await userRepository.authenticateWithPassword(username, password);
 
       setUser(user);
       setSession(session);
       setVaultKey(session.vaultKey);
       setSuccess('Account created successfully! Redirecting to dashboard...');
 
-      // Redirect to dashboard after short delay
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1500);
+      setTimeout(() => { navigate('/dashboard'); }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create account');
-      console.error('Signup failed:', err);
     } finally {
       setIsLoading(false);
     }
@@ -119,13 +127,36 @@ export default function SignupPage() {
             <Stack spacing={3}>
               <TextField
                 fullWidth
-                label="Email"
+                label="Username"
+                type="text"
+                value={username}
+                onChange={(e): void => {
+                  setUsername(e.target.value);
+                  if (usernameError) setUsernameError(null);
+                }}
+                onBlur={(): void => {
+                  if (username.length > 0) {
+                    const result = validateUsername(username);
+                    if (!result.valid) setUsernameError(result.error ?? null);
+                  }
+                }}
+                required
+                disabled={isLoading}
+                autoComplete="username"
+                error={usernameError !== null}
+                helperText={usernameError ?? 'Letters, numbers, dot, underscore, or hyphen (3–32 chars)'}
+                inputProps={{ maxLength: 32 }}
+              />
+
+              <TextField
+                fullWidth
+                label="Email (optional)"
                 type="email"
                 value={email}
                 onChange={(e): void => { setEmail(e.target.value); }}
-                required
                 disabled={isLoading}
                 autoComplete="email"
+                helperText="Optional — stored locally only as a recovery hint, never shared"
               />
 
               <TextField

@@ -11,7 +11,7 @@ export interface User {
    */
   username?: string;
   /** Optional recovery hint only. Never transmitted — stored locally. */
-  email: string;
+  email?: string;
   displayName?: string;
   hashedMasterPassword: string; // Argon2id hash
   encryptedVaultKey: string; // Master key encrypted with derived key

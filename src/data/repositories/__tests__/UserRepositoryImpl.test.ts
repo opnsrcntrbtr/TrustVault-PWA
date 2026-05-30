@@ -68,27 +68,29 @@ describe('UserRepositoryImpl', () => {
 
   describe('createUser()', () => {
     it('should create a new user with hashed password', async () => {
+      const username = 'testuser';
       const email = 'test@example.com';
       const password = 'TestPassword123!';
 
-      const user = await repository.createUser(email, password);
+      const user = await repository.createUser(username, password, email);
 
       expect(user).toBeDefined();
       expect(user.id).toBeDefined();
+      expect(user.username).toBe(username);
       expect(user.email).toBe(email);
       expect(user.hashedMasterPassword).toContain('scrypt$');
       expect(user.hashedMasterPassword).not.toBe(password);
     });
 
     it('should generate unique user IDs', async () => {
-      const user1 = await repository.createUser('user1@example.com', 'Password123!');
-      const user2 = await repository.createUser('user2@example.com', 'Password123!');
+      const user1 = await repository.createUser('user1', 'Password123!');
+      const user2 = await repository.createUser('user2', 'Password123!');
 
       expect(user1.id).not.toBe(user2.id);
     });
 
     it('should create encrypted vault key', async () => {
-      const user = await repository.createUser('test@example.com', 'TestPassword123!');
+      const user = await repository.createUser('testuser', 'TestPassword123!');
 
       expect(user.encryptedVaultKey).toBeDefined();
       expect(typeof user.encryptedVaultKey).toBe('string');
@@ -96,8 +98,8 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should generate unique salt for each user', async () => {
-      const user1 = await repository.createUser('user1@example.com', 'Password123!');
-      const user2 = await repository.createUser('user2@example.com', 'Password123!');
+      const user1 = await repository.createUser('user1', 'Password123!');
+      const user2 = await repository.createUser('user2', 'Password123!');
 
       expect(user1.salt).toBeDefined();
       expect(user2.salt).toBeDefined();
@@ -105,7 +107,7 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should set default security settings', async () => {
-      const user = await repository.createUser('test@example.com', 'TestPassword123!');
+      const user = await repository.createUser('testuser', 'TestPassword123!');
 
       expect(user.securitySettings).toBeDefined();
       expect(user.securitySettings.sessionTimeoutMinutes).toBe(15);
@@ -115,7 +117,7 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should set biometric disabled by default', async () => {
-      const user = await repository.createUser('test@example.com', 'TestPassword123!');
+      const user = await repository.createUser('testuser', 'TestPassword123!');
 
       expect(user.biometricEnabled).toBe(false);
       expect(user.webAuthnCredentials).toEqual([]);
@@ -123,7 +125,7 @@ describe('UserRepositoryImpl', () => {
 
     it('should set creation and last login timestamps', async () => {
       const beforeCreate = Date.now();
-      const user = await repository.createUser('test@example.com', 'TestPassword123!');
+      const user = await repository.createUser('testuser', 'TestPassword123!');
       const afterCreate = Date.now();
 
       expect(user.createdAt).toBeDefined();
@@ -132,50 +134,59 @@ describe('UserRepositoryImpl', () => {
       expect(user.createdAt.getTime()).toBeLessThanOrEqual(afterCreate);
     });
 
-    it('should reject duplicate email addresses', async () => {
-      const email = 'test@example.com';
-      await repository.createUser(email, 'Password123!');
+    it('should reject duplicate usernames', async () => {
+      await repository.createUser('dupuser', 'Password123!');
 
-      await expect(repository.createUser(email, 'Different123!')).rejects.toThrow(
-        'User with this email already exists'
+      await expect(repository.createUser('dupuser', 'Different123!')).rejects.toThrow(
+        'Username already taken'
       );
     });
 
-    it('should handle empty email', async () => {
-      const user = await repository.createUser('', 'Password123!');
-      // Empty email is allowed, just creates user with empty string
+    it('should reject duplicate usernames case-insensitively', async () => {
+      await repository.createUser('Alice', 'Password123!');
+
+      await expect(repository.createUser('alice', 'Different123!')).rejects.toThrow(
+        'Username already taken'
+      );
+    });
+
+    it('should allow creating user without email (email is optional)', async () => {
+      const user = await repository.createUser('noemail', 'Password123!');
       expect(user).toBeDefined();
-      expect(user.email).toBe('');
+      expect(user.username).toBe('noemail');
+      expect(user.email).toBeUndefined();
     });
 
     it('should handle empty password', async () => {
-      const user = await repository.createUser('test@example.com', '');
+      const user = await repository.createUser('testuser', '');
 
       expect(user).toBeDefined();
       expect(user.hashedMasterPassword).toContain('scrypt$');
     });
 
-    it('should store user in IndexedDB', async () => {
-      const email = 'test@example.com';
-      await repository.createUser(email, 'Password123!');
+    it('should store user in IndexedDB with usernameLower index', async () => {
+      const username = 'indextest';
+      await repository.createUser(username, 'Password123!');
 
-      const storedUser = await db.users.where('email').equals(email).first();
+      const storedUser = await db.users.where('usernameLower').equals(username).first();
 
       expect(storedUser).toBeDefined();
-      expect(storedUser?.email).toBe(email);
+      expect(storedUser?.username).toBe(username);
+      expect(storedUser?.usernameLower).toBe(username);
     });
   });
 
   describe('authenticateWithPassword()', () => {
+    const testUsername = 'authuser';
     const testEmail = 'test@example.com';
     const testPassword = 'TestPassword123!';
 
     beforeEach(async () => {
-      await repository.createUser(testEmail, testPassword);
+      await repository.createUser(testUsername, testPassword, testEmail);
     });
 
     it('should authenticate with correct credentials', async () => {
-      const session = await repository.authenticateWithPassword(testEmail, testPassword);
+      const session = await repository.authenticateWithPassword(testUsername, testPassword);
 
       expect(session).toBeDefined();
       expect(session.userId).toBeDefined();
@@ -184,7 +195,7 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should return session with userId', async () => {
-      const session = await repository.authenticateWithPassword(testEmail, testPassword);
+      const session = await repository.authenticateWithPassword(testUsername, testPassword);
 
       expect(session.userId).toBeDefined();
       expect(typeof session.userId).toBe('string');
@@ -192,7 +203,7 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should decrypt vault key successfully', async () => {
-      const session = await repository.authenticateWithPassword(testEmail, testPassword);
+      const session = await repository.authenticateWithPassword(testUsername, testPassword);
 
       expect(session.vaultKey).toBeInstanceOf(CryptoKey);
       expect(session.vaultKey.type).toBe('secret');
@@ -201,40 +212,41 @@ describe('UserRepositoryImpl', () => {
 
     it('should reject incorrect password', async () => {
       await expect(
-        repository.authenticateWithPassword(testEmail, 'WrongPassword123!')
-      ).rejects.toThrow('Invalid email or password');
+        repository.authenticateWithPassword(testUsername, 'WrongPassword123!')
+      ).rejects.toThrow('Invalid username or password');
     });
 
-    it('should reject non-existent email', async () => {
+    it('should reject non-existent username', async () => {
       await expect(
-        repository.authenticateWithPassword('nonexistent@example.com', testPassword)
-      ).rejects.toThrow('Invalid email or password');
+        repository.authenticateWithPassword('nonexistentuser', testPassword)
+      ).rejects.toThrow('Invalid username or password');
     });
 
-    it('should reject empty email', async () => {
+    it('should reject empty username', async () => {
       await expect(
         repository.authenticateWithPassword('', testPassword)
-      ).rejects.toThrow('Invalid email or password');
+      ).rejects.toThrow('Invalid username or password');
     });
 
     it('should reject empty password', async () => {
       await expect(
-        repository.authenticateWithPassword(testEmail, '')
-      ).rejects.toThrow('Invalid email or password');
+        repository.authenticateWithPassword(testUsername, '')
+      ).rejects.toThrow('Invalid username or password');
     });
 
-    it('should handle case-sensitive email', async () => {
-      await expect(
-        repository.authenticateWithPassword('TEST@EXAMPLE.COM', testPassword)
-      ).rejects.toThrow('Invalid email or password');
+    it('should authenticate case-insensitively (username lookup is normalized)', async () => {
+      // usernameKey() lowercases, so uppercase variant must also authenticate
+      const session = await repository.authenticateWithPassword(testUsername.toUpperCase(), testPassword);
+      expect(session).toBeDefined();
+      expect(session.vaultKey).toBeInstanceOf(CryptoKey);
     });
 
     it('should update last login timestamp', async () => {
       const beforeAuth = Date.now();
-      await repository.authenticateWithPassword(testEmail, testPassword);
+      const session = await repository.authenticateWithPassword(testUsername, testPassword);
       const afterAuth = Date.now();
 
-      const user = await repository.findByEmail(testEmail);
+      const user = await repository.findById(session.userId);
 
       expect(user?.lastLoginAt).toBeDefined();
       expect(user!.lastLoginAt.getTime()).toBeGreaterThanOrEqual(beforeAuth);
@@ -242,14 +254,14 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should set session as unlocked', async () => {
-      const session = await repository.authenticateWithPassword(testEmail, testPassword);
+      const session = await repository.authenticateWithPassword(testUsername, testPassword);
 
       expect(session.isLocked).toBeDefined();
       expect(session.isLocked).toBe(false);
     });
 
     it('should set session expiry', async () => {
-      const session = await repository.authenticateWithPassword(testEmail, testPassword);
+      const session = await repository.authenticateWithPassword(testUsername, testPassword);
 
       expect(session.expiresAt).toBeDefined();
       expect(session.expiresAt.getTime()).toBeGreaterThan(Date.now());
@@ -257,9 +269,9 @@ describe('UserRepositoryImpl', () => {
 
     it('should handle password with special characters', async () => {
       const specialPass = 'P@ssw0rd!#$%^&*()';
-      await repository.createUser('special@example.com', specialPass);
+      await repository.createUser('specialuser', specialPass, 'special@example.com');
 
-      const session = await repository.authenticateWithPassword('special@example.com', specialPass);
+      const session = await repository.authenticateWithPassword('specialuser', specialPass);
 
       expect(session).toBeDefined();
       expect(session.vaultKey).toBeInstanceOf(CryptoKey);
@@ -267,9 +279,9 @@ describe('UserRepositoryImpl', () => {
 
     it('should handle password with unicode', async () => {
       const unicodePass = 'Pass你好🔐Word123!';
-      await repository.createUser('unicode@example.com', unicodePass);
+      await repository.createUser('unicodeuser', unicodePass, 'unicode@example.com');
 
-      const session = await repository.authenticateWithPassword('unicode@example.com', unicodePass);
+      const session = await repository.authenticateWithPassword('unicodeuser', unicodePass);
 
       expect(session).toBeDefined();
       expect(session.vaultKey).toBeInstanceOf(CryptoKey);
@@ -279,7 +291,7 @@ describe('UserRepositoryImpl', () => {
   describe('findByEmail()', () => {
     it('should find existing user by email', async () => {
       const email = 'test@example.com';
-      await repository.createUser(email, 'Password123!');
+      await repository.createUser('emailtest', 'Password123!', email);
 
       const user = await repository.findByEmail(email);
 
@@ -295,7 +307,7 @@ describe('UserRepositoryImpl', () => {
 
     it('should return user with all fields', async () => {
       const email = 'test@example.com';
-      await repository.createUser(email, 'Password123!');
+      await repository.createUser('emailtest', 'Password123!', email);
 
       const user = await repository.findByEmail(email);
 
@@ -315,7 +327,7 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should be case-sensitive', async () => {
-      await repository.createUser('test@example.com', 'Password123!');
+      await repository.createUser('emailtest', 'Password123!', 'test@example.com');
 
       const user = await repository.findByEmail('TEST@EXAMPLE.COM');
 
@@ -323,15 +335,40 @@ describe('UserRepositoryImpl', () => {
     });
   });
 
+  describe('findByUsername()', () => {
+    it('should find existing user by username', async () => {
+      await repository.createUser('alice', 'Password123!');
+
+      const user = await repository.findByUsername('alice');
+
+      expect(user).toBeDefined();
+      expect(user?.username).toBe('alice');
+    });
+
+    it('should find case-insensitively', async () => {
+      await repository.createUser('Alice', 'Password123!');
+
+      const user = await repository.findByUsername('ALICE');
+
+      expect(user).toBeDefined();
+    });
+
+    it('should return null for non-existent username', async () => {
+      const user = await repository.findByUsername('nobody');
+
+      expect(user).toBeNull();
+    });
+  });
+
   describe('findById()', () => {
     it('should find existing user by ID', async () => {
-      const created = await repository.createUser('test@example.com', 'Password123!');
+      const created = await repository.createUser('idtest', 'Password123!');
 
       const user = await repository.findById(created.id);
 
       expect(user).toBeDefined();
       expect(user?.id).toBe(created.id);
-      expect(user?.email).toBe('test@example.com');
+      expect(user?.username).toBe('idtest');
     });
 
     it('should return null for non-existent ID', async () => {
@@ -351,7 +388,7 @@ describe('UserRepositoryImpl', () => {
     let userId: string;
 
     beforeEach(async () => {
-      const user = await repository.createUser('test@example.com', 'Password123!');
+      const user = await repository.createUser('settingsuser', 'Password123!');
       userId = user.id;
     });
 
@@ -411,19 +448,19 @@ describe('UserRepositoryImpl', () => {
 
   describe('changeMasterPassword()', () => {
     let userId: string;
+    const testUsername = 'changepassuser';
     const oldPassword = 'OldPassword123!';
     const newPassword = 'NewPassword456!';
 
     beforeEach(async () => {
-      const user = await repository.createUser('test@example.com', oldPassword);
+      const user = await repository.createUser(testUsername, oldPassword);
       userId = user.id;
     });
 
     it('should change master password successfully', async () => {
       await repository.changeMasterPassword(userId, oldPassword, newPassword);
 
-      // Verify can authenticate with new password
-      const session = await repository.authenticateWithPassword('test@example.com', newPassword);
+      const session = await repository.authenticateWithPassword(testUsername, newPassword);
 
       expect(session).toBeDefined();
       expect(session.vaultKey).toBeInstanceOf(CryptoKey);
@@ -433,8 +470,8 @@ describe('UserRepositoryImpl', () => {
       await repository.changeMasterPassword(userId, oldPassword, newPassword);
 
       await expect(
-        repository.authenticateWithPassword('test@example.com', oldPassword)
-      ).rejects.toThrow('Invalid email or password');
+        repository.authenticateWithPassword(testUsername, oldPassword)
+      ).rejects.toThrow('Invalid username or password');
     });
 
     it('should reject incorrect current password', async () => {
@@ -495,35 +532,33 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('should return true when users exist', async () => {
-      await repository.createUser('test@example.com', 'Password123!');
+      await repository.createUser('anyuser', 'Password123!');
       const hasUsers = await repository.hasAnyUsers();
       expect(hasUsers).toBe(true);
     });
   });
 
   describe('Edge cases and error handling', () => {
-    it('should handle concurrent user creation with same email', async () => {
-      const email = 'concurrent@example.com';
+    it('should handle concurrent user creation with same username', async () => {
+      const username = 'concurrentuser';
 
-      const promise1 = repository.createUser(email, 'Password1');
-      const promise2 = repository.createUser(email, 'Password2');
+      const promise1 = repository.createUser(username, 'Password1');
+      const promise2 = repository.createUser(username, 'Password2');
 
       const results = await Promise.allSettled([promise1, promise2]);
 
       const successes = results.filter((r) => r.status === 'fulfilled');
       const failures = results.filter((r) => r.status === 'rejected');
 
-      // At least one should succeed and one should fail
       expect(successes.length).toBeGreaterThanOrEqual(1);
       expect(failures.length).toBeGreaterThanOrEqual(0);
-      // Both shouldn't succeed
       expect(successes.length).toBeLessThanOrEqual(1);
     });
 
-    it('should handle very long email addresses', async () => {
+    it('should allow creating a user with a very long optional email', async () => {
       const longEmail = 'a'.repeat(200) + '@example.com';
 
-      const user = await repository.createUser(longEmail, 'Password123!');
+      const user = await repository.createUser('longmailuser', 'Password123!', longEmail);
 
       expect(user.email).toBe(longEmail);
     });
@@ -531,22 +566,22 @@ describe('UserRepositoryImpl', () => {
     it('should handle very long passwords', async () => {
       const longPassword = 'P@ssw0rd' + 'a'.repeat(500);
 
-      const user = await repository.createUser('test@example.com', longPassword);
+      const user = await repository.createUser('longpassuser', longPassword);
 
       expect(user).toBeDefined();
 
-      const session = await repository.authenticateWithPassword('test@example.com', longPassword);
+      const session = await repository.authenticateWithPassword('longpassuser', longPassword);
 
       expect(session).toBeDefined();
     });
   });
 
   describe('rehash-on-login (S4)', () => {
-    const email = 'rehash@example.com';
+    const username = 'rehashuser';
     const password = 'TestPassword123!';
 
     it('upgrades a stale password hash on successful login without breaking vault decryption', async () => {
-      const created = await repository.createUser(email, password);
+      const created = await repository.createUser(username, password);
 
       // Simulate an account created under the old (weak) scrypt parameters by
       // overwriting only the stored hash. Salt + encryptedVaultKey are left
@@ -560,7 +595,7 @@ describe('UserRepositoryImpl', () => {
       expect(needsRehash(before.hashedMasterPassword)).toBe(true);
 
       // Logging in must succeed AND silently upgrade the hash.
-      const session = await repository.authenticateWithPassword(email, password);
+      const session = await repository.authenticateWithPassword(username, password);
       expect(session).toBeDefined();
       expect(session.vaultKey).toBeDefined();
 
@@ -571,11 +606,11 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('does not rewrite the hash when it is already current', async () => {
-      const created = await repository.createUser(email, password);
+      const created = await repository.createUser(username, password);
       const before = await db.users.get(created.id);
       if (!before) throw new Error('expected stored user');
 
-      await repository.authenticateWithPassword(email, password);
+      await repository.authenticateWithPassword(username, password);
 
       const after = await db.users.get(created.id);
       if (!after) throw new Error('expected stored user');
@@ -584,14 +619,13 @@ describe('UserRepositoryImpl', () => {
   });
 
   describe('post-login metadata sealing (S5)', () => {
-    const sealEmail = 'seal@example.com';
+    const sealUsername = 'sealuser';
     const sealPassword = 'TestPassword123!';
 
     it('seals any unsealed credentials automatically on login', async () => {
-      await repository.createUser(sealEmail, sealPassword);
+      await repository.createUser(sealUsername, sealPassword);
 
       // Insert a pre-v5 legacy credential with plaintext title/username
-      // (encryptedPassword can be a stub since sealing doesn't touch it)
       await db.credentials.add({
         id: crypto.randomUUID(),
         title: 'LegacyTitle',
@@ -610,7 +644,7 @@ describe('UserRepositoryImpl', () => {
       expect(before[0]?.title).toBe('LegacyTitle');
 
       // Login should trigger sealing in the background
-      await repository.authenticateWithPassword(sealEmail, sealPassword);
+      await repository.authenticateWithPassword(sealUsername, sealPassword);
 
       const after = await db.credentials.toArray();
       expect(after[0]?.isSealed).toBe(true);
@@ -620,7 +654,7 @@ describe('UserRepositoryImpl', () => {
   });
 
   describe('biometric PRF unlock (S1)', () => {
-    const email = 'prf@example.com';
+    const username = 'prfuser';
     const password = 'TestPassword123!';
 
     beforeEach(() => {
@@ -636,8 +670,8 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('enrolls a PRF credential and stores no legacy key material', async () => {
-      const user = await repository.createUser(email, password);
-      const session = await repository.authenticateWithPassword(email, password);
+      const user = await repository.createUser(username, password);
+      const session = await repository.authenticateWithPassword(username, password);
 
       await repository.registerBiometric(user.id, session.vaultKey, 'Test Device');
 
@@ -646,7 +680,6 @@ describe('UserRepositoryImpl', () => {
       expect(cred?.vaultKeyScheme).toBe('prf-v1');
       expect(cred?.wrappedVaultKey).toBeTruthy();
       expect(cred?.prfSalt).toBeTruthy();
-      // no insecure device-key material remains (view avoids deprecated-field access)
       const credView = cred as { encryptedVaultKey?: unknown; salt?: unknown } | undefined;
       expect(credView?.encryptedVaultKey).toBeUndefined();
       expect(credView?.salt).toBeUndefined();
@@ -654,15 +687,14 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('unlocks the vault via PRF and seals legacy metadata', async () => {
-      const user = await repository.createUser(email, password);
-      const session = await repository.authenticateWithPassword(email, password);
+      const user = await repository.createUser(username, password);
+      const session = await repository.authenticateWithPassword(username, password);
       await repository.registerBiometric(user.id, session.vaultKey, 'Dev');
 
       const stored = await db.users.get(user.id);
       const credentialId = stored?.webAuthnCredentials[0]?.id ?? '';
       expect(credentialId).toBeTruthy();
 
-      // a pre-v5 legacy credential to prove sealing fires on the biometric path
       const legacyRow = {
         id: crypto.randomUUID(),
         title: 'LegacyBio',
@@ -679,19 +711,18 @@ describe('UserRepositoryImpl', () => {
       const bioSession = await repository.authenticateWithBiometric(user.id, credentialId);
 
       expect(bioSession.userId).toBe(user.id);
-      // the unwrapped vault key is byte-identical to the password-derived one
       expect(await exportRaw(bioSession.vaultKey)).toBe(await exportRaw(session.vaultKey));
 
       const after = await db.credentials.toArray();
       const sealed = after[0] as { isSealed?: boolean; title?: unknown; encryptedTitle?: unknown } | undefined;
       expect(sealed?.isSealed).toBe(true);
-      expect(sealed?.title).toBeFalsy();           // plaintext cleared by S5 sealing
-      expect(sealed?.encryptedTitle).toBeTruthy(); // encrypted blob present
+      expect(sealed?.title).toBeFalsy();
+      expect(sealed?.encryptedTitle).toBeTruthy();
     });
 
     it('refuses enrollment when PRF is unsupported (password-only)', async () => {
-      const user = await repository.createUser(email, password);
-      const session = await repository.authenticateWithPassword(email, password);
+      const user = await repository.createUser(username, password);
+      const session = await repository.authenticateWithPassword(username, password);
       vi.mocked(isPRFSupported).mockResolvedValueOnce(false);
 
       await expect(
@@ -704,8 +735,8 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('refuses enrollment when the authenticator does not enable PRF', async () => {
-      const user = await repository.createUser(email, password);
-      const session = await repository.authenticateWithPassword(email, password);
+      const user = await repository.createUser(username, password);
+      const session = await repository.authenticateWithPassword(username, password);
       vi.mocked(registerCredentialWithPRF).mockResolvedValueOnce({
         credentialId: 'c',
         publicKey: 'p',
@@ -719,7 +750,7 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('rejects biometric unlock for a legacy (non-PRF) credential', async () => {
-      const user = await repository.createUser(email, password);
+      const user = await repository.createUser(username, password);
       const legacyCred = { id: 'legacy', publicKey: 'pk', counter: 0, createdAt: new Date(), encryptedVaultKey: 'blob', salt: 's' };
       await db.users.update(user.id, {
         biometricEnabled: true,
@@ -732,14 +763,14 @@ describe('UserRepositoryImpl', () => {
     });
 
     it('strips legacy biometric credentials on password login', async () => {
-      const user = await repository.createUser(email, password);
+      const user = await repository.createUser(username, password);
       const legacyCred = { id: 'legacy', publicKey: 'pk', counter: 0, createdAt: new Date(), encryptedVaultKey: 'blob', salt: 's' };
       await db.users.update(user.id, {
         biometricEnabled: true,
         webAuthnCredentials: [legacyCred] as unknown as User['webAuthnCredentials'],
       });
 
-      await repository.authenticateWithPassword(email, password);
+      await repository.authenticateWithPassword(username, password);
 
       const stored = await db.users.get(user.id);
       expect(stored?.webAuthnCredentials.length).toBe(0);

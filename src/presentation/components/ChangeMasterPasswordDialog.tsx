@@ -104,7 +104,7 @@ export default function ChangeMasterPasswordDialog({
 
       // Step 6: Re-authenticate to get new vault key
       const authResult = await userRepository.authenticateWithPassword(
-        user.email,
+        user.username ?? user.id,
         newPassword
       );
 

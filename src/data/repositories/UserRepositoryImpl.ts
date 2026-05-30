@@ -12,19 +12,21 @@ import type { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { checkRateLimit, recordFailedAttempt, clearAttempts } from '@/core/auth/rateLimiter';
 import { sealLegacyMetadata } from '@/data/repositories/metadataSealing';
 import { stripLegacyBiometric } from '@/core/auth/biometricMigration';
+import { usernameKey } from '@/core/auth/usernameValidation';
 
 export class UserRepositoryImpl implements IUserRepository {
   /**
-   * Create a new user account
+   * Create a new user account. Username is the required primary identity;
+   * email is an optional recovery hint stored locally only.
    */
-  async createUser(email: string, masterPassword: string): Promise<User> {
-    // Check if user already exists
-    const existingUser = await this.findByEmail(email);
+  async createUser(username: string, masterPassword: string, email?: string): Promise<User> {
+    // Check if username is already taken (case-insensitive via usernameLower index)
+    const existingUser = await db.users.where('usernameLower').equals(usernameKey(username)).first();
     if (existingUser) {
-      throw new Error('User with this email already exists');
+      throw new Error('Username already taken');
     }
 
-    // Hash the master password with Argon2id
+    // Hash the master password with Scrypt
     const hashedMasterPassword = await hashPassword(masterPassword);
 
     // Generate salt for vault key derivation
@@ -41,10 +43,10 @@ export class UserRepositoryImpl implements IUserRepository {
     const masterVaultKeyBase64 = btoa(String.fromCharCode(...masterVaultKey));
     const encryptedVaultKey = await encrypt(masterVaultKeyBase64, vaultKey);
 
-    // Create user entity
     const user: User = {
       id: crypto.randomUUID(),
-      email,
+      username,
+      ...(email ? { email } : {}),
       hashedMasterPassword,
       encryptedVaultKey: JSON.stringify(encryptedVaultKey),
       salt: saltBase64,
@@ -63,42 +65,43 @@ export class UserRepositoryImpl implements IUserRepository {
       },
     };
 
-    // Store in IndexedDB
     const storedUser: StoredUser = {
       ...user,
+      usernameLower: usernameKey(username),
       createdAt: user.createdAt.getTime(),
       lastLoginAt: user.lastLoginAt.getTime(),
     };
 
     await db.users.add(storedUser);
-    console.log('User created successfully:', email);
 
     return user;
   }
 
   /**
-   * Authenticate user with email and password
+   * Authenticate user with username and master password.
    */
-  async authenticateWithPassword(email: string, masterPassword: string): Promise<AuthSession> {
-    // Rate-limit check before the expensive Scrypt verification
-    await checkRateLimit(email);
+  async authenticateWithPassword(username: string, masterPassword: string): Promise<AuthSession> {
+    const key = usernameKey(username);
 
-    // Find user by email
-    const storedUser = await db.users.where('email').equals(email).first();
+    // Rate-limit check before the expensive Scrypt verification
+    await checkRateLimit(key);
+
+    // Find user by usernameLower index
+    const storedUser = await db.users.where('usernameLower').equals(key).first();
     if (!storedUser) {
-      await recordFailedAttempt(email);
-      throw new Error('Invalid email or password');
+      await recordFailedAttempt(key);
+      throw new Error('Invalid username or password');
     }
 
     // Verify master password
     const isValid = await verifyPassword(masterPassword, storedUser.hashedMasterPassword);
     if (!isValid) {
-      await recordFailedAttempt(email);
-      throw new Error('Invalid email or password');
+      await recordFailedAttempt(key);
+      throw new Error('Invalid username or password');
     }
 
     // Auth succeeded — clear any accumulated attempt record
-    await clearAttempts(email);
+    await clearAttempts(key);
 
     // Transparently upgrade legacy/weak password hashes to current scrypt
     // parameters (S4). Best-effort: a rehash failure must never block login.
@@ -123,7 +126,7 @@ export class UserRepositoryImpl implements IUserRepository {
     const masterVaultKeyBytes = Uint8Array.from(atob(masterVaultKeyBase64), c => c.charCodeAt(0));
 
     // Import the raw master vault key as a CryptoKey
-    const vaultKey = await crypto.subtle.importKey(
+    const resolvedVaultKey = await crypto.subtle.importKey(
       'raw',
       masterVaultKeyBytes,
       { name: 'AES-GCM' },
@@ -137,10 +140,8 @@ export class UserRepositoryImpl implements IUserRepository {
     });
 
     // Seal any pre-v5 credentials that still carry plaintext metadata (S5).
-    // Awaited so the session is returned with a fully sealed vault, but wrapped
-    // in try/catch so a sealing failure never blocks the login itself.
     try {
-      await sealLegacyMetadata(vaultKey);
+      await sealLegacyMetadata(resolvedVaultKey);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
@@ -164,10 +165,9 @@ export class UserRepositoryImpl implements IUserRepository {
       // Non-fatal: legacy strip will retry next login.
     }
 
-    // Create session with the actual vault key
     return {
       userId: storedUser.id,
-      vaultKey,
+      vaultKey: resolvedVaultKey,
       expiresAt: new Date(Date.now() + storedUser.securitySettings.sessionTimeoutMinutes * 60 * 1000),
       isLocked: false,
     };
@@ -188,8 +188,7 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('Biometric credential not found');
     }
 
-    // S1: only PRF-scheme credentials can unlock the vault. Legacy device-key
-    // credentials were removed by the v6 migration; ask the user to re-enroll.
+    // S1: only PRF-scheme credentials can unlock the vault.
     if (
       credential.vaultKeyScheme !== 'prf-v1' ||
       !credential.wrappedVaultKey ||
@@ -205,8 +204,6 @@ export class UserRepositoryImpl implements IUserRepository {
     const { getPRFOutput } = await import('@/core/auth/webauthn');
     const { unwrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
 
-    // Assertion ceremony: evaluate the PRF at the stored salt. getPRFOutput also
-    // verifies challenge/origin and that the counter increased (replay protection).
     const prfSaltBytes = decodeBase64ToUint8Array(credential.prfSalt);
     const { prfOutput, counter: newCounter } = await getPRFOutput(
       credentialId,
@@ -215,11 +212,8 @@ export class UserRepositoryImpl implements IUserRepository {
       credential.counter,
     );
 
-    // Unwrap the vault key with the PRF-derived key. Throws on a wrong/forged PRF
-    // output (AES-GCM auth failure) — there is no insecure fallback path.
     const vaultKey = await unwrapVaultKeyWithPRF(credential.wrappedVaultKey, prfOutput);
 
-    // Update credential with verified counter and last used time
     const updatedCredentials = user.webAuthnCredentials.map(c =>
       c.id === credentialId
         ? { ...c, counter: newCounter, lastUsedAt: new Date() }
@@ -231,16 +225,12 @@ export class UserRepositoryImpl implements IUserRepository {
       lastLoginAt: Date.now(),
     });
 
-    // Seal any pre-v5 credentials that still carry plaintext metadata (S5).
-    // Awaited so the session is returned with a fully sealed vault, but wrapped
-    // in try/catch so a sealing failure never blocks the login itself.
     try {
       await sealLegacyMetadata(vaultKey);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
 
-    // Create session with the decrypted vault key
     return {
       userId: user.id,
       vaultKey,
@@ -262,7 +252,19 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   /**
-   * Find user by email
+   * Find user by username (case-insensitive)
+   */
+  async findByUsername(username: string): Promise<User | null> {
+    const storedUser = await db.users.where('usernameLower').equals(usernameKey(username)).first();
+    if (!storedUser) {
+      return null;
+    }
+
+    return this.mapStoredUserToUser(storedUser);
+  }
+
+  /**
+   * Find user by email (kept for backwards compatibility with pre-v7 lookup paths)
    */
   async findByEmail(email: string): Promise<User | null> {
     const storedUser = await db.users.where('email').equals(email).first();
@@ -310,42 +312,33 @@ export class UserRepositoryImpl implements IUserRepository {
     const { isBiometricAvailable, isPRFSupported, registerCredentialWithPRF, getPRFOutput } =
       await import('@/core/auth/webauthn');
 
-    // Check if biometric is available
     const available = await isBiometricAvailable();
     if (!available) {
       throw new Error('Biometric authentication is not available on this device');
     }
 
-    // S1: biometric unlock REQUIRES the WebAuthn PRF extension. Without it we
-    // cannot bind the vault key to the authenticator hardware, so we refuse to
-    // enroll and the user keeps using their master password.
+    // S1: biometric unlock REQUIRES the WebAuthn PRF extension.
     const prfSupported = await isPRFSupported();
     if (!prfSupported) {
       throw new Error('This browser or device does not support the secure PRF extension required for biometric unlock. Please continue using your master password.');
     }
 
-    // Use 'localhost' for local dev, otherwise use hostname
     const rpId = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'localhost'
       : window.location.hostname;
 
-    // Ceremony 1 — create the credential with PRF enabled.
     const registration = await registerCredentialWithPRF({
       rpName: 'TrustVault',
       rpId,
       userId: user.id,
-      userName: user.email,
-      userDisplayName: user.displayName || user.email,
+      userName: user.username ?? user.id,
+      userDisplayName: user.displayName ?? user.username ?? user.id,
     });
 
-    // Registration only *enables* PRF; if the authenticator didn't, abort and
-    // store nothing (no insecure fallback).
     if (!registration.prfEnabled) {
       throw new Error('Your authenticator did not enable the PRF extension required for secure biometric unlock. Please use your master password.');
     }
 
-    // Ceremony 2 — evaluate the PRF to obtain the wrapping secret, then wrap the
-    // vault key. The PRF output and wrap key are transient (never stored).
     const { generatePrfSalt, wrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
     const prfSalt = generatePrfSalt();
     const { prfOutput } = await getPRFOutput(registration.credentialId, prfSalt, rpId);
@@ -357,13 +350,12 @@ export class UserRepositoryImpl implements IUserRepository {
       counter: 0,
       transports: registration.transports,
       createdAt: new Date(),
-      deviceName: deviceName || 'Biometric Device',
+      deviceName: deviceName ?? 'Biometric Device',
       vaultKeyScheme: 'prf-v1' as const,
       wrappedVaultKey,
       prfSalt: encodeUint8ArrayToBase64(prfSalt),
     };
 
-    // Store updated credentials
     const updatedCredentials = [...user.webAuthnCredentials, newCredential];
 
     await db.users.update(userId, {
@@ -381,18 +373,13 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('User not found');
     }
 
-    // Remove the credential
     const updatedCredentials = user.webAuthnCredentials.filter(c => c.id !== credentialId);
-
-    // Disable biometric if no credentials remain
     const biometricEnabled = updatedCredentials.length > 0;
 
     await db.users.update(userId, {
       webAuthnCredentials: updatedCredentials,
       biometricEnabled,
     });
-
-    console.log('Biometric credential removed successfully');
   }
 
   /**
@@ -412,31 +399,18 @@ export class UserRepositoryImpl implements IUserRepository {
     };
   }
 
-  /**
-   * Get current session (placeholder)
-   */
   async getSession(): Promise<AuthSession | null> {
-    // Sessions are managed by Zustand store
     return null;
   }
 
-  /**
-   * Lock session (placeholder)
-   */
   async lockSession(): Promise<void> {
     // Handled by authStore
   }
 
-  /**
-   * Unlock session (placeholder)
-   */
   async unlockSession(_vaultKey: CryptoKey): Promise<void> {
     // Handled by authStore
   }
 
-  /**
-   * Destroy session (placeholder)
-   */
   async destroySession(): Promise<void> {
     // Handled by authStore
   }
@@ -450,16 +424,13 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('User not found');
     }
 
-    // Verify current password
     const isValid = await verifyPassword(currentPassword, user.hashedMasterPassword);
     if (!isValid) {
       throw new Error('Current password is incorrect');
     }
 
-    // Hash new password
     const newHashedPassword = await hashPassword(newPassword);
 
-    // Re-encrypt vault key with new password
     const currentSalt = Uint8Array.from(atob(user.salt), c => c.charCodeAt(0));
     const currentVaultKey = await deriveKeyFromPassword(currentPassword, currentSalt);
 
@@ -471,7 +442,6 @@ export class UserRepositoryImpl implements IUserRepository {
     const newVaultKey = await deriveKeyFromPassword(newPassword, newSalt);
     const newEncryptedVaultKey = await encrypt(masterVaultKey, newVaultKey);
 
-    // Update user
     await db.users.update(userId, {
       hashedMasterPassword: newHashedPassword,
       salt: btoa(String.fromCharCode(...newSalt)),
@@ -479,9 +449,6 @@ export class UserRepositoryImpl implements IUserRepository {
     });
   }
 
-  /**
-   * Get last login time
-   */
   async getLastLoginTime(userId: string): Promise<Date | null> {
     const user = await db.users.get(userId);
     if (!user) {
@@ -491,19 +458,12 @@ export class UserRepositoryImpl implements IUserRepository {
     return new Date(user.lastLoginAt);
   }
 
-  /**
-   * Get all users with biometric authentication enabled
-   */
   async getUsersWithBiometric(): Promise<User[]> {
-    // Use filter instead of indexed query to avoid index dependency
     const allUsers = await db.users.toArray();
     const users = allUsers.filter(user => user.biometricEnabled);
     return users.map(this.mapStoredUserToUser);
   }
 
-  /**
-   * Get user's first biometric credential ID (for quick auth)
-   */
   async getFirstBiometricCredential(userId: string): Promise<string | null> {
     const user = await db.users.get(userId);
     if (!user || !user.biometricEnabled || user.webAuthnCredentials.length === 0) {
@@ -512,9 +472,6 @@ export class UserRepositoryImpl implements IUserRepository {
     return user.webAuthnCredentials[0]?.id ?? null;
   }
 
-  /**
-   * Helper: Convert StoredUser to User
-   */
   private mapStoredUserToUser(storedUser: StoredUser): User {
     return {
       ...storedUser,
@@ -524,5 +481,4 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 }
 
-// Export singleton instance
 export const userRepository = new UserRepositoryImpl();

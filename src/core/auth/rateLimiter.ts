@@ -29,8 +29,8 @@ function formatRemaining(lockedUntil: number): string {
   return `${String(minutes)} minute${minutes !== 1 ? 's' : ''}`;
 }
 
-export async function checkRateLimit(email: string): Promise<void> {
-  const record = await db.loginAttempts.get(email);
+export async function checkRateLimit(identifier: string): Promise<void> {
+  const record = await db.loginAttempts.get(identifier);
   if (!record) return;
   if (record.lockedUntil > 0 && Date.now() < record.lockedUntil) {
     throw new Error(
@@ -39,8 +39,8 @@ export async function checkRateLimit(email: string): Promise<void> {
   }
 }
 
-export async function recordFailedAttempt(email: string): Promise<void> {
-  const existing = await db.loginAttempts.get(email);
+export async function recordFailedAttempt(identifier: string): Promise<void> {
+  const existing = await db.loginAttempts.get(identifier);
 
   // Decay: if the previous failure was long enough ago, start counting fresh.
   const isStale =
@@ -50,13 +50,13 @@ export async function recordFailedAttempt(email: string): Promise<void> {
   const attempts = priorAttempts + 1;
   const ms = lockoutMs(attempts);
   await db.loginAttempts.put({
-    email,
+    email: identifier,
     attempts,
     lockedUntil: ms > 0 ? Date.now() + ms : 0,
     lastAttemptAt: Date.now(),
   });
 }
 
-export async function clearAttempts(email: string): Promise<void> {
-  await db.loginAttempts.delete(email);
+export async function clearAttempts(identifier: string): Promise<void> {
+  await db.loginAttempts.delete(identifier);
 }

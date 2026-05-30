@@ -51,7 +51,7 @@ export default function UnlockDialog({ open, onClose }: UnlockDialogProps) {
 
     try {
       // Authenticate with password to get vault key
-      const session = await userRepository.authenticateWithPassword(user.email, password);
+      const session = await userRepository.authenticateWithPassword(user.username ?? user.id, password);
 
       // Unlock vault with the vault key
       unlockVault(session.vaultKey);
@@ -110,7 +110,7 @@ export default function UnlockDialog({ open, onClose }: UnlockDialogProps) {
         {user && (
           <Alert severity="info" sx={{ mb: 2 }}>
             <Typography variant="body2">
-              <strong>Account:</strong> {user.email}
+              <strong>Account:</strong> {user.username ?? user.email}
             </Typography>
           </Alert>
         )}

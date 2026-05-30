@@ -1,6 +1,6 @@
 /**
  * Signin Page Component
- * Handles user authentication with master password and biometric
+ * Handles user authentication with username + master password, or biometric.
  */
 
 import { useState, useEffect } from 'react';
@@ -32,7 +32,7 @@ import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 export default function SigninPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,8 +44,6 @@ export default function SigninPage() {
     Boolean((location.state as { autoRedirectToSignup?: boolean } | null)?.autoRedirectToSignup);
 
   // Drive biometric button visibility from DB state, not platform hardware check.
-  // isUserVerifyingPlatformAuthenticatorAvailable() returns false in non-HTTPS
-  // contexts even when credentials are registered — so we ask the DB instead.
   useEffect(() => {
     let mounted = true;
 
@@ -53,7 +51,6 @@ export default function SigninPage() {
       .then(users => { if (mounted) setBiometricEnabled(users.length > 0); })
       .catch(console.error);
 
-    // Only auto-redirect from root ("/") so direct /signin deep links stay on sign-in.
     userRepository.hasAnyUsers().then((hasUsers) => {
       if (mounted && shouldAutoRedirectToSignup && !hasUsers) {
         navigate('/signup', { replace: true });
@@ -69,11 +66,9 @@ export default function SigninPage() {
     setIsLoading(true);
 
     try {
-      // Authenticate with user repository
-      const session = await userRepository.authenticateWithPassword(email, password);
+      const session = await userRepository.authenticateWithPassword(username, password);
 
-      // Get user details
-      const user = await userRepository.findByEmail(email);
+      const user = await userRepository.findById(session.userId);
       if (!user) {
         throw new Error('User not found');
       }
@@ -81,13 +76,10 @@ export default function SigninPage() {
       setUser(user);
       setSession(session);
       setVaultKey(session.vaultKey);
-      console.log('Login successful');
 
-      // Navigate to dashboard
       navigate('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid email or password');
-      console.error('Login failed:', err);
+      setError(err instanceof Error ? err.message : 'Invalid username or password');
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +90,6 @@ export default function SigninPage() {
     setIsLoading(true);
 
     try {
-      // Get all users with biometric enabled
       const biometricUsers = await userRepository.getUsersWithBiometric();
 
       if (biometricUsers.length === 0) {
@@ -107,13 +98,11 @@ export default function SigninPage() {
         return;
       }
 
-      // For simplicity, use the first user with biometric (in production, show a user selector)
       const user = biometricUsers[0];
       if (!user) {
         throw new Error('No user found');
       }
 
-      // Get the first biometric credential for this user
       const credentialId = await userRepository.getFirstBiometricCredential(user.id);
       if (!credentialId) {
         setError('No biometric credentials found for this user.');
@@ -121,21 +110,15 @@ export default function SigninPage() {
         return;
       }
 
-      // Authenticate with biometric
       const session = await userRepository.authenticateWithBiometric(user.id, credentialId);
 
-      // Set auth state
       setUser(user);
       setSession(session);
       setVaultKey(session.vaultKey);
 
-      console.log('Biometric login successful');
-
-      // Navigate to dashboard
       navigate('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Biometric authentication failed');
-      console.error('Biometric login failed:', err);
     } finally {
       setIsLoading(false);
     }
@@ -174,13 +157,14 @@ export default function SigninPage() {
             <Stack spacing={3}>
               <TextField
                 fullWidth
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e): void => { setEmail(e.target.value); }}
+                label="Username"
+                type="text"
+                value={username}
+                onChange={(e): void => { setUsername(e.target.value); }}
                 required
                 disabled={isLoading}
-                autoComplete="email"
+                autoComplete="username"
+                inputProps={{ maxLength: 32 }}
               />
 
               <TextField
@@ -242,7 +226,7 @@ export default function SigninPage() {
 
               <Box sx={{ textAlign: 'center', mt: 2 }}>
                 <Typography variant="body2" color="text.secondary">
-                  Don't have an account?{' '}
+                  Don&apos;t have an account?{' '}
                   <Link
                     onClick={(): void => { navigate('/signup'); }}
                     sx={{ cursor: 'pointer' }}

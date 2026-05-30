@@ -47,7 +47,7 @@ export default function UnlockPage() {
 
     try {
       // Authenticate with password to get vault key
-      const session = await userRepository.authenticateWithPassword(user.email, password);
+      const session = await userRepository.authenticateWithPassword(user.username ?? user.id, password);
 
       // Unlock vault with the vault key
       unlockVault(session.vaultKey);
@@ -127,7 +127,7 @@ export default function UnlockPage() {
           {/* User Info */}
           <Alert severity="info" sx={{ width: '100%' }}>
             <Typography variant="body2">
-              <strong>Account:</strong> {user.email}
+              <strong>Account:</strong> {user.username ?? user.email}
             </Typography>
           </Alert>
 
