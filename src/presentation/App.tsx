@@ -30,6 +30,7 @@ const SignupPage = lazy(() => import('./pages/SignupPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const AddCredentialPage = lazy(() => import('./pages/AddCredentialPage'));
 const EditCredentialPage = lazy(() => import('./pages/EditCredentialPage'));
+const CredentialDetailPage = lazy(() => import('./pages/CredentialDetailPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const SecurityAuditPage = lazy(() => import('./pages/SecurityAuditPage'));
 const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
@@ -151,6 +152,22 @@ function AppRoutes() {
             isAuthenticated && !effectivelyLocked ? (
               <Box sx={{ pb: { xs: 8, md: 0 } }}>
                 <EditCredentialPage />
+              </Box>
+            ) : isAuthenticated && effectivelyLocked ? (
+              <Navigate to="/unlock" replace />
+            ) : (
+              <Navigate to="/signin" replace />
+            )
+          }
+        />
+
+        {/* View Credential Detail route */}
+        <Route
+          path="/credentials/:id"
+          element={
+            isAuthenticated && !effectivelyLocked ? (
+              <Box sx={{ pb: { xs: 8, md: 0 } }}>
+                <CredentialDetailPage />
               </Box>
             ) : isAuthenticated && effectivelyLocked ? (
               <Navigate to="/unlock" replace />

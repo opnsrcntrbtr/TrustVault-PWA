@@ -137,6 +137,10 @@ export default function DashboardPage() {
     navigate(`/credentials/${id}/edit`);
   }, [navigate]);
 
+  const handleViewDetail = useCallback((id: string) => {
+    navigate(`/credentials/${id}`);
+  }, [navigate]);
+
   const handleDeleteRequest = useCallback((id: string) => {
     setCredentialToDelete(id);
     setDeleteDialogOpen(true);
@@ -368,7 +372,7 @@ export default function DashboardPage() {
           </IconButton>
           <IconButton color="inherit" onClick={(e) => { setMenuAnchor(e.currentTarget); }}>
             <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
-              {user?.email?.[0]?.toUpperCase() || 'U'}
+              {(user?.username || user?.email)?.[0]?.toUpperCase() || 'U'}
             </Avatar>
           </IconButton>
           <Menu
@@ -649,7 +653,17 @@ export default function DashboardPage() {
         {!loading && !error && filteredAndSortedCredentials.length > 0 && !isMobile && (
           <Grid container spacing={2}>
             {filteredAndSortedCredentials.map((credential) => (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={credential.id}>
+              <Grid
+                size={{ xs: 12, sm: 6, md: 4 }}
+                key={credential.id}
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('button') && !target.closest('[role="button"]')) {
+                    handleViewDetail(credential.id);
+                  }
+                }}
+                sx={{ cursor: 'pointer' }}
+              >
                 <CredentialCard
                   credential={credential}
                   onEdit={handleEdit}
