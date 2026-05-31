@@ -426,12 +426,23 @@ export default function SettingsPage() {
           </Typography>
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box>
-              <Typography variant="caption" color="text.secondary">
-                Email
-              </Typography>
-              <Typography variant="body1">{user.email}</Typography>
-            </Box>
+            {user.username && (
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Username
+                </Typography>
+                <Typography variant="body1">{user.username}</Typography>
+              </Box>
+            )}
+
+            {user.email && (
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Email
+                </Typography>
+                <Typography variant="body1">{user.email}</Typography>
+              </Box>
+            )}
 
             <Box>
               <Typography variant="caption" color="text.secondary">
