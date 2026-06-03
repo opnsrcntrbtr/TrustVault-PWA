@@ -26,6 +26,8 @@ manifest.json
 .graphify_incremental.json
 .graphify_uncached.txt
 
+trustvault-pwa-callflow.html
+
 # ✅ Explicitly ensure tracking of core map artifacts
 !graph.json
 !GRAPH_REPORT.md
