@@ -31,6 +31,7 @@ import {
   Security,
   Error,
 } from '@mui/icons-material';
+import DOMPurify from 'dompurify';
 import type { BreachData, BreachSeverity } from '@/core/breach/breachTypes';
 
 interface BreachDetailsModalProps {
@@ -249,7 +250,7 @@ export default function BreachDetailsModal({
                     variant="body2"
                     color="text.secondary"
                     sx={{ mb: 1 }}
-                    dangerouslySetInnerHTML={{ __html: breach.description }}
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(breach.description) }}
                   />
 
                   {breach.dataClasses && breach.dataClasses.length > 0 && (
