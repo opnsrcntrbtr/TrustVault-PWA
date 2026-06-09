@@ -1,30 +1,21 @@
 # TrustVault PWA - Claude Code Guide
 
-**Tech Stack:** React 19 + Vite 6.0.1 + TypeScript 5.7 + PWA + IndexedDB (Dexie)
+**Tech Stack:** React 19 + Vite 6.4 + TypeScript 5.7 + PWA + IndexedDB (Dexie)
 **Architecture:** Clean Architecture (Domain/Data/Presentation) + Offline-First
 
 ---
 
-## 📚 Documentation Quick Reference
+## Key Docs
 
-For first-time context, follow this order:
-1. **[README.md](./README.md)** — Project overview (2 min)
-2. **[GETTING_STARTED.md](./GETTING_STARTED.md)** — Setup, deployment, PWA (10 min)
-3. **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)** — Architecture, security, stack (10 min)
-4. **[SECURITY.md](./SECURITY.md)** — Crypto details & threat model (20 min)
-5. **[ROADMAP.md](./ROADMAP.md)** — Current features & next steps
-
-**For specific info**: Use PROJECT_CONTEXT.md as your hub — it links to all analysis reports and deep-dives.
+[README](./README.md) → [PROJECT_CONTEXT](./PROJECT_CONTEXT.md) (hub, links all deep-dives) → [SECURITY](./SECURITY.md) → [ROADMAP](./ROADMAP.md)
 
 ---
 
-## Current Mission (Nov 2025)
-- **Vault Trust Hardening** – Fix vault key decrypt flow, ensure credential reads return plaintext in memory only, and wire auto-lock/session visibility guards.
-- **CredOps Experience** – Complete credential forms, dashboard/search, password generator, secure clipboard manager, TOTP components, and responsive layouts.
-- **Passwordless & Recovery** – Add WebAuthn biometric unlock, master password rotation UX, and encrypted import/export flows with recovery instructions.
-- **Threat Intelligence & Reporting** – Integrate breach detection, OWASP-aligned audits, and >85% Vitest + integration coverage.
+## Current Status (June 2026)
 
-Every code change must link back to one of these pillars **and** update `ROADMAP.md`, `README.md`, or `AGENTS.md` if scope, validation, or ownership shifts.
+Phase 1 complete (2026-05-30). Beta — 90% feature-complete. Active focus: test coverage >85%, production hardening, breach detection integration.
+
+Every code change must update `ROADMAP.md`, `README.md`, or `AGENTS.md` if scope, validation, or ownership shifts.
 
 ### Definition of Done
 1. Feature flagged or guarded if experimental.
@@ -53,23 +44,8 @@ npm run lighthouse   # PWA audit (target: >90 all metrics)
 
 ### 1. Module Loading Patterns
 
-**WASM/UMD Modules (argon2-browser):**
-```typescript
-// ❌ WRONG - Breaks build
-import { hash } from 'argon2-browser';
-
-// ✅ CORRECT - Lazy load to avoid blocking
-let argon2Promise: Promise<any> | null = null;
-async function loadArgon2() {
-  if (!argon2Promise) {
-    argon2Promise = import('argon2-browser').then(m => m.default || m);
-  }
-  return argon2Promise;
-}
-```
-- **Never** top-level import `argon2-browser` (UMD module, breaks Vite ESM)
-- Exclude from `optimizeDeps` in vite.config.ts
-- Use dynamic imports for heavy crypto libs
+- **argon2-browser is NOT used** — removed due to CSP/WASM issues. Crypto uses `@noble/hashes/scrypt` instead (see `DATABASE_MIGRATION.md`).
+- For any heavy WASM/UMD module: use lazy dynamic import + exclude from `optimizeDeps` in vite.config.ts. Never top-level import.
 
 ### 2. React 19 Patterns
 
@@ -177,18 +153,9 @@ src/
 
 ### 6. Security Headers
 
-**Set via HTTP (vite.config.ts:116-134), NOT meta tags:**
-```typescript
-headers: {
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'X-XSS-Protection': '1; mode=block',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Content-Security-Policy': "default-src 'self'; ..."
-}
-```
+**Set via HTTP, NOT meta tags.** Headers are defined in `src/config/securityHeaders.ts` and imported by vite.config.ts (applied at `server.headers` and `preview.headers`).
 - ❌ Never use `<meta http-equiv="X-Frame-Options">` (invalid)
-- ✅ Security headers only via server config
+- ❌ Never duplicate headers inline in vite.config.ts — edit `securityHeaders.ts` only
 
 ### 7. PWA Icons Requirements
 
@@ -218,7 +185,7 @@ npm run lighthouse  # After preview server running
 - PWA: 100 (installable, works offline)
 
 **Optimization:**
-- Code splitting via `manualChunks` (vite.config:154-159)
+- Code splitting via `manualChunks` (vite.config.ts ~line 159)
 - `drop_console: true` in production
 - Lazy load heavy modules (crypto, charts)
 - IndexedDB for offline data
@@ -301,27 +268,9 @@ file public/pwa-192x192.png  # Should show: PNG image data, 192 x 192
 
 ---
 
-## React 19 Specific Features
-
-**Automatic JSX Transform:**
-- No need to `import React` in components
-- `jsxRuntime: 'automatic'` in vite config
-
-**StrictMode Double Rendering:**
-- Development only (helps catch side effects)
-- Use cleanup functions in `useEffect`
-- Don't rely on effect running once
-
-**Concurrent Features:**
-- `useTransition` for non-urgent updates
-- `useDeferredValue` for expensive renders
-- Keep UI responsive during heavy operations
-
----
-
 ## Security Notes
 
-**OWASP Mobile Top 10 Compliance:**
+**OWASP Mobile Top 10 Compliance (M1–M5 addressed):**
 - M1: Improper Platform Usage → PWA security headers
 - M2: Insecure Data Storage → Dexie encryption
 - M3: Insecure Communication → CSP, HTTPS only
@@ -331,11 +280,11 @@ file public/pwa-192x192.png  # Should show: PNG image data, 192 x 192
 **Sensitive Operations:**
 - Master password hashing: Scrypt via `@noble/hashes/scrypt` (N=32768, r=8, p=1, dkLen=32). Migrated from Argon2id to avoid CSP/WASM issues — see `DATABASE_MIGRATION.md`.
 - Vault key derivation: PBKDF2-SHA256 (600,000 iterations, OWASP 2025)
-- Biometric: WebAuthn platform authenticator with the **PRF extension (S1)**. The vault key is wrapped with an HKDF-SHA256 key derived from the authenticator's PRF output (never stored), so biometric unlock is demonstrably zero-knowledge — stored data alone cannot unlock the vault. Scheme `vaultKeyScheme: 'prf-v1'`; legacy device-key credentials are stripped by the DB v6 migration; non-PRF devices fall back to master password. See `SECURITY.md`.
+- Biometric: WebAuthn platform authenticator with the **PRF extension (S1)**. The vault key is wrapped with an HKDF-SHA256 key derived from the authenticator's PRF output (never stored), so biometric unlock is demonstrably zero-knowledge — stored data alone cannot unlock the vault. Scheme `vaultKeyScheme: 'prf-v1'`; legacy device-key credentials are stripped by the DB v7 migration; non-PRF devices fall back to master password. See `SECURITY.md`.
 
 ---
 
-**Last Updated:** 2025-10-22
+**Last Updated:** 2026-06-10
 **Node:** >=20.0.0 | **NPM:** >=10.0.0
 
 ## graphify
