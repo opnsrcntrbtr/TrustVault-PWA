@@ -12,10 +12,17 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it, expect } from 'vitest';
+// Vite ?raw import — the ESLint project service can't resolve vite/client's
+// `*?raw` module typing, so assert the documented type (string) explicitly.
+import indexHtmlRaw from '../../../index.html?raw';
+
+const indexHtml = indexHtmlRaw as string;
 import {
   buildContentSecurityPolicy,
   SECURITY_HEADERS,
+  DEV_SECURITY_HEADERS,
   HIBP_ORIGINS,
+  INLINE_BOOTSTRAP_SCRIPT_HASH,
 } from '../securityHeaders';
 
 describe('Content Security Policy', () => {
@@ -42,6 +49,42 @@ describe('Content Security Policy', () => {
   it('keeps default-src locked to self', () => {
     expect(csp).toMatch(/default-src 'self'/);
   });
+
+  it('uses a strict script-src: no unsafe-inline/unsafe-eval, hash + wasm-unsafe-eval (S2)', () => {
+    const scriptSrc = csp
+      .split(';')
+      .map((d) => d.trim())
+      .find((d) => d.startsWith('script-src'));
+    expect(scriptSrc).toBeDefined();
+    expect(scriptSrc).not.toContain("'unsafe-inline'");
+    expect(scriptSrc).not.toContain("'unsafe-eval'");
+    expect(scriptSrc).toContain(`'${INLINE_BOOTSTRAP_SCRIPT_HASH}'`);
+    expect(scriptSrc).toContain("'wasm-unsafe-eval'");
+  });
+
+  it('allows no third-party script or connect origins beyond HIBP', () => {
+    expect(csp).not.toContain('cdn.jsdelivr.net');
+  });
+});
+
+describe('Inline bootstrap script hash (S2 drift guard)', () => {
+  it('matches the SHA-256 of the single inline script in index.html', async () => {
+    const inlineScripts = [
+      ...indexHtml.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g),
+    ];
+
+    // Exactly one inline script may exist — every additional one would need
+    // its own hash in the CSP and silently breaks under the strict policy.
+    expect(inlineScripts).toHaveLength(1);
+
+    const body = inlineScripts[0]?.[1] ?? '';
+    const digest = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(body),
+    );
+    const hash = `sha256-${btoa(String.fromCharCode(...new Uint8Array(digest)))}`;
+    expect(hash).toBe(INLINE_BOOTSTRAP_SCRIPT_HASH);
+  });
 });
 
 describe('Security headers (S6)', () => {
@@ -62,6 +105,25 @@ describe('Security headers (S6)', () => {
     expect(SECURITY_HEADERS['X-Content-Type-Options']).toBe('nosniff');
     expect(SECURITY_HEADERS['X-Frame-Options']).toBe('DENY');
     expect(SECURITY_HEADERS['Referrer-Policy']).toBe('strict-origin-when-cross-origin');
+  });
+});
+
+describe('Dev-only header variant (never ships)', () => {
+  it('differs from production headers ONLY in the CSP script-src directive', () => {
+    for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+      if (key === 'Content-Security-Policy') continue;
+      expect(DEV_SECURITY_HEADERS[key]).toBe(value);
+    }
+    const stripScriptSrc = (csp: string | undefined): string =>
+      (csp ?? '').replace(/script-src [^;]+/, 'script-src <normalized>');
+    expect(stripScriptSrc(DEV_SECURITY_HEADERS['Content-Security-Policy'])).toBe(
+      stripScriptSrc(SECURITY_HEADERS['Content-Security-Policy'])
+    );
+  });
+
+  it('production headers stay strict regardless of the dev variant', () => {
+    expect(SECURITY_HEADERS['Content-Security-Policy']).not.toContain("'unsafe-inline' 'wasm-unsafe-eval'");
+    expect(SECURITY_HEADERS['Content-Security-Policy']).toContain(INLINE_BOOTSTRAP_SCRIPT_HASH);
   });
 });
 

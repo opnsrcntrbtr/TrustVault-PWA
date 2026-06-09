@@ -1,7 +1,7 @@
 # TrustVault PWA - Development Roadmap
 
-**Last Updated:** 2026-05-30 (originally 2025-10-22)
-**Current Status:** Beta (90% complete) - All critical bugs resolved, Phase 1 complete (2026-05-30)
+**Last Updated:** 2026-06-10 (security hardening A–E complete)
+**Current Status:** Beta (92% complete) - Security hardening complete, Phase 1 complete (2026-05-30)
 **Target:** Production-ready PWA with feature parity to Android app
 
 ---
@@ -31,6 +31,15 @@ This roadmap provides a structured, phased approach to incrementally develop Tru
 > insecure device-key scheme (recomputable from stored values). Legacy credentials
 > are stripped by the DB v6 migration; non-PRF devices fall back to master password.
 > See `SECURITY.md` → "Biometric Authentication (WebAuthn PRF — S1)".
+
+> **Security Hardening Phases A–E (2026-06-10, complete):** Strict hash-based CSP
+> (S2 — no `unsafe-inline`/`unsafe-eval` in script-src), non-extractable session
+> vault keys + key-material zeroization (S7 — biometric enrollment now confirms
+> the master password), Zod-validated vault imports + a11y zoom (S8), self-hosted
+> Tesseract OCR assets with zero CDN egress (P2), and dead-dependency removal
+> (P5 — argon2-browser, dexie-encrypted). The ZK invariant in
+> `src/test/integration.test.ts` is now a real test. See
+> `SECURITY_HARDENING_PLAN_2026-06.md` and `SECURITY_PWA_ENHANCEMENT_PLAN.md` §0.
 
 🟡 **Partial (20-70%)**
 - Credential CRUD operations ✅ (backend 100%, UI 100% — ADD/EDIT/DETAIL pages all complete as of May 2026)

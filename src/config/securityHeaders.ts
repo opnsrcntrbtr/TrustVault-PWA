@@ -16,26 +16,40 @@ export const HIBP_ORIGINS = [
   'https://haveibeenpwned.com',
 ] as const;
 
-/** CDN used at runtime for Tesseract OCR assets (see P2 — slated for self-hosting). */
-export const CDN_ORIGINS = ['https://cdn.jsdelivr.net'] as const;
+// P2 (done): Tesseract OCR assets are self-hosted under public/ocr/ —
+// the former cdn.jsdelivr.net allowance has been removed from the CSP.
 
 /**
- * Builds the Content-Security-Policy string.
+ * SHA-256 hash of the single inline bootstrap script in index.html (the
+ * GitHub-Pages SPA redirect). Whitelisting the hash lets us drop
+ * 'unsafe-inline' from script-src entirely (S2 — strict hash-based CSP).
  *
- * NOTE: `script-src` still permits 'unsafe-inline'/'unsafe-eval'. Removing
- * those requires the hash-based strict CSP pipeline (plan item S2, Phase 2)
- * and is intentionally out of scope for this change. Everything else here is
- * already hardened: HIBP egress is allowed (S3) and clickjacking/injection
- * directives are added (S2 partial).
+ * Drift guard: src/config/__tests__/securityHeaders.test.ts recomputes this
+ * hash from index.html and fails if the script changes without updating it.
+ */
+export const INLINE_BOOTSTRAP_SCRIPT_HASH =
+  'sha256-SPRG1jijJMMtUP5+1fDMpHzEVwoIHr49w64NNXdvcv8=';
+
+/**
+ * Builds the Content-Security-Policy string (S2 — strict CSP).
+ *
+ * script-src: no 'unsafe-inline' (replaced by the bootstrap script hash) and
+ * no 'unsafe-eval' — WASM (self-hosted Tesseract core) needs only the
+ * narrower 'wasm-unsafe-eval'.
+ *
+ * style-src: 'unsafe-inline' is retained as a DOCUMENTED RESIDUAL — MUI/
+ * Emotion inject runtime <style> tags. Style injection is a far lower-risk
+ * vector than script injection; revisit with Emotion nonce/hash support if
+ * that changes (tracked in SECURITY_HARDENING_PLAN_2026-06.md, out of scope).
  */
 export function buildContentSecurityPolicy(): string {
   const directives: Record<string, string[]> = {
     'default-src': ["'self'"],
-    'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", ...CDN_ORIGINS],
+    'script-src': ["'self'", `'${INLINE_BOOTSTRAP_SCRIPT_HASH}'`, "'wasm-unsafe-eval'"],
     'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
     'font-src': ["'self'", 'https://fonts.gstatic.com'],
     'img-src': ["'self'", 'data:', 'blob:'],
-    'connect-src': ["'self'", ...CDN_ORIGINS, ...HIBP_ORIGINS],
+    'connect-src': ["'self'", ...HIBP_ORIGINS],
     'worker-src': ["'self'", 'blob:'],
     'object-src': ["'none'"],
     'base-uri': ["'self'"],
@@ -67,4 +81,21 @@ export const SECURITY_HEADERS: Record<string, string> = {
   'Cross-Origin-Opener-Policy': 'same-origin',
   'Cross-Origin-Resource-Policy': 'same-origin',
   'Content-Security-Policy': buildContentSecurityPolicy(),
+};
+
+/**
+ * DEV-SERVER-ONLY header variant (`vite dev`).
+ *
+ * @vitejs/plugin-react injects an inline React-refresh preamble and Vite's
+ * HMR uses eval-based source maps, both of which the strict production CSP
+ * blocks. Production (`vercel.json`) and `vite preview` always use the
+ * strict SECURITY_HEADERS above — this relaxation never ships.
+ */
+export const DEV_SECURITY_HEADERS: Record<string, string> = {
+  ...SECURITY_HEADERS,
+  'Content-Security-Policy': buildContentSecurityPolicy()
+    .replace(
+      /script-src [^;]+/,
+      "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'"
+    ),
 };

@@ -254,48 +254,41 @@ export class CredentialRepository implements ICredentialRepository {
   }
 
   async importFromJson(data: string, encryptionKey: CryptoKey): Promise<number> {
-    try {
-      const parsed = JSON.parse(data) as Array<{
-        title?: string; username?: string; password?: string;
-        url?: string; notes?: string; category?: Credential['category'];
-        tags?: string[]; isFavorite?: boolean; totpSecret?: string;
-        cardNumber?: string; cardholderName?: string; expiryMonth?: string;
-        expiryYear?: string; cvv?: string;
-        cardType?: Credential['cardType']; billingAddress?: string;
-      }>;
-      let imported = 0;
-      for (const item of parsed) {
-        try {
-          await this.create(
-            {
-              title: item.title ?? '',
-              username: item.username ?? '',
-              password: item.password ?? '',
-              url: item.url,
-              notes: item.notes,
-              category: item.category ?? 'login',
-              tags: item.tags ?? [],
-              isFavorite: item.isFavorite ?? false,
-              totpSecret: item.totpSecret,
-              cardNumber: item.cardNumber,
-              cardholderName: item.cardholderName,
-              expiryMonth: item.expiryMonth,
-              expiryYear: item.expiryYear,
-              cvv: item.cvv,
-              cardType: item.cardType,
-              billingAddress: item.billingAddress,
-            },
-            encryptionKey
-          );
-          imported++;
-        } catch {
-          // skip bad rows
-        }
+    // S8: schema-validate BEFORE any row touches the repository. Throws a
+    // user-facing error on malformed/oversized/wrong-shaped payloads.
+    const { parseImportPayload } = await import('@/data/repositories/importValidation');
+    const parsed = parseImportPayload(data);
+
+    let imported = 0;
+    for (const item of parsed) {
+      try {
+        await this.create(
+          {
+            title: item.title ?? '',
+            username: item.username ?? '',
+            password: item.password ?? '',
+            url: item.url,
+            notes: item.notes,
+            category: item.category ?? 'login',
+            tags: item.tags ?? [],
+            isFavorite: item.isFavorite ?? false,
+            totpSecret: item.totpSecret,
+            cardNumber: item.cardNumber,
+            cardholderName: item.cardholderName,
+            expiryMonth: item.expiryMonth,
+            expiryYear: item.expiryYear,
+            cvv: item.cvv,
+            cardType: item.cardType,
+            billingAddress: item.billingAddress,
+          },
+          encryptionKey
+        );
+        imported++;
+      } catch {
+        // skip bad rows
       }
-      return imported;
-    } catch {
-      throw new Error('Invalid import data format');
     }
+    return imported;
   }
 
   async updateAccessTime(id: string): Promise<void> {

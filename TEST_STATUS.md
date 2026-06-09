@@ -286,3 +286,21 @@ The following have minor test failures but **core functionality works**:
 - No security-critical functionality is failing tests
 
 **Recommendation**: Proceed with deployment while addressing minor test refinements in parallel.
+
+---
+
+## 2026-06-10 — Security Hardening (SECURITY_HARDENING_PLAN_2026-06.md)
+
+Validations recorded for phases A–E (executed in a sandboxed Linux env; scrypt-heavy
+suites need `--testTimeout=30000` there — all pass; re-run `npm run test` locally to confirm):
+
+| Check | Result |
+|---|---|
+| `npm run type-check` | ✅ 0 errors (after every phase) |
+| `securityHeaders.test.ts` | ✅ 14/14 — strict CSP, inline-script hash drift guard, dev-variant guard, vercel.json parity |
+| `biometricVaultKey.test.ts` | ✅ 10/10 — PRF wrap/unwrap, S7 non-extractable unwrap |
+| `UserRepositoryImpl.test.ts` (biometric PRF describe) | ✅ 8/8 — incl. S7 non-extractable session keys + wrong-password enrollment rejection |
+| `src/test/integration.test.ts` | ✅ 20/20 — now contains a REAL ZK invariant test (PRF-wrapped vault key cannot be opened with the master password alone) |
+| `importValidation.test.ts` | ✅ 10/10 — S8 Zod vault-import validation |
+| ESLint | ✅ 853 → 853 problems (zero new issues vs pre-existing baseline; debt deferral approved by Ian 2026-06-10) |
+| Manual drills pending | sign-up → biometric enroll (now asks master password) → PRF unlock → password unlock; OCR scan offline (self-hosted assets); app boot under strict CSP |

@@ -36,7 +36,14 @@ async function getWorker(
     // Dynamic import to avoid blocking initial bundle
     const Tesseract = await import('tesseract.js');
 
-    const options: Record<string, unknown> = {};
+    // Self-hosted assets (P2): copied to public/ocr/ by scripts/copy-ocr-assets.js.
+    // No runtime CDN dependency — same-origin, version-pinned via package-lock.
+    const ocrBase = `${import.meta.env.BASE_URL}ocr/`;
+    const options: Record<string, unknown> = {
+      workerPath: `${ocrBase}worker.min.js`,
+      corePath: ocrBase,
+      langPath: ocrBase,
+    };
     if (onProgress) {
       options.logger = (m: { status: string; progress: number }) => {
         onProgress({ status: m.status, progress: m.progress });
@@ -121,12 +128,14 @@ export async function prefetchTesseractAssets(): Promise<void> {
     // Wait for service worker to be ready
     await navigator.serviceWorker.ready;
 
-    // Tesseract.js CDN URLs for core WASM and language data
-    // These URLs match the runtime caching patterns in vite.config.ts
+    // Self-hosted OCR assets (public/ocr/) — same-origin, no CDN egress.
+    // These URLs match the /ocr/ runtime caching pattern in vite.config.ts.
+    const ocrBase = `${import.meta.env.BASE_URL}ocr/`;
     const assetsToCache = [
-      'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js',
-      'https://cdn.jsdelivr.net/npm/tesseract.js-core@5/tesseract-core-simd-lstm.wasm.js',
-      'https://cdn.jsdelivr.net/npm/tesseract.js-data@5/4.0.0/eng.traineddata.gz',
+      `${ocrBase}worker.min.js`,
+      `${ocrBase}tesseract-core-simd-lstm.wasm.js`,
+      `${ocrBase}tesseract-core-simd-lstm.wasm`,
+      `${ocrBase}eng.traineddata.gz`,
     ];
 
     // Use low-priority fetch to avoid blocking critical resources

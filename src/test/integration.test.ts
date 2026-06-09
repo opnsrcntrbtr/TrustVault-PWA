@@ -358,28 +358,59 @@ describe('Security Validation Tests', () => {
     });
   });
 
-  describe('Zero-Knowledge Architecture', () => {
-    it('should never send master password to server', () => {
+  describe('Zero-Knowledge Architecture (REAL invariant — S1/S7)', () => {
+    /**
+     * THE invariant this suite exists to protect (see CLAUDE.md / project
+     * instructions): a vault key wrapped under a PRF-derived key cannot be
+     * recovered with the master password alone. Uses the real crypto modules,
+     * not mocks.
+     */
+    it('a PRF-wrapped vault key CANNOT be decrypted with the master password alone', async () => {
+      const { deriveKeyFromPassword, decrypt } = await import('@/core/crypto/encryption');
+      const { wrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
+
       const masterPassword = 'SecurePassword123!';
-      
-      // Password should only be hashed locally
-      const hashedPassword = 'scrypt$...$hash';
-      
-      expect(hashedPassword).not.toContain(masterPassword);
+      const salt = crypto.getRandomValues(new Uint8Array(32)); // stored in IndexedDB
+      const prfSalt = crypto.getRandomValues(new Uint8Array(32)); // stored in IndexedDB
+
+      // The PRF output exists ONLY inside the authenticator hardware.
+      const prfOutput = crypto.getRandomValues(new Uint8Array(32));
+      const vaultKeyRaw = crypto.getRandomValues(new Uint8Array(32));
+      const wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKeyRaw, prfOutput);
+
+      // Attacker model: full IndexedDB dump (salt, prfSalt, wrappedVaultKey)
+      // PLUS the master password. Without the authenticator's PRF output,
+      // the wrap must not open.
+      const passwordKey = await deriveKeyFromPassword(masterPassword, salt);
+      const wrapped = JSON.parse(wrappedVaultKey) as { ciphertext: string; iv: string };
+      await expect(decrypt(wrapped, passwordKey)).rejects.toThrow();
+
+      // A password key derived with the PRF salt must not open it either.
+      const prfSaltPasswordKey = await deriveKeyFromPassword(masterPassword, prfSalt);
+      await expect(decrypt(wrapped, prfSaltPasswordKey)).rejects.toThrow();
     });
 
-    it('should encrypt vault key with password-derived key', () => {
-      // Vault key should be encrypted before storage
-      const encryptedVaultKey = { ciphertext: 'encrypted', iv: 'iv' };
-      
-      expect(encryptedVaultKey).toBeDefined();
+    it('the correct PRF output unwraps the vault key — and the result is non-extractable (S7)', async () => {
+      const { wrapVaultKeyWithPRF, unwrapVaultKeyWithPRF } = await import(
+        '@/core/auth/biometricVaultKey'
+      );
+
+      const prfOutput = crypto.getRandomValues(new Uint8Array(32));
+      const prfCopy = new Uint8Array(prfOutput); // unwrap zeroizes transient material
+      const vaultKeyRaw = crypto.getRandomValues(new Uint8Array(32));
+      const wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKeyRaw, prfOutput);
+
+      const unwrapped = await unwrapVaultKeyWithPRF(wrappedVaultKey, prfCopy);
+      expect(unwrapped).toBeInstanceOf(CryptoKey);
+      expect(unwrapped.extractable).toBe(false);
+      await expect(crypto.subtle.exportKey('raw', unwrapped)).rejects.toThrow();
     });
 
     it('should never persist vault key in storage', () => {
       // Check localStorage
       const storedKey = localStorage.getItem('vaultKey');
       expect(storedKey).toBeNull();
-      
+
       // Check sessionStorage
       const sessionKey = sessionStorage.getItem('vaultKey');
       expect(sessionKey).toBeNull();

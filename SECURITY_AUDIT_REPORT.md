@@ -613,3 +613,33 @@ authTagLength = 128  // bits (GCM authentication)
 ---
 
 *This report is confidential and intended for internal use only. Do not distribute without authorization.*
+
+---
+
+## Patch Notes — 2026-06-10 (Security Hardening Phases A–E)
+
+Delivered per `SECURITY_HARDENING_PLAN_2026-06.md`; status table in
+`SECURITY_PWA_ENHANCEMENT_PLAN.md` §0 updated to match.
+
+- **S2 (was High):** Strict hash-based CSP deployed. `script-src` no longer
+  contains `'unsafe-inline'`/`'unsafe-eval'` — replaced by the SHA-256 hash of
+  the single inline bootstrap script plus `'wasm-unsafe-eval'`. A drift test
+  recomputes the hash from `index.html`; `vercel.json` parity is test-enforced.
+  `style-src 'unsafe-inline'` remains as a documented MUI/Emotion residual.
+- **S7 (was Medium):** Session vault keys are non-extractable on both unlock
+  paths; transient key material (PBKDF2 output, raw vault-key bytes, PRF
+  outputs) is zeroized after use. Biometric enrollment now confirms the master
+  password and recovers the vault key from its encrypted stored copy instead of
+  exporting the session key. Residual: immutable base64 string copies during
+  decrypt (storage-format migration required to remove; tracked).
+- **S8 remainder:** Vault imports are Zod-validated (entry cap, field caps,
+  category/cardType enums, type checks) before processing; viewport meta allows
+  user scaling (WCAG 1.4.4).
+- **P2:** Tesseract OCR assets self-hosted under `/ocr/` (pinned via
+  package-lock; copied by `scripts/copy-ocr-assets.js`); `cdn.jsdelivr.net`
+  removed from the CSP entirely — no runtime CDN egress remains.
+- **P5:** Dead `argon2-browser` and `dexie-encrypted` dependencies removed,
+  including the bundled argon2 WASM asset.
+- **Test integrity:** the placeholder Zero-Knowledge checks in
+  `src/test/integration.test.ts` were replaced with a real invariant test using
+  the production crypto modules.

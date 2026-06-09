@@ -132,33 +132,72 @@ TrustVaultDB (v1)
 
 ### Encryption at Rest
 - All credential passwords encrypted with AES-256-GCM
+- Sensitive metadata (title/username/url/tags/card fields) encrypted at rest (S5)
 - Vault key encrypted with derived master key
 - Session keys stored in memory only
 - Automatic secure wipe on logout
+
+### Key Hygiene (S7)
+- **Session vault keys are non-extractable** `CryptoKey`s on BOTH unlock paths
+  (password and biometric PRF) — `crypto.subtle.exportKey` on them throws.
+- Transient raw key material (PBKDF2 output, decrypted vault-key bytes, PRF
+  outputs) is **zeroized** (`.fill(0)`) immediately after use.
+- Biometric enrollment confirms the **master password** and recovers the vault
+  key from its encrypted stored copy — the in-memory session key is never
+  exported (mirrors Bitwarden's enrollment flow).
+- Known residual: base64 *string* copies of key material during decrypt are
+  immutable JS strings and cannot be zeroized; eliminating them requires a
+  storage-format migration (tracked, out of scope).
+- Vault imports are schema-validated with Zod before any row is processed (S8).
 
 ---
 
 ## 🌐 Network Security
 
-### Content Security Policy
+### Content Security Policy (strict, hash-based — S2)
+The canonical policy lives in `src/config/securityHeaders.ts` (single source of
+truth; `vercel.json` parity is enforced by `securityHeaders.test.ts`):
+
 ```
 default-src 'self';
-script-src 'self' 'unsafe-inline';
+script-src 'self' 'sha256-<inline-bootstrap-hash>' 'wasm-unsafe-eval';
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
 font-src 'self' https://fonts.gstatic.com;
 img-src 'self' data: blob:;
-connect-src 'self';
-frame-ancestors 'none';
+connect-src 'self' https://api.pwnedpasswords.com https://haveibeenpwned.com;
+worker-src 'self' blob:;
+object-src 'none';
 base-uri 'self';
+frame-ancestors 'none';
 form-action 'self';
 ```
+
+Key properties:
+- **No `'unsafe-inline'` / `'unsafe-eval'` in `script-src`.** The single inline
+  bootstrap script (GitHub-Pages SPA redirect) is allowed via SHA-256 hash; a
+  drift test recomputes the hash from `index.html` on every test run. WASM
+  (self-hosted Tesseract core) needs only the narrower `'wasm-unsafe-eval'`.
+- **`style-src 'unsafe-inline'` is a documented residual** for MUI/Emotion
+  runtime styles — a far lower-risk vector than script injection.
+- **No CDN origins.** Tesseract OCR assets are self-hosted under `/ocr/`
+  (version-pinned via package-lock), eliminating the former
+  `cdn.jsdelivr.net` supply-chain exposure (P2).
+
+### Network Egress (breach detection)
+The ONLY external endpoints the app contacts are the HIBP APIs
+(`api.pwnedpasswords.com`, `haveibeenpwned.com`) for breach detection, using
+k-anonymity (only the first 5 hash chars leave the device). The feature is
+user-toggleable via `VITE_HIBP_API_ENABLED`. Everything else is same-origin.
 
 ### Security Headers
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
-- `X-XSS-Protection: 1; mode=block`
+- `X-XSS-Protection: 0` (legacy auditor removed from modern browsers; CSP is the real defense — OWASP guidance)
 - `Referrer-Policy: strict-origin-when-cross-origin`
 - `Permissions-Policy: camera=(self), geolocation=(), microphone=()`
+- `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
+- `Cross-Origin-Opener-Policy: same-origin`
+- `Cross-Origin-Resource-Policy: same-origin`
 
 ---
 
@@ -215,7 +254,7 @@ The scan UI displays: "🔒 Images are processed locally and never uploaded"
 - Real-time strength meter
 - Entropy calculation
 - Common pattern detection
-- Breach database checking (future)
+- Breach database checking via HIBP with k-anonymity (shipped; user-toggleable)
 
 ### Security Score
 - Per-credential security rating (0-100)
@@ -321,6 +360,6 @@ Contact: security@trustvault.example (example - update with real contact)
 
 ---
 
-**Last Updated**: October 21, 2025  
-**Security Version**: 1.0.0  
+**Last Updated**: June 10, 2026
+**Security Version**: 1.2.0 (S2 strict CSP, S7 key hygiene, S8 import validation, P2/P5 supply chain — see SECURITY_HARDENING_PLAN_2026-06.md)
 **Compliance Level**: OWASP Mobile Top 10 2025 ✅

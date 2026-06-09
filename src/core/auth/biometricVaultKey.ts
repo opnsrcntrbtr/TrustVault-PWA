@@ -68,20 +68,21 @@ export async function deriveWrapKeyFromPRF(prfOutput: Uint8Array): Promise<Crypt
 }
 
 /**
- * Wraps (encrypts) the vault key with a PRF-derived key.
+ * Wraps (encrypts) the raw vault key bytes with a PRF-derived key.
  * Returns a JSON string (EncryptedData) suitable for storage in
  * WebAuthnCredential.wrappedVaultKey. The raw vault key is never persisted.
+ *
+ * S7: takes raw bytes (not a CryptoKey) so the session vault key can stay
+ * non-extractable. The caller obtains the bytes by decrypting the stored
+ * encryptedVaultKey with the master password and MUST zeroize them after.
  */
 export async function wrapVaultKeyWithPRF(
-  vaultKey: CryptoKey,
+  vaultKeyRaw: Uint8Array,
   prfOutput: Uint8Array,
 ): Promise<string> {
   const wrapKey = await deriveWrapKeyFromPRF(prfOutput);
 
-  // Export the vault key and encrypt its raw bytes (base64) with the wrap key.
-  const raw = await crypto.subtle.exportKey('raw', vaultKey);
-  const rawBase64 = encodeUint8ArrayToBase64(new Uint8Array(raw));
-
+  const rawBase64 = encodeUint8ArrayToBase64(vaultKeyRaw);
   const encrypted = await encrypt(rawBase64, wrapKey);
   return JSON.stringify(encrypted);
 }
@@ -101,13 +102,18 @@ export async function unwrapVaultKeyWithPRF(
   const rawBase64 = await decrypt(encrypted, wrapKey); // throws on wrong key
   const rawBytes = decodeBase64ToUint8Array(rawBase64);
 
-  // Import as an extractable AES-GCM key to match the password-unlock path
-  // (UserRepositoryImpl.authenticateWithPassword imports the vault key the same way).
-  return crypto.subtle.importKey(
-    'raw',
-    rawBytes as BufferSource,
-    { name: 'AES-GCM', length: 256 },
-    true,
-    ['encrypt', 'decrypt'],
-  );
+  try {
+    // S7: NON-extractable — the session vault key never leaves WebCrypto.
+    // Matches the password-unlock path (UserRepositoryImpl.authenticateWithPassword).
+    return await crypto.subtle.importKey(
+      'raw',
+      rawBytes as BufferSource,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt'],
+    );
+  } finally {
+    // Zeroize the transient raw key bytes regardless of import outcome.
+    rawBytes.fill(0);
+  }
 }

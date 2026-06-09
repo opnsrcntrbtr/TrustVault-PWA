@@ -9,23 +9,30 @@
 
 ---
 
-## 0. Implementation Status (2026-05-29)
+## 0. Implementation Status (updated 2026-06-10; originally 2026-05-29)
 
 | ID | Status | Tests | Notes |
 |----|--------|-------|-------|
 | **S3** — HIBP allowed in `connect-src` | ✅ Done | `src/config/__tests__/securityHeaders.test.ts` | breach detection no longer blocked by CSP |
 | **S6** — HSTS + COOP/CORP headers | ✅ Done | same | + `X-XSS-Protection: 0` per OWASP |
-| **S2** — CSP hardening directives | ⚠️ Partial | same | added `object-src/base-uri/frame-ancestors/form-action`; **removing `unsafe-inline`/`unsafe-eval` (hash-based strict CSP) is still pending** |
+| **S2** — strict hash-based CSP | ✅ Done (2026-06-10) | same (incl. inline-script hash drift guard) | `script-src 'self' 'sha256-…' 'wasm-unsafe-eval'` — no `unsafe-inline`/`unsafe-eval`; `style-src 'unsafe-inline'` kept as documented MUI/Emotion residual; dev-only relaxed variant (`DEV_SECURITY_HEADERS`) never ships |
 | **Config drift guard** | ✅ Done | same | canonical `src/config/securityHeaders.ts`; `vercel.json`↔Vite parity enforced by test |
 | **S4** — scrypt `N=2^17` + rehash-on-login | ✅ Done | `password.test.ts`, `password-edge-cases.test.ts`, `UserRepositoryImpl.test.ts` | legacy hashes still verify and upgrade transparently |
 | **S8** — error sanitization | ✅ Done | `encryption.test.ts` | decrypt no longer leaks "key/corrupt" |
 | **S8** — constant-time verify + console cleanup | ✅ Done | `password.test.ts` | routed through `constantTimeEqual` |
 | **S8** — rate-limit decay | ✅ Done | `rateLimiter.test.ts` | counter resets after 1h idle |
-| **S1** — WebAuthn PRF unlock | ⬜ Pending | — | largest item; next priority |
-| **S5** — encrypt metadata at rest | ⬜ Pending | — | needs v5 DB migration |
-| **S7** — non-extractable keys | ⬜ Pending | — | unblocks after S1 |
-| **S8** — zod import validation, a11y zoom | ⬜ Pending | — | |
-| **P1–P5** — PWA offline/manifest/deps | ⬜ Pending | — | |
+| **S1** — WebAuthn PRF unlock | ✅ Done (2026-05) | `biometricVaultKey.test.ts`, `UserRepositoryImpl.test.ts` | `vaultKeyScheme: 'prf-v1'`; legacy creds stripped by DB v6 migration |
+| **S5** — encrypt metadata at rest | ✅ Done (2026-05) | `metadataEncryption.test.ts` | sealed transparently on login via `sealLegacyMetadata` |
+| **S7** — non-extractable keys | ✅ Done (2026-06-10) | `biometricVaultKey.test.ts`, `UserRepositoryImpl.test.ts` (S7 cases), `integration.test.ts` | session vault keys non-extractable on both unlock paths; transient key material zeroized; biometric enroll now confirms the master password instead of exporting the session key |
+| **S8** — zod import validation, a11y zoom | ✅ Done (2026-06-10) | `importValidation.test.ts` | schema-validated imports; viewport allows user scaling (WCAG 1.4.4) |
+| **P2** — self-host Tesseract (no CDN) | ✅ Done (2026-06-10) | `securityHeaders.test.ts` | assets served from `public/ocr/` via `scripts/copy-ocr-assets.js`; `cdn.jsdelivr.net` removed from CSP |
+| **P5** — remove dead deps | ✅ Done (2026-06-10) | type-check/build | `argon2-browser` + `dexie-encrypted` uninstalled; bundled argon2 asset deleted |
+| **P1/P3/P4** — PWA offline/manifest/sync | ⬜ Pending | — | tracked in `SECURITY_HARDENING_PLAN_2026-06.md` (out of scope) |
+
+> **2026-06-10 update** (delivered per `SECURITY_HARDENING_PLAN_2026-06.md`):
+> the placeholder ZK checks in `src/test/integration.test.ts` were replaced
+> with a REAL invariant test — a PRF-wrapped vault key must not decrypt with
+> the master password alone, exercised against the production crypto modules.
 
 **Validation:** `npm run type-check` → 0 errors · `npm run build` → success · 207/208 touched-suite tests pass (the 1 failure is a **pre-existing** TOCTOU race in `createUser`, unrelated to these changes — see §7).
 

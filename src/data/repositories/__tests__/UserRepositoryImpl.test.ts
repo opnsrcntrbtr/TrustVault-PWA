@@ -34,9 +34,20 @@ vi.mock('@/core/auth/webauthn', () => ({
   ),
 }));
 
-async function exportRaw(key: CryptoKey): Promise<string> {
-  const raw = await crypto.subtle.exportKey('raw', key);
-  return btoa(String.fromCharCode(...new Uint8Array(raw)));
+/**
+ * S7: session vault keys are NON-extractable, so key equality is proven
+ * behaviourally — data encrypted under one key must decrypt under the other.
+ */
+async function expectSameKey(a: CryptoKey, b: CryptoKey): Promise<void> {
+  const probe = 'vault-key-equality-probe';
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const sealed = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    a,
+    new TextEncoder().encode(probe),
+  );
+  const opened = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, b, sealed);
+  expect(new TextDecoder().decode(opened)).toBe(probe);
 }
 
 /** Builds a legacy (pre-S4) scrypt hash for a password. */
@@ -671,9 +682,9 @@ describe('UserRepositoryImpl', () => {
 
     it('enrolls a PRF credential and stores no legacy key material', async () => {
       const user = await repository.createUser(username, password);
-      const session = await repository.authenticateWithPassword(username, password);
+      await repository.authenticateWithPassword(username, password);
 
-      await repository.registerBiometric(user.id, session.vaultKey, 'Test Device');
+      await repository.registerBiometric(user.id, password, 'Test Device');
 
       const stored = await db.users.get(user.id);
       const cred = stored?.webAuthnCredentials[0];
@@ -689,7 +700,7 @@ describe('UserRepositoryImpl', () => {
     it('unlocks the vault via PRF and seals legacy metadata', async () => {
       const user = await repository.createUser(username, password);
       const session = await repository.authenticateWithPassword(username, password);
-      await repository.registerBiometric(user.id, session.vaultKey, 'Dev');
+      await repository.registerBiometric(user.id, password, 'Dev');
 
       const stored = await db.users.get(user.id);
       const credentialId = stored?.webAuthnCredentials[0]?.id ?? '';
@@ -711,7 +722,7 @@ describe('UserRepositoryImpl', () => {
       const bioSession = await repository.authenticateWithBiometric(user.id, credentialId);
 
       expect(bioSession.userId).toBe(user.id);
-      expect(await exportRaw(bioSession.vaultKey)).toBe(await exportRaw(session.vaultKey));
+      await expectSameKey(bioSession.vaultKey, session.vaultKey);
 
       const after = await db.credentials.toArray();
       const sealed = after[0] as { isSealed?: boolean; title?: unknown; encryptedTitle?: unknown } | undefined;
@@ -720,13 +731,42 @@ describe('UserRepositoryImpl', () => {
       expect(sealed?.encryptedTitle).toBeTruthy();
     });
 
-    it('refuses enrollment when PRF is unsupported (password-only)', async () => {
+    it('S7: session vault keys are non-extractable on both unlock paths', async () => {
       const user = await repository.createUser(username, password);
       const session = await repository.authenticateWithPassword(username, password);
+
+      expect(session.vaultKey.extractable).toBe(false);
+      await expect(crypto.subtle.exportKey('raw', session.vaultKey)).rejects.toThrow();
+
+      await repository.registerBiometric(user.id, password, 'Dev');
+      const stored = await db.users.get(user.id);
+      const credentialId = stored?.webAuthnCredentials[0]?.id ?? '';
+      const bioSession = await repository.authenticateWithBiometric(user.id, credentialId);
+
+      expect(bioSession.vaultKey.extractable).toBe(false);
+      await expect(crypto.subtle.exportKey('raw', bioSession.vaultKey)).rejects.toThrow();
+    });
+
+    it('S7: enrollment rejects an incorrect master password', async () => {
+      const user = await repository.createUser(username, password);
+      await repository.authenticateWithPassword(username, password);
+
+      await expect(
+        repository.registerBiometric(user.id, 'WrongPassword999!'),
+      ).rejects.toThrow(/incorrect master password/i);
+
+      const stored = await db.users.get(user.id);
+      expect(stored?.webAuthnCredentials.length).toBe(0);
+      expect(stored?.biometricEnabled).toBe(false);
+    });
+
+    it('refuses enrollment when PRF is unsupported (password-only)', async () => {
+      const user = await repository.createUser(username, password);
+      await repository.authenticateWithPassword(username, password);
       vi.mocked(isPRFSupported).mockResolvedValueOnce(false);
 
       await expect(
-        repository.registerBiometric(user.id, session.vaultKey),
+        repository.registerBiometric(user.id, password),
       ).rejects.toThrow(/PRF|master password/i);
 
       const stored = await db.users.get(user.id);
@@ -736,7 +776,7 @@ describe('UserRepositoryImpl', () => {
 
     it('refuses enrollment when the authenticator does not enable PRF', async () => {
       const user = await repository.createUser(username, password);
-      const session = await repository.authenticateWithPassword(username, password);
+      await repository.authenticateWithPassword(username, password);
       vi.mocked(registerCredentialWithPRF).mockResolvedValueOnce({
         credentialId: 'c',
         publicKey: 'p',
@@ -745,7 +785,7 @@ describe('UserRepositoryImpl', () => {
       });
 
       await expect(
-        repository.registerBiometric(user.id, session.vaultKey),
+        repository.registerBiometric(user.id, password),
       ).rejects.toThrow(/PRF/);
     });
 

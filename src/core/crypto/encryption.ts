@@ -77,14 +77,19 @@ export async function deriveKeyFromPassword(
   // Validate crypto API is available
   validateCryptoAPI();
 
-  // Import as WebCrypto key for AES-GCM operations
-  return crypto.subtle.importKey(
-    'raw',
-    derivedKey as BufferSource,
-    { name: 'AES-GCM' },
-    false,
-    ['encrypt', 'decrypt']
-  );
+  try {
+    // Import as a NON-extractable WebCrypto key for AES-GCM operations (S7)
+    return await crypto.subtle.importKey(
+      'raw',
+      derivedKey as BufferSource,
+      { name: 'AES-GCM' },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  } finally {
+    // S7: zeroize the transient derived key bytes after import
+    derivedKey.fill(0);
+  }
 }
 
 /**

@@ -42,6 +42,8 @@ export class UserRepositoryImpl implements IUserRepository {
     crypto.getRandomValues(masterVaultKey);
     const masterVaultKeyBase64 = btoa(String.fromCharCode(...masterVaultKey));
     const encryptedVaultKey = await encrypt(masterVaultKeyBase64, vaultKey);
+    // S7: zeroize the transient raw key bytes once the encrypted copy exists.
+    masterVaultKey.fill(0);
 
     const user: User = {
       id: crypto.randomUUID(),
@@ -125,14 +127,21 @@ export class UserRepositoryImpl implements IUserRepository {
     // Convert base64 master vault key to raw bytes
     const masterVaultKeyBytes = Uint8Array.from(atob(masterVaultKeyBase64), c => c.charCodeAt(0));
 
-    // Import the raw master vault key as a CryptoKey
-    const resolvedVaultKey = await crypto.subtle.importKey(
-      'raw',
-      masterVaultKeyBytes,
-      { name: 'AES-GCM' },
-      true,
-      ['encrypt', 'decrypt']
-    );
+    // Import the raw master vault key as a CryptoKey.
+    // S7: NON-extractable — the session vault key never leaves WebCrypto, and
+    // the transient raw bytes are zeroized immediately after import.
+    let resolvedVaultKey: CryptoKey;
+    try {
+      resolvedVaultKey = await crypto.subtle.importKey(
+        'raw',
+        masterVaultKeyBytes,
+        { name: 'AES-GCM' },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    } finally {
+      masterVaultKeyBytes.fill(0);
+    }
 
     // Update last login time
     await db.users.update(storedUser.id, {
@@ -212,7 +221,13 @@ export class UserRepositoryImpl implements IUserRepository {
       credential.counter,
     );
 
-    const vaultKey = await unwrapVaultKeyWithPRF(credential.wrappedVaultKey, prfOutput);
+    let vaultKey: CryptoKey;
+    try {
+      vaultKey = await unwrapVaultKeyWithPRF(credential.wrappedVaultKey, prfOutput);
+    } finally {
+      // S7: the PRF output is key material — zeroize once the unwrap is done.
+      prfOutput.fill(0);
+    }
 
     const updatedCredentials = user.webAuthnCredentials.map(c =>
       c.id === credentialId
@@ -301,12 +316,24 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   /**
-   * Register biometric credential
+   * Register biometric credential.
+   *
+   * S7: takes the MASTER PASSWORD (not the session CryptoKey). The raw vault
+   * key bytes are recovered by decrypting the stored encryptedVaultKey, wrapped
+   * with the PRF-derived key, and zeroized — so the in-memory session vault key
+   * can remain non-extractable. This mirrors how Bitwarden gates biometric
+   * enrollment behind a master-password confirmation.
    */
-  async registerBiometric(userId: string, vaultKey: CryptoKey, deviceName?: string): Promise<void> {
+  async registerBiometric(userId: string, masterPassword: string, deviceName?: string): Promise<void> {
     const user = await db.users.get(userId);
     if (!user) {
       throw new Error('User not found');
+    }
+
+    // Confirm the master password before touching key material.
+    const passwordValid = await verifyPassword(masterPassword, user.hashedMasterPassword);
+    if (!passwordValid) {
+      throw new Error('Incorrect master password');
     }
 
     const { isBiometricAvailable, isPRFSupported, registerCredentialWithPRF, getPRFOutput } =
@@ -341,8 +368,28 @@ export class UserRepositoryImpl implements IUserRepository {
 
     const { generatePrfSalt, wrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
     const prfSalt = generatePrfSalt();
+    // Encode the salt for storage BEFORE the PRF ceremony — prfOutput buffers
+    // are zeroized below and must never alias into what gets persisted.
+    const prfSaltB64 = encodeUint8ArrayToBase64(prfSalt);
     const { prfOutput } = await getPRFOutput(registration.credentialId, prfSalt, rpId);
-    const wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKey, prfOutput);
+
+    // Recover the raw vault key bytes from storage using the master password,
+    // wrap them under the PRF-derived key, then zeroize all transient material.
+    const userSalt = Uint8Array.from(atob(user.salt), c => c.charCodeAt(0));
+    const tempKey = await deriveKeyFromPassword(masterPassword, userSalt);
+    const vaultKeyBase64 = await decrypt(
+      JSON.parse(user.encryptedVaultKey) as Parameters<typeof decrypt>[0],
+      tempKey,
+    );
+    const vaultKeyRaw = Uint8Array.from(atob(vaultKeyBase64), c => c.charCodeAt(0));
+
+    let wrappedVaultKey: string;
+    try {
+      wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKeyRaw, prfOutput);
+    } finally {
+      vaultKeyRaw.fill(0);
+      prfOutput.fill(0);
+    }
 
     const newCredential = {
       id: registration.credentialId,
@@ -353,7 +400,7 @@ export class UserRepositoryImpl implements IUserRepository {
       deviceName: deviceName ?? 'Biometric Device',
       vaultKeyScheme: 'prf-v1' as const,
       wrappedVaultKey,
-      prfSalt: encodeUint8ArrayToBase64(prfSalt),
+      prfSalt: prfSaltB64,
     };
 
     const updatedCredentials = [...user.webAuthnCredentials, newCredential];

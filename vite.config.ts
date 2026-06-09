@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 // Canonical security headers — single source of truth shared with vercel.json
 // (kept in sync by src/config/__tests__/securityHeaders.test.ts).
-import { SECURITY_HEADERS } from './src/config/securityHeaders';
+import { SECURITY_HEADERS, DEV_SECURITY_HEADERS } from './src/config/securityHeaders';
 
 // Determine base path based on deployment target
 const BASE_PATH = process.env.VERCEL ? '/' : '/TrustVault-PWA/';
@@ -58,6 +58,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm}'],
+        // OCR assets (~16MB total) are runtime-cached on first use, not precached
+        globIgnores: ['**/ocr/**'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -73,44 +75,16 @@ export default defineConfig({
               }
             }
           },
-          // Tesseract.js WASM core and worker scripts
+          // Self-hosted Tesseract OCR assets (worker + WASM core + language
+          // data, ~16MB) — served from public/ocr/ (P2: no CDN egress).
+          // Runtime-cached on first OCR use instead of precached.
           {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js@.*/i,
+            urlPattern: ({ url }) => url.pathname.includes('/ocr/'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'tesseract-core-cache',
+              cacheName: 'tesseract-assets-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          // Tesseract.js language data (eng.traineddata ~15MB)
-          {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js-data@.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'tesseract-lang-cache',
-              expiration: {
-                maxEntries: 5,
-                maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          // Tesseract.js WASM core from tessdata CDN
-          {
-            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/tesseract\.js-core@.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'tesseract-wasm-cache',
-              expiration: {
-                maxEntries: 5,
                 maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
               },
               cacheableResponse: {
@@ -139,10 +113,6 @@ export default defineConfig({
     }
   },
   
-  optimizeDeps: {
-    exclude: ['argon2-browser']
-  },
-  
   build: {
     target: 'esnext',
     outDir: 'dist',
@@ -169,7 +139,9 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: false,
-    headers: SECURITY_HEADERS
+    // Dev-only relaxed script-src (React-refresh inline preamble + HMR).
+    // Production and `vite preview` use the strict SECURITY_HEADERS.
+    headers: DEV_SECURITY_HEADERS
   },
 
   preview: {

@@ -21,6 +21,7 @@ import {
   CircularProgress,
   Chip,
   Stack,
+  TextField,
 } from '@mui/material';
 import {
   Fingerprint,
@@ -45,6 +46,9 @@ interface BiometricSetupDialogProps {
 export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDialogProps) {
   const { user, vaultKey } = useAuthStore();
   const [credentials, setCredentials] = useState<WebAuthnCredential[]>([]);
+  // S7: enrollment confirms the master password so the vault key can be
+  // recovered from storage — the in-memory session key stays non-extractable.
+  const [masterPassword, setMasterPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -98,6 +102,10 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
       setError('You must be logged in with your master password to register biometric');
       return;
     }
+    if (!masterPassword) {
+      setError('Please confirm your master password to register biometric');
+      return;
+    }
 
     setError(null);
     setSuccess(null);
@@ -105,7 +113,7 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
 
     try {
       const deviceName = getDeviceName();
-      await userRepository.registerBiometric(user.id, vaultKey, deviceName);
+      await userRepository.registerBiometric(user.id, masterPassword, deviceName);
 
       setSuccess(`${deviceName} registered successfully!`);
       await loadCredentials();
@@ -114,6 +122,8 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
       setError(errorMessage);
       console.error('Biometric registration failed:', err);
     } finally {
+      // Never retain the password in state longer than the enrollment attempt.
+      setMasterPassword('');
       setIsLoading(false);
     }
   };
@@ -328,12 +338,26 @@ export default function BiometricSetupDialog({ open, onClose }: BiometricSetupDi
           </Box>
         )}
 
+        <TextField
+          fullWidth
+          type="password"
+          label="Confirm master password"
+          value={masterPassword}
+          onChange={(e) => {
+            setMasterPassword(e.target.value);
+          }}
+          disabled={!biometricAvailable || prfSupport === 'unsupported' || !vaultKey || isLoading}
+          autoComplete="current-password"
+          helperText="Required to securely wrap your vault key for biometric unlock"
+          sx={{ mt: 2 }}
+        />
+
         <Button
           fullWidth
           variant={credentials.length === 0 ? 'contained' : 'outlined'}
           startIcon={isLoading ? <CircularProgress size={20} /> : <Add />}
           onClick={handleRegisterBiometric}
-          disabled={!biometricAvailable || prfSupport === 'unsupported' || !vaultKey || isLoading}
+          disabled={!biometricAvailable || prfSupport === 'unsupported' || !vaultKey || !masterPassword || isLoading}
           sx={{ mt: 2 }}
         >
           {isLoading ? 'Registering...' : 'Register New Device'}
