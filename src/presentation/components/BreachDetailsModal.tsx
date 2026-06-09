@@ -250,7 +250,9 @@ export default function BreachDetailsModal({
                     variant="body2"
                     color="text.secondary"
                     sx={{ mb: 1 }}
-                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(breach.description) }}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(breach.description, { USE_PROFILES: { html: true } }),
+                    }}
                   />
 
                   {breach.dataClasses && breach.dataClasses.length > 0 && (
