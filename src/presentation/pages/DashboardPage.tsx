@@ -58,6 +58,7 @@ import TourHelpButton from '@/components/TourHelpButton';
 import type { Credential, CredentialCategory } from '@/domain/entities/Credential';
 import { clipboardManager } from '@/presentation/utils/clipboard';
 import BreachAlertBanner from '@/presentation/components/BreachAlertBanner';
+import { runUnlockBreachRefresh } from '@/core/breach/unlockBreachRefresh';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -105,6 +106,8 @@ export default function DashboardPage() {
       setError(null);
       const creds = await credentialRepository.findAll(vaultKey);
       setCredentials(creds);
+      // P4: fire-and-forget weekly breach re-check (cache-first, offline-safe).
+      void runUnlockBreachRefresh(creds);
     } catch (err) {
       console.error('Failed to load credentials:', err);
       setError(err instanceof Error ? err.message : 'Failed to load credentials');

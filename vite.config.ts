@@ -83,6 +83,9 @@ export default defineConfig({
         ]
       },
       workbox: {
+        // P4: periodicsync listener for HIBP range prefetch. The SW is built
+        // in generateSW mode, so custom listeners come from an imported script.
+        importScripts: ['sw-periodic-sync.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm}'],
         // OCR assets (~16MB total) are runtime-cached on first use, not precached
         globIgnores: ['**/ocr/**'],

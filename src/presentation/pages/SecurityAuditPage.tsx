@@ -43,6 +43,7 @@ import {
 import { useCredentialStore } from '../store/credentialStore';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
+import { getLastFullCheckAt, markBreachCheckComplete } from '@/core/breach/unlockBreachRefresh';
 import {
   saveBreachResult,
   getBreachStatistics,
@@ -79,6 +80,8 @@ export default function SecurityAuditPage() {
     breaches: BreachCheckResult;
     title: string;
   } | null>(null);
+  // P4: timestamp of the last full HIBP re-check (manual scan or on-unlock refresh)
+  const [lastFullCheckAt, setLastFullCheckAt] = useState<number | null>(() => getLastFullCheckAt());
 
   useEffect(() => {
     analyzeCredentials();
@@ -312,6 +315,10 @@ export default function SecurityAuditPage() {
         }
       }
 
+      // A manual full scan counts as a complete check (P4 staleness window)
+      markBreachCheckComplete();
+      setLastFullCheckAt(Date.now());
+
       // Reload stats and issues
       await loadBreachStats();
       await analyzeCredentials();
@@ -454,6 +461,12 @@ export default function SecurityAuditPage() {
                 </Typography>
               </Box>
             </Box>
+
+            {lastFullCheckAt !== null && (
+              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2 }}>
+                Last full check: {new Date(lastFullCheckAt).toLocaleString()}
+              </Typography>
+            )}
 
             {breachStats.breached > 0 && (
               <Alert severity="error" sx={{ mt: 2 }}>

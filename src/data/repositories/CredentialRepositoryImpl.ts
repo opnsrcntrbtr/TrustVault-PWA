@@ -20,6 +20,7 @@ import { Credential, CredentialInput } from '@/domain/entities/Credential';
 import { db, type StoredCredential } from '../storage/database';
 import { encrypt, decrypt } from '@/core/crypto/encryption';
 import { analyzePasswordStrength } from '@/core/crypto/password';
+import { saveBreachPrefix, deleteBreachPrefix } from '@/core/breach/breachPrefixStore';
 
 export class CredentialRepository implements ICredentialRepository {
 
@@ -94,6 +95,8 @@ export class CredentialRepository implements ICredentialRepository {
     };
 
     await db.credentials.add(stored);
+    // P4: keep the HIBP prefix store in sync (never blocks/breaks CRUD).
+    await saveBreachPrefix(id, input.password);
     return this.decryptCredential(stored, encryptionKey);
   }
 
@@ -162,6 +165,8 @@ export class CredentialRepository implements ICredentialRepository {
     if (input.password !== undefined) {
       updates.encryptedPassword = await this.encryptField(input.password, encryptionKey);
       updates.securityScore = analyzePasswordStrength(input.password).score;
+      // P4: refresh the HIBP prefix for the new password.
+      await saveBreachPrefix(id, input.password);
     }
     if (input.totpSecret !== undefined)
       updates.encryptedTotpSecret = await this.encryptOptional(input.totpSecret, encryptionKey);
@@ -200,6 +205,8 @@ export class CredentialRepository implements ICredentialRepository {
 
   async delete(id: string): Promise<void> {
     await db.credentials.delete(id);
+    // P4: remove the credential's HIBP prefix row.
+    await deleteBreachPrefix(id);
   }
 
   async search(query: string, decryptionKey: CryptoKey): Promise<Credential[]> {

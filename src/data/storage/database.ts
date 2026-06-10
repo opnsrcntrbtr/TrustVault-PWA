@@ -107,6 +107,19 @@ export interface StoredBreachResult {
   expiresAt: number;
 }
 
+/**
+ * P4 (background breach re-checks): per-credential 5-char SHA-1 prefix of the
+ * password. This is exactly the string already disclosed to HIBP under
+ * k-anonymity (~1M passwords share each prefix), so persisting it outside the
+ * vault adds no new disclosure — see SECURITY.md "HIBP prefix store" residual.
+ * It lets the service worker prefetch range responses while the vault is locked.
+ */
+export interface StoredBreachPrefix {
+  credentialId: string; // primary key
+  sha1Prefix: string;   // 5 uppercase hex chars
+  updatedAt: number;
+}
+
 export interface StoredLoginAttempt {
   email: string;        // primary key
   attempts: number;
@@ -125,6 +138,7 @@ export class TrustVaultDB extends Dexie {
   settings!: Table<{ id: string; data: SecuritySettings }, string>;
   breachResults!: Table<StoredBreachResult, string>;
   loginAttempts!: Table<StoredLoginAttempt, string>;
+  breachPrefixes!: Table<StoredBreachPrefix, string>;
 
   constructor() {
     super('TrustVaultDB');
@@ -267,6 +281,22 @@ export class TrustVaultDB extends Dexie {
         // Purge stored PII: loginAttempts keyed rows by email address.
         await tx.table('loginAttempts').clear();
       });
+
+    // Version 8 - HIBP prefix store (P4, background breach re-checks)
+    // Purely additive: a new breachPrefixes table holding each credential's
+    // 5-char SHA-1 prefix so the service worker can prefetch HIBP range
+    // responses while the vault is locked. Prefixes are backfilled lazily as
+    // credentials are created/updated (the migration cannot compute them —
+    // passwords are encrypted and no vault key is available here).
+    this.version(8).stores({
+      credentials: credentialStoreSchema,
+      users: userStoreSchemaV7,
+      sessions: sessionStoreSchema,
+      settings: 'id',
+      breachResults: breachStoreSchema,
+      loginAttempts: 'email, lockedUntil',
+      breachPrefixes: 'credentialId, sha1Prefix, updatedAt',
+    });
   }
 
   /**
@@ -277,6 +307,7 @@ export class TrustVaultDB extends Dexie {
     await this.sessions.clear();
     await this.breachResults.clear();
     await this.loginAttempts.clear();
+    await this.breachPrefixes.clear();
     // Keep users table for re-login
   }
 
