@@ -95,8 +95,12 @@ export default defineConfig({
         ],
         skipWaiting: false, // Don't auto-skip waiting - let user control it
         clientsClaim: false, // Don't auto-claim clients
-        // Inject custom code for version and message handling
-        navigateFallback: null,
+        // P1: serve the precached app shell for offline deep-link navigations.
+        // 'index.html' resolves relative to the SW scope, so it works on both
+        // GH Pages (/TrustVault-PWA/) and Vercel (/) without BASE_PATH math.
+        navigateFallback: 'index.html',
+        // Assets, API calls, and OCR resources must never receive the shell.
+        navigateFallbackDenylist: [/^\/api\//, /\/ocr\//, /\.[a-z0-9]+$/i],
         additionalManifestEntries: undefined,
       },
       // Inject version constant into generated SW
