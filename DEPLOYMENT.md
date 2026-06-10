@@ -164,57 +164,9 @@ vercel --prod
 
 **Vercel Configuration (`vercel.json`):**
 
-```json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "geolocation=(), microphone=(), camera=()"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
-        }
-      ]
-    }
-  ]
-}
-```
+The repository includes a canonical `vercel.json` in the repo root that contains the exact production headers and routing rules used for Vercel deployments. The `Content-Security-Policy` value is kept in strict parity with `src/config/securityHeaders.ts` and must not be changed in the docs — copy exact values from `vercel.json` instead of hand-editing.
+
+Use the provided `vercel.json` when configuring Vercel; it contains rewrites that route SPA paths to `index.html` and a headers block that enforces HSTS, COOP/CORP, and the strict CSP.
 
 ### Option 2: Netlify
 

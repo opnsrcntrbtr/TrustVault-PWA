@@ -46,27 +46,13 @@ Only do this for development testing:
 ## Current CSP Configuration
 
 ### Development Server (npm run dev)
-Located in `vite.config.ts` → `server.headers`:
-
-```
-default-src 'self'
-script-src 'self' 'unsafe-inline' 'unsafe-eval'
-style-src 'self' 'unsafe-inline' https://fonts.googleapis.com
-font-src 'self' https://fonts.gstatic.com
-img-src 'self' data: blob:
-connect-src 'self'
-worker-src 'self' blob:
-```
+The dev server uses a relaxed CSP to allow the React refresh preamble and Vite HMR. This relaxation is for development only — it must not be used in production. The canonical dev header set is defined by `DEV_SECURITY_HEADERS` in `src/config/securityHeaders.ts` and is applied by `vite.config.ts`.
 
 ### Preview Server (npm run preview)
-Located in `vite.config.ts` → `preview.headers`:
-
-Same as development server configuration.
+`npm run preview` uses the strict `SECURITY_HEADERS` produced by `src/config/securityHeaders.ts` (same as production). Preview is the closest local approximation of production headers; use it to validate CSP behavior before deploying.
 
 ### Production (Vercel)
-Located in `vercel.json` → `headers`:
-
-Same CSP policy applies to all routes.
+Production headers are defined in `vercel.json` (the `headers` block) and must remain in strict parity with `src/config/securityHeaders.ts`. Do not hand-edit CSP values in docs — copy them from `vercel.json` if you need to show the exact header value.
 
 ## Allowed Sources
 

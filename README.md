@@ -50,7 +50,7 @@ npm run test         # Vitest unit/integration suites
 **Environment**
 - Node >= 20, npm >= 10
 - `.env` keys documented in `PROJECT_OVERVIEW.md` (HIBP, feature toggles)
-- `scripts/setup.sh` seeds Dexie schema locally
+- `./setup.sh` seeds Dexie schema locally
 
 ---
 
@@ -60,9 +60,9 @@ npm run test         # Vitest unit/integration suites
 | Type safety | `npm run type-check` | Zero errors/warnings |
 | Linting | `npm run lint` | 0 warnings, security lint rules on |
 | Unit tests | `npm run test` | >85% coverage once Phase 5 lands |
-| Integration smoke | `npm run test:integration` | Auth + CRUD + generator + import/export |
+| Integration smoke | `npm run test:run` | Auth + CRUD + generator + import/export |
 | Lighthouse | `npm run lighthouse` | >90 (Perf/Acc/BP/SEO) + 100 PWA |
-| Security | `npm run lighthouse:security`, `npm audit` | No critical/high vulns, CSP passes |
+| Security | `npm run lighthouse`, `npm run security:audit` | No critical/high vulns, CSP passes |
 
 Document manual verifications (biometrics, auto-lock, breach triage) in `TEST_STATUS.md` when new features land.
 
