@@ -4,7 +4,7 @@
  * Provides secure re-authentication with master password
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -18,8 +18,9 @@ import {
   InputAdornment,
   IconButton,
   Avatar,
+  Divider,
 } from '@mui/material';
-import { Lock, Visibility, VisibilityOff, LockOpen } from '@mui/icons-material';
+import { Lock, Visibility, VisibilityOff, LockOpen, Fingerprint } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
@@ -30,6 +31,22 @@ export default function UnlockPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [unlocking, setUnlocking] = useState(false);
+  const [biometricCredentialId, setBiometricCredentialId] = useState<string | null>(null);
+
+  // Drive biometric button visibility from this user's stored credentials.
+  useEffect(() => {
+    let mounted = true;
+
+    if (!user) {
+      return;
+    }
+
+    userRepository.getFirstBiometricCredential(user.id)
+      .then(credentialId => { if (mounted) setBiometricCredentialId(credentialId); })
+      .catch(console.error);
+
+    return () => { mounted = false; };
+  }, [user]);
 
   const handleUnlock = async () => {
     if (!user) {
@@ -60,6 +77,37 @@ export default function UnlockPage() {
     } catch (err) {
       console.error('Unlock failed:', err);
       setError('Incorrect password. Please try again.');
+    } finally {
+      setUnlocking(false);
+    }
+  };
+
+  const handleBiometricUnlock = async () => {
+    if (!user) {
+      setError('User session not found. Please sign in again.');
+      return;
+    }
+
+    if (!biometricCredentialId) {
+      setError('No biometric credentials found for this account.');
+      return;
+    }
+
+    setUnlocking(true);
+    setError(null);
+
+    try {
+      // Authenticate with biometric to recover the vault key
+      const session = await userRepository.authenticateWithBiometric(user.id, biometricCredentialId);
+
+      // Unlock vault with the vault key
+      unlockVault(session.vaultKey);
+
+      // Navigate to dashboard
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      console.error('Biometric unlock failed:', err);
+      setError(err instanceof Error ? err.message : 'Biometric authentication failed');
     } finally {
       setUnlocking(false);
     }
@@ -181,6 +229,28 @@ export default function UnlockPage() {
           >
             {unlocking ? 'Unlocking...' : 'Unlock Vault'}
           </Button>
+
+          {/* Biometric Unlock */}
+          {biometricCredentialId && (
+            <>
+              <Divider sx={{ width: '100%' }}>
+                <Typography variant="body2" color="text.secondary">
+                  OR
+                </Typography>
+              </Divider>
+
+              <Button
+                fullWidth
+                variant="outlined"
+                size="large"
+                onClick={handleBiometricUnlock}
+                disabled={unlocking}
+                startIcon={<Fingerprint />}
+              >
+                Use Biometric
+              </Button>
+            </>
+          )}
 
           {/* Sign Out Button */}
           <Button
