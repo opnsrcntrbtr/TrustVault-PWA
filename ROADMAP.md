@@ -1,8 +1,8 @@
 # TrustVault PWA - Development Roadmap
 
 **Last Updated:** 2026-06-10 (security hardening A–E + PWA offline suite P1/P3/P4)
-**Current Status:** Beta (93% complete) - Security hardening + PWA offline suite complete (P3 screenshots pending), Phase 1 complete (2026-05-30)
-**Target:** Production-ready PWA with feature parity to Android app
+**Current Status:** Beta (93% complete) - Security hardening + PWA offline suite complete (P1/P3/P4 manual validation done), Phase 1 complete (2026-05-30)
+**Target:** Production-ready PWA with feature parity to a native Android app
 
 ---
 

@@ -80,6 +80,23 @@ export default defineConfig({
             type: 'image/png',
             purpose: 'maskable'
           }
+        ],
+        // P3: install-UI screenshots (richer install prompt on supporting browsers).
+        screenshots: [
+          {
+            src: 'screenshots/dashboard-wide.png',
+            sizes: '1280x800',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'TrustVault dashboard on desktop'
+          },
+          {
+            src: 'screenshots/dashboard-narrow.png',
+            sizes: '390x844',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'TrustVault dashboard on mobile'
+          }
         ]
       },
       workbox: {

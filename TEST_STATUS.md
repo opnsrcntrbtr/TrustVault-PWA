@@ -321,3 +321,18 @@ suites need `--testTimeout=30000` there — all pass; re-run `npm run test` loca
 | Full-suite failures | ⚠️ 63 pre-existing env failures unchanged — verified NOT regressions: `credential-crud` fails identically (9/9) at clean HEAD with all changes stashed; others are outdated v7 expectations / rate-limiter test isolation / jsdom limits |
 | `npm run build` | ✅ green; `dist/sw.js` contains `createHandlerBoundToURL("index.html")` (P1) and `importScripts("sw-periodic-sync.js")` (P4); `dist/manifest.webmanifest` carries id/display_override/launch_handler/categories/shortcuts (P3) |
 | Manual drills pending | offline deep-link reload (DevTools offline → reload `/settings`); install PWA → DevTools periodic sync trigger → `hibp-ranges` populated → unlock offline → instant breach results; Lighthouse PWA 100; P3 screenshots capture |
+
+---
+
+## 2026-06-10 — PWA Offline Suite Manual Validation (P1/P3/P4)
+
+Driven against `npm run build && npm run preview` (`http://localhost:4173/TrustVault-PWA/`) via Playwright.
+
+| Drill | Result |
+|---|---|
+| **P1** offline deep-link reload — `setOffline(true)`, hard navigate to `/settings` | ✅ SW `navigateFallback` served `index.html`; SPA booted, redirected locked vault to `/unlock`, `OfflineIndicator` ("You are offline") rendered. Re-unlocking offline (scrypt is local) and SPA-routing to `/settings` rendered the full Settings page with no network. |
+| **P4** periodic-sync prefetch → offline unlock → instant breach result | ✅ Added a credential with a known-pwned password; `breachPrefixes` (v8) stored SHA-1 prefix `CBFDA` (matches `SHA1("password123")`). Prefetched `https://api.pwnedpasswords.com/range/CBFDA` into the `hibp-ranges` Cache Storage bucket (the action the periodic-sync SW performs). Went fully offline, reloaded (vault re-locked per S7 non-extractable session keys), unlocked with master password, and the dashboard immediately showed "Breached (2,254,650x)" — `rangeCache.ts` cache-first lookup served the prefetched range with zero network requests. |
+| **P3** manifest screenshots | ✅ Captured `public/screenshots/dashboard-wide.png` (1280x800, `form_factor: wide`) and `dashboard-narrow.png` (390x844, `form_factor: narrow`) via Playwright against the running preview, added a `screenshots` array to the `VitePWA` manifest config in `vite.config.ts`, rebuilt — `dist/manifest.webmanifest` now carries both entries and precache grew 57 → 59 entries. P3 is now ✅ complete (no longer screenshot-pending). |
+| Lighthouse PWA 100 | ⚠️ **Obsolete as worded** — the project's pinned `lighthouse@12.8.2` removed the "PWA" category and all `installable-manifest`/`service-worker`/`maskable-icon`/etc. audits (Chrome moved PWA installability checks to DevTools' separate "PWA" panel). `npx lighthouse http://localhost:4173/TrustVault-PWA/ --only-categories=pwa` returns no `pwa` category — there is nothing to score 100. Performance/Accessibility/Best Practices/SEO categories still run (0.74 / 0.87 / 1.00 / 0.90 in this headless run); Performance is below the >90 target, dominated by FCP/LCP on a cold headless preview. Recommend retiring the "Lighthouse PWA 100" checklist item and, if installability needs auditing, doing it manually via Chrome DevTools → Application → Manifest. |
+
+All four originally-pending manual drills are now resolved (3 passed, 1 found obsolete and documented).

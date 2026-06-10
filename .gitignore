@@ -304,8 +304,9 @@ local/
 benchmark/
 *.bench
 
-# Screenshots & recordings
-screenshots/
+# Screenshots & recordings (but keep PWA manifest install-screenshots)
+/screenshots/
+!/public/screenshots/
 recordings/
 *.mov
 *.mp4
