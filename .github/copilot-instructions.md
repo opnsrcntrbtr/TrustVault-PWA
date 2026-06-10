@@ -80,29 +80,34 @@ const encrypted = await encrypt(plaintext, vaultKey);
 
 ## Critical Module Loading Pattern
 
-### ⚠️ WASM/UMD Modules (argon2-browser)
+### ⚠️ WASM/UMD Modules
 
-**Problem**: Direct imports break Vite ESM builds  
-**Solution**: Lazy dynamic imports with singleton pattern
+**Problem**: Direct top-level imports of heavy WASM/UMD modules break Vite ESM builds and bloat the initial bundle.
+**Solution**: Lazy dynamic imports with singleton pattern, excluded from `optimizeDeps`.
 
 ```typescript
-// ❌ WRONG - Breaks build
-import argon2 from 'argon2-browser';
+// ❌ WRONG - top-level import, breaks build / inflates initial bundle
+import heavyModule from 'some-wasm-module';
 
-// ✅ CORRECT - Lazy load pattern (see password.ts for reference)
-let modulePromise: Promise<any> | null = null;
+// ✅ CORRECT - lazy load pattern (see src/core/ocr for the Tesseract reference)
+let modulePromise: Promise<unknown> | null = null;
 async function loadModule() {
   if (!modulePromise) {
-    modulePromise = import('argon2-browser').then(m => m.default || m);
+    modulePromise = import('some-wasm-module').then(m => m.default ?? m);
   }
   return modulePromise;
 }
 ```
 
-**Note**: We switched from argon2-browser to scrypt (@noble/hashes) for simpler builds. If re-adding argon2:
-1. Exclude from `optimizeDeps` in vite.config.ts
-2. Use dynamic imports only
-3. Load plugins in order: `wasm()`, `topLevelAwait()`, then `react()`
+**Note**: `argon2-browser` and `dexie-encrypted` were removed entirely (P5,
+2026-06-10) — unused attack surface and the historic reason `'unsafe-eval'`
+was tolerated in the CSP. Master-password hashing uses
+**`@noble/hashes/scrypt`** (N=32768, r=8, p=1, dkLen=32) — pure JS, no WASM,
+no `optimizeDeps` exclusion needed. See `DATABASE_MIGRATION.md` for the
+Argon2id → Scrypt migration history. The remaining heavy WASM module is the
+**self-hosted Tesseract OCR core** (`public/ocr/`), which follows the lazy
+dynamic-import pattern above and needs `'wasm-unsafe-eval'` (not full
+`'unsafe-eval'`) in `script-src`.
 
 ---
 
@@ -262,14 +267,15 @@ VitePWA({
 ```
 
 ### Security Headers
-Set via Vite dev server (lines 116-134), NOT meta tags:
+Set via Vite `server`/`preview` config (`vite.config.ts` ~line 189-200), NOT meta tags.
+Headers are imported from `src/config/securityHeaders.ts` — the single source of
+truth, kept in parity with `vercel.json` by `securityHeaders.test.ts`. Edit
+`securityHeaders.ts` only; never duplicate headers inline:
 ```typescript
-server: {
-  headers: {
-    'X-Frame-Options': 'DENY',
-    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'...",
-  }
-}
+import { SECURITY_HEADERS, DEV_SECURITY_HEADERS } from './src/config/securityHeaders';
+
+server: { headers: DEV_SECURITY_HEADERS },
+preview: { headers: SECURITY_HEADERS },
 ```
 
 ### PWA Icons Requirement
@@ -399,7 +405,7 @@ describe('Encryption', () => {
 **Fix**: Check console for import errors, verify DB init has timeout (<2s)
 
 ### "Invalid hash format" on login
-**Cause**: Old argon2 hash in DB (if switching from argon2 to scrypt)  
+**Cause**: Legacy Argon2id hash from before the Scrypt migration (`DATABASE_MIGRATION.md`)
 **Fix**: Clear DB via `await db.delete()` or use debug utils
 
 ### TypeScript errors on build

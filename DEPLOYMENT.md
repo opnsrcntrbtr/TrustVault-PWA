@@ -205,7 +205,7 @@ netlify deploy --prod
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-SPRG1jijJMMtUP5+1fDMpHzEVwoIHr49w64NNXdvcv8=' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.pwnedpasswords.com https://haveibeenpwned.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';"
 ```
 
 ### Option 3: GitHub Pages
@@ -257,7 +257,7 @@ server {
     add_header X-Frame-Options "DENY" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-SPRG1jijJMMtUP5+1fDMpHzEVwoIHr49w64NNXdvcv8=' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.pwnedpasswords.com https://haveibeenpwned.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';" always;
 
     # SPA routing
     location / {
@@ -349,9 +349,14 @@ headers: {
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; ..."
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'sha256-...' 'wasm-unsafe-eval'; ..."
 }
 ```
+
+The canonical source for all of these headers is `src/config/securityHeaders.ts`
+(imported by `vite.config.ts` for dev/preview and parity-tested against
+`vercel.json` in `src/config/__tests__/securityHeaders.test.ts`). Edit
+`securityHeaders.ts` only — never duplicate headers inline.
 
 **For production hosting, configure in:**
 - Vercel: `vercel.json`
@@ -361,26 +366,35 @@ headers: {
 
 ### Content Security Policy (CSP)
 
-**Current CSP:**
+**Current CSP** (from `vercel.json`, kept in sync with `securityHeaders.ts`):
 
 ```
 default-src 'self';
-script-src 'self' 'wasm-unsafe-eval';
+script-src 'self' 'sha256-SPRG1jijJMMtUP5+1fDMpHzEVwoIHr49w64NNXdvcv8=' 'wasm-unsafe-eval';
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
 font-src 'self' https://fonts.gstatic.com;
 img-src 'self' data: blob:;
-connect-src 'self';
-frame-ancestors 'none';
+connect-src 'self' https://api.pwnedpasswords.com https://haveibeenpwned.com;
+worker-src 'self' blob:;
+object-src 'none';
 base-uri 'self';
+frame-ancestors 'none';
 form-action 'self';
 ```
 
 **Explanation:**
 - `default-src 'self'` - Only load resources from same origin
-- `'wasm-unsafe-eval'` - Required for Argon2 WASM module
-- `'unsafe-inline'` - Required for Material-UI styles (can't be avoided)
+- `script-src 'self' 'sha256-…' 'wasm-unsafe-eval'` - No `unsafe-inline`/`unsafe-eval`. The hash
+  pins the single inline GitHub-Pages SPA-redirect bootstrap script
+  (`index.html`); `'wasm-unsafe-eval'` is required for the self-hosted
+  Tesseract OCR WASM core. The hash is drift-guarded by
+  `securityHeaders.test.ts` — regenerate it if `index.html`'s inline script changes.
+- `style-src 'unsafe-inline'` - Documented residual for Material-UI/Emotion runtime styles
 - `fonts.googleapis.com` - Material-UI fonts
 - `data: blob:` - For PWA icons and generated content
+- `connect-src ... pwnedpasswords.com haveibeenpwned.com` - HIBP breach-detection API (k-anonymity range queries)
+- `worker-src 'self' blob:` - Service worker + OCR web workers
+- `object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'none'`, `form-action 'self'` - Defense-in-depth lockdowns
 
 **Customization:**
 If you add external services (analytics, CDN), update CSP:

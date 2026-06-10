@@ -166,7 +166,7 @@ npm run preview
 ```
 
 ### Monitor Deployment
-- Dashboard: https://vercel.com/ianpintos-projects
+- Dashboard: https://vercel.com/opnsrcntrbtr
 - Logs show build progress and errors
 - Analytics track performance
 
@@ -199,8 +199,8 @@ npm run preview
 | Resource | URL |
 |----------|-----|
 | **Live Site** | https://trust-vault-pwa.vercel.app |
-| **Repository** | https://github.com/iAn-P1nt0/TrustVault-PWA |
-| **Vercel Dashboard** | https://vercel.com/ianpintos-projects |
+| **Repository** | https://github.com/opnsrcntrbtr/TrustVault-PWA |
+| **Vercel Dashboard** | https://vercel.com/opnsrcntrbtr |
 | **Vercel Docs** | https://vercel.com/docs/frameworks/vite |
 
 ---

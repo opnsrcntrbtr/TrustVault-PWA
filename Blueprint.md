@@ -1,7 +1,7 @@
 # TrustVault PWA - Structured Enhancement Blueprint & Roadmap
 **Comprehensive Analysis & Incremental MVP Development Plan**
 
-**Repository**: [https://github.com/iAn-P1nt0/TrustVault-PWA](https://github.com/iAn-P1nt0/TrustVault-PWA)  
+**Repository**: [https://github.com/opnsrcntrbtr/TrustVault-PWA](https://github.com/opnsrcntrbtr/TrustVault-PWA)  
 **Deployment**: [https://trust-vault-pwa.vercel.app](https://trust-vault-pwa.vercel.app)  
 **Analysis Date**: November 29, 2025  
 **Current Version**: 1.0.0 (Alpha - 60% Complete)  

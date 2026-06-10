@@ -58,7 +58,7 @@ icons: [
 
 ### Step 1: Wait for Vercel Deployment
 1. Push completed at: `2025-11-09 ~18:50 UTC`
-2. Check Vercel dashboard: https://vercel.com/ianpintos-projects/trust-vault-pwa
+2. Check Vercel dashboard: https://vercel.com/opnsrcntrbtr/trust-vault-pwa
 3. Wait for "Deployment Complete" status (~2-3 minutes)
 4. Note the deployment URL
 

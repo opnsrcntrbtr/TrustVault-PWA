@@ -261,8 +261,8 @@ npm install
 
 ## 🔗 Quick Links
 
-- **Repository**: https://github.com/iAn-P1nt0/TrustVault-PWA
-- **Vercel Dashboard**: https://vercel.com/ianpintos-projects
+- **Repository**: https://github.com/opnsrcntrbtr/TrustVault-PWA
+- **Vercel Dashboard**: https://vercel.com/opnsrcntrbtr
 - **Live Demo**: https://trust-vault-pwa.vercel.app
 
 ---

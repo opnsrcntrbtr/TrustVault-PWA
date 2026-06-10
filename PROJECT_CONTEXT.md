@@ -220,8 +220,8 @@ See [GETTING_STARTED.md](./GETTING_STARTED.md) for detailed setup.
 ## 🔗 Quick Links
 
 - **Live Demo**: https://trust-vault-pwa.vercel.app
-- **GitHub**: https://github.com/iAn-P1nt0/TrustVault-PWA
-- **Vercel Dashboard**: https://vercel.com/ianpintos-projects
+- **GitHub**: https://github.com/opnsrcntrbtr/TrustVault-PWA
+- **Vercel Dashboard**: https://vercel.com/opnsrcntrbtr
 
 ---
 
