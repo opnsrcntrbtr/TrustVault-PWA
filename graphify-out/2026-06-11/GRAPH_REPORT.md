@@ -1,7 +1,7 @@
-# Graph Report - trustvault-pwa  (2026-06-10)
+# Graph Report - trustvault-pwa  (2026-06-11)
 
 ## Corpus Check
-- 211 files · ~200,214 words
+- 211 files · ~200,394 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2d5102c4`
+- Built from commit: `584529e4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -782,7 +782,7 @@ Cohesion: 0.67
 Nodes (3): Common Fixes, Critical Flags Enforced, TypeScript Strict Mode
 
 ## Knowledge Gaps
-- **826 isolated node(s):** `Current Objectives (Nov 2025)`, `Path Aliases`, `🔐 Password Hashing (Login Flow)`, `🔑 Key Derivation (Vault Encryption)`, `🔒 Data Encryption` (+821 more)
+- **826 isolated node(s):** `CryptoAPIErrorProps`, `Current Objectives (Nov 2025)`, `Path Aliases`, `🔐 Password Hashing (Login Flow)`, `🔑 Key Derivation (Vault Encryption)` (+821 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -790,12 +790,12 @@ Nodes (3): Common Fixes, Critical Flags Enforced, TypeScript Strict Mode
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useAuthStore` connect `Password Strength UI` to `Auth & TOTP Core`, `Biometric Vault Key (WebAuthn PRF)`, `Community 164`, `Architecture & Security Concepts`, `Autofill Integration Docs`, `Community 110`, `Build Scripts`, `Package Dependencies`, `HIBP Breach Service`, `Credential Repository CRUD`, `Community 155`?**
-  _High betweenness centrality (0.033) - this node is a cross-community bridge._
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Why does `BreachDetailsModal()` connect `Community 158` to `Community 162`, `Biometric Migration`, `Crypto & Migration Concepts`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
 - **Why does `HIBP Breach Detection with k-Anonymity` connect `Community 162` to `Community 158`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **What connects `Current Objectives (Nov 2025)`, `Path Aliases`, `🔐 Password Hashing (Login Flow)` to the rest of the system?**
+- **What connects `CryptoAPIErrorProps`, `Current Objectives (Nov 2025)`, `Path Aliases` to the rest of the system?**
   _839 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Auth & TOTP Core` be split into smaller, more focused modules?**
   _Cohesion score 0.054627911770768915 - nodes in this community are weakly interconnected._

@@ -35,6 +35,9 @@ async function saveSettings() {
 }
 
 // Load credentials count for current site
+// Credentials are never persisted in extension storage (the encrypted vault
+// lives in the PWA), so until a secure on-demand transport exists there is
+// nothing available to fill.
 async function loadCredentialsCount() {
   const tab = await getCurrentTab();
 
@@ -43,27 +46,7 @@ async function loadCredentialsCount() {
     return;
   }
 
-  try {
-    const url = new URL(tab.url);
-    const origin = url.origin;
-
-    const result = await chrome.storage.local.get('credentials');
-    const credentials = result.credentials || [];
-
-    const matchingCreds = credentials.filter(cred => {
-      if (!cred.url) return false;
-      try {
-        const credUrl = new URL(cred.url);
-        return credUrl.origin === origin;
-      } catch {
-        return false;
-      }
-    });
-
-    document.getElementById('credentials-count').textContent = matchingCreds.length;
-  } catch (error) {
-    document.getElementById('credentials-count').textContent = '—';
-  }
+  document.getElementById('credentials-count').textContent = '0';
 }
 
 // Show status message

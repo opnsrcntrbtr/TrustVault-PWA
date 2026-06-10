@@ -52,30 +52,6 @@ export function extractOrigin(url: string): string | null {
 }
 
 /**
- * Extract domain from URL (without subdomain for matching)
- * Example: example.com from https://www.example.com
- */
-export function extractDomain(url: string): string | null {
-  try {
-    const urlObj = new URL(url);
-    const hostname = urlObj.hostname;
-
-    // Remove www. prefix
-    const withoutWww = hostname.replace(/^www\./, '');
-
-    // Get root domain (last two parts for most cases)
-    const parts = withoutWww.split('.');
-    if (parts.length >= 2) {
-      return parts.slice(-2).join('.');
-    }
-
-    return withoutWww;
-  } catch {
-    return null;
-  }
-}
-
-/**
  * Validate origin matches credential URL
  * Uses exact match for security
  */
@@ -86,22 +62,42 @@ export function validateOrigin(credentialUrl: string, currentOrigin: string): bo
 
 /**
  * Check if domain matches (for cross-subdomain autofill)
- * Example: login.example.com matches www.example.com
+ * Example: credential stored for example.com matches www.example.com
+ *
+ * Without a Public Suffix List, deriving a "registrable domain" from the
+ * last N hostname labels is unsafe (example.co.uk would reduce to co.uk and
+ * match every .co.uk site). The safe PSL-free rule: hostnames match only
+ * when equal, or when one is a dot-boundary suffix of the other. Sibling
+ * subdomains (login.example.com vs mail.example.com) intentionally do NOT
+ * match — store the credential at the apex domain to fill across subdomains.
+ * Schemes must be identical so https credentials never fill http pages.
  */
 export function validateDomain(credentialUrl: string, currentUrl: string): boolean {
-  const credentialDomain = extractDomain(credentialUrl);
-  const currentDomain = extractDomain(currentUrl);
+  let credential: URL;
+  let current: URL;
+  try {
+    credential = new URL(credentialUrl);
+    current = new URL(currentUrl);
+  } catch {
+    return false;
+  }
 
-  return credentialDomain !== null &&
-         currentDomain !== null &&
-         credentialDomain === currentDomain;
+  if (credential.protocol !== current.protocol) {
+    return false;
+  }
+
+  const credentialHost = credential.hostname;
+  const currentHost = current.hostname;
+
+  return credentialHost === currentHost ||
+         currentHost.endsWith(`.${credentialHost}`) ||
+         credentialHost.endsWith(`.${currentHost}`);
 }
 
 /**
  * Calculate match confidence score
  * - 100: Exact origin match
- * - 75: Same domain, different subdomain
- * - 50: Domain match with different protocol
+ * - 75: Same scheme, one hostname is a dot-boundary suffix of the other
  * - 0: No match
  */
 export function calculateMatchConfidence(

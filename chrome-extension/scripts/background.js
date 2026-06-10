@@ -26,32 +26,22 @@ async function isTrustVaultAccessible() {
 
 /**
  * Get credentials for specific origin from TrustVault
+ *
+ * Secrets are never persisted in extension storage: the vault lives
+ * encrypted inside the PWA, and chrome.storage.local is plaintext at rest.
+ * Until a secure transport from the PWA exists (e.g. authenticated
+ * externally_connectable messaging that returns per-origin entries on
+ * demand), this returns no credentials and the fill path stays inert.
  */
-async function getCredentialsForOrigin(origin) {
-  try {
-    // In production, this would communicate with TrustVault PWA
-    // via chrome.runtime.sendMessage to a TrustVault extension component
-    // or use cross-origin messaging with proper security
+async function getCredentialsForOrigin(_origin) {
+  return [];
+}
 
-    // For now, return stored credentials from extension storage
-    const result = await chrome.storage.local.get('credentials');
-    const allCredentials = result.credentials || [];
-
-    // Filter by origin
-    return allCredentials.filter(cred => {
-      if (!cred.url) return false;
-
-      try {
-        const credUrl = new URL(cred.url);
-        return credUrl.origin === origin;
-      } catch {
-        return false;
-      }
-    });
-  } catch (error) {
-    console.error('Failed to get credentials:', error);
-    return [];
-  }
+/**
+ * Remove plaintext credentials persisted by earlier versions
+ */
+function purgeLegacyCredentialStore() {
+  chrome.storage.local.remove('credentials');
 }
 
 /**
@@ -67,18 +57,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: false, error: error.message });
       });
     return true; // Will respond asynchronously
-  }
-
-  if (request.type === 'STORE_CREDENTIAL') {
-    chrome.storage.local.get('credentials', (result) => {
-      const credentials = result.credentials || [];
-      credentials.push(request.credential);
-
-      chrome.storage.local.set({ credentials }, () => {
-        sendResponse({ success: true });
-      });
-    });
-    return true;
   }
 
   if (request.type === 'OPEN_TRUSTVAULT') {
@@ -108,6 +86,8 @@ chrome.action.onClicked.addListener((tab) => {
  * Initialize extension
  */
 chrome.runtime.onInstalled.addListener((details) => {
+  purgeLegacyCredentialStore();
+
   if (details.reason === 'install') {
     console.log('TrustVault Autofill installed');
 
@@ -118,7 +98,6 @@ chrome.runtime.onInstalled.addListener((details) => {
         autoSubmit: false,
         requireConfirmation: true,
       },
-      credentials: [],
     });
 
     // Open welcome page

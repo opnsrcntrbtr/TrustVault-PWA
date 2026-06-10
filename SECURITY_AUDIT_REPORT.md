@@ -654,3 +654,27 @@ Delivered per `SECURITY_HARDENING_PLAN_2026-06.md`; status table in
   capable). Prefix rows are deleted with their credential and wiped by
   `clearAll()`. P1 adds `navigateFallback` with an API/OCR/asset denylist; P3
   modernizes the manifest (no security surface change).
+
+## Patch Notes — 2026-06-11 (Chrome Extension Hardening X1–X3)
+
+- **X1 (extension secrets-at-rest):** the prototype extension's
+  `STORE_CREDENTIAL` handler persisted plaintext passwords in
+  `chrome.storage.local` (unencrypted at rest — a design gap versus the PWA's
+  encrypted vault). Handler removed; `GET_CREDENTIALS` now always returns an
+  empty list so the fill path stays inert until a secure on-demand transport
+  from the PWA exists. `onInstalled` purges any `credentials` key left behind
+  by earlier versions (runs on both install and update).
+- **X2 (extension surface minimization):** removed the unused `webNavigation`
+  permission and the `web_accessible_resources` entry pointing at a
+  non-existent `injected.js`; `host_permissions` narrowed from
+  `http://*/*` + `https://*/*` to the two TrustVault origins the background
+  worker probes; content script now matches `https://*/*` only (no autofill
+  UI on plain-HTTP pages).
+- **X3 (autofill domain matcher — eTLD confusion):** `extractDomain()` reduced
+  hostnames to their last two labels, so `mybank.co.uk` and `evil.co.uk` both
+  became `co.uk` and cross-matched at confidence 75. Replaced with PSL-free
+  dot-boundary host-suffix matching (hosts equal, or one a `.`-suffix of the
+  other) plus mandatory scheme equality; sibling subdomains intentionally no
+  longer match. The matcher was not yet wired to any fill path. 17 tests pin
+  the secure behavior
+  (`src/core/autofill/__tests__/credentialManagementService.test.ts`).

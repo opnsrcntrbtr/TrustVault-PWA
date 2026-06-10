@@ -6,6 +6,40 @@
 
 ---
 
+## X1–X3: Chrome Extension Hardening + Autofill Matcher Fix — June 11, 2026
+
+**Change**: Removed the extension's plaintext credential store
+(`STORE_CREDENTIAL` → `chrome.storage.local`; legacy data purged on
+install/update), minimized manifest permissions (no `webNavigation`, host
+permissions limited to TrustVault origins, HTTPS-only content script, dead
+`web_accessible_resources` entry removed), and fixed the eTLD bug in the
+autofill domain matcher (`extractDomain` last-two-labels logic let
+`mybank.co.uk` match `evil.co.uk`; replaced with dot-boundary host-suffix
+matching + scheme equality). See `SECURITY_AUDIT_REPORT.md` Patch Notes
+2026-06-11.
+
+**New / updated tests:**
+- [x] `src/core/autofill/__tests__/credentialManagementService.test.ts` — 17/17
+      (eTLD cross-site rejection, dot-boundary suffix matching, lookalike-host
+      rejection, sibling-subdomain rejection, scheme-downgrade rejection,
+      confidence scoring, match ranking) — written TDD; the 5 vulnerability
+      cases failed against the old matcher before the fix.
+
+**Verification:**
+- [x] `npm run type-check`: 0 errors
+- [x] Lint: 0 new problems in touched files (13 pre-existing `any` errors in
+      untouched functions of `credentialManagementService.ts`; repo baseline
+      855 unchanged)
+- [x] `chrome-extension/manifest.json` valid JSON; `background.js`/`popup.js`
+      pass `node --check`
+
+**Manual (pending):** load unpacked extension → confirm install prompt no
+longer requests "read and change all your data on all websites" beyond the
+HTTPS content-script warning; confirm `chrome.storage.local` contains only
+`settings` after update from a prior version.
+
+---
+
 ## S1: WebAuthn PRF Vault Unlock — May 30, 2026
 
 **Change**: Replaced the insecure biometric device-key scheme (vault-key wrap key

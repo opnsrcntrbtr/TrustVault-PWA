@@ -489,7 +489,9 @@ findMatchingCredentials(credentials: Credential[], currentOrigin: string): Autof
 // Validate exact origin match
 validateOrigin(credentialUrl: string, currentOrigin: string): boolean
 
-// Validate domain match (cross-subdomain)
+// Validate domain match (cross-subdomain): hosts must be equal or one a
+// dot-boundary suffix of the other, with identical schemes. No naive eTLD
+// splitting — mybank.co.uk never matches evil.co.uk.
 validateDomain(credentialUrl: string, currentUrl: string): boolean
 
 // Prevent silent credential access (after logout)

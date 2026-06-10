@@ -5,12 +5,11 @@
   "description": "Secure password autofill from TrustVault PWA",
   "permissions": [
     "activeTab",
-    "storage",
-    "webNavigation"
+    "storage"
   ],
   "host_permissions": [
-    "http://*/*",
-    "https://*/*"
+    "https://trust-vault-pwa.vercel.app/*",
+    "http://localhost:3000/*"
   ],
   "background": {
     "service_worker": "scripts/background.js",
@@ -18,7 +17,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["https://*/*"],
       "js": ["scripts/content.js"],
       "run_at": "document_idle",
       "all_frames": false
@@ -39,12 +38,6 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "web_accessible_resources": [
-    {
-      "resources": ["scripts/injected.js"],
-      "matches": ["<all_urls>"]
-    }
-  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }
