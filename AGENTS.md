@@ -1,47 +1,72 @@
-# TrustVault PWA – Agent Operating Charter
+# TrustVault PWA - Agentic Coding Guide
+
+This file is the primary operating guide for Codex and similar agentic AI coding systems working in TrustVault PWA. Treat `CLAUDE.md` as the deeper implementation reference and keep this file focused on shared agent behavior, verification, and handoff discipline.
 
 ## Mission Snapshot
-Deliver a zero-knowledge, offline-first password vault with world-class security posture and refined UX. Every agent (human or AI) is accountable for pairing high-value enhancements with measurable verification and updated documentation.
 
-## Core Personas & Responsibilities
-| Persona | Primary Scope | Key Inputs | Definition of Ready | Definition of Done |
-| --- | --- | --- | --- | --- |
-| **Security Architect (Lead: @trustvault-sec)** | Crypto correctness, session lifecycle, WebAuthn, breach detection, export/import encryption, security headers. | `SECURITY.md`, `BREACH_DETECTION_README.md`, `PHASE_4.1_BIOMETRIC_AUTH.md`, OWASP checklist. | Critical bug list reviewed, threat model updated, test plan drafted. | Code merged with unit + security tests, manual verification logged in `SECURITY_AUDIT_REPORT.md`, documentation updated. |
-| **UX Director (Lead: @trustvault-ux)** | Credential CRUD UX, password generator, responsive dashboard, onboarding, settings IA, microcopy. | `ROADMAP.md`, `KEY_FINDINGS.md`, user journey maps. | Wireframes or UX notes linked, acceptance criteria and accessibility goals defined. | UI matches spec on desktop/mobile, a11y score ≥ 90, screenshots/GIFs captured, `TEST_STATUS.md` updated. |
-| **Automation & Quality Engineer (Lead: @trustvault-qa)** | Vitest suites, integration tests, Lighthouse + PWA audits, CI health, Dexie fixtures. | Test harness docs, `tests/` plans, CI logs. | Test data seeded, mocks ready, success metrics captured. | Tests cover new logic, run in CI, coverage deltas recorded in `TEST_SUMMARY.md`. |
-| **Release Captain (Rotates weekly)** | Coordinates feature flags, deployment notes, rollback plans, doc hygiene. | `DEPLOYMENT_GUIDE.md`, `DEPLOYMENT_VERIFICATION.md`, release board. | Triage board clean, risk log updated, feature flags mapped. | Release checklist signed, monitoring hooks live, README/ROADMAP refreshed. |
+Deliver a zero-knowledge, offline-first password vault with a world-class security posture and refined UX. Every agent must pair code changes with measurable verification, documentation updates when scope changes, and careful handling of secrets.
 
-## Operating Rhythm
-1. **Intake & Prioritization**
-   - Capture ideas/issues in GitHub + `KEY_FINDINGS.md`.
-   - Map each to a pillar (Vault Trust, CredOps Experience, Passwordless & Recovery, Threat Intelligence).
-   - Security Architect signs off on any feature touching crypto/session flows before implementation.
-2. **Design & Plan**
-   - UX Director or Security Architect authors mini-brief (context, goals, acceptance, telemetry, rollback).
-   - Update `ROADMAP.md` success criteria + tests before coding starts.
-3. **Implementation**
-   - Follow coding guardrails in `CLAUDE.md` / `.github/copilot-instructions.md`.
-   - Pair on risky changes; keep diffs traceable to roadmap items.
-4. **Verification**
-   - Automation engineer owns test creation; devs own manual smoke.
-   - Record results in `TEST_STATUS.md`, `SECURITY_AUDIT_REPORT.md`, and release notes.
-5. **Documentation & Handoff**
-   - Update README, roadmap, and agent files whenever scope shifts.
-   - Release Captain ensures verification artifacts exist before tagging builds.
+## Agent Operating Rules
 
-## Escalation Paths
-- **Critical security regression** → Page Security Architect + Release Captain, freeze deploys, log in `SECURITY_AUDIT_REPORT.md` + `KEY_FINDINGS.md`.
-- **UX blocking issue** → UX Director triages, attaches repro video, and pairs with implementation owner.
-- **Automation failure** → QA lead owns red builds; no merges until CI green.
+- Read repo context before changing files: start with `graphify` guidance below, then inspect the smallest relevant set of files.
+- Prefer `rg`/`rg --files` for search, follow existing architecture and local patterns, and keep diffs scoped to the user request.
+- Never log, expose, persist, or serialize master passwords, vault keys, decrypted payloads, CryptoKey material, session secrets, or biometric PRF-derived material.
+- Do not revert or overwrite user changes unless the user explicitly asks. If unrelated local changes exist, leave them alone.
+- Preserve the offline-first posture: database, service worker, network, OCR, breach detection, and auth failures must degrade gracefully.
+- Keep risky or experimental behavior feature-flagged or clearly guarded, with owner and rollback notes when applicable.
+- Update `README.md`, `ROADMAP.md`, `TEST_STATUS.md`, `SECURITY_AUDIT_REPORT.md`, `CLAUDE.md`, or this file when scope, validation, ownership, or workflows change.
 
-## Tooling Expectations
-- Commands listed in README Verification Matrix are mandatory per feature.
-- Lighthouse + `npm audit` run before closing any security-related issue.
-- Feature flags documented in `configs/featureFlags.ts` with owner + kill-switch plan.
+## CLAUDE.md Reference
 
-## Communication Cadence
-- **Daily**: Stand-up snippets in project chat (#trustvault-status) referencing roadmap IDs.
-- **Weekly**: Release Captain posts summary (done/next/risks/tests) referencing this charter.
-- **Post-mortems**: Any incident affecting secrets/session/availability gets a retro added to `SECURITY_AUDIT_REPORT.md`.
+Before implementing, review `CLAUDE.md` for the concrete guardrails that apply to this repo:
 
-Stay synchronized with this charter—shipping high-value enhancements means nothing if verification, docs, or coordination lag behind.
+- React 19 StrictMode-safe effects, cleanup, mounted flags, and timeout fallbacks.
+- Offline-first Dexie initialization and graceful persistence failure behavior.
+- TypeScript strict-mode expectations, including null-safe access and explicit returns.
+- `@/` path aliases and Clean Architecture dependency boundaries.
+- Security headers managed through `src/config/securityHeaders.ts`, not inline meta tags or duplicated config.
+- PWA icon, service worker, Lighthouse, and performance expectations.
+- Zustand state handling, vault-key memory hygiene, crypto rules, and lazy loading of heavy WASM/UMD modules.
+
+If `AGENTS.md` and `CLAUDE.md` disagree on implementation details, prefer `CLAUDE.md` for code-level rules and update the stale document as part of the same change when appropriate.
+
+## Responsibility Lenses
+
+Use these lenses to catch the right risks while planning and reviewing work:
+
+| Lens | What to Protect | Required Evidence |
+| --- | --- | --- |
+| Security | Crypto correctness, session lifecycle, WebAuthn, breach detection, import/export encryption, security headers. | Unit/security tests, `npm run security:audit` when relevant, and notes in `SECURITY_AUDIT_REPORT.md` for security changes. |
+| UX | Credential CRUD, password generator, responsive dashboard, onboarding, settings IA, accessibility, microcopy. | Desktop/mobile manual checks, accessibility review, screenshots/GIFs when useful, and `TEST_STATUS.md` updates for new UX. |
+| QA | Vitest coverage, integration smoke, Lighthouse/PWA checks, CI health, Dexie fixtures. | Targeted tests, coverage or smoke notes, and exact commands/results recorded in the handoff. |
+| Release | Feature flags, deployment notes, rollback paths, doc hygiene, release readiness. | Updated docs, risk notes, feature-flag ownership, and verification artifacts before tagging or merging. |
+
+## Verification Expectations
+
+Run the narrowest command set that proves the change, then report what passed and what was skipped.
+
+| Change Type | Expected Commands |
+| --- | --- |
+| TypeScript or shared logic | `npm run type-check`, targeted `npm run test` or `npm run test:run` |
+| UI or React behavior | `npm run type-check`, `npm run lint`, targeted `npm run test`, manual browser check when relevant |
+| Security-sensitive behavior | `npm run type-check`, targeted tests, `npm run security:audit`, `npm run lighthouse` when headers/PWA behavior are affected |
+| Documentation-only | Manual Markdown review, `npm run docs:verify` when applicable |
+
+The README Verification Matrix remains the project-level baseline. Record manual verification in `TEST_STATUS.md`, and use `SECURITY_AUDIT_REPORT.md` for changes affecting secrets, sessions, crypto, CSP, biometrics, import/export, or breach detection.
+
+## Documentation & Handoff
+
+- Keep handoffs concise but concrete: files changed, commands run, results, and any residual risk.
+- Link work back to `ROADMAP.md` or `KEY_FINDINGS.md` when it advances a tracked item.
+- Do not mark security or UX work done without matching verification evidence.
+- If a change introduces a new workflow, dependency, feature flag, or operational expectation, update the relevant docs in the same branch.
+
+## graphify
+
+This project has a knowledge graph at `graphify-out/` with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- ALWAYS read `graphify-out/GRAPH_REPORT.md` before reading any source files, running grep/glob searches, or answering codebase questions. The graph is your primary map of the codebase.
+- IF `graphify-out/wiki/index.md` EXISTS, navigate it instead of reading raw files.
+- For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep; these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
