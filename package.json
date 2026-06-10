@@ -21,6 +21,7 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
     "security:audit": "npm audit --audit-level=moderate",
+    "docs:verify": "bash scripts/doc-verify.sh",
     "pwa:build": "vite build --mode production",
     "pwa:icons": "node scripts/generate-icons.js",
     "lighthouse": "lighthouse http://localhost:4173 --view",
