@@ -6,6 +6,35 @@
 
 ---
 
+## Coverage-Gap Test Suite (TEST_PLAN.md G1–G7) — June 11, 2026
+
+**Change**: Tests only — no production code touched. Added 7 suites (61 tests)
+for shipped-but-untested modules identified in `TEST_PLAN.md`: the real
+`credentialStore` (lock-purge invariant), `autofillSettings` (secure-by-default
++ per-origin rules), `base64` (URL-safe/standard round-trips), `useSwipeGesture`,
+`themeStore`, `useServiceWorkerUpdate` (waiting-worker detection, dismiss
+persistence, SKIP_WAITING handshake), and repository-level import merge
+behavior. The import suite **pins a known gap**: `importFromJson()` appends
+duplicates — merge dedupe exists only in `ImportDialog.tsx` (ROADMAP UC5
+"Remaining"). Full results in `TEST_RUN_REPORT.md`.
+
+**New tests (all passing, sandboxed Linux run; re-run `npm run test` locally to confirm):**
+- [x] `src/presentation/store/__tests__/credentialStore.test.ts` — 10/10
+- [x] `src/core/autofill/__tests__/autofillSettings.test.ts` — 15/15
+- [x] `src/core/utils/__tests__/base64.test.ts` — 13/13
+- [x] `src/presentation/hooks/__tests__/useSwipeGesture.test.ts` — 6/6
+- [x] `src/presentation/store/__tests__/themeStore.test.ts` — 4/4
+- [x] `src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts` — 7/7
+- [x] `src/data/repositories/__tests__/importMerge.test.ts` — 6/6 (real PBKDF2/AES-GCM + fake-indexeddb)
+
+**Verification:**
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: 855 problems — identical to approved baseline (0 new)
+- [x] `src/test/integration.test.ts`: 20/20 (ZK invariant intact — no crypto/auth code changed)
+- [x] `importValidation.test.ts` + `importMerge.test.ts` together: 16/16 (no DB interference)
+
+---
+
 ## X1–X3: Chrome Extension Hardening + Autofill Matcher Fix — June 11, 2026
 
 **Change**: Removed the extension's plaintext credential store
