@@ -21,14 +21,40 @@ export default defineConfig({
       registerType: 'prompt', // Changed from 'autoUpdate' to give user control
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
+        id: BASE_PATH,
         name: 'TrustVault PWA',
         short_name: 'TrustVault',
         description: 'Secure offline-first password manager',
         theme_color: '#1976d2',
         background_color: '#ffffff',
         display: 'standalone',
+        display_override: ['standalone', 'minimal-ui'],
+        launch_handler: { client_mode: 'navigate-existing' },
+        categories: ['security', 'productivity', 'utilities'],
         scope: BASE_PATH,
         start_url: BASE_PATH,
+        // P3: app shortcuts (long-press / right-click on the installed icon).
+        // URLs must be within scope, so they are resolved against BASE_PATH.
+        shortcuts: [
+          {
+            name: 'Add Credential',
+            short_name: 'Add',
+            url: `${BASE_PATH}credentials/add`,
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' }]
+          },
+          {
+            name: 'Password Generator',
+            short_name: 'Generator',
+            url: `${BASE_PATH}password-generator`,
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' }]
+          },
+          {
+            name: 'Security Audit',
+            short_name: 'Audit',
+            url: `${BASE_PATH}security-audit`,
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' }]
+          }
+        ],
         icons: [
           {
             src: 'pwa-192x192.png',
