@@ -27,7 +27,9 @@
 | **S8** — zod import validation, a11y zoom | ✅ Done (2026-06-10) | `importValidation.test.ts` | schema-validated imports; viewport allows user scaling (WCAG 1.4.4) |
 | **P2** — self-host Tesseract (no CDN) | ✅ Done (2026-06-10) | `securityHeaders.test.ts` | assets served from `public/ocr/` via `scripts/copy-ocr-assets.js`; `cdn.jsdelivr.net` removed from CSP |
 | **P5** — remove dead deps | ✅ Done (2026-06-10) | type-check/build | `argon2-browser` + `dexie-encrypted` uninstalled; bundled argon2 asset deleted |
-| **P1/P3/P4** — PWA offline/manifest/sync | ⬜ Pending | — | tracked in `SECURITY_HARDENING_PLAN_2026-06.md` (out of scope) |
+| **P1** — offline deep-link navigation | ✅ Done (2026-06-10) | build + manual offline drill | `navigateFallback: 'index.html'` + denylist (API/OCR/assets); spec: `docs/superpowers/specs/2026-06-10-pwa-offline-suite-design.md` |
+| **P3** — manifest modernization | 🟡 Code done (2026-06-10) | build + manifest inspection | `id`, `display_override`, `launch_handler`, `categories`, 3 `shortcuts`; **screenshots pending** (Playwright capture against preview) |
+| **P4** — background breach re-checks | ✅ Done (2026-06-10) | `breachPrefixStore.test.ts`, `rangeCache.test.ts`, `unlockBreachRefresh.test.ts` | DB v8 `breachPrefixes` (5-char SHA-1 prefixes, no new disclosure), `sw-periodic-sync.js` range prefetch, on-unlock 7-day fallback in all browsers |
 
 > **2026-06-10 update** (delivered per `SECURITY_HARDENING_PLAN_2026-06.md`):
 > the placeholder ZK checks in `src/test/integration.test.ts` were replaced

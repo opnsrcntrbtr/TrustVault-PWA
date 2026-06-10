@@ -189,6 +189,17 @@ The ONLY external endpoints the app contacts are the HIBP APIs
 k-anonymity (only the first 5 hash chars leave the device). The feature is
 user-toggleable via `VITE_HIBP_API_ENABLED`. Everything else is same-origin.
 
+**HIBP prefix store (P4 residual, accepted):** to enable background breach
+re-checks while the vault is locked, each credential's 5-char SHA-1 prefix is
+persisted unencrypted in the `breachPrefixes` IndexedDB table (DB v8). This is
+exactly the string already disclosed to HIBP under k-anonymity — ~1M passwords
+share each prefix — so persisting it adds no disclosure beyond what the breach
+check itself already reveals. Rows are deleted with their credential and wiped
+by the security wipe (`clearAll()`). The periodic-sync worker
+(`public/sw-periodic-sync.js`) prefetches range responses into the
+`hibp-ranges` cache; the suffix comparison only ever happens in the app after
+unlock.
+
 ### Security Headers
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`

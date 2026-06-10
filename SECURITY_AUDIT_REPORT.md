@@ -643,3 +643,14 @@ Delivered per `SECURITY_HARDENING_PLAN_2026-06.md`; status table in
 - **Test integrity:** the placeholder Zero-Knowledge checks in
   `src/test/integration.test.ts` were replaced with a real invariant test using
   the production crypto modules.
+
+- **P4 (2026-06-10, PWA offline suite):** background HIBP breach re-checks.
+  New `breachPrefixes` table (DB v8, additive) stores each credential's 5-char
+  SHA-1 prefix — identical to the string already sent to HIBP under
+  k-anonymity, so no new disclosure (accepted residual, see SECURITY.md).
+  `public/sw-periodic-sync.js` prefetches range responses into the
+  `hibp-ranges` cache on a 7-day periodic sync while the vault stays locked;
+  suffix comparison happens only in the app after unlock (cache-first, offline
+  capable). Prefix rows are deleted with their credential and wiped by
+  `clearAll()`. P1 adds `navigateFallback` with an API/OCR/asset denylist; P3
+  modernizes the manifest (no security surface change).

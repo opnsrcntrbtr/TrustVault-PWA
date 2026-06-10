@@ -304,3 +304,20 @@ suites need `--testTimeout=30000` there — all pass; re-run `npm run test` loca
 | `importValidation.test.ts` | ✅ 10/10 — S8 Zod vault-import validation |
 | ESLint | ✅ 853 → 853 problems (zero new issues vs pre-existing baseline; debt deferral approved by Ian 2026-06-10) |
 | Manual drills pending | sign-up → biometric enroll (now asks master password) → PRF unlock → password unlock; OCR scan offline (self-hosted assets); app boot under strict CSP |
+
+
+---
+
+## 2026-06-10 — PWA Offline Suite (P1/P3/P4, docs/superpowers/specs/2026-06-10-pwa-offline-suite-design.md)
+
+| Check | Result |
+|---|---|
+| `npm run type-check` | ✅ 0 errors (after every phase) |
+| `npm run lint` | ✅ 853 problems — identical to the approved pre-existing baseline (0 new); all 7 new/modified P4 modules lint clean in isolation |
+| `breachPrefixStore.test.ts` | ✅ 5/5 — SHA-1 prefix vector (`password` → `5BAA6`), v8 table, upsert/delete lifecycle, clearAll() wipe |
+| `rangeCache.test.ts` | ✅ 6/6 — range-response parsing, severity thresholds (parity with hibpService), cache freshness TTL rule |
+| `unlockBreachRefresh.test.ts` | ✅ 4/4 — 7-day staleness window, last-check bookkeeping, corrupted-timestamp handling |
+| Touched-suite baseline | ✅ 132/132 across `integration.test.ts`, `UserRepositoryImpl.test.ts`, `importValidation.test.ts`, `securityHeaders.test.ts`, `biometricVaultKey.test.ts` + the 3 new P4 suites (`--testTimeout=30000` for scrypt-heavy suites) |
+| Full-suite failures | ⚠️ 63 pre-existing env failures unchanged — verified NOT regressions: `credential-crud` fails identically (9/9) at clean HEAD with all changes stashed; others are outdated v7 expectations / rate-limiter test isolation / jsdom limits |
+| `npm run build` | ✅ green; `dist/sw.js` contains `createHandlerBoundToURL("index.html")` (P1) and `importScripts("sw-periodic-sync.js")` (P4); `dist/manifest.webmanifest` carries id/display_override/launch_handler/categories/shortcuts (P3) |
+| Manual drills pending | offline deep-link reload (DevTools offline → reload `/settings`); install PWA → DevTools periodic sync trigger → `hibp-ranges` populated → unlock offline → instant breach results; Lighthouse PWA 100; P3 screenshots capture |
