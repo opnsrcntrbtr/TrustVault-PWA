@@ -42,6 +42,7 @@ import {
   storeCredentialInBrowser,
   toBrowserCredential,
   isCredentialManagementSupported,
+  shouldStoreInBrowser,
 } from '@/core/autofill/credentialManagementService';
 import { CameraScanDialog } from '@/presentation/components/CameraScanDialog';
 import { OcrResultDialog } from '@/presentation/components/OcrResultDialog';
@@ -282,6 +283,7 @@ export default function EditCredentialPage() {
       if (
         updatedCredential.category === 'login' &&
         updatedCredential.url &&
+        shouldStoreInBrowser(updatedCredential.url) &&
         isCredentialManagementSupported()
       ) {
         try {

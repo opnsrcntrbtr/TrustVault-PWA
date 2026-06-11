@@ -39,6 +39,7 @@ import {
   storeCredentialInBrowser,
   toBrowserCredential,
   isCredentialManagementSupported,
+  shouldStoreInBrowser,
 } from '@/core/autofill/credentialManagementService';
 import { CameraScanDialog } from '@/presentation/components/CameraScanDialog';
 import { OcrResultDialog } from '@/presentation/components/OcrResultDialog';
@@ -225,6 +226,7 @@ export default function AddCredentialPage() {
       if (
         credential.category === 'login' &&
         credential.url &&
+        shouldStoreInBrowser(credential.url) &&
         isCredentialManagementSupported()
       ) {
         try {
