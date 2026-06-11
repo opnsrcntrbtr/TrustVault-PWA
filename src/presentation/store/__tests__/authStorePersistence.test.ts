@@ -4,7 +4,7 @@
  * salt, or webAuthnCredentials. Old snapshots must be stripped on load.
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useAuthStore } from '@/presentation/store/authStore';
+import { useAuthStore, isFullUser } from '@/presentation/store/authStore';
 import type { User } from '@/domain/entities/User';
 
 const fullUser: User = {
@@ -60,5 +60,33 @@ describe('auth persistence minimization', () => {
     }
     expect(useAuthStore.getState().isAuthenticated).toBe(true);
     expect(useAuthStore.getState().user?.id).toBe('u1');
+  });
+});
+
+describe('isFullUser shell discrimination', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    useAuthStore.getState().logout();
+  });
+
+  it('rehydrated v1 shell is NOT a full user and lacks hashedMasterPassword', async () => {
+    localStorage.setItem('trustvault-auth', JSON.stringify({
+      state: {
+        user: { id: 'u1', username: 'alice', displayName: 'Alice' },
+        isAuthenticated: true,
+      },
+      version: 1,
+    }));
+    await useAuthStore.persist.rehydrate();
+    const user = useAuthStore.getState().user;
+    expect(user?.id).toBe('u1');
+    expect(isFullUser(user)).toBe(false);
+    expect((user as Record<string, unknown> | null)?.['hashedMasterPassword'])
+      .toBeUndefined();
+  });
+
+  it('returns true for a real full User and false for null', () => {
+    expect(isFullUser(fullUser)).toBe(true);
+    expect(isFullUser(null)).toBe(false);
   });
 });

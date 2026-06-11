@@ -34,6 +34,17 @@ interface PersistedAuthShell {
   isAuthenticated: boolean;
 }
 
+/**
+ * After a page reload, the rehydrated `user` is only a PersistedAuthShell
+ * ({id, username?, displayName?}) until App's boot refetch (or an unlock
+ * path) replaces it with the full User from IndexedDB. Security-bearing
+ * consumers (password verification, settings merge) MUST check this guard
+ * before reading fields like hashedMasterPassword or securitySettings.
+ */
+export function isFullUser(user: User | null): user is User {
+  return user !== null && 'hashedMasterPassword' in user;
+}
+
 const toShell = (user: User | null): PersistedAuthShell['user'] =>
   user
     ? {
