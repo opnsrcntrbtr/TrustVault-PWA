@@ -313,6 +313,7 @@ IV_LENGTH = 12     // 96 bits (GCM standard)
 **Fix**: `src/core/auth/rateLimiter.ts` — IndexedDB-backed exponential backoff, surviving page refresh.  
 Thresholds: 5 failures→30s, 10→5min, 15→30min, 20+→1hr lockout.  
 `checkRateLimit()` called before Scrypt verification (fast fail). `recordFailedAttempt()` called for unknown email and wrong password (uniform error path prevents user enumeration). `clearAttempts()` called on successful login.  
+Local rate limiting is UX-layer mitigation only — it is clearable by anyone with storage access; offline resistance comes from scrypt cost and password strength.  
 **Files**: `src/core/auth/rateLimiter.ts`, `src/data/repositories/UserRepositoryImpl.ts`, `src/data/storage/database.ts` (v4 migration).
 
 #### M2: Non-Extractable Vault Keys

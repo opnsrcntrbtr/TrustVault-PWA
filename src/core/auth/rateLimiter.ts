@@ -1,3 +1,13 @@
+/**
+ * Local login rate limiter — UX hardening, NOT a security boundary.
+ *
+ * Lockout state lives in the local `loginAttempts` Dexie table; anyone with
+ * storage access can clear it, and offline attacks on the stored verifier /
+ * encryptedVaultKey bypass app code entirely. The real brute-force defenses
+ * are the scrypt KDF cost (N=2^17) and master-password strength — the same
+ * trust model as KeePassXC's local vault. This limiter only slows casual
+ * online guessing through the UI and gives honest users decay/backoff UX.
+ */
 import { db } from '@/data/storage/database';
 
 const THRESHOLDS: Array<{ minAttempts: number; lockMs: number }> = [
