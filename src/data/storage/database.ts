@@ -90,6 +90,11 @@ export interface StoredUser extends Omit<User, 'createdAt' | 'lastLoginAt'> {
    * migration; optional only during the transition.
    */
   usernameLower?: string;
+  /**
+   * KDF that wraps encryptedVaultKey. Absent = legacy PBKDF2-600k
+   * (upgraded transparently on next successful password login).
+   */
+  vaultKdf?: 'scrypt-v1';
 }
 
 export interface StoredSession {

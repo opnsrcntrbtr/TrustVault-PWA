@@ -8,6 +8,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
 import { needsRehash } from '@/core/crypto/password';
+import { deriveVaultWrapKey, deriveKeyFromPassword, encrypt, decrypt } from '@/core/crypto/encryption';
 import { isPRFSupported, registerCredentialWithPRF } from '@/core/auth/webauthn';
 import { db } from '../../storage/database';
 import type { User } from '@/domain/entities/User';
@@ -816,5 +817,45 @@ describe('UserRepositoryImpl', () => {
       expect(stored?.webAuthnCredentials.length).toBe(0);
       expect(stored?.biometricEnabled).toBe(false);
     });
+  });
+
+  describe('vault KDF binding (Finding 3)', () => {
+    it('new users wrap the vault key under scrypt-v1', async () => {
+      await repository.createUser('kdfuser', 'a-strong-master-pw-123', undefined);
+      const stored = await db.users.where('usernameLower').equals('kdfuser').first();
+      expect(stored?.vaultKdf).toBe('scrypt-v1');
+    }, 30000);
+
+    it('legacy PBKDF2 users still log in and are upgraded in place', async () => {
+      await repository.createUser('legacyuser', 'a-strong-master-pw-123', undefined);
+      const stored = await db.users.where('usernameLower').equals('legacyuser').first();
+      if (!stored) throw new Error('setup failed');
+
+      // Rewrite the row as a legacy PBKDF2-wrapped user. The vaultKdf marker
+      // is removed by omission (exactOptionalPropertyTypes forbids explicit
+      // undefined assignment), so the row looks exactly like a pre-Finding-3 user.
+      const salt = Uint8Array.from(atob(stored.salt), (c) => c.charCodeAt(0));
+      const legacyWrap = await deriveKeyFromPassword('a-strong-master-pw-123', salt);
+      const vaultKeyB64 = await decrypt(
+        JSON.parse(stored.encryptedVaultKey) as Parameters<typeof decrypt>[0],
+        await deriveVaultWrapKey('a-strong-master-pw-123', salt)
+      );
+      const reWrapped = await encrypt(vaultKeyB64, legacyWrap);
+      const { vaultKdf: _omitted, ...legacyRow } = stored;
+      void _omitted;
+      await db.users.put({
+        ...legacyRow,
+        encryptedVaultKey: JSON.stringify(reWrapped),
+      });
+
+      const session = await repository.authenticateWithPassword(
+        'legacyuser',
+        'a-strong-master-pw-123'
+      );
+      expect(session.vaultKey).toBeInstanceOf(CryptoKey);
+
+      const upgraded = await db.users.where('usernameLower').equals('legacyuser').first();
+      expect(upgraded?.vaultKdf).toBe('scrypt-v1');
+    }, 30000);
   });
 });
