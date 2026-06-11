@@ -152,11 +152,11 @@ export default function DashboardPage() {
   const handleDeleteConfirm = useCallback(async () => {
     if (!credentialToDelete) return;
 
-    if (!user) return;
+    if (!user || !vaultKey) return;
 
     setDeleting(true);
     try {
-      await credentialRepository.delete(credentialToDelete, user.id);
+      await credentialRepository.delete(credentialToDelete, vaultKey, user.id);
       setCredentials((prev) => prev.filter((c) => c.id !== credentialToDelete));
       showSnackbar('Credential deleted successfully');
       setDeleteDialogOpen(false);
@@ -167,7 +167,7 @@ export default function DashboardPage() {
     } finally {
       setDeleting(false);
     }
-  }, [credentialToDelete, showSnackbar, user]);
+  }, [credentialToDelete, showSnackbar, user, vaultKey]);
 
   const handleToggleFavorite = async (id: string) => {
     if (!vaultKey || !user) return;

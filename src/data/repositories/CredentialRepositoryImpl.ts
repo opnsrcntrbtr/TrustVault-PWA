@@ -279,10 +279,15 @@ export class CredentialRepository implements ICredentialRepository {
     return this.decryptCredential(updated, encryptionKey);
   }
 
-  async delete(id: string, userId: string): Promise<void> {
+  async delete(id: string, decryptionKey: CryptoKey, userId: string): Promise<void> {
     const existing = await db.credentials.get(id);
     // Identical message for "missing" and "not yours" — no existence oracle.
     if (!existing || (existing.userId !== undefined && existing.userId !== userId)) {
+      throw new Error('Credential not found');
+    }
+    // Legacy unowned row: deleting requires cryptographic proof of ownership
+    // (mirrors update()); identical error so failure leaks no existence info.
+    if (existing.userId === undefined && !(await this.canClaim(existing, decryptionKey))) {
       throw new Error('Credential not found');
     }
     await db.credentials.delete(id);

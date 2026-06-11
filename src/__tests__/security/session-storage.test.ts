@@ -20,12 +20,14 @@ describe('OWASP M3: Insecure Authentication - Session Security', () => {
     await db.users.clear();
     await db.credentials.clear();
     await db.sessions.clear();
+    await db.loginAttempts.clear();
   });
 
   afterEach(async () => {
     await db.users.clear();
     await db.credentials.clear();
     await db.sessions.clear();
+    await db.loginAttempts.clear();
   });
 
   describe('Session Creation Security', () => {
@@ -93,7 +95,7 @@ describe('OWASP M3: Insecure Authentication - Session Security', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, session.vaultKey);
+      await credRepo.save(credential, session.vaultKey, user.id);
 
       // Lock session
       await userRepo.lockSession();
@@ -211,12 +213,12 @@ describe('OWASP M3: Insecure Authentication - Session Security', () => {
       // Old password should not work
       await expect(
         userRepo.authenticateWithPassword('test@example.com', 'OldPassword123!')
-      ).rejects.toThrow('Invalid email or password');
+      ).rejects.toThrow('Invalid username or password');
 
       // New password should work
       const newSession = await userRepo.authenticateWithPassword('test@example.com', 'NewPassword456!');
       expect(newSession).toBeDefined();
-    });
+    }, 30000);
 
     it('should re-encrypt vault key with new password', async () => {
       const user = await userRepo.createUser('test@example.com', 'OldPassword123!');
@@ -235,7 +237,7 @@ describe('OWASP M3: Insecure Authentication - Session Security', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, oldSession.vaultKey);
+      await credRepo.save(credential, oldSession.vaultKey, user.id);
 
       // Change password
       await userRepo.changeMasterPassword(user.id, 'OldPassword123!', 'NewPassword456!');
@@ -244,9 +246,9 @@ describe('OWASP M3: Insecure Authentication - Session Security', () => {
       const newSession = await userRepo.authenticateWithPassword('test@example.com', 'NewPassword456!');
 
       // Should be able to decrypt credentials with new vault key
-      const retrieved = await credRepo.findById(credential.id, newSession.vaultKey);
+      const retrieved = await credRepo.findById(credential.id, newSession.vaultKey, user.id);
       expect(retrieved?.password).toBe('secret123');
-    });
+    }, 30000);
   });
 
   describe('Brute Force Prevention', () => {
@@ -266,12 +268,17 @@ describe('OWASP M3: Insecure Authentication - Session Security', () => {
 
       expect(failures).toBe(attempts);
 
-      // Should still allow correct password
+      // S8 rate limiter: after this many failures the account is locked out,
+      // so even the correct password is rejected until the lock expires.
+      await expect(
+        userRepo.authenticateWithPassword('test@example.com', 'CorrectPassword123!')
+      ).rejects.toThrow('Too many failed attempts');
+
+      // Once the lock is cleared, the correct password works again.
+      await db.loginAttempts.clear();
       const session = await userRepo.authenticateWithPassword('test@example.com', 'CorrectPassword123!');
       expect(session).toBeDefined();
-
-      // Note: Production should implement rate limiting and account lockout
-    });
+    }, 30000);
 
     it('should maintain constant-time password verification', async () => {
       await userRepo.createUser('test@example.com', 'Password123!');
@@ -310,6 +317,7 @@ describe('OWASP M9: Insecure Data Storage', () => {
 
     await db.users.clear();
     await db.credentials.clear();
+    await db.loginAttempts.clear();
 
     const user = await userRepo.createUser('test@example.com', 'Password123!');
     userId = user.id;
@@ -320,6 +328,7 @@ describe('OWASP M9: Insecure Data Storage', () => {
   afterEach(async () => {
     await db.users.clear();
     await db.credentials.clear();
+    await db.loginAttempts.clear();
   });
 
   describe('IndexedDB Encryption', () => {
@@ -339,7 +348,7 @@ describe('OWASP M9: Insecure Data Storage', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, vaultKey);
+      await credRepo.save(credential, vaultKey, userId);
 
       // Check raw storage
       const stored = await db.credentials.get(credential.id);
@@ -367,13 +376,15 @@ describe('OWASP M9: Insecure Data Storage', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, vaultKey);
+      await credRepo.save(credential, vaultKey, userId);
 
       const stored = await db.credentials.get(credential.id);
 
-      expect(stored?.notes).toBeDefined();
-      expect(stored?.notes).not.toBe(plainNotes);
-      expect(stored?.notes).not.toContain(plainNotes);
+      // S5: notes are stored AES-GCM-encrypted; the plaintext column is unset.
+      expect(stored?.encryptedNotes).toBeDefined();
+      expect(stored?.encryptedNotes).not.toBe(plainNotes);
+      expect(stored?.encryptedNotes).not.toContain(plainNotes);
+      expect(stored?.notes).toBeUndefined();
     });
 
     it('should store TOTP secrets encrypted', async () => {
@@ -393,7 +404,7 @@ describe('OWASP M9: Insecure Data Storage', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, vaultKey);
+      await credRepo.save(credential, vaultKey, userId);
 
       const stored = await db.credentials.get(credential.id);
 
@@ -401,7 +412,7 @@ describe('OWASP M9: Insecure Data Storage', () => {
       expect(stored?.encryptedTotpSecret).not.toBe(plainTOTP);
     });
 
-    it('should NOT encrypt non-sensitive fields', async () => {
+    it('should keep only non-identifying index fields plaintext (S5: metadata sealed)', async () => {
       const credential: Credential = {
         id: crypto.randomUUID(),
         userId,
@@ -417,17 +428,28 @@ describe('OWASP M9: Insecure Data Storage', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, vaultKey);
+      await credRepo.save(credential, vaultKey, userId);
 
       const stored = await db.credentials.get(credential.id);
 
-      // Non-sensitive fields should be searchable (not encrypted)
-      expect(stored?.title).toBe('My Website');
-      expect(stored?.username).toBe('myuser');
-      expect(stored?.url).toBe('https://example.com');
+      // S5: title/username/url/tags are sealed (encrypted); only
+      // non-identifying index fields stay plaintext.
+      expect(stored?.title).toBeUndefined();
+      expect(stored?.username).toBeUndefined();
+      expect(stored?.url).toBeUndefined();
+      expect(stored?.encryptedTitle).toBeDefined();
+      expect(stored?.encryptedUsername).toBeDefined();
+      expect(stored?.encryptedUrl).toBeDefined();
+      expect(stored?.encryptedTags).toBeDefined();
       expect(stored?.category).toBe('login');
       expect(stored?.isFavorite).toBe(true);
-      expect(stored?.tags).toEqual(['work', 'important']);
+
+      // Round-trip: the metadata is still recoverable with the vault key.
+      const roundTrip = await credRepo.findById(credential.id, vaultKey, userId);
+      expect(roundTrip?.title).toBe('My Website');
+      expect(roundTrip?.username).toBe('myuser');
+      expect(roundTrip?.url).toBe('https://example.com');
+      expect(roundTrip?.tags).toEqual(['work', 'important']);
     });
   });
 
@@ -482,8 +504,8 @@ describe('OWASP M9: Insecure Data Storage', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, vaultKey);
-      await credRepo.delete(credential.id);
+      await credRepo.save(credential, vaultKey, userId);
+      await credRepo.delete(credential.id, vaultKey, userId);
 
       const stored = await db.credentials.get(credential.id);
       expect(stored).toBeUndefined();

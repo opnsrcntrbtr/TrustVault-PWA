@@ -20,7 +20,7 @@ export interface ICredentialRepository {
     encryptionKey: CryptoKey,
     userId: string
   ): Promise<Credential>;
-  delete(id: string, userId: string): Promise<void>;
+  delete(id: string, decryptionKey: CryptoKey, userId: string): Promise<void>;
 
   // Search and filter
   search(query: string, decryptionKey: CryptoKey, userId: string): Promise<Credential[]>;

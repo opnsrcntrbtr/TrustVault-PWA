@@ -119,7 +119,7 @@ export default function ChangeMasterPasswordDialog({
         const credential = allCredentials[i]!;
 
         // Delete old encrypted version
-        await credentialRepository.delete(credential.id, user.id);
+        await credentialRepository.delete(credential.id, oldVaultKey, user.id);
 
         // Save with new key (will encrypt with new vault key)
         await credentialRepository.create(credential, newVaultKey, user.id);

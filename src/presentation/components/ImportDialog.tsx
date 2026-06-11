@@ -111,7 +111,7 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
       if (importMode === 'replace') {
         const existing = await credentialRepository.findAll(session.vaultKey, session.userId);
         for (const cred of existing) {
-          await credentialRepository.delete(cred.id, session.userId);
+          await credentialRepository.delete(cred.id, session.vaultKey, session.userId);
         }
       }
 

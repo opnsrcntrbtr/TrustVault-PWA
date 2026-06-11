@@ -306,7 +306,7 @@ export default function EditCredentialPage() {
   };
 
   const handleDelete = async () => {
-    if (!id || !user) {
+    if (!id || !user || !vaultKey) {
       setError('Invalid credential ID');
       return;
     }
@@ -315,7 +315,7 @@ export default function EditCredentialPage() {
     setError(null);
 
     try {
-      await credentialRepository.delete(id, user.id);
+      await credentialRepository.delete(id, vaultKey, user.id);
       navigate('/dashboard');
     } catch (err) {
       console.error('Failed to delete credential:', err);

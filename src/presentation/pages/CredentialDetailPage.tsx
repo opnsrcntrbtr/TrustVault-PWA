@@ -100,11 +100,11 @@ export default function CredentialDetailPage() {
   };
 
   const handleDeleteConfirm = async () => {
-    if (!credential || !user) return;
+    if (!credential || !user || !vaultKey) return;
 
     setDeleting(true);
     try {
-      await credentialRepository.delete(credential.id, user.id);
+      await credentialRepository.delete(credential.id, vaultKey, user.id);
       navigate('/');
     } catch (err) {
       console.error('Failed to delete credential:', err);

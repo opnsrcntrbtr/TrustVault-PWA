@@ -63,8 +63,33 @@ describe('two-user credential isolation', () => {
 
   it("delete refuses to remove another user's credential", async () => {
     const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
-    await expect(credentialRepository.delete(a.id, userB)).rejects.toThrow();
+    await expect(credentialRepository.delete(a.id, keyB, userB)).rejects.toThrow();
     expect(await credentialRepository.findById(a.id, keyA, userA)).not.toBeNull();
+  });
+
+  it("delete refuses to remove an unowned legacy row when the caller's key cannot decrypt it", async () => {
+    const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
+    // Simulate a pre-v9 row: strip ownership.
+    await db.credentials.update(a.id, { userId: undefined });
+
+    // B cannot prove ownership → same error as "missing" (no existence oracle).
+    await expect(credentialRepository.delete(a.id, keyB, userB)).rejects.toThrow(
+      'Credential not found'
+    );
+
+    // Row must still exist and remain unowned.
+    const row = await db.credentials.get(a.id);
+    expect(row).toBeDefined();
+    expect(row?.userId).toBeUndefined();
+  });
+
+  it('delete allows the rightful owner to remove an unowned legacy row with the correct key', async () => {
+    const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
+    // Simulate a pre-v9 row: strip ownership.
+    await db.credentials.update(a.id, { userId: undefined });
+
+    await credentialRepository.delete(a.id, keyA, userA);
+    expect(await db.credentials.get(a.id)).toBeUndefined();
   });
 
   it('legacy unowned rows are lazily claimed only by the user whose key decrypts them', async () => {

@@ -505,7 +505,7 @@ describe('CredentialRepositoryImpl', () => {
 
       await repository.save(credential, vaultKey, userId);
 
-      await repository.delete(credential.id, userId);
+      await repository.delete(credential.id, vaultKey, userId);
 
       const found = await repository.findById(credential.id, vaultKey, userId);
 
@@ -513,7 +513,7 @@ describe('CredentialRepositoryImpl', () => {
     });
 
     it('should throw "Credential not found" for non-existent ID (v9: same message as not-owned, no existence oracle)', async () => {
-      await expect(repository.delete('non-existent-id', userId)).rejects.toThrow(
+      await expect(repository.delete('non-existent-id', vaultKey, userId)).rejects.toThrow(
         'Credential not found'
       );
     });
@@ -548,7 +548,7 @@ describe('CredentialRepositoryImpl', () => {
       await repository.save(cred1, vaultKey, userId);
       await repository.save(cred2, vaultKey, userId);
 
-      await repository.delete(cred2.id, userId);
+      await repository.delete(cred2.id, vaultKey, userId);
 
       const remaining = await repository.findAll(vaultKey, userId);
 
