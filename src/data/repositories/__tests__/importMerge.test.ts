@@ -36,6 +36,7 @@ function loginInput(overrides: Partial<CredentialInput> = {}): CredentialInput {
 describe('importFromJson() merge behavior and round-trips', () => {
   let repository: CredentialRepository;
   let vaultKey: CryptoKey;
+  const TEST_USER = 'test-user';
 
   beforeAll(async () => {
     // PBKDF2 (600k, OWASP 2025) — derived once; avoids the scrypt-heavy
@@ -49,20 +50,21 @@ describe('importFromJson() merge behavior and round-trips', () => {
   });
 
   it('export → wipe → import round-trips count and decrypted fields', async () => {
-    await repository.create(loginInput({ title: 'Gmail' }), vaultKey);
+    await repository.create(loginInput({ title: 'Gmail' }), vaultKey, TEST_USER);
     await repository.create(
       loginInput({ title: 'Bank', username: 'acct-1', password: 'BankSecret2@' }),
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const exported = await repository.exportAll(vaultKey);
+    const exported = await repository.exportAll(vaultKey, TEST_USER);
     await db.credentials.clear();
     expect(await db.credentials.count()).toBe(0);
 
-    const imported = await repository.importFromJson(exported, vaultKey);
+    const imported = await repository.importFromJson(exported, vaultKey, TEST_USER);
     expect(imported).toBe(2);
 
-    const restored = await repository.findAll(vaultKey);
+    const restored = await repository.findAll(vaultKey, TEST_USER);
     expect(restored).toHaveLength(2);
 
     const gmail = restored.find((c) => c.title === 'Gmail');
@@ -74,15 +76,15 @@ describe('importFromJson() merge behavior and round-trips', () => {
   });
 
   it('DOCUMENTS GAP: re-importing the same payload duplicates rows (no repo-level merge)', async () => {
-    await repository.create(loginInput(), vaultKey);
-    const exported = await repository.exportAll(vaultKey);
+    await repository.create(loginInput(), vaultKey, TEST_USER);
+    const exported = await repository.exportAll(vaultKey, TEST_USER);
 
     // Import the exported payload back WITHOUT wiping — "merge" at the
     // repository layer simply appends; dedupe only exists in ImportDialog.
-    const imported = await repository.importFromJson(exported, vaultKey);
+    const imported = await repository.importFromJson(exported, vaultKey, TEST_USER);
     expect(imported).toBe(1);
 
-    const all = await repository.findAll(vaultKey);
+    const all = await repository.findAll(vaultKey, TEST_USER);
     expect(all).toHaveLength(2); // original + duplicate
     expect(all.filter((c) => c.title === 'Gmail' && c.username === 'user@gmail.com')).toHaveLength(2);
   });
@@ -92,7 +94,7 @@ describe('importFromJson() merge behavior and round-trips', () => {
       loginInput({ title: 'AtRest', password: 'NeverPlaintextAtRest3#' }),
     ]);
 
-    const imported = await repository.importFromJson(payload, vaultKey);
+    const imported = await repository.importFromJson(payload, vaultKey, TEST_USER);
     expect(imported).toBe(1);
 
     const storedRows = await db.credentials.toArray();
@@ -101,13 +103,13 @@ describe('importFromJson() merge behavior and round-trips', () => {
     expect(rawRow).not.toContain('NeverPlaintextAtRest3#');
 
     // And it decrypts back through the repository
-    const restored = await repository.findAll(vaultKey);
+    const restored = await repository.findAll(vaultKey, TEST_USER);
     expect(restored[0]?.password).toBe('NeverPlaintextAtRest3#');
   });
 
   it('rejects a non-array payload before any row is written (S8)', async () => {
     await expect(
-      repository.importFromJson('{"not":"an array"}', vaultKey)
+      repository.importFromJson('{"not":"an array"}', vaultKey, TEST_USER)
     ).rejects.toThrow(/Invalid import data format/);
 
     expect(await db.credentials.count()).toBe(0);
@@ -119,7 +121,7 @@ describe('importFromJson() merge behavior and round-trips', () => {
       { title: 'Bad', category: 'not-a-real-category', password: 'x' },
     ]);
 
-    await expect(repository.importFromJson(payload, vaultKey)).rejects.toThrow(
+    await expect(repository.importFromJson(payload, vaultKey, TEST_USER)).rejects.toThrow(
       /Invalid import data format/
     );
 
@@ -129,7 +131,7 @@ describe('importFromJson() merge behavior and round-trips', () => {
   });
 
   it('rejects malformed JSON before any row is written (S8)', async () => {
-    await expect(repository.importFromJson('not json at all', vaultKey)).rejects.toThrow(
+    await expect(repository.importFromJson('not json at all', vaultKey, TEST_USER)).rejects.toThrow(
       /Invalid import data format/
     );
     expect(await db.credentials.count()).toBe(0);

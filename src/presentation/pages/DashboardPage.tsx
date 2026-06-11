@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
   // Load credentials function
   const loadCredentials = useCallback(async () => {
-    if (!vaultKey) {
+    if (!vaultKey || !user) {
       setError('No vault key available');
       setLoading(false);
       return;
@@ -104,17 +104,17 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const creds = await credentialRepository.findAll(vaultKey);
+      const creds = await credentialRepository.findAll(vaultKey, user.id);
       setCredentials(creds);
       // P4: fire-and-forget weekly breach re-check (cache-first, offline-safe).
-      void runUnlockBreachRefresh(creds);
+      void runUnlockBreachRefresh(creds, user.id);
     } catch (err) {
       console.error('Failed to load credentials:', err);
       setError(err instanceof Error ? err.message : 'Failed to load credentials');
     } finally {
       setLoading(false);
     }
-  }, [vaultKey]);
+  }, [vaultKey, user]);
 
   // Load credentials on mount and when vaultKey changes
   useEffect(() => {
@@ -152,9 +152,11 @@ export default function DashboardPage() {
   const handleDeleteConfirm = useCallback(async () => {
     if (!credentialToDelete) return;
 
+    if (!user) return;
+
     setDeleting(true);
     try {
-      await credentialRepository.delete(credentialToDelete);
+      await credentialRepository.delete(credentialToDelete, user.id);
       setCredentials((prev) => prev.filter((c) => c.id !== credentialToDelete));
       showSnackbar('Credential deleted successfully');
       setDeleteDialogOpen(false);
@@ -165,10 +167,10 @@ export default function DashboardPage() {
     } finally {
       setDeleting(false);
     }
-  }, [credentialToDelete, showSnackbar]);
+  }, [credentialToDelete, showSnackbar, user]);
 
   const handleToggleFavorite = async (id: string) => {
-    if (!vaultKey) return;
+    if (!vaultKey || !user) return;
 
     try {
       const credential = credentials.find((c) => c.id === id);
@@ -179,7 +181,8 @@ export default function DashboardPage() {
       await credentialRepository.update(
         id,
         { isFavorite: newFavoriteState },
-        vaultKey
+        vaultKey,
+        user.id
       );
 
       // Update local state
@@ -210,8 +213,8 @@ export default function DashboardPage() {
   };
 
   const handleCopyUsername = async () => {
-    if (!selectedCredential) return;
-    await credentialRepository.updateAccessTime(selectedCredential.id);
+    if (!selectedCredential || !user) return;
+    await credentialRepository.updateAccessTime(selectedCredential.id, user.id);
     const success = await clipboardManager.copy(selectedCredential.username, false, 0);
     if (success) {
       showSnackbar(`Username copied: ${selectedCredential.username}`);
@@ -221,8 +224,8 @@ export default function DashboardPage() {
   };
 
   const handleCopyPassword = async () => {
-    if (!selectedCredential) return;
-    await credentialRepository.updateAccessTime(selectedCredential.id);
+    if (!selectedCredential || !user) return;
+    await credentialRepository.updateAccessTime(selectedCredential.id, user.id);
     const success = await clipboardManager.copy(selectedCredential.password, true, 30);
     if (success) {
       showSnackbar('Password copied! Auto-clearing in 30 seconds');

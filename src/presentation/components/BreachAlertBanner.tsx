@@ -21,6 +21,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { getAllBreachedCredentials } from '@/data/repositories/breachResultsRepository';
+import { useAuthStore } from '@/presentation/store/authStore';
 
 const DISMISS_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
 const STORAGE_KEY = 'breach-alert-dismissed';
@@ -41,8 +42,10 @@ export default function BreachAlertBanner({ refreshTrigger }: BreachAlertBannerP
   }, [refreshTrigger]);
 
   const checkForBreaches = async () => {
+    const userId = useAuthStore.getState().user?.id;
+    if (!userId) return;
     try {
-      const breached = await getAllBreachedCredentials();
+      const breached = await getAllBreachedCredentials(userId);
       const count = breached.length;
 
       if (count === 0) {

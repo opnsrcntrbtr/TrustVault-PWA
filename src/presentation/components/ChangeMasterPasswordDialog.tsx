@@ -92,7 +92,7 @@ export default function ChangeMasterPasswordDialog({
       setReEncrypting(true);
 
       // Step 4: Get all credentials
-      const allCredentials = await credentialRepository.findAll(oldVaultKey);
+      const allCredentials = await credentialRepository.findAll(oldVaultKey, user.id);
       setProgress({ current: 0, total: allCredentials.length });
 
       // Step 5: Change master password (this derives new vault key)
@@ -119,10 +119,10 @@ export default function ChangeMasterPasswordDialog({
         const credential = allCredentials[i]!;
 
         // Delete old encrypted version
-        await credentialRepository.delete(credential.id);
+        await credentialRepository.delete(credential.id, user.id);
 
         // Save with new key (will encrypt with new vault key)
-        await credentialRepository.create(credential, newVaultKey);
+        await credentialRepository.create(credential, newVaultKey, user.id);
 
         // Update progress
         setProgress({ current: i + 1, total: allCredentials.length });

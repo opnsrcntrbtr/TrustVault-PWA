@@ -41,6 +41,7 @@ import {
   Visibility,
 } from '@mui/icons-material';
 import { useCredentialStore } from '../store/credentialStore';
+import { useAuthStore } from '../store/authStore';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import { getLastFullCheckAt, markBreachCheckComplete } from '@/core/breach/unlockBreachRefresh';
@@ -66,6 +67,7 @@ interface SecurityIssue {
 export default function SecurityAuditPage() {
   const navigate = useNavigate();
   const { credentials } = useCredentialStore();
+  const { user } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [securityScore, setSecurityScore] = useState(0);
   const [issues, setIssues] = useState<SecurityIssue[]>([]);
@@ -106,9 +108,9 @@ export default function SecurityAuditPage() {
       checkedAt: number;
     }> = [];
 
-    if (isHibpEnabled()) {
+    if (isHibpEnabled() && user) {
       try {
-        breachedCredentials = await getAllBreachedCredentials();
+        breachedCredentials = await getAllBreachedCredentials(user.id);
       } catch (error) {
         console.error('Failed to load breach data:', error);
       }
@@ -271,8 +273,9 @@ export default function SecurityAuditPage() {
   };
 
   const loadBreachStats = async () => {
+    if (!user) return;
     try {
-      const stats = await getBreachStatistics();
+      const stats = await getBreachStatistics(user.id);
       setBreachStats(stats);
     } catch (error) {
       console.error('Failed to load breach stats:', error);
@@ -280,6 +283,7 @@ export default function SecurityAuditPage() {
   };
 
   const scanForBreaches = async () => {
+    if (!user) return;
     if (!isHibpEnabled()) {
       alert('Breach detection is not enabled. Set VITE_HIBP_API_ENABLED=true in your environment configuration.');
       return;
@@ -298,7 +302,7 @@ export default function SecurityAuditPage() {
 
         try {
           const result = await checkPasswordBreach(credential.password);
-          await saveBreachResult(credential.id, 'password', result);
+          await saveBreachResult(credential.id, 'password', result, user.id);
 
           if (result.breached) {
             console.log(`Breach detected for ${credential.title}: ${result.breachCount} times`);

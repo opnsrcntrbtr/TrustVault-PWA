@@ -28,6 +28,8 @@ import type { StoredCredential } from '../../storage/database';
 let repo: CredentialRepository;
 let vaultKey: CryptoKey;
 
+const TEST_USER = 'test-user';
+
 beforeEach(async () => {
   repo = new CredentialRepository();
   const userRepo = new UserRepositoryImpl();
@@ -55,7 +57,8 @@ describe('create() — metadata stored encrypted (S5)', () => {
   it('stores title encrypted, not in plaintext', async () => {
     await repo.create(
       { title: 'GitHub', username: 'dev@example.com', password: 'secret', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
     const [stored] = await db.credentials.toArray();
@@ -71,7 +74,8 @@ describe('create() — metadata stored encrypted (S5)', () => {
   it('stores username encrypted, not in plaintext', async () => {
     await repo.create(
       { title: 'T', username: 'alice@example.com', password: 'secret', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
     const [stored] = await db.credentials.toArray();
@@ -83,7 +87,8 @@ describe('create() — metadata stored encrypted (S5)', () => {
   it('stores url encrypted when provided', async () => {
     await repo.create(
       { title: 'T', username: 'u', password: 'p', url: 'https://example.com', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
     const [stored] = await db.credentials.toArray();
@@ -95,7 +100,8 @@ describe('create() — metadata stored encrypted (S5)', () => {
   it('stores tags encrypted when provided', async () => {
     await repo.create(
       { title: 'T', username: 'u', password: 'p', category: 'login', tags: ['work', 'finance'] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
     const [stored] = await db.credentials.toArray();
@@ -109,7 +115,8 @@ describe('create() — metadata stored encrypted (S5)', () => {
   it('marks new records as sealed', async () => {
     await repo.create(
       { title: 'T', username: 'u', password: 'p', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
     const [stored] = await db.credentials.toArray();
@@ -132,7 +139,8 @@ describe('create() — card metadata stored encrypted (S5)', () => {
         billingAddress: '123 Main St',
         cardType: 'visa',
       },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
     const [stored] = await db.credentials.toArray();
@@ -163,40 +171,44 @@ describe('findById() — decrypts metadata fields (S5)', () => {
   it('returns the correct title after create', async () => {
     const created = await repo.create(
       { title: 'GitHub', username: 'dev', password: 'sec', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const found = await repo.findById(created.id, vaultKey);
+    const found = await repo.findById(created.id, vaultKey, TEST_USER);
     expect(found?.title).toBe('GitHub');
   });
 
   it('returns the correct username after create', async () => {
     const created = await repo.create(
       { title: 'T', username: 'alice@example.com', password: 'p', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const found = await repo.findById(created.id, vaultKey);
+    const found = await repo.findById(created.id, vaultKey, TEST_USER);
     expect(found?.username).toBe('alice@example.com');
   });
 
   it('returns the correct url after create', async () => {
     const created = await repo.create(
       { title: 'T', username: 'u', password: 'p', url: 'https://github.com', category: 'login', tags: [] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const found = await repo.findById(created.id, vaultKey);
+    const found = await repo.findById(created.id, vaultKey, TEST_USER);
     expect(found?.url).toBe('https://github.com');
   });
 
   it('returns the correct tags after create', async () => {
     const created = await repo.create(
       { title: 'T', username: 'u', password: 'p', category: 'login', tags: ['work', 'git'] },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const found = await repo.findById(created.id, vaultKey);
+    const found = await repo.findById(created.id, vaultKey, TEST_USER);
     expect(found?.tags).toEqual(['work', 'git']);
   });
 
@@ -214,10 +226,11 @@ describe('findById() — decrypts metadata fields (S5)', () => {
         billingAddress: '99 Elm St',
         cardType: 'mastercard',
       },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const found = await repo.findById(created.id, vaultKey);
+    const found = await repo.findById(created.id, vaultKey, TEST_USER);
     expect(found?.cardholderName).toBe('Bob Jones');
     expect(found?.expiryMonth).toBe('12');
     expect(found?.expiryYear).toBe('2030');
@@ -232,37 +245,37 @@ describe('findById() — decrypts metadata fields (S5)', () => {
 
 describe('search() — works on encrypted metadata (S5)', () => {
   it('finds by title', async () => {
-    await repo.create({ title: 'GitHub', username: 'dev', password: 'p', category: 'login', tags: [] }, vaultKey);
-    await repo.create({ title: 'GitLab', username: 'dev', password: 'p', category: 'login', tags: [] }, vaultKey);
+    await repo.create({ title: 'GitHub', username: 'dev', password: 'p', category: 'login', tags: [] }, vaultKey, TEST_USER);
+    await repo.create({ title: 'GitLab', username: 'dev', password: 'p', category: 'login', tags: [] }, vaultKey, TEST_USER);
 
-    const results = await repo.search('GitHub', vaultKey);
+    const results = await repo.search('GitHub', vaultKey, TEST_USER);
     expect(results.length).toBe(1);
     expect(results[0]?.title).toBe('GitHub');
   });
 
   it('finds by username', async () => {
-    await repo.create({ title: 'A', username: 'alice@corp.com', password: 'p', category: 'login', tags: [] }, vaultKey);
-    await repo.create({ title: 'B', username: 'bob@corp.com',   password: 'p', category: 'login', tags: [] }, vaultKey);
+    await repo.create({ title: 'A', username: 'alice@corp.com', password: 'p', category: 'login', tags: [] }, vaultKey, TEST_USER);
+    await repo.create({ title: 'B', username: 'bob@corp.com',   password: 'p', category: 'login', tags: [] }, vaultKey, TEST_USER);
 
-    const results = await repo.search('alice', vaultKey);
+    const results = await repo.search('alice', vaultKey, TEST_USER);
     expect(results.length).toBe(1);
     expect(results[0]?.username).toBe('alice@corp.com');
   });
 
   it('finds by url', async () => {
-    await repo.create({ title: 'A', username: 'u', password: 'p', url: 'https://example.com', category: 'login', tags: [] }, vaultKey);
-    await repo.create({ title: 'B', username: 'u', password: 'p', url: 'https://other.com',   category: 'login', tags: [] }, vaultKey);
+    await repo.create({ title: 'A', username: 'u', password: 'p', url: 'https://example.com', category: 'login', tags: [] }, vaultKey, TEST_USER);
+    await repo.create({ title: 'B', username: 'u', password: 'p', url: 'https://other.com',   category: 'login', tags: [] }, vaultKey, TEST_USER);
 
-    const results = await repo.search('example.com', vaultKey);
+    const results = await repo.search('example.com', vaultKey, TEST_USER);
     expect(results.length).toBe(1);
     expect(results[0]?.url).toBe('https://example.com');
   });
 
   it('finds by tag', async () => {
-    await repo.create({ title: 'A', username: 'u', password: 'p', category: 'login', tags: ['finance'] }, vaultKey);
-    await repo.create({ title: 'B', username: 'u', password: 'p', category: 'login', tags: ['personal'] }, vaultKey);
+    await repo.create({ title: 'A', username: 'u', password: 'p', category: 'login', tags: ['finance'] }, vaultKey, TEST_USER);
+    await repo.create({ title: 'B', username: 'u', password: 'p', category: 'login', tags: ['personal'] }, vaultKey, TEST_USER);
 
-    const results = await repo.search('finance', vaultKey);
+    const results = await repo.search('finance', vaultKey, TEST_USER);
     expect(results.length).toBe(1);
     expect(results[0]?.tags).toContain('finance');
   });
@@ -325,7 +338,7 @@ describe('sealLegacyMetadata() (S5)', () => {
     await sealLegacyMetadata(vaultKey);
 
     // The repo must still be able to decrypt and return the right values
-    const found = await repo.findById(id, vaultKey);
+    const found = await repo.findById(id, vaultKey, TEST_USER);
     expect(found?.title).toBe('LegacyTitle');
     expect(found?.username).toBe('legacy@example.com');
     expect(found?.url).toBe('https://legacy.example.com');
@@ -334,7 +347,7 @@ describe('sealLegacyMetadata() (S5)', () => {
 
   it('skips records that are already sealed', async () => {
     // Already-sealed record from a modern create() call
-    await repo.create({ title: 'New', username: 'u', password: 'p', category: 'login', tags: [] }, vaultKey);
+    await repo.create({ title: 'New', username: 'u', password: 'p', category: 'login', tags: [] }, vaultKey, TEST_USER);
     await insertLegacyRecord(); // one legacy record
 
     const count = await sealLegacyMetadata(vaultKey);

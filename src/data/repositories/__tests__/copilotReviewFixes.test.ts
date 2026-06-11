@@ -12,6 +12,8 @@ import { encrypt } from '@/core/crypto/encryption';
 let repo: CredentialRepository;
 let vaultKey: CryptoKey;
 
+const TEST_USER = 'test-user';
+
 async function makeVaultKey(): Promise<CryptoKey> {
   const userRepo = new UserRepositoryImpl();
   const email = `fix-test-${crypto.randomUUID()}@example.com`;
@@ -55,7 +57,7 @@ describe('comment 3324555923: partial update must not prematurely mark legacy ro
   it('a partial update (isFavorite only) leaves a legacy row unsealed so sealLegacyMetadata can still process it', async () => {
     const id = await insertLegacyRow();
 
-    await repo.update(id, { isFavorite: true }, vaultKey);
+    await repo.update(id, { isFavorite: true }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     // Must still be unsealed so sealLegacyMetadata picks it up
@@ -67,7 +69,7 @@ describe('comment 3324555923: partial update must not prematurely mark legacy ro
   it('a full metadata update on a legacy row encrypts and clears the updated fields (sealLegacyMetadata handles final isSealed)', async () => {
     const id = await insertLegacyRow();
 
-    await repo.update(id, { title: 'NewTitle', username: 'new@example.com', url: 'https://new.example.com', tags: ['work'] }, vaultKey);
+    await repo.update(id, { title: 'NewTitle', username: 'new@example.com', url: 'https://new.example.com', tags: ['work'] }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     // Updated plaintext fields must be cleared
@@ -98,7 +100,7 @@ describe('comment 3324556024: update() clears plaintext metadata columns when en
       createdAt: Date.now(), updatedAt: Date.now(),
     });
 
-    await repo.update(id, { title: 'NewTitle' }, vaultKey);
+    await repo.update(id, { title: 'NewTitle' }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     expect(stored?.title).toBeFalsy();
@@ -114,7 +116,7 @@ describe('comment 3324556024: update() clears plaintext metadata columns when en
       createdAt: Date.now(), updatedAt: Date.now(),
     });
 
-    await repo.update(id, { username: 'new@example.com' }, vaultKey);
+    await repo.update(id, { username: 'new@example.com' }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     expect(stored?.username).toBeFalsy();
@@ -130,7 +132,7 @@ describe('comment 3324556024: update() clears plaintext metadata columns when en
       createdAt: Date.now(), updatedAt: Date.now(),
     });
 
-    await repo.update(id, { url: 'https://new.example.com' }, vaultKey);
+    await repo.update(id, { url: 'https://new.example.com' }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     expect(stored?.url).toBeFalsy();
@@ -146,7 +148,7 @@ describe('comment 3324556024: update() clears plaintext metadata columns when en
       createdAt: Date.now(), updatedAt: Date.now(),
     });
 
-    await repo.update(id, { tags: ['new'] }, vaultKey);
+    await repo.update(id, { tags: ['new'] }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     expect(!stored?.tags || stored.tags.length === 0).toBe(true);
@@ -168,7 +170,7 @@ describe('comment 3324556049: update() clears legacy plaintext card metadata col
       createdAt: Date.now(), updatedAt: Date.now(),
     });
 
-    await repo.update(id, { cardholderName: 'New Name' }, vaultKey);
+    await repo.update(id, { cardholderName: 'New Name' }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     expect(stored?.cardholderName).toBeFalsy();
@@ -184,7 +186,7 @@ describe('comment 3324556049: update() clears legacy plaintext card metadata col
       createdAt: Date.now(), updatedAt: Date.now(),
     });
 
-    await repo.update(id, { expiryMonth: '06', expiryYear: '2030' }, vaultKey);
+    await repo.update(id, { expiryMonth: '06', expiryYear: '2030' }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
     expect(stored?.expiryMonth).toBeFalsy();
@@ -213,10 +215,10 @@ describe('comment 3324556082: save() returns a credential immediately findable b
       updatedAt: new Date(),
     };
 
-    await repo.save(cred, vaultKey);
+    await repo.save(cred, vaultKey, TEST_USER);
 
     // Must be findable immediately — no race or delay
-    const found = await repo.findById(id, vaultKey);
+    const found = await repo.findById(id, vaultKey, TEST_USER);
     expect(found).not.toBeNull();
     expect(found?.id).toBe(id);
     expect(found?.title).toBe('Test Cred');
@@ -230,10 +232,10 @@ describe('comment 3324556082: save() returns a credential immediately findable b
       createdAt: new Date(), updatedAt: new Date(),
     };
 
-    await repo.save(base, vaultKey);
-    await repo.save({ ...base, title: 'Updated' }, vaultKey);
+    await repo.save(base, vaultKey, TEST_USER);
+    await repo.save({ ...base, title: 'Updated' }, vaultKey, TEST_USER);
 
-    const all = await repo.findAll(vaultKey);
+    const all = await repo.findAll(vaultKey, TEST_USER);
     expect(all.length).toBe(1);
     expect(all[0]?.title).toBe('Updated');
   });
@@ -252,17 +254,18 @@ describe('comment 3324556108: export/import round-trip preserves all metadata', 
         password: 'secret', url: 'https://rt.example.com',
         category: 'login', tags: ['rt', 'test'],
       },
-      vaultKey
+      vaultKey,
+      TEST_USER
     );
 
-    const exported = await repo.exportAll(vaultKey);
+    const exported = await repo.exportAll(vaultKey, TEST_USER);
 
     await db.credentials.clear();
 
-    const count = await repo.importFromJson(exported, vaultKey);
+    const count = await repo.importFromJson(exported, vaultKey, TEST_USER);
     expect(count).toBe(1);
 
-    const all = await repo.findAll(vaultKey);
+    const all = await repo.findAll(vaultKey, TEST_USER);
     expect(all.length).toBe(1);
     expect(all[0]?.title).toBe('RoundTrip');
     expect(all[0]?.username).toBe('rt@example.com');

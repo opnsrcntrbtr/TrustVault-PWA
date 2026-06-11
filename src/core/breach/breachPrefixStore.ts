@@ -27,12 +27,18 @@ export function computeSha1Prefix(password: string): string {
 
 /**
  * Upserts the prefix row for a credential. Called whenever a credential's
- * password is created or changed.
+ * password is created or changed. The owning user's id is persisted (v9,
+ * per-user partitioning) so per-user reads can filter on it.
  */
-export async function saveBreachPrefix(credentialId: string, password: string): Promise<void> {
+export async function saveBreachPrefix(
+  credentialId: string,
+  password: string,
+  userId: string
+): Promise<void> {
   try {
     const row: StoredBreachPrefix = {
       credentialId,
+      userId,
       sha1Prefix: computeSha1Prefix(password),
       updatedAt: Date.now(),
     };
@@ -54,12 +60,18 @@ export async function deleteBreachPrefix(credentialId: string): Promise<void> {
 }
 
 /**
- * Returns all stored prefixes (used by the on-unlock refresh and exposed to
- * the periodic-sync service worker via raw IndexedDB reads).
+ * Returns stored prefixes, filtered to one user when `userId` is given.
+ *
+ * The periodic-sync service worker intentionally reads un-scoped (no userId)
+ * while the vault is locked: prefixes are k-anonymous by design (~1M
+ * passwords per prefix), so prefetching every user's ranges discloses
+ * nothing new. Per-user callers (e.g. the on-unlock refresh) pass userId.
  */
-export async function getAllBreachPrefixes(): Promise<StoredBreachPrefix[]> {
+export async function getAllBreachPrefixes(userId?: string): Promise<StoredBreachPrefix[]> {
   try {
-    return await db.breachPrefixes.toArray();
+    const rows = await db.breachPrefixes.toArray();
+    if (userId === undefined) return rows;
+    return rows.filter((row) => row.userId === userId);
   } catch (error) {
     console.warn('Failed to read breach prefixes:', error);
     return [];

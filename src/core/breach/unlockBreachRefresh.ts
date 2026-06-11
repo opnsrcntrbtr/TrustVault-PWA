@@ -90,7 +90,10 @@ export async function registerHibpPeriodicSync(): Promise<boolean> {
  * pre-v8 credentials as a side effect (the migration cannot compute them).
  * Fire-and-forget: callers must not block unlock on this.
  */
-export async function runUnlockBreachRefresh(credentials: Credential[]): Promise<void> {
+export async function runUnlockBreachRefresh(
+  credentials: Credential[],
+  userId: string
+): Promise<void> {
   if (!isHibpEnabled()) return;
 
   // Always try to (re)register periodic sync — registration is idempotent.
@@ -104,11 +107,11 @@ export async function runUnlockBreachRefresh(credentials: Credential[]): Promise
     if (!password || password.trim() === '' || password === '[Decryption Failed]') continue;
 
     // Lazy backfill so the periodic-sync worker knows this prefix next cycle.
-    await saveBreachPrefix(credential.id, password);
+    await saveBreachPrefix(credential.id, password, userId);
 
     try {
       const result = await checkPasswordWithCache(password);
-      await saveBreachResult(credential.id, 'password', result);
+      await saveBreachResult(credential.id, 'password', result, userId);
       anyChecked = true;
     } catch {
       // Offline with no prefetched range — skip; next unlock retries.
