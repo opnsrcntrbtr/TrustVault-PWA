@@ -325,6 +325,12 @@ export async function batchStoreCredentials(
       continue;
     }
 
+    // Same opt-in gate as the single-credential paths (Finding 5):
+    // never store for origins the user hasn't enabled autofill for.
+    if (!shouldStoreInBrowser(credential.url)) {
+      continue;
+    }
+
     const browserCred = toBrowserCredential(credential);
     if (!browserCred) {
       failed++;
