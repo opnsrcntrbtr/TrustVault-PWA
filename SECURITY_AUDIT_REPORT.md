@@ -726,3 +726,20 @@ problems (below the ~855 approved baseline, 0 new); targeted vitest run
 (repositories, stores, crypto, autofill, security suites) 23 files / 496
 tests all passing; `npm run build` green. Details in `TEST_STATUS.md`
 "Security Findings Remediation (F1–F6) — 2026-06-12".
+
+## Patch Notes — 2026-06-12 (Finding 7: re-unlock session loss)
+
+- **F7 (Export/Import silently no-op after re-unlock):** `UnlockPage`'s
+  `handleUnlock` and `handleBiometricUnlock` called `unlockVault(session.vaultKey)`
+  but never `setSession(session)`. Since `session` is intentionally excluded
+  from the persisted auth shell (F2) and `unlockVault`'s reducer only refreshes
+  an *existing* `session` (`state.session ? {...} : null`), `session` stayed
+  `null` for the rest of the page lifetime after any reload → re-unlock, or
+  auto-lock → re-unlock. `ExportDialog` and `ImportDialog` both guard their
+  entire flow on `session?.vaultKey`/`session.userId`, so clicking "Export
+  Vault"/"Import Vault" after a re-unlock did nothing — no error, no file, no
+  console output. Fixed by calling `setSession(session)` alongside
+  `unlockVault(session.vaultKey)` on both unlock paths, mirroring the
+  `setUser`/`setSession`/`setVaultKey` pattern already used by
+  `SigninPage`/`SignupPage`/`LoginPage`. Pinned by `UnlockPage.test.tsx`
+  (2 tests: master-password and biometric re-unlock both restore `session`).

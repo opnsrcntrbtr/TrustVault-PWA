@@ -1,6 +1,6 @@
 # TrustVault PWA - Development Roadmap
 
-**Last Updated:** 2026-06-12 (security findings remediation F1–F6; prev: coverage-gap test suite G1–G7, security hardening A–E + PWA offline suite P1/P3/P4)
+**Last Updated:** 2026-06-12 (Finding 7: re-unlock session loss; prev: security findings remediation F1–F6, coverage-gap test suite G1–G7, security hardening A–E + PWA offline suite P1/P3/P4)
 **Current Status:** Beta (93% complete) - Security hardening + PWA offline suite complete (P1/P3/P4 manual validation done), Phase 1 complete (2026-05-30)
 **Target:** Production-ready PWA with feature parity to a native Android app
 
@@ -51,6 +51,16 @@ This roadmap provides a structured, phased approach to incrementally develop Tru
 > autofill opt-in on all paths including batch (F5); stale `argon2.wasm` removed
 > and KDF doc drift fixed (F6). See `SECURITY_AUDIT_REPORT.md` Patch Notes
 > 2026-06-12 and `docs/superpowers/plans/2026-06-11-security-findings-remediation.md`.
+
+> **Finding 7 — Re-Unlock Session Loss (2026-06-12, complete):** after any
+> reload → re-unlock (master password or biometric), `UnlockPage` restored the
+> vault key but never restored `session`, since `session` is intentionally not
+> persisted (F2) and `unlockVault` only refreshes an existing session. Export
+> Vault / Import Vault both gate on `session?.vaultKey`/`session.userId` and
+> silently no-op'd as a result. Fixed by calling `setSession(session)` on both
+> unlock paths, matching `SigninPage`/`SignupPage`/`LoginPage`. See
+> `SECURITY_AUDIT_REPORT.md` Patch Notes 2026-06-12 (Finding 7) and
+> `TEST_STATUS.md` "Finding 7: Re-Unlock Session Loss".
 
 🟡 **Partial (20-70%)**
 - Credential CRUD operations ✅ (backend 100%, UI 100% — ADD/EDIT/DETAIL pages all complete as of May 2026)

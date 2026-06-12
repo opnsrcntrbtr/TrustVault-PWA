@@ -26,7 +26,7 @@ import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
 export default function UnlockPage() {
   const navigate = useNavigate();
-  const { user, unlockVault, signout, setUser } = useAuthStore();
+  const { user, unlockVault, signout, setUser, setSession } = useAuthStore();
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -85,7 +85,10 @@ export default function UnlockPage() {
       // before any authenticated screen can read security-bearing fields.
       await promoteShellUser(session.userId);
 
-      // Unlock vault with the vault key
+      // Restore the session (not persisted across reloads) alongside the
+      // vault key, so screens that gate on session?.vaultKey/session.userId
+      // (e.g. ExportDialog/ImportDialog) work after a re-unlock.
+      setSession(session);
       unlockVault(session.vaultKey);
 
       // Clear password from memory
@@ -123,7 +126,10 @@ export default function UnlockPage() {
       // before any authenticated screen can read security-bearing fields.
       await promoteShellUser(session.userId);
 
-      // Unlock vault with the vault key
+      // Restore the session (not persisted across reloads) alongside the
+      // vault key, so screens that gate on session?.vaultKey/session.userId
+      // (e.g. ExportDialog/ImportDialog) work after a re-unlock.
+      setSession(session);
       unlockVault(session.vaultKey);
 
       // Navigate to dashboard

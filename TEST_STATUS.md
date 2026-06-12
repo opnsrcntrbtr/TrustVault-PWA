@@ -423,3 +423,31 @@ New suites added by this remediation cycle:
 | `src/core/autofill/__tests__/autofillGating.test.ts` | ✅ 4/4 | F5 — `shouldStoreInBrowser` opt-in gate (default off), incl. batch path |
 
 Updated suites: `UserRepositoryImpl.test.ts` (vault KDF binding — legacy PBKDF2 login + transparent scrypt-v1 upgrade), security suites under `src/__tests__/security` — all passing within the 496 above. No new failures vs the TEST_STATUS baseline; known pre-existing flakes (hibp network mocks, very-long-password timeout, wall-clock tests) did not reproduce in this run.
+
+## Finding 7: Re-Unlock Session Loss (Export/Import silent no-op) — 2026-06-12
+
+Root-caused via systematic debugging (live repro in browser): after a page
+reload → `/unlock` → master-password or biometric re-unlock, `useAuthStore().session`
+remained `null` because `UnlockPage` called `unlockVault(session.vaultKey)`
+without `setSession(session)`. `ExportDialog`/`ImportDialog` gate their entire
+flow on `session?.vaultKey`/`session.userId`, so "Export Vault"/"Import Vault"
+silently did nothing post-reload — no error, no download.
+
+Fix: `UnlockPage.handleUnlock` and `handleBiometricUnlock` now call
+`setSession(session)` alongside `unlockVault(session.vaultKey)`, matching the
+`setUser`/`setSession`/`setVaultKey` pattern in `SigninPage`/`SignupPage`/`LoginPage`.
+
+| Check | Result |
+|---|---|
+| New test: `src/presentation/pages/__tests__/UnlockPage.test.tsx` | ✅ 2/2 — written first (failing on `session === null`), pass after the fix |
+| `npx vitest run src/presentation/store src/presentation/pages/__tests__` | ✅ 5 files / 39 tests — all passed |
+| `npm run type-check` | ✅ 0 errors |
+| `npm run lint` | ✅ 851 problems — unchanged from F1–F6 baseline, 0 new |
+
+`ImportDialog.tsx` shares the identical `session?.vaultKey`/`session.userId`
+guard pattern and is fixed by the same change (no separate code change needed).
+
+Not addressed here (separate, pre-existing issue): the 7 tests in
+`src/__tests__/integration/import-export.test.tsx` time out at the default
+5000ms, independent of this fix — likely slow PBKDF2/scrypt key derivation
+under jsdom hitting default timeouts.
