@@ -10,7 +10,7 @@
  *    `encryptedUrl`, `encryptedTags` etc. and never writes plaintext metadata.
  *  - decryptCredential() decrypts those fields; falls back to legacy plaintext
  *    for pre-v5 records that haven't been sealed yet.
- *  - sealLegacyMetadata(vaultKey) encrypts any unsealed (plaintext) records that
+ *  - sealLegacyMetadata(vaultKey, 'test-user') encrypts any unsealed (plaintext) records that
  *    were created before the v5 migration.
  */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -314,7 +314,7 @@ describe('sealLegacyMetadata() (S5)', () => {
   it('encrypts title/username/url/tags of a legacy record', async () => {
     const id = await insertLegacyRecord();
 
-    const count = await sealLegacyMetadata(vaultKey);
+    const count = await sealLegacyMetadata(vaultKey, 'test-user');
     expect(count).toBe(1);
 
     const sealed = await db.credentials.get(id);
@@ -335,7 +335,7 @@ describe('sealLegacyMetadata() (S5)', () => {
 
   it('makes a sealed legacy record readable via findById', async () => {
     const id = await insertLegacyRecord();
-    await sealLegacyMetadata(vaultKey);
+    await sealLegacyMetadata(vaultKey, 'test-user');
 
     // The repo must still be able to decrypt and return the right values
     const found = await repo.findById(id, vaultKey, TEST_USER);
@@ -350,14 +350,14 @@ describe('sealLegacyMetadata() (S5)', () => {
     await repo.create({ title: 'New', username: 'u', password: 'p', category: 'login', tags: [] }, vaultKey, TEST_USER);
     await insertLegacyRecord(); // one legacy record
 
-    const count = await sealLegacyMetadata(vaultKey);
+    const count = await sealLegacyMetadata(vaultKey, 'test-user');
     expect(count).toBe(1); // only the legacy record was sealed
   });
 
   it('is idempotent — calling twice does not double-seal or fail', async () => {
     const id = await insertLegacyRecord();
-    await sealLegacyMetadata(vaultKey);
-    const second = await sealLegacyMetadata(vaultKey);
+    await sealLegacyMetadata(vaultKey, 'test-user');
+    const second = await sealLegacyMetadata(vaultKey, 'test-user');
     expect(second).toBe(0);
 
     const record = await db.credentials.get(id);
@@ -374,7 +374,7 @@ describe('sealLegacyMetadata() (S5)', () => {
       cardType: 'amex',
     });
 
-    await sealLegacyMetadata(vaultKey);
+    await sealLegacyMetadata(vaultKey, 'test-user');
 
     const sealed = await db.credentials.get(id);
     expect(sealed?.cardholderName).toBeFalsy();

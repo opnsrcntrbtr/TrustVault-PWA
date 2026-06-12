@@ -11,10 +11,31 @@
  */
 
 import { db, type StoredCredential } from '../storage/database';
-import { encrypt } from '@/core/crypto/encryption';
+import { encrypt, decrypt } from '@/core/crypto/encryption';
 
 async function encryptField(value: string, key: CryptoKey): Promise<string> {
   return JSON.stringify(await encrypt(value, key));
+}
+
+/**
+ * Ownership guard (Finding 1 follow-up): sealing a row with the wrong user's
+ * vault key would corrupt it permanently for its rightful owner. Owned rows
+ * must belong to the calling user; unowned legacy rows require cryptographic
+ * proof — the caller's key must decrypt the row's encryptedPassword (same
+ * AES-GCM auth-tag proof as CredentialRepositoryImpl.canClaim).
+ */
+async function ownsRecord(
+  record: StoredCredential,
+  vaultKey: CryptoKey,
+  userId: string
+): Promise<boolean> {
+  if (record.userId !== undefined) return record.userId === userId;
+  try {
+    await decrypt(JSON.parse(record.encryptedPassword) as Parameters<typeof decrypt>[0], vaultKey);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 async function encryptOptional(value: string | undefined, key: CryptoKey): Promise<string | undefined> {
@@ -29,16 +50,25 @@ async function encryptOptional(value: string | undefined, key: CryptoKey): Promi
  *
  * @returns the number of records that were sealed in this call.
  */
-export async function sealLegacyMetadata(vaultKey: CryptoKey): Promise<number> {
-  const unsealed = await db.credentials
+export async function sealLegacyMetadata(vaultKey: CryptoKey, userId: string): Promise<number> {
+  const candidates = await db.credentials
     .filter((c) => c.isSealed !== true)
     .toArray();
+
+  const unsealed: StoredCredential[] = [];
+  for (const record of candidates) {
+    if (await ownsRecord(record, vaultKey, userId)) {
+      unsealed.push(record);
+    }
+  }
 
   if (unsealed.length === 0) return 0;
 
   await Promise.all(
     unsealed.map(async (record) => {
-      const updates: Partial<StoredCredential> = { isSealed: true };
+      // Sealing implies ownership proof, so claim unowned legacy rows here
+      // (mirrors the repository's lazy-claim behaviour).
+      const updates: Partial<StoredCredential> = { isSealed: true, userId };
 
       // Encrypt metadata fields that are still plaintext
       if (record.title) {

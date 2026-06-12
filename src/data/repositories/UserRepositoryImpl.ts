@@ -170,7 +170,7 @@ export class UserRepositoryImpl implements IUserRepository {
 
     // Seal any pre-v5 credentials that still carry plaintext metadata (S5).
     try {
-      await sealLegacyMetadata(resolvedVaultKey);
+      await sealLegacyMetadata(resolvedVaultKey, storedUser.id);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
@@ -261,7 +261,7 @@ export class UserRepositoryImpl implements IUserRepository {
     });
 
     try {
-      await sealLegacyMetadata(vaultKey);
+      await sealLegacyMetadata(vaultKey, userId);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }

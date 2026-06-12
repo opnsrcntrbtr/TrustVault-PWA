@@ -298,7 +298,7 @@ describe('comment 3324556176: sealLegacyMetadata always clears plaintext notes',
       // isSealed absent → legacy row
     });
 
-    await sealLegacyMetadata(vaultKey);
+    await sealLegacyMetadata(vaultKey, TEST_USER);
 
     const sealed = await db.credentials.get(id);
     expect(sealed?.notes).toBeFalsy();         // plaintext must be cleared

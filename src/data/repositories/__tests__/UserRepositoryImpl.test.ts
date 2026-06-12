@@ -635,11 +635,13 @@ describe('UserRepositoryImpl', () => {
     const sealPassword = 'TestPassword123!';
 
     it('seals any unsealed credentials automatically on login', async () => {
-      await repository.createUser(sealUsername, sealPassword);
+      const sealUser = await repository.createUser(sealUsername, sealPassword);
 
-      // Insert a pre-v5 legacy credential with plaintext title/username
+      // Insert a pre-v5 legacy credential with plaintext title/username,
+      // owned by the user (unowned rows now require decryption proof).
       await db.credentials.add({
         id: crypto.randomUUID(),
+        userId: sealUser.id,
         title: 'LegacyTitle',
         username: 'legacy@example.com',
         encryptedPassword: JSON.stringify({ ciphertext: 'stub', iv: 'stub' }),
@@ -709,6 +711,8 @@ describe('UserRepositoryImpl', () => {
 
       const legacyRow = {
         id: crypto.randomUUID(),
+        // Owned row: unowned rows now require decryption proof to seal.
+        userId: user.id,
         title: 'LegacyBio',
         username: 'legacybio@example.com',
         encryptedPassword: JSON.stringify({ ciphertext: 'stub', iv: 'stub' }),
