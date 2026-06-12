@@ -687,8 +687,11 @@ Delivered per `SECURITY_HARDENING_PLAN_2026-06.md`; status table in
   to the authenticated user. Pre-v9 rows without an owner are claimed lazily —
   ownership is proven by successfully AES-GCM-decrypting the row with the
   session vault key (a cryptographic proof, not a heuristic), and `delete()`
-  requires the same proof before removing unowned legacy rows. Pinned by
-  `userIsolation.test.ts` (7 tests).
+  requires the same proof before removing unowned legacy rows. The post-login
+  S5 metadata-sealing pass (`sealLegacyMetadata`) is scoped the same way:
+  it seals only rows the caller owns or can decrypt, preventing cross-user
+  corruption of unclaimed legacy rows (b4d2688). Pinned by
+  `userIsolation.test.ts` (9 tests).
 - **F2 (auth snapshot no longer persists secrets):** the Zustand auth store
   previously persisted the full `User` object (incl. `hashedMasterPassword`,
   `encryptedVaultKey`, `salt`, WebAuthn `wrappedVaultKey`/`prfSalt`) to
