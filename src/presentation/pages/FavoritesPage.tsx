@@ -39,6 +39,7 @@ import { Credential } from '@/domain/entities/Credential';
 import { useAuthStore } from '../store/authStore';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { copyToClipboard } from '../utils/clipboard';
+import { normalizeUrl } from '../utils/url';
 
 export default function FavoritesPage() {
   const navigate = useNavigate();
@@ -141,13 +142,10 @@ export default function FavoritesPage() {
   const handleOpenWebsite = (website: string) => {
     if (!website) return;
 
-    // Ensure URL has protocol
-    let url = website;
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://' + url;
+    const url = normalizeUrl(website);
+    if (url && url !== 'about:blank') {
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
-
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const getCategoryColor = (category: string) => {

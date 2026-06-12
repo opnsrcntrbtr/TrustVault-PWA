@@ -45,6 +45,7 @@ import {
 } from '@mui/icons-material';
 import type { Credential } from '@/domain/entities/Credential';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
+import { normalizeUrl } from '@/presentation/utils/url';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import { getBreachResult, saveBreachResult } from '@/data/repositories/breachResultsRepository';
 import { useAuthStore } from '@/presentation/store/authStore';
@@ -342,7 +343,7 @@ export default function CredentialDetailsDialog({
                 primary="Website"
                 secondary={
                   <a
-                    href={credential.url}
+                    href={normalizeUrl(credential.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: 'inherit' }}
