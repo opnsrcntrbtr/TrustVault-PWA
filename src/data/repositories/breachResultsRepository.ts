@@ -14,13 +14,15 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 export async function saveBreachResult(
   credentialId: string,
   checkType: 'password' | 'email',
-  result: BreachCheckResult
+  result: BreachCheckResult,
+  userId: string
 ): Promise<void> {
   const now = Date.now();
   const expiresAt = now + CACHE_DURATION;
 
   const storedResult: StoredBreachResult = {
     id: `${credentialId}-${checkType}-${now}`,
+    userId,
     credentialId,
     checkType,
     breached: result.breached,
@@ -93,9 +95,11 @@ export async function getAllBreachResultsForCredential(
 }
 
 /**
- * Gets all breached credentials with their results
+ * Gets all breached credentials with their results, scoped to one user
+ * (v9 per-user partitioning). Legacy rows without an owner are excluded;
+ * they expire within 24h and are rewritten with a userId on re-check.
  */
-export async function getAllBreachedCredentials(): Promise<
+export async function getAllBreachedCredentials(userId: string): Promise<
   Array<{
     credentialId: string;
     checkType: 'password' | 'email';
@@ -110,9 +114,9 @@ export async function getAllBreachedCredentials(): Promise<
     .equals(1) // IndexedDB stores boolean as 1/0
     .toArray();
 
-  // Filter out expired results
+  // Filter out expired results and other users' rows
   const now = Date.now();
-  const validResults = results.filter(r => now < r.expiresAt);
+  const validResults = results.filter(r => now < r.expiresAt && r.userId === userId);
 
   // Remove expired results
   const expiredIds = results.filter(r => now >= r.expiresAt).map(r => r.id);
@@ -143,9 +147,9 @@ export async function getAllBreachedCredentials(): Promise<
 }
 
 /**
- * Gets breach statistics
+ * Gets breach statistics, scoped to one user (v9 per-user partitioning).
  */
-export async function getBreachStatistics(): Promise<{
+export async function getBreachStatistics(userId: string): Promise<{
   total: number;
   breached: number;
   safe: number;
@@ -159,9 +163,9 @@ export async function getBreachStatistics(): Promise<{
 }> {
   const allResults = await db.breachResults.toArray();
 
-  // Filter out expired
+  // Filter out expired and other users' rows
   const now = Date.now();
-  const validResults = allResults.filter(r => now < r.expiresAt);
+  const validResults = allResults.filter(r => now < r.expiresAt && r.userId === userId);
 
   // Group by credential to avoid counting duplicates
   const latestByCredential = new Map<string, StoredBreachResult>();

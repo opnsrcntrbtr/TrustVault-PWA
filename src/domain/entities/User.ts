@@ -13,9 +13,9 @@ export interface User {
   /** Optional recovery hint only. Never transmitted — stored locally. */
   email?: string;
   displayName?: string;
-  hashedMasterPassword: string; // Argon2id hash
+  hashedMasterPassword: string; // scrypt hash (scrypt$N$r$p$salt$hash)
   encryptedVaultKey: string; // Master key encrypted with derived key
-  salt: string; // For PBKDF2 key derivation
+  salt: string; // For vault wrap-key derivation (scrypt-v1; PBKDF2 for legacy rows)
   biometricEnabled: boolean;
   webAuthnCredentials: WebAuthnCredential[];
   createdAt: Date;

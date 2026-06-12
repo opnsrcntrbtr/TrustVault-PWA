@@ -11,6 +11,7 @@ import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
 import { useEffect, useState, useMemo, lazy, Suspense } from 'react';
 import { initializeDatabase } from '@/data/storage/database';
+import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 import { Box, CircularProgress } from '@mui/material';
 import { useAutoLock, getDefaultAutoLockConfig } from './hooks/useAutoLock';
 import ClipboardNotification from './components/ClipboardNotification';
@@ -325,10 +326,30 @@ function AppContent() {
       completeInitialization('timeout');
     }, 2000);
 
+    // Refetch the full user from IndexedDB: the persisted snapshot is a
+    // minimal shell (Finding 2) — replace it with the full record, or log
+    // out if the shell points at a deleted user.
+    const refetchFullUser = async () => {
+      const { user, isAuthenticated, setUser, logout } = useAuthStore.getState();
+      if (isAuthenticated && user?.id) {
+        const full = await userRepository.findById(user.id);
+        if (full && mounted) {
+          setUser(full);
+        } else if (mounted) {
+          logout(); // stale shell pointing at a deleted user
+        }
+      }
+    };
+
     // Try to initialize database
     initializeDatabase()
-      .then(() => {
+      .then(async () => {
         clearTimeout(initTimeout);
+        try {
+          await refetchFullUser();
+        } catch (error) {
+          console.error('Failed to refetch full user on boot:', error);
+        }
         completeInitialization('success');
       })
       .catch((error) => {

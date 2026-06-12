@@ -300,6 +300,17 @@ Add to `vercel.json`:
 3. **No console.log()** - Never log sensitive data in production
 4. **Content Security Policy** - Prevents injection attacks
 
+### Extension Fill-Path Activation Criteria (X1 follow-up)
+
+The extension's fill path stays **inert** (GET_CREDENTIALS returns `[]`) until all of:
+1. **Authenticated channel** — PWA↔extension messaging with mutual verification
+   (e.g. `externally_connectable` restricted to the TrustVault origin + per-install
+   pairing secret), never a shared plaintext store.
+2. **Per-origin consent** — user explicitly allows each origin before any
+   credential for it is exposed (KeePassXC host allow/deny model).
+3. **Per-fill confirmation** — explicit user gesture before injecting into a form
+   (no silent fills), honoring `requireConfirmation`.
+
 ## 📱 User Workflows
 
 ### Workflow 1: Add Credential with Autofill

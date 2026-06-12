@@ -20,6 +20,13 @@ import type { CredentialCategory } from '@/domain/entities/Credential';
 export interface StoredCredential {
   id: string;
 
+  /**
+   * Owning user (v9+). Optional only for pre-v9 legacy rows, which are
+   * lazily claimed when their owner's vault key successfully decrypts them
+   * (AES-GCM auth failure proves non-ownership). All new writes set it.
+   */
+  userId?: string | undefined;
+
   // ── Non-sensitive index fields (not user-identifying) ──────────────────────
   category: CredentialCategory; // kept for findByCategory() index
   isFavorite: boolean;          // kept for findFavorites() index
@@ -83,6 +90,11 @@ export interface StoredUser extends Omit<User, 'createdAt' | 'lastLoginAt'> {
    * migration; optional only during the transition.
    */
   usernameLower?: string;
+  /**
+   * KDF that wraps encryptedVaultKey. Absent = legacy PBKDF2-600k
+   * (upgraded transparently on next successful password login).
+   */
+  vaultKdf?: 'scrypt-v1';
 }
 
 export interface StoredSession {
@@ -96,6 +108,12 @@ export interface StoredSession {
 
 export interface StoredBreachResult {
   id: string;
+  /**
+   * Owning user (v9+). Optional only for pre-v9 legacy rows, which are
+   * lazily claimed when their owner's vault key successfully decrypts them
+   * (AES-GCM auth failure proves non-ownership). All new writes set it.
+   */
+  userId?: string | undefined;
   credentialId: string;
   checkType: 'password' | 'email';
   breached: boolean;
@@ -116,6 +134,12 @@ export interface StoredBreachResult {
  */
 export interface StoredBreachPrefix {
   credentialId: string; // primary key
+  /**
+   * Owning user (v9+). Optional only for pre-v9 legacy rows, which are
+   * lazily claimed when their owner's vault key successfully decrypts them
+   * (AES-GCM auth failure proves non-ownership). All new writes set it.
+   */
+  userId?: string | undefined;
   sha1Prefix: string;   // 5 uppercase hex chars
   updatedAt: number;
 }
@@ -297,6 +321,39 @@ export class TrustVaultDB extends Dexie {
       loginAttempts: 'email, lockedUntil',
       breachPrefixes: 'credentialId, sha1Prefix, updatedAt',
     });
+
+    // Version 9 - Per-user partitioning (audit 2026-06-11, Finding 1)
+    // credentials/breachResults/breachPrefixes gain a userId owner column.
+    // Backfill: if exactly one user exists, all rows belong to that user.
+    // Multi-user DBs leave userId undefined; rows are claimed lazily on
+    // first successful decryption by their owner (cryptographic proof).
+    this.version(9)
+      .stores({
+        credentials:
+          'id, userId, [userId+category], [userId+isFavorite], category, isFavorite, createdAt, updatedAt',
+        users: userStoreSchemaV7,
+        sessions: sessionStoreSchema,
+        settings: 'id',
+        breachResults:
+          'id, userId, credentialId, checkType, breached, severity, checkedAt, expiresAt',
+        loginAttempts: 'email, lockedUntil',
+        breachPrefixes: 'credentialId, userId, sha1Prefix, updatedAt',
+      })
+      .upgrade(async (tx) => {
+        const users = await tx.table<StoredUser>('users').toArray();
+        if (users.length !== 1) return; // multi-user: lazy claim handles it
+        const owner = users[0]?.id;
+        if (!owner) return;
+        await tx.table<StoredCredential>('credentials').toCollection().modify((c) => {
+          if (c.userId === undefined) c.userId = owner;
+        });
+        await tx.table<StoredBreachResult>('breachResults').toCollection().modify((r) => {
+          if (r.userId === undefined) r.userId = owner;
+        });
+        await tx.table<StoredBreachPrefix>('breachPrefixes').toCollection().modify((p) => {
+          if (p.userId === undefined) p.userId = owner;
+        });
+      });
   }
 
   /**

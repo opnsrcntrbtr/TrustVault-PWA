@@ -109,9 +109,9 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
     try {
       // Replace mode: delete all existing credentials first
       if (importMode === 'replace') {
-        const existing = await credentialRepository.findAll(session.vaultKey);
+        const existing = await credentialRepository.findAll(session.vaultKey, session.userId);
         for (const cred of existing) {
-          await credentialRepository.delete(cred.id);
+          await credentialRepository.delete(cred.id, session.vaultKey, session.userId);
         }
       }
 
@@ -121,7 +121,7 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
 
         // In merge mode, check for duplicates (same title + username)
         if (importMode === 'merge') {
-          const existing = await credentialRepository.findAll(session.vaultKey);
+          const existing = await credentialRepository.findAll(session.vaultKey, session.userId);
           const duplicate = existing.find(
             (c) =>
               c.title.toLowerCase() === credential!.title.toLowerCase() &&
@@ -149,7 +149,7 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
         };
 
         // Save credential
-        await credentialRepository.create(newCredential, session.vaultKey);
+        await credentialRepository.create(newCredential, session.vaultKey, session.userId);
 
         // Update progress
         setProgress({ current: i + 1, total: credentials.length });

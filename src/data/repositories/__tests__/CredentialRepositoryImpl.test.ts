@@ -57,7 +57,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      const saved = await repository.save(credential, vaultKey);
+      const saved = await repository.save(credential, vaultKey, userId);
 
       expect(saved).toBeDefined();
       expect(saved.id).toBe(credential.id);
@@ -79,7 +79,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
       // Check encrypted storage - the field is encryptedPassword, not password
       const stored = await db.credentials.get(credential.id);
@@ -104,7 +104,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
       const stored = await db.credentials.get(credential.id);
 
@@ -129,7 +129,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      const saved = await repository.save(credential, vaultKey);
+      const saved = await repository.save(credential, vaultKey, userId);
 
       expect(saved).toBeDefined();
       // save() now returns the fully round-tripped record (create → decrypt).
@@ -153,7 +153,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      const saved = await repository.save(credential, vaultKey);
+      const saved = await repository.save(credential, vaultKey, userId);
 
       expect(saved).toBeDefined();
       expect(saved.notes).toBeUndefined();
@@ -173,13 +173,13 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
       // Update credential
       const updated = { ...credential, title: 'Updated Title', password: 'UpdatedPass' };
-      await repository.save(updated, vaultKey);
+      await repository.save(updated, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.title).toBe('Updated Title');
       expect(retrieved?.password).toBe('UpdatedPass');
@@ -199,9 +199,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.tags).toEqual(['work', 'important', 'finance']);
     });
@@ -220,9 +220,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.isFavorite).toBe(true);
     });
@@ -242,7 +242,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
       const stored = await db.credentials.get(credential.id);
 
@@ -250,7 +250,7 @@ describe('CredentialRepositoryImpl', () => {
       expect(stored?.encryptedTotpSecret).not.toBe('JBSWY3DPEHPK3PXP');
       expect(stored?.encryptedTotpSecret).toBeTruthy();
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.totpSecret).toBe('JBSWY3DPEHPK3PXP');
     });
@@ -271,9 +271,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const found = await repository.findById(credential.id, vaultKey);
+      const found = await repository.findById(credential.id, vaultKey, userId);
 
       expect(found).toBeDefined();
       expect(found?.id).toBe(credential.id);
@@ -294,9 +294,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const found = await repository.findById(credential.id, vaultKey);
+      const found = await repository.findById(credential.id, vaultKey, userId);
 
       expect(found?.password).toBe('MySecretPassword123!');
     });
@@ -316,15 +316,15 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const found = await repository.findById(credential.id, vaultKey);
+      const found = await repository.findById(credential.id, vaultKey, userId);
 
       expect(found?.notes).toBe('Secret notes here');
     });
 
     it('should return null for non-existent ID', async () => {
-      const found = await repository.findById('non-existent-id', vaultKey);
+      const found = await repository.findById('non-existent-id', vaultKey, userId);
 
       expect(found).toBeNull();
     });
@@ -343,22 +343,22 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
       // Create another user with different vault key
       const anotherUser = await userRepository.createUser('another@example.com', 'Password123!');
       const anotherSession = await userRepository.authenticateWithPassword('another@example.com', 'Password123!');
 
-      // With a different vault key, decryption will fail and return placeholder
-      // The repository doesn't throw, it returns [Decryption Failed] for graceful handling
-      const result = await repository.findById(credential.id, anotherSession.vaultKey);
-      expect(result?.password).toBe('[Decryption Failed]');
+      // v9 per-user partitioning: another user cannot even see the row —
+      // findById returns null instead of a [Decryption Failed] placeholder.
+      const result = await repository.findById(credential.id, anotherSession.vaultKey, anotherUser.id);
+      expect(result).toBeNull();
     });
   });
 
   describe('findAll()', () => {
     it('should return empty array when no credentials exist', async () => {
-      const credentials = await repository.findAll(vaultKey);
+      const credentials = await repository.findAll(vaultKey, userId);
 
       expect(credentials).toEqual([]);
     });
@@ -390,10 +390,10 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(cred1, vaultKey);
-      await repository.save(cred2, vaultKey);
+      await repository.save(cred1, vaultKey, userId);
+      await repository.save(cred2, vaultKey, userId);
 
-      const credentials = await repository.findAll(vaultKey);
+      const credentials = await repository.findAll(vaultKey, userId);
 
       expect(credentials.length).toBe(2);
       expect(credentials.map(c => c.title)).toContain('Credential 1');
@@ -427,10 +427,10 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(cred1, vaultKey);
-      await repository.save(cred2, vaultKey);
+      await repository.save(cred1, vaultKey, userId);
+      await repository.save(cred2, vaultKey, userId);
 
-      const credentials = await repository.findAll(vaultKey);
+      const credentials = await repository.findAll(vaultKey, userId);
 
       // Don't rely on order - just check both passwords exist
       const passwords = credentials.map(c => c.password);
@@ -439,9 +439,8 @@ describe('CredentialRepositoryImpl', () => {
     });
 
     it('should only return credentials for current user', async () => {
-      // NOTE: Current implementation doesn't filter by user - it's single-user design
-      // Each vault key encrypts credentials differently, providing implicit isolation
-      // This test verifies encryption-based isolation rather than user-ID filtering
+      // v9: rows are partitioned by userId at the repository layer, in
+      // addition to the per-user vault-key encryption isolation.
       
       // Create credential for first user
       const cred1: Credential = {
@@ -457,7 +456,7 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(cred1, vaultKey);
+      await repository.save(cred1, vaultKey, userId);
 
       // Create second user and credential
       const user2 = await userRepository.createUser('user2@example.com', 'Password123!');
@@ -476,10 +475,10 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(cred2, session2.vaultKey);
+      await repository.save(cred2, session2.vaultKey, user2.id);
 
       // Get credentials using first user's key
-      const user1Credentials = await repository.findAll(vaultKey);
+      const user1Credentials = await repository.findAll(vaultKey, userId);
       
       // Both credentials exist but only the ones encrypted with this key decrypt properly
       // Credentials encrypted with different key will show [Decryption Failed]
@@ -504,17 +503,19 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      await repository.delete(credential.id);
+      await repository.delete(credential.id, vaultKey, userId);
 
-      const found = await repository.findById(credential.id, vaultKey);
+      const found = await repository.findById(credential.id, vaultKey, userId);
 
       expect(found).toBeNull();
     });
 
-    it('should not throw error for non-existent ID', async () => {
-      await expect(repository.delete('non-existent-id')).resolves.not.toThrow();
+    it('should throw "Credential not found" for non-existent ID (v9: same message as not-owned, no existence oracle)', async () => {
+      await expect(repository.delete('non-existent-id', vaultKey, userId)).rejects.toThrow(
+        'Credential not found'
+      );
     });
 
     it('should not affect other credentials', async () => {
@@ -544,12 +545,12 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(cred1, vaultKey);
-      await repository.save(cred2, vaultKey);
+      await repository.save(cred1, vaultKey, userId);
+      await repository.save(cred2, vaultKey, userId);
 
-      await repository.delete(cred2.id);
+      await repository.delete(cred2.id, vaultKey, userId);
 
-      const remaining = await repository.findAll(vaultKey);
+      const remaining = await repository.findAll(vaultKey, userId);
 
       expect(remaining.length).toBe(1);
       expect(remaining[0]?.title).toBe('Keep This');
@@ -571,13 +572,13 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(Date.now() - 10000), // 10 seconds ago
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
       const beforeUpdate = Date.now();
-      await repository.updateAccessTime(credential.id);
+      await repository.updateAccessTime(credential.id, userId);
       const afterUpdate = Date.now();
 
-      const updated = await repository.findById(credential.id, vaultKey);
+      const updated = await repository.findById(credential.id, vaultKey, userId);
 
       expect(updated?.lastAccessedAt).toBeDefined();
       expect(updated!.lastAccessedAt.getTime()).toBeGreaterThanOrEqual(beforeUpdate);
@@ -585,7 +586,7 @@ describe('CredentialRepositoryImpl', () => {
     });
 
     it('should not throw error for non-existent ID', async () => {
-      await expect(repository.updateAccessTime('non-existent-id')).resolves.not.toThrow();
+      await expect(repository.updateAccessTime('non-existent-id', userId)).resolves.not.toThrow();
     });
   });
 
@@ -604,9 +605,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.password).toBe('P@ssw0rd!#$%^&*()_+-=[]{}|;:\'",.<>?/~`');
     });
@@ -625,9 +626,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.password).toBe('Pass你好🔐Word');
     });
@@ -647,9 +648,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.password).toBe(longPassword);
       expect(retrieved?.password?.length).toBe(1008);
@@ -670,9 +671,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.tags).toEqual(manyTags);
       expect(retrieved?.tags.length).toBe(50);
@@ -695,9 +696,9 @@ describe('CredentialRepositoryImpl', () => {
         lastAccessedAt: new Date(),
       };
 
-      await repository.save(credential, vaultKey);
+      await repository.save(credential, vaultKey, userId);
 
-      const retrieved = await repository.findById(credential.id, vaultKey);
+      const retrieved = await repository.findById(credential.id, vaultKey, userId);
 
       expect(retrieved).toBeDefined();
       expect(retrieved?.title).toBe('');

@@ -51,6 +51,56 @@ export class CredentialRepository implements ICredentialRepository {
     catch { return undefined; }
   }
 
+  // ── Per-user partitioning helpers (v9, Finding 1) ─────────────────────────
+
+  /**
+   * Ownership probe for a legacy (pre-v9) row without a userId: AES-256-GCM
+   * decryption of the password blob only succeeds with the owner's vault key
+   * (auth-tag failure throws), so a successful decrypt is cryptographic proof
+   * of ownership.
+   */
+  private async canClaim(stored: StoredCredential, key: CryptoKey): Promise<boolean> {
+    try {
+      await this.decryptField(stored.encryptedPassword, key);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Claims every unowned row the caller's key decrypts (writes userId) and
+   * returns the claimed rows. Rows the key cannot decrypt are skipped silently.
+   */
+  private async claimDecryptable(
+    unowned: StoredCredential[],
+    userId: string,
+    key: CryptoKey
+  ): Promise<StoredCredential[]> {
+    const claimed: StoredCredential[] = [];
+    for (const stored of unowned) {
+      if (await this.canClaim(stored, key)) {
+        await db.credentials.update(stored.id, { userId });
+        claimed.push({ ...stored, userId });
+      }
+    }
+    return claimed;
+  }
+
+  /**
+   * All rows the user owns, plus any legacy unowned rows their key decrypts
+   * (lazily claimed as a side effect).
+   */
+  private async getOwnedAndClaimable(
+    userId: string,
+    key: CryptoKey
+  ): Promise<StoredCredential[]> {
+    const owned = await db.credentials.where('userId').equals(userId).toArray();
+    const unowned = await db.credentials.filter((c) => c.userId === undefined).toArray();
+    const claimed = await this.claimDecryptable(unowned, userId, key);
+    return [...owned, ...claimed];
+  }
+
   // ── Internal create with explicit id ──────────────────────────────────────
   // create() generates a UUID; save() passes credential.id directly so there
   // is never a race between the DB write and the caller's findById() call
@@ -59,7 +109,8 @@ export class CredentialRepository implements ICredentialRepository {
   private async createWithId(
     id: string,
     input: CredentialInput,
-    encryptionKey: CryptoKey
+    encryptionKey: CryptoKey,
+    userId: string
   ): Promise<Credential> {
     const encryptedPassword       = await this.encryptField(input.password, encryptionKey);
     const encryptedTitle          = await this.encryptField(input.title, encryptionKey);
@@ -80,6 +131,7 @@ export class CredentialRepository implements ICredentialRepository {
 
     const stored: StoredCredential = {
       id,
+      userId,
       encryptedPassword,
       encryptedTitle, encryptedUsername, encryptedUrl, encryptedTags,
       encryptedNotes, encryptedTotpSecret, encryptedCardNumber, encryptedCvv,
@@ -96,35 +148,58 @@ export class CredentialRepository implements ICredentialRepository {
 
     await db.credentials.add(stored);
     // P4: keep the HIBP prefix store in sync (never blocks/breaks CRUD).
-    await saveBreachPrefix(id, input.password);
+    await saveBreachPrefix(id, input.password, userId);
     return this.decryptCredential(stored, encryptionKey);
   }
 
   // ── CRUD ──────────────────────────────────────────────────────────────────
 
-  async create(input: CredentialInput, encryptionKey: CryptoKey): Promise<Credential> {
-    return this.createWithId(crypto.randomUUID(), input, encryptionKey);
+  async create(
+    input: CredentialInput,
+    encryptionKey: CryptoKey,
+    userId: string
+  ): Promise<Credential> {
+    return this.createWithId(crypto.randomUUID(), input, encryptionKey, userId);
   }
 
-  async findById(id: string, decryptionKey: CryptoKey): Promise<Credential | null> {
+  async findById(
+    id: string,
+    decryptionKey: CryptoKey,
+    userId: string
+  ): Promise<Credential | null> {
     const stored = await db.credentials.get(id);
     if (!stored) return null;
-    await this.updateAccessTime(id);
+    // Owned by someone else → invisible to this user.
+    if (stored.userId !== undefined && stored.userId !== userId) return null;
+    // Legacy unowned row → claim only on cryptographic proof of ownership.
+    if (stored.userId === undefined) {
+      if (!(await this.canClaim(stored, decryptionKey))) return null;
+      await db.credentials.update(id, { userId });
+    }
+    await this.updateAccessTime(id, userId);
     return this.decryptCredential(stored, decryptionKey);
   }
 
-  async findAll(decryptionKey: CryptoKey): Promise<Credential[]> {
-    const all = await db.credentials.toArray();
-    return Promise.all(all.map((c) => this.decryptCredential(c, decryptionKey)));
+  async findAll(decryptionKey: CryptoKey, userId: string): Promise<Credential[]> {
+    const rows = await this.getOwnedAndClaimable(userId, decryptionKey);
+    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
   async update(
     id: string,
     input: Partial<CredentialInput>,
-    encryptionKey: CryptoKey
+    encryptionKey: CryptoKey,
+    userId: string
   ): Promise<Credential> {
     const existing = await db.credentials.get(id);
-    if (!existing) throw new Error('Credential not found');
+    // Identical message for "missing" and "not yours" — no existence oracle.
+    if (!existing || (existing.userId !== undefined && existing.userId !== userId)) {
+      throw new Error('Credential not found');
+    }
+    // Legacy unowned row: updating requires cryptographic proof of ownership.
+    if (existing.userId === undefined && !(await this.canClaim(existing, encryptionKey))) {
+      throw new Error('Credential not found');
+    }
 
     // Start with only the timestamp.
     // isSealed is preserved from the existing record; it is NOT set to true here
@@ -132,6 +207,7 @@ export class CredentialRepository implements ICredentialRepository {
     // sealing lifecycle (fixes 3324555923).
     const updates: Partial<StoredCredential> = {
       updatedAt: Date.now(),
+      userId, // claims legacy unowned rows (ownership proven above)
       ...(existing.isSealed ? { isSealed: true } : {}),
     };
 
@@ -166,7 +242,7 @@ export class CredentialRepository implements ICredentialRepository {
       updates.encryptedPassword = await this.encryptField(input.password, encryptionKey);
       updates.securityScore = analyzePasswordStrength(input.password).score;
       // P4: refresh the HIBP prefix for the new password.
-      await saveBreachPrefix(id, input.password);
+      await saveBreachPrefix(id, input.password, userId);
     }
     if (input.totpSecret !== undefined)
       updates.encryptedTotpSecret = await this.encryptOptional(input.totpSecret, encryptionKey);
@@ -203,14 +279,24 @@ export class CredentialRepository implements ICredentialRepository {
     return this.decryptCredential(updated, encryptionKey);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, decryptionKey: CryptoKey, userId: string): Promise<void> {
+    const existing = await db.credentials.get(id);
+    // Identical message for "missing" and "not yours" — no existence oracle.
+    if (!existing || (existing.userId !== undefined && existing.userId !== userId)) {
+      throw new Error('Credential not found');
+    }
+    // Legacy unowned row: deleting requires cryptographic proof of ownership
+    // (mirrors update()); identical error so failure leaks no existence info.
+    if (existing.userId === undefined && !(await this.canClaim(existing, decryptionKey))) {
+      throw new Error('Credential not found');
+    }
     await db.credentials.delete(id);
     // P4: remove the credential's HIBP prefix row.
     await deleteBreachPrefix(id);
   }
 
-  async search(query: string, decryptionKey: CryptoKey): Promise<Credential[]> {
-    const all = await this.findAll(decryptionKey);
+  async search(query: string, decryptionKey: CryptoKey, userId: string): Promise<Credential[]> {
+    const all = await this.findAll(decryptionKey, userId);
     const lq = query.toLowerCase();
     return all.filter(
       (c) =>
@@ -221,20 +307,39 @@ export class CredentialRepository implements ICredentialRepository {
     );
   }
 
-  async findByCategory(category: string, decryptionKey: CryptoKey): Promise<Credential[]> {
-    const stored = await db.credentials.where('category').equals(category).toArray();
-    return Promise.all(stored.map((c) => this.decryptCredential(c, decryptionKey)));
+  async findByCategory(
+    category: string,
+    decryptionKey: CryptoKey,
+    userId: string
+  ): Promise<Credential[]> {
+    const owned = await db.credentials
+      .where('[userId+category]')
+      .equals([userId, category])
+      .toArray();
+    const unowned = await db.credentials
+      .filter((c) => c.userId === undefined && c.category === category)
+      .toArray();
+    const claimed = await this.claimDecryptable(unowned, userId, decryptionKey);
+    return Promise.all(
+      [...owned, ...claimed].map((c) => this.decryptCredential(c, decryptionKey))
+    );
   }
 
-  async findFavorites(decryptionKey: CryptoKey): Promise<Credential[]> {
-    const stored = await db.credentials.where('isFavorite').equals(1).toArray();
-    return Promise.all(stored.map((c) => this.decryptCredential(c, decryptionKey)));
+  async findFavorites(decryptionKey: CryptoKey, userId: string): Promise<Credential[]> {
+    // Booleans are not valid IndexedDB keys, so isFavorite is filtered in
+    // memory over the user's (already scoped) rows.
+    const rows = await this.getOwnedAndClaimable(userId, decryptionKey);
+    return Promise.all(
+      rows
+        .filter((c) => c.isFavorite)
+        .map((c) => this.decryptCredential(c, decryptionKey))
+    );
   }
 
-  async exportAll(decryptionKey: CryptoKey): Promise<string> {
+  async exportAll(decryptionKey: CryptoKey, userId: string): Promise<string> {
     // Fully decrypt before export so that importFromJson() receives plaintext
     // title/username/url/tags rather than the encrypted blobs (fixes 3324556108).
-    const credentials = await this.findAll(decryptionKey);
+    const credentials = await this.findAll(decryptionKey, userId);
     const exportable = credentials.map((c) => ({
       id: c.id,
       title: c.title,
@@ -260,7 +365,7 @@ export class CredentialRepository implements ICredentialRepository {
     return JSON.stringify(exportable, null, 2);
   }
 
-  async importFromJson(data: string, encryptionKey: CryptoKey): Promise<number> {
+  async importFromJson(data: string, encryptionKey: CryptoKey, userId: string): Promise<number> {
     // S8: schema-validate BEFORE any row touches the repository. Throws a
     // user-facing error on malformed/oversized/wrong-shaped payloads.
     const { parseImportPayload } = await import('@/data/repositories/importValidation');
@@ -288,7 +393,8 @@ export class CredentialRepository implements ICredentialRepository {
             cardType: item.cardType,
             billingAddress: item.billingAddress,
           },
-          encryptionKey
+          encryptionKey,
+          userId
         );
         imported++;
       } catch {
@@ -298,13 +404,20 @@ export class CredentialRepository implements ICredentialRepository {
     return imported;
   }
 
-  async updateAccessTime(id: string): Promise<void> {
+  async updateAccessTime(id: string, userId: string): Promise<void> {
+    const stored = await db.credentials.get(id);
+    // Never touch rows owned by another user (legacy unowned rows are
+    // claimed elsewhere via decryption proof; a timestamp touch is harmless).
+    if (!stored || (stored.userId !== undefined && stored.userId !== userId)) return;
     await db.credentials.update(id, { lastAccessedAt: Date.now() });
   }
 
-  async analyzeSecurityScore(id: string, decryptionKey: CryptoKey): Promise<number> {
+  async analyzeSecurityScore(id: string, decryptionKey: CryptoKey, userId: string): Promise<number> {
     const credential = await db.credentials.get(id);
-    if (!credential) throw new Error('Credential not found');
+    // Identical message for "missing" and "not yours" — no existence oracle.
+    if (!credential || (credential.userId !== undefined && credential.userId !== userId)) {
+      throw new Error('Credential not found');
+    }
     try {
       const password = await this.decryptField(credential.encryptedPassword, decryptionKey);
       const analysis = analyzePasswordStrength(password);
@@ -404,7 +517,7 @@ export class CredentialRepository implements ICredentialRepository {
 
   // ── save() — backward-compat convenience (uses createWithId for new records)
 
-  async save(credential: Credential, encryptionKey: CryptoKey): Promise<Credential> {
+  async save(credential: Credential, encryptionKey: CryptoKey, userId: string): Promise<Credential> {
     const existing = await db.credentials.get(credential.id);
 
     if (existing) {
@@ -428,7 +541,8 @@ export class CredentialRepository implements ICredentialRepository {
           cardType: credential.cardType,
           billingAddress: credential.billingAddress,
         },
-        encryptionKey
+        encryptionKey,
+        userId
       );
     }
 
@@ -454,7 +568,8 @@ export class CredentialRepository implements ICredentialRepository {
         cardType: credential.cardType,
         billingAddress: credential.billingAddress,
       },
-      encryptionKey
+      encryptionKey,
+      userId
     );
   }
 }

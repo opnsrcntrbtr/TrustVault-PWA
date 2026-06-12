@@ -40,14 +40,14 @@ describe('breachPrefixes table (v8 migration)', () => {
   });
 
   it('saves, upserts, and deletes prefix rows keyed by credentialId', async () => {
-    await saveBreachPrefix('cred-1', 'password');
+    await saveBreachPrefix('cred-1', 'password', 'test-user');
     let rows = await getAllBreachPrefixes();
     expect(rows).toHaveLength(1);
     expect(rows[0]?.sha1Prefix).toBe('5BAA6');
     expect(rows[0]?.credentialId).toBe('cred-1');
 
     // Upsert on password change — still one row, new prefix.
-    await saveBreachPrefix('cred-1', 'hunter2');
+    await saveBreachPrefix('cred-1', 'hunter2', 'test-user');
     rows = await getAllBreachPrefixes();
     expect(rows).toHaveLength(1);
     expect(rows[0]?.sha1Prefix).toBe(computeSha1Prefix('hunter2'));
@@ -57,7 +57,7 @@ describe('breachPrefixes table (v8 migration)', () => {
   });
 
   it('clearAll() wipes the prefix store', async () => {
-    await saveBreachPrefix('cred-1', 'password');
+    await saveBreachPrefix('cred-1', 'password', 'test-user');
     await db.clearAll();
     expect(await getAllBreachPrefixes()).toHaveLength(0);
   });

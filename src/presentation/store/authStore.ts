@@ -28,6 +28,32 @@ interface AuthState {
   updateUser: (user: User) => void; // Update user in store
 }
 
+/** What survives a page reload — never any key/hash/wrap material. */
+interface PersistedAuthShell {
+  user: Pick<User, 'id' | 'username' | 'displayName'> | null;
+  isAuthenticated: boolean;
+}
+
+/**
+ * After a page reload, the rehydrated `user` is only a PersistedAuthShell
+ * ({id, username?, displayName?}) until App's boot refetch (or an unlock
+ * path) replaces it with the full User from IndexedDB. Security-bearing
+ * consumers (password verification, settings merge) MUST check this guard
+ * before reading fields like hashedMasterPassword or securitySettings.
+ */
+export function isFullUser(user: User | null): user is User {
+  return user !== null && 'hashedMasterPassword' in user;
+}
+
+const toShell = (user: User | null): PersistedAuthShell['user'] =>
+  user
+    ? {
+        id: user.id,
+        ...(user.username !== undefined ? { username: user.username } : {}),
+        ...(user.displayName !== undefined ? { displayName: user.displayName } : {}),
+      }
+    : null;
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
@@ -96,11 +122,22 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'trustvault-auth',
-      partialize: (state) => ({
-        user: state.user,
+      version: 1,
+      partialize: (state): PersistedAuthShell => ({
+        // Shell only: full User (hash, encrypted vault key, salt, WebAuthn
+        // wrap material) stays in IndexedDB and is refetched by App on boot.
+        user: toShell(state.user),
         isAuthenticated: state.isAuthenticated,
-        // Don't persist sensitive data like vaultKey or session
       }),
+      migrate: (persisted): PersistedAuthShell => {
+        // v0 snapshots stored the full User — strip to the shell and let the
+        // overwrite-on-save remove the old secret-bearing copy.
+        const old = persisted as { user?: User | null; isAuthenticated?: boolean };
+        return {
+          user: toShell(old.user ?? null),
+          isAuthenticated: old.isAuthenticated ?? false,
+        };
+      },
     }
   )
 );

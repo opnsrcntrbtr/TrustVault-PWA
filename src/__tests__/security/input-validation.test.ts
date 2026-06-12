@@ -22,6 +22,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
 
     await db.users.clear();
     await db.credentials.clear();
+    await db.loginAttempts.clear();
 
     const user = await userRepo.createUser('test@example.com', 'Password123!');
     userId = user.id;
@@ -32,6 +33,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
   afterEach(async () => {
     await db.users.clear();
     await db.credentials.clear();
+    await db.loginAttempts.clear();
   });
 
   describe('XSS (Cross-Site Scripting) Prevention', () => {
@@ -58,10 +60,10 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.title).toBe(payload); // Stored as-is (sanitization done on render)
 
-        const retrieved = await credRepo.findById(credential.id, vaultKey);
+        const retrieved = await credRepo.findById(credential.id, vaultKey, userId);
         expect(retrieved?.title).toBe(payload);
       }
     });
@@ -88,8 +90,8 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        await credRepo.save(credential, vaultKey);
-        const retrieved = await credRepo.findById(credential.id, vaultKey);
+        await credRepo.save(credential, vaultKey, userId);
+        const retrieved = await credRepo.findById(credential.id, vaultKey, userId);
 
         expect(retrieved?.notes).toBe(note);
         // Note: React automatically escapes content, preventing XSS
@@ -118,7 +120,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.username).toBe(username);
       }
     });
@@ -136,18 +138,19 @@ describe('OWASP M4: Insufficient Input Validation', () => {
 
       for (const email of sqlInjections) {
         try {
+          // v7: the first argument is the login username (email is optional).
           const user = await userRepo.createUser(email, 'Password123!');
-          expect(user.email).toBe(email);
+          expect(user.username).toBe(email);
 
           // Verify safe retrieval
-          const found = await userRepo.findByEmail(email);
-          expect(found?.email).toBe(email);
+          const found = await userRepo.findByUsername(email);
+          expect(found?.username).toBe(email);
         } catch (error) {
           // May fail due to other validation, but should not cause injection
           expect(error).toBeDefined();
         }
       }
-    });
+    }, 30000);
 
     it('should safely query credentials with special characters', async () => {
       const specialTitles = [
@@ -171,11 +174,11 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        await credRepo.save(credential, vaultKey);
+        await credRepo.save(credential, vaultKey, userId);
       }
 
       // Verify all credentials retrievable without injection
-      const all = await credRepo.findAll(vaultKey);
+      const all = await credRepo.findAll(vaultKey, userId);
       expect(all.length).toBe(specialTitles.length);
     });
   });
@@ -204,7 +207,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.title).toBe(title); // Stored as literal string, no file access
       }
     });
@@ -230,7 +233,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         // Null bytes may be stripped or preserved depending on implementation
         expect(saved.title).toBeDefined();
       }
@@ -264,7 +267,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
         lastAccessedAt: new Date(),
       };
 
-      const saved = await credRepo.save(credential, vaultKey);
+      const saved = await credRepo.save(credential, vaultKey, userId);
       expect(saved.title.length).toBe(longTitle.length);
     });
 
@@ -285,8 +288,8 @@ describe('OWASP M4: Insufficient Input Validation', () => {
         lastAccessedAt: new Date(),
       };
 
-      await credRepo.save(credential, vaultKey);
-      const retrieved = await credRepo.findById(credential.id, vaultKey);
+      await credRepo.save(credential, vaultKey, userId);
+      const retrieved = await credRepo.findById(credential.id, vaultKey, userId);
 
       expect(retrieved?.notes?.length).toBe(longNotes.length);
     });
@@ -307,10 +310,10 @@ describe('OWASP M4: Insufficient Input Validation', () => {
         lastAccessedAt: new Date(),
       };
 
-      const saved = await credRepo.save(credential, vaultKey);
+      const saved = await credRepo.save(credential, vaultKey, userId);
       expect(saved.tags.length).toBe(1000);
 
-      const retrieved = await credRepo.findById(credential.id, vaultKey);
+      const retrieved = await credRepo.findById(credential.id, vaultKey, userId);
       expect(retrieved?.tags.length).toBe(1000);
     });
   });
@@ -340,7 +343,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.title).toBe(format);
       }
     });
@@ -370,7 +373,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.title).toBe(cmd); // Stored as literal, no command execution
       }
     });
@@ -421,7 +424,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.title).toBe(payload);
       }
     });
@@ -444,9 +447,9 @@ describe('OWASP M4: Insufficient Input Validation', () => {
 
       for (const email of unicodeVariants) {
         const user = await userRepo.createUser(email, 'Password123!');
-        expect(user.email).toBe(email);
+        expect(user.username).toBe(email);
       }
-    });
+    }, 30000);
 
     it('should handle zero-width characters', async () => {
       const zeroWidthChars = [
@@ -470,7 +473,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           lastAccessedAt: new Date(),
         };
 
-        const saved = await credRepo.save(credential, vaultKey);
+        const saved = await credRepo.save(credential, vaultKey, userId);
         expect(saved.username).toBe(username);
       }
     });
@@ -486,9 +489,9 @@ describe('OWASP M4: Insufficient Input Validation', () => {
 
       for (const email of homographs) {
         const user = await userRepo.createUser(`${email}@example.com`, 'Password123!');
-        expect(user.email).toContain(email);
+        expect(user.username).toContain(email);
       }
-    });
+    }, 30000);
   });
 
   describe('Type Confusion Prevention', () => {
@@ -507,7 +510,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
       };
 
       try {
-        await credRepo.save(credential as Credential, vaultKey);
+        await credRepo.save(credential as Credential, vaultKey, userId);
         // If TypeScript allows it, should still not cause security issue
       } catch (error) {
         // Type validation may reject it

@@ -32,6 +32,7 @@ import type { Credential } from '@/domain/entities/Credential';
 import { clipboardManager } from '@/presentation/utils/clipboard';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
+import { useAuthStore } from '@/presentation/store/authStore';
 import { getBreachResult } from '@/data/repositories/breachResultsRepository';
 import TotpDisplay from './TotpDisplay';
 import CategoryIcon, { getCategoryColor, getCategoryName } from './CategoryIcon';
@@ -89,8 +90,9 @@ const CredentialCard = memo(function CredentialCard({
   };
 
   const handleCopyUsername = async () => {
-    // Update access time
-    await credentialRepository.updateAccessTime(credential.id);
+    // Update access time (scoped to the authenticated user)
+    const userId = useAuthStore.getState().user?.id;
+    if (userId) await credentialRepository.updateAccessTime(credential.id, userId);
     
     const success = await clipboardManager.copy(credential.username, false, 0);
     if (success) {
@@ -101,8 +103,9 @@ const CredentialCard = memo(function CredentialCard({
   };
 
   const handleCopyPassword = async () => {
-    // Update access time
-    await credentialRepository.updateAccessTime(credential.id);
+    // Update access time (scoped to the authenticated user)
+    const userId = useAuthStore.getState().user?.id;
+    if (userId) await credentialRepository.updateAccessTime(credential.id, userId);
     
     const success = await clipboardManager.copy(credential.password, true, 30);
     if (success) {
