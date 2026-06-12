@@ -399,3 +399,27 @@ Driven against `npm run build && npm run preview` (`http://localhost:4173/TrustV
 | Lighthouse PWA 100 | ⚠️ **Obsolete as worded** — the project's pinned `lighthouse@12.8.2` removed the "PWA" category and all `installable-manifest`/`service-worker`/`maskable-icon`/etc. audits (Chrome moved PWA installability checks to DevTools' separate "PWA" panel). `npx lighthouse http://localhost:4173/TrustVault-PWA/ --only-categories=pwa` returns no `pwa` category — there is nothing to score 100. Performance/Accessibility/Best Practices/SEO categories still run (0.74 / 0.87 / 1.00 / 0.90 in this headless run); Performance is below the >90 target, dominated by FCP/LCP on a cold headless preview. Recommend retiring the "Lighthouse PWA 100" checklist item and, if installability needs auditing, doing it manually via Chrome DevTools → Application → Manifest. |
 
 All four originally-pending manual drills are now resolved (3 passed, 1 found obsolete and documented).
+
+---
+
+## Security Findings Remediation (F1–F6) — 2026-06-12
+
+Verification battery run locally (macOS, Node >=20) at HEAD of `security/findings-remediation`:
+
+| Check | Result |
+|---|---|
+| `npm run type-check` | ✅ 0 errors |
+| `npm run lint` | ✅ 851 problems (797 errors, 54 warnings) — below the approved ~855 pre-existing baseline; 0 new issues |
+| `npx vitest run src/data/repositories src/presentation/store src/core/crypto src/core/autofill src/__tests__/security` | ✅ 23 files / 496 tests — all passed |
+| `npm run build` | ✅ green (SW version injected, dist emitted) |
+
+New suites added by this remediation cycle:
+
+| Suite | Tests | Covers |
+|---|---|---|
+| `src/data/repositories/__tests__/userIsolation.test.ts` | ✅ 7/7 | F1 — DB v9 userId partitioning, lazy claim via AES-GCM decryption proof, delete() proof requirement |
+| `src/presentation/store/__tests__/authStorePersistence.test.ts` | ✅ 4/4 | F2 — persisted state is a secret-free `PersistedAuthShell`; v1 migration wipes secret-bearing v0 snapshots |
+| `src/core/crypto/__tests__/vaultWrapKdf.test.ts` | ✅ 4/4 | F3 — `deriveVaultWrapKey` scrypt-v1 (N=131072) differs from legacy PBKDF2 derivation |
+| `src/core/autofill/__tests__/autofillGating.test.ts` | ✅ 4/4 | F5 — `shouldStoreInBrowser` opt-in gate (default off), incl. batch path |
+
+Updated suites: `UserRepositoryImpl.test.ts` (vault KDF binding — legacy PBKDF2 login + transparent scrypt-v1 upgrade), security suites under `src/__tests__/security` — all passing within the 496 above. No new failures vs the TEST_STATUS baseline; known pre-existing flakes (hibp network mocks, very-long-password timeout, wall-clock tests) did not reproduce in this run.
