@@ -105,7 +105,7 @@ npm run lighthouse
 
 ### Environment Variables
 
-TrustVault: no backend, minimal env vars.
+TrustVault currently has **no backend**, so environment variables are minimal.
 
 **Optional:**
 
@@ -115,11 +115,11 @@ VITE_APP_VERSION=1.0.0
 VITE_ANALYTICS_ID=G-XXXXXXXXXX  # Google Analytics (optional)
 ```
 
-**Important:** Never commit `.env` files w/ secrets. TrustVault client-only, so no API keys expose.
+**Important:** Never commit `.env` files with secrets. TrustVault is client-only, so no API keys should be exposed.
 
 ### Build-time Configuration
 
-Edit `vite.config.ts` for customization:
+Edit `vite.config.ts` for build customization:
 
 ```typescript
 export default defineConfig({
@@ -146,7 +146,7 @@ export default defineConfig({
 
 ### Option 1: Vercel (Recommended)
 
-**Pros:** Auto HTTPS, CDN, Git integration, zero config
+**Pros:** Automatic HTTPS, CDN, Git integration, zero config
 **Free Tier:** Unlimited static sites
 
 **Deployment:**
@@ -164,9 +164,9 @@ vercel --prod
 
 **Vercel Configuration (`vercel.json`):**
 
-Repo includes canonical `vercel.json` w/ exact prod headers & routing. `Content-Security-Policy` kept in strict parity w/ `src/config/securityHeaders.ts` — don't hand-edit docs, copy exact values from `vercel.json`.
+The repository includes a canonical `vercel.json` in the repo root that contains the exact production headers and routing rules used for Vercel deployments. The `Content-Security-Policy` value is kept in strict parity with `src/config/securityHeaders.ts` and must not be changed in the docs — copy exact values from `vercel.json` instead of hand-editing.
 
-Use provided `vercel.json` for Vercel config; contains rewrites routing SPA paths to `index.html` & headers enforcing HSTS, COOP/CORP, strict CSP.
+Use the provided `vercel.json` when configuring Vercel; it contains rewrites that route SPA paths to `index.html` and a headers block that enforces HSTS, COOP/CORP, and the strict CSP.
 
 ### Option 2: Netlify
 
@@ -211,11 +211,11 @@ netlify deploy --prod
 ### Option 3: GitHub Pages
 
 **Pros:** Free, Git-integrated, simple
-**Cons:** No custom headers (security limit)
+**Cons:** No custom headers (security limitation)
 
-**⚠️ Not Recommended** for TrustVault due to security headers limitation.
+**⚠️ Not Recommended** for TrustVault due to inability to set security headers.
 
-**Deployment (if must):**
+**Deployment (if you must):**
 
 ```bash
 # Install gh-pages
@@ -237,7 +237,7 @@ npm run deploy:gh-pages
 ### Option 4: Self-Hosted (Nginx)
 
 **Pros:** Full control, custom headers, no vendor lock-in
-**Cons:** Requires server mgmt, SSL setup
+**Cons:** Requires server management, SSL setup
 
 **Nginx Configuration (`/etc/nginx/sites-available/trustvault`):**
 
@@ -304,30 +304,30 @@ sudo certbot renew --dry-run
 ### Why HTTPS is Mandatory
 
 TrustVault **requires** HTTPS for:
-1. Service Worker registration (PWA)
+1. Service Worker registration (PWA feature)
 2. WebCrypto API (encryption)
-3. WebAuthn (biometric auth)
+3. WebAuthn (biometric authentication)
 4. Clipboard API (copy/paste)
 5. Security best practices
 
-**Exception:** `localhost` (dev only)
+**Exception:** `localhost` (development only)
 
 ### Obtaining SSL Certificate
 
 **Free Options:**
 - Let's Encrypt (self-hosted)
 - Cloudflare (proxy)
-- Vercel/Netlify (auto)
+- Vercel/Netlify (automatic)
 
 **Paid Options:**
-- DigiCert, GlobalSign (org)
+- DigiCert, GlobalSign (for organizations)
 
 ### SSL Configuration Checklist
 
-- [ ] Certificate valid, not expired
-- [ ] HTTP → HTTPS redirect (301)
+- [ ] Certificate valid and not expired
+- [ ] Redirect HTTP → HTTPS (301)
 - [ ] HSTS header enabled
-- [ ] TLS 1.2+ only (disable 1.0/1.1)
+- [ ] TLS 1.2+ only (disable TLS 1.0/1.1)
 - [ ] Strong cipher suites
 - [ ] OCSP stapling enabled
 
@@ -341,7 +341,7 @@ TrustVault **requires** HTTPS for:
 
 ### Required Headers
 
-**Pre-configured in vite.config.ts for dev:**
+**Already configured in vite.config.ts for development:**
 
 ```typescript
 headers: {
@@ -353,9 +353,12 @@ headers: {
 }
 ```
 
-Canonical source: `src/config/securityHeaders.ts` (imported by `vite.config.ts` for dev/preview & parity-tested vs `vercel.json` in `src/config/__tests__/securityHeaders.test.ts`). Edit `securityHeaders.ts` only — never duplicate headers inline.
+The canonical source for all of these headers is `src/config/securityHeaders.ts`
+(imported by `vite.config.ts` for dev/preview and parity-tested against
+`vercel.json` in `src/config/__tests__/securityHeaders.test.ts`). Edit
+`securityHeaders.ts` only — never duplicate headers inline.
 
-**For prod hosting, configure in:**
+**For production hosting, configure in:**
 - Vercel: `vercel.json`
 - Netlify: `netlify.toml` or `_headers` file
 - Nginx: `nginx.conf`
@@ -363,7 +366,7 @@ Canonical source: `src/config/securityHeaders.ts` (imported by `vite.config.ts` 
 
 ### Content Security Policy (CSP)
 
-**Current CSP** (from `vercel.json`, synced w/ `securityHeaders.ts`):
+**Current CSP** (from `vercel.json`, kept in sync with `securityHeaders.ts`):
 
 ```
 default-src 'self';
@@ -380,17 +383,21 @@ form-action 'self';
 ```
 
 **Explanation:**
-- `default-src 'self'` - Resources from same origin only
-- `script-src 'self' 'sha256-…' 'wasm-unsafe-eval'` - No `unsafe-inline`/`unsafe-eval`. Hash pins single inline GH-Pages SPA-redirect bootstrap script (`index.html`); `'wasm-unsafe-eval'` required for self-hosted Tesseract OCR WASM core. Hash drift-guarded by `securityHeaders.test.ts` — regenerate if `index.html` inline script changes.
-- `style-src 'unsafe-inline'` - Material-UI/Emotion runtime styles residual
+- `default-src 'self'` - Only load resources from same origin
+- `script-src 'self' 'sha256-…' 'wasm-unsafe-eval'` - No `unsafe-inline`/`unsafe-eval`. The hash
+  pins the single inline GitHub-Pages SPA-redirect bootstrap script
+  (`index.html`); `'wasm-unsafe-eval'` is required for the self-hosted
+  Tesseract OCR WASM core. The hash is drift-guarded by
+  `securityHeaders.test.ts` — regenerate it if `index.html`'s inline script changes.
+- `style-src 'unsafe-inline'` - Documented residual for Material-UI/Emotion runtime styles
 - `fonts.googleapis.com` - Material-UI fonts
-- `data: blob:` - PWA icons & generated content
+- `data: blob:` - For PWA icons and generated content
 - `connect-src ... pwnedpasswords.com haveibeenpwned.com` - HIBP breach-detection API (k-anonymity range queries)
 - `worker-src 'self' blob:` - Service worker + OCR web workers
 - `object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'none'`, `form-action 'self'` - Defense-in-depth lockdowns
 
 **Customization:**
-Add external services (analytics, CDN) → update CSP:
+If you add external services (analytics, CDN), update CSP:
 
 ```typescript
 connect-src 'self' https://analytics.google.com;
@@ -404,7 +411,7 @@ connect-src 'self' https://analytics.google.com;
 
 **Common Issues:**
 - Missing CSP → Add to hosting config
-- `'unsafe-inline'` flagged → Material-UI limit, acceptable
+- `'unsafe-inline'` flagged → Material-UI limitation, acceptable
 - HSTS not set → Add: `Strict-Transport-Security: max-age=31536000; includeSubDomains`
 
 ---
@@ -413,7 +420,7 @@ connect-src 'self' https://analytics.google.com;
 
 ### Workbox Settings
 
-**Current config (vite.config.ts):**
+**Current configuration (vite.config.ts):**
 
 ```typescript
 VitePWA({
@@ -438,30 +445,30 @@ VitePWA({
 ### Update Strategy
 
 **Auto-Update (Current):**
-- New version auto-installs
+- New version automatically installs
 - User prompted to reload
 - UpdateAvailableSnackbar shows notification
 
 **Manual Update (Alternative):**
-Change `registerType: 'prompt'` for user control
+Change `registerType: 'prompt'` to give user control
 
 ### Service Worker Lifecycle
 
 1. **Installation** - Assets cached on first visit
-2. **Activation** - SW takes control
-3. **Fetch** - Intercepts requests, serves from cache
+2. **Activation** - SW takes control of page
+3. **Fetch** - Intercepts network requests, serves from cache
 4. **Update** - New version detected, prompts user
 
 ### Debugging Service Worker
 
 **Chrome DevTools:**
-1. DevTools → Application tab
+1. Open DevTools → Application tab
 2. Service Workers section
 3. Check status, update, unregister
 
 **Common Issues:**
 - SW not registering → Check HTTPS
-- Old SW stuck → Unregister & hard refresh
+- Old SW stuck → Unregister and hard refresh
 - Updates not applying → Check `skipWaiting` setting
 
 ---
@@ -480,7 +487,7 @@ CNAME   www.trustvault      trustvault.yourdomain.com.  3600
 
 **For Vercel/Netlify:**
 
-Follow platform docs:
+Follow platform-specific instructions:
 - Vercel: Dashboard → Domain Settings → Add Domain
 - Netlify: Dashboard → Domain Management → Add Domain
 
@@ -498,8 +505,8 @@ Follow platform docs:
 ### Domain Verification
 
 After DNS setup:
-1. Wait for propagation (48h typical, <1h common)
-2. Check: `nslookup trustvault.yourdomain.com`
+1. Wait for propagation (up to 48 hours, usually <1 hour)
+2. Check with: `nslookup trustvault.yourdomain.com`
 3. Test HTTPS: `curl -I https://trustvault.yourdomain.com`
 
 ---
@@ -521,8 +528,8 @@ manualChunks: {
 
 **Benefits:**
 - Separate vendor chunks for better caching
-- Lazy-loaded routes (implemented)
-- Bundle size reduced ~40%
+- Lazy-loaded routes (already implemented)
+- Total bundle size reduced by ~40%
 
 ### Lazy Loading
 
@@ -533,28 +540,28 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 ```
 
 **Heavy Components:**
-- Password Generator (on-demand)
-- TOTP (if credential has TOTP)
-- Biometric (if available)
+- Password Generator (loaded on demand)
+- TOTP components (only if credential has TOTP)
+- Biometric components (only if available)
 
 ### Asset Optimization
 
 **Images:**
 - PWA icons: Optimized PNGs at required sizes
-- Use WebP w/ PNG fallback for screenshots
+- Use WebP with PNG fallback for screenshots
 
 **Fonts:**
-- Material-UI uses Google Fonts (SW cached)
+- Material-UI uses Google Fonts (cached by SW)
 - Subset fonts if possible
 
 **CSS:**
-- Minified in prod
+- Minified in production
 - Critical CSS inlined (Vite default)
 
 ### Caching Strategy
 
 **Static Assets:**
-- `CacheFirst` - Fonts, images (1 year)
+- `CacheFirst` - Fonts, images (1 year cache)
 - `StaleWhileRevalidate` - JS, CSS chunks
 
 **Dynamic Content:**
@@ -574,7 +581,7 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 - Enable compression (gzip/brotli)
 - Use HTTP/2
 - Minimize main-thread work
-- Reduce JS execution time
+- Reduce JavaScript execution time
 
 ---
 
@@ -605,7 +612,7 @@ Sentry.init({
 });
 ```
 
-**⚠️ Privacy:** Never log passwords, vault keys, PII
+**⚠️ Privacy:** Never log passwords, vault keys, or PII
 
 ### Analytics (Optional)
 
@@ -632,17 +639,17 @@ export function trackEvent(category: string, action: string) {
 ```
 
 **Events to Track:**
-- User signups (no email)
+- User signups (without email)
 - Credential created/updated/deleted counts
 - PWA installs
-- Export/import ops
+- Export/import operations
 - Biometric enabled
 
-**Never Track:**
-- Passwords
+**What NOT to Track:**
+- Passwords (obviously)
 - Email addresses
 - Credential titles/usernames
-- Decrypted data
+- Any decrypted data
 
 ### Uptime Monitoring
 
@@ -655,9 +662,9 @@ export function trackEvent(category: string, action: string) {
 - Pingdom
 - StatusCake
 
-**Monitor:**
+**What to Monitor:**
 - HTTPS endpoint reachability
-- SSL cert expiration
+- SSL certificate expiration
 - Response time (<500ms target)
 - Service worker updates
 
@@ -668,18 +675,18 @@ export function trackEvent(category: string, action: string) {
 ### Build Failures
 
 **Error:** `Cannot find module '@noble/hashes'`
-**Solution:** `npm install` ensure all deps
+**Solution:** `npm install` and ensure all dependencies installed
 
 **Error:** `TypeScript errors in build`
-**Solution:** Run `npm run type-check` first, fix
+**Solution:** Run `npm run type-check` first, fix all errors
 
 **Error:** `WASM loading failed`
-**Solution:** Ensure `vite-plugin-wasm` installed & configured
+**Solution:** Ensure `vite-plugin-wasm` installed and configured
 
 ### Service Worker Issues
 
-**Error:** SW not registering in prod
-**Solution:** Ensure HTTPS, check browser console
+**Error:** SW not registering in production
+**Solution:** Ensure HTTPS enabled, check browser console
 
 **Error:** Update not applying
 **Solution:** Unregister SW in DevTools, hard refresh
@@ -717,7 +724,7 @@ export function trackEvent(category: string, action: string) {
 **Solution:** Review CSP, add necessary domains
 
 **Error:** Mixed content warnings
-**Solution:** Ensure all resources via HTTPS
+**Solution:** Ensure all resources loaded via HTTPS
 
 ---
 
@@ -735,18 +742,18 @@ export function trackEvent(category: string, action: string) {
 ### Security
 
 - [ ] HTTPS configured
-- [ ] SSL cert valid
+- [ ] SSL certificate valid
 - [ ] Security headers configured
-- [ ] CSP tested & working
+- [ ] CSP tested and working
 - [ ] No secrets in code
-- [ ] Env vars secured
+- [ ] Environment variables secured
 
 ### PWA
 
 - [ ] Service worker registering
 - [ ] Offline mode working
 - [ ] Install prompt appearing
-- [ ] Icons valid & correct sizes
+- [ ] Icons valid and correct sizes
 - [ ] Manifest.json valid
 
 ### Performance
@@ -772,7 +779,7 @@ export function trackEvent(category: string, action: string) {
 - [ ] Test offline functionality
 - [ ] Check security headers (securityheaders.com)
 - [ ] Run Lighthouse audit on live URL
-- [ ] Monitor error logs (first 24h)
+- [ ] Monitor error logs for first 24 hours
 
 ---
 
