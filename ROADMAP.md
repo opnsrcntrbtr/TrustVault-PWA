@@ -71,7 +71,7 @@ This roadmap provides a structured, phased approach to incrementally develop Tru
 | **Vault Trust Hardening** | Close crypto/session defects, deliver auto-lock, and guarantee decrypted data never persists beyond active sessions. | Vault key decrypt fix, secure credential reads, `useAutoLock`, tab-visibility lock, lock/unlock UX copy. | `auth-flow.test.tsx`, manual lock drills recorded in `TEST_STATUS.md`, IndexedDB inspection screenshots. | Security Architect + QA lead |
 | **CredOps Experience** | Complete credential CRUD UX, password generator, TOTP, clipboard controls, OCR camera scan, and responsive dashboard/search so users can actually operate the vault. | Add/Edit forms, generator dialog, `clipboardManager`, TOTP widget, dashboard filters, mobile gestures, **OCR credential capture via camera**. | `credential-crud.test.tsx`, `ocr-capture.test.ts`, Lighthouse Accessibility ≥ 90, UX review artifacts linked in `KEY_FINDINGS.md`. | UX Director + Front-end lead |
 | **Passwordless & Recovery** | Provide biometric unlock, master password rotation, encrypted import/export, and recovery comms. | WebAuthn enrollment/signin, change-master-password wizard with progress, `.tvault` export/import with merge/replace, recovery guide updates. | `import-export.test.tsx`, WebAuthn mock tests, manual recovery drill logged in `TEST_STATUS.md`. | Security Architect + Release Captain |
-| **Threat Intelligence & Reporting** | Ship breach telemetry, automate OWASP audits, and enforce test coverage so trust claims stay evidence-backed. | HIBP integration, Security Audit dashboard, SECURITY_AUDIT_REPORT refresh, >85% Vitest coverage, security CI pipeline. | `npm run test:coverage`, `npm run lighthouse:security`, updated `SECURITY_AUDIT_REPORT.md`. | QA lead + Security Architect |
+| **Threat Intelligence & Reporting** | Ship breach telemetry, automate OWASP audits, and enforce test coverage so trust claims stay evidence-backed. | HIBP integration, Security Audit dashboard, SECURITY_AUDIT_REPORT refresh, >85% Vitest coverage, security CI pipeline. | `npm run test:coverage`, `npm run lighthouse`, updated `SECURITY_AUDIT_REPORT.md`. | QA lead + Security Architect |
 
 > **Guideline:** No feature is “done” until the relevant gate in the table is met **and** documentation (README, AGENTS, CLAUDE, copilot instructions) reflects the change. Use the pillars to tag every roadmap item, PR, and test suite.
 
@@ -1776,7 +1776,7 @@ describe('Complete Auth Flow', () => {
 
 Test after implementation:
 ```bash
-npm run test:integration
+npm run test:run
 # All integration tests should pass
 # Verify flows work end-to-end
 ```
@@ -1844,7 +1844,7 @@ Requirements:
 
 3. Automated tools:
    ```bash
-   npm run lighthouse:security  # Security audit
+   npm run lighthouse            # Security audit
    npm audit                    # Dependency vulnerabilities
    npm run test:security        # Custom security tests
    ```
@@ -1891,9 +1891,9 @@ Create security report:
 
 Test after implementation:
 ```bash
-npm run test:security
+npm run test:run
 npm audit fix
-npm run lighthouse:security
+npm run lighthouse
 # Verify all security tests pass
 # No critical/high vulnerabilities in dependencies
 ```
