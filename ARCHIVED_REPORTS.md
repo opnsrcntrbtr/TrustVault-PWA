@@ -1,6 +1,6 @@
 # Archived Reports
 
-Historical status and analysis reports. For current project information, see:
+Historical status and analysis reports, consolidated below to reduce documentation clutter. For current project information, see:
 
 - **[GETTING_STARTED.md](./GETTING_STARTED.md)** — Setup & deployment
 - **[PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)** — Project overview
@@ -10,32 +10,31 @@ Historical status and analysis reports. For current project information, see:
 
 ---
 
-## Archived Documents
+## Archived Document Summaries
 
-These reports contain historical analysis but are no longer actively maintained. They remain for reference:
+The full reports below were removed; only their conclusions are kept for historical context.
 
-### Testing & Quality
-- **TEST_ANALYSIS_REPORT.md** (Nov 19) — Comprehensive test analysis (800+ lines)
-- **TEST_SUMMARY.md** (Nov 19) — Summary of test findings
-- **TEST_VALIDATION.md** (Oct 24) — Older validation report
-- **DEBUG_FIXES_SUMMARY.md** (Nov 30) — Summary of bug fixes
+### TEST_ANALYSIS_REPORT.md (2025-11-19)
+Deep analysis generated 300+ automated tests and raised coverage from ~35% to ~65%. Found critical issues across categories, with prioritized fixes and a coverage-improvement roadmap.
 
-### Performance & Analysis
-- **PERFORMANCE_REPORT.md** (Oct 25) — Older performance baseline
+### TEST_SUMMARY.md (2025-11-19)
+Companion summary to the above test-generation effort: overview of the 300+ generated tests, results, key findings, and coverage impact.
+
+### TEST_VALIDATION.md (2025-10-24)
+Validated functionality for Phase 0 (critical bug fixes) through Phase 2.4 (secure clipboard manager) — credential management, password generator, TOTP/2FA, auto-lock, and integration/security tests all passing at the time.
+
+### DEBUG_FIXES_SUMMARY.md (2024-11-30)
+Fixed 73 of 634 ESLint errors via documented patterns; 561 errors and 61 warnings remained, with recommendations for further cleanup.
+
+### PERFORMANCE_REPORT.md (Phase 6.1, January 2025)
+Bundle-size and code-splitting optimizations implemented, targeting Lighthouse scores >90 and bundle size <500KB. Testing checklist and known issues were documented pending validation.
+
+### FINAL_DELIVERY_SUMMARY.md (2025-11-24)
+Declared the project production-ready at 100% across all 6 planned phases (up from 85%), with a delivery artifact inventory, build/deployment status, and handoff package. Superseded by the current Beta / 90%-feature-complete status in `PROJECT_CONTEXT.md`.
+
+### DEPLOYMENT_SUMMARY.md (early Vercel migration)
+Fixed Vercel 404s caused by a GitHub Pages base path (`/TrustVault-PWA/`) mismatch with Vercel's root-path serving, resolved via `vercel.json` and a `vite.config.ts` base-path correction.
 
 ---
 
-## What Changed?
-
-These reports were consolidated to reduce documentation clutter and improve /graphify query clarity. Instead of maintaining multiple overlapping reports, the project now uses:
-
-1. **TEST_STATUS.md** — Current, maintained test status
-2. **IMPLEMENTATION_STATUS.md** — Current dev checklist
-3. **SECURITY_AUDIT_REPORT.md** — Current security findings
-4. **TEST_VALIDATION_PLAN.md** — Current testing strategy
-
-If you need historical context from archived reports, contact the project maintainer.
-
----
-
-**Note**: For AI-assisted development sessions (Claude Code / /graphify), use the non-archived documents listed above for accurate, current project information.
+**Note**: For AI-assisted development sessions (Claude Code / `/graphify`), use the non-archived documents listed above for accurate, current project information.
