@@ -4,7 +4,7 @@ Complete guide for implementing browser autofill with TrustVault PWA using Crede
 
 ## 🎯 Overview
 
-TrustVault offers two autofill methods:
+TrustVault provides two methods for browser autofill:
 
 1. **Native Credential Management API** - Built into modern browsers, no extension needed
 2. **Chrome Extension** - Enhanced autofill with advanced features and better UX
@@ -41,9 +41,9 @@ User Credential Flow:
 
 ### Security Features
 
-✅ **HTTPS-Only** - Credentials autofill only on secure connections
+✅ **HTTPS-Only** - Credentials only autofill on secure connections
 ✅ **Origin Matching** - Exact origin validation prevents credential theft
-✅ **Same-Site Only** - No cross-origin credential sharing (unless configured)
+✅ **Same-Site Only** - No cross-origin credential sharing (unless explicitly configured)
 ✅ **User Confirmation** - Requires user interaction before filling (configurable)
 ✅ **Encrypted Storage** - All credentials encrypted in IndexedDB
 ✅ **CSP Headers** - Content Security Policy prevents exfiltration
@@ -225,7 +225,7 @@ VITE_TRUSTVAULT_ORIGIN=https://trust-vault-pwa.vercel.app
 
 ### User Settings
 
-Settings stored in `localStorage` with key `trustvault_autofill_settings`:
+Settings are stored in `localStorage` with key `trustvault_autofill_settings`:
 
 ```typescript
 {
@@ -302,10 +302,14 @@ Add to `vercel.json`:
 
 ### Extension Fill-Path Activation Criteria (X1 follow-up)
 
-Extension's fill path stays **inert** (GET_CREDENTIALS returns `[]`) until all of:
-1. **Authenticated channel** — PWA↔extension messaging with mutual verification (e.g `externally_connectable` restricted to TrustVault origin + per-install pairing secret), never shared plaintext store.
-2. **Per-origin consent** — user explicitly allows each origin before credential exposed (KeePassXC host allow/deny model).
-3. **Per-fill confirmation** — explicit user gesture before injecting into form (no silent fills), honoring `requireConfirmation`.
+The extension's fill path stays **inert** (GET_CREDENTIALS returns `[]`) until all of:
+1. **Authenticated channel** — PWA↔extension messaging with mutual verification
+   (e.g. `externally_connectable` restricted to the TrustVault origin + per-install
+   pairing secret), never a shared plaintext store.
+2. **Per-origin consent** — user explicitly allows each origin before any
+   credential for it is exposed (KeePassXC host allow/deny model).
+3. **Per-fill confirmation** — explicit user gesture before injecting into a form
+   (no silent fills), honoring `requireConfirmation`.
 
 ## 📱 User Workflows
 
@@ -533,7 +537,7 @@ toggleAutofill(enabled: boolean): void
 
 ## 🤝 Contributing
 
-To add autofill support for new browser:
+To add autofill support for a new browser:
 
 1. Research browser's credential management capabilities
 2. Implement adapter in `src/core/autofill/adapters/`
