@@ -32,7 +32,7 @@ import { clipboardManager } from '@/presentation/utils/clipboard';
 export default function CredentialDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { vaultKey } = useAuthStore();
+  const { vaultKey, user } = useAuthStore();
 
   const [credential, setCredential] = useState<Credential | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ export default function CredentialDetailPage() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (!id || !vaultKey) {
+    if (!id || !vaultKey || !user) {
       setError('Invalid credential ID or session expired');
       setLoading(false);
       return;
@@ -52,7 +52,7 @@ export default function CredentialDetailPage() {
       try {
         setLoading(true);
         setError(null);
-        const cred = await credentialRepository.findById(id, vaultKey);
+        const cred = await credentialRepository.findById(id, vaultKey, user.id);
         if (!cred) {
           setError('Credential not found');
         } else {
@@ -67,11 +67,11 @@ export default function CredentialDetailPage() {
     };
 
     loadCredential();
-  }, [id, vaultKey]);
+  }, [id, vaultKey, user]);
 
   const handleCopyUsername = async () => {
-    if (!credential) return;
-    await credentialRepository.updateAccessTime(credential.id);
+    if (!credential || !user) return;
+    await credentialRepository.updateAccessTime(credential.id, user.id);
     const success = await clipboardManager.copy(credential.username, false, 0);
     if (success) {
       // Show feedback in dialog
@@ -79,8 +79,8 @@ export default function CredentialDetailPage() {
   };
 
   const handleCopyPassword = async () => {
-    if (!credential) return;
-    await credentialRepository.updateAccessTime(credential.id);
+    if (!credential || !user) return;
+    await credentialRepository.updateAccessTime(credential.id, user.id);
     const success = await clipboardManager.copy(credential.password, true, 30);
     if (success) {
       // Show feedback in dialog
@@ -100,11 +100,11 @@ export default function CredentialDetailPage() {
   };
 
   const handleDeleteConfirm = async () => {
-    if (!credential) return;
+    if (!credential || !user || !vaultKey) return;
 
     setDeleting(true);
     try {
-      await credentialRepository.delete(credential.id);
+      await credentialRepository.delete(credential.id, vaultKey, user.id);
       navigate('/');
     } catch (err) {
       console.error('Failed to delete credential:', err);
@@ -240,13 +240,14 @@ export default function CredentialDetailPage() {
             onEdit={handleEdit}
             onDelete={handleDelete}
             onToggleFavorite={async () => {
-              if (!vaultKey) return;
+              if (!vaultKey || !user) return;
               try {
                 const newFavoriteState = !credential.isFavorite;
                 await credentialRepository.update(
                   credential.id,
                   { isFavorite: newFavoriteState },
-                  vaultKey
+                  vaultKey,
+                  user.id
                 );
                 setCredential({
                   ...credential,

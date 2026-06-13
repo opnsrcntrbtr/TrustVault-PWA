@@ -60,7 +60,7 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
 
     try {
       // Get all credentials
-      const credentials = await credentialRepository.findAll(session.vaultKey);
+      const credentials = await credentialRepository.findAll(session.vaultKey, session.userId);
 
       if (credentials.length === 0) {
         setError('No credentials to export');

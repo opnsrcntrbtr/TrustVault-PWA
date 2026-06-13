@@ -1,5 +1,5 @@
 # TrustVault PWA - Comprehensive Gap Analysis Report
-**Analysis Date:** October 22, 2025 | **Updated:** June 11, 2026  
+**Analysis Date:** October 22, 2025 | **Updated:** June 12, 2026 (F1–F6 remediation)  
 **Analyzed Version:** 1.0.0-beta.2  
 **Security Rating:** 9.5/10 (architecture), 9.2/10 (implementation)  
 **Completeness:** ~92% feature-complete (2026-06-11 — Phase 1 complete, hardening cycles A-E + X1-X3 deployed)
@@ -32,7 +32,7 @@ The TrustVault PWA codebase is **architecture-complete with core security infras
   - Email + master password registration
   - Email + master password login
   - 12-character minimum password requirement
-  - Scrypt password hashing (N=32768, r=8, p=1, dkLen=32)
+  - Scrypt password hashing (N=131072, r=8, p=1, dkLen=32)
   - PBKDF2 key derivation (600,000 iterations - OWASP 2025 compliant)
   - Auto-login after signup
   - Last login tracking
@@ -126,7 +126,7 @@ The TrustVault PWA codebase is **architecture-complete with core security infras
 
 | Function | Standard | Status | Notes |
 |----------|----------|--------|-------|
-| `hashPassword()` | Scrypt | ✅ | N=32768, 64MB memory |
+| `hashPassword()` | Scrypt | ✅ | N=131072 (2^17), ~128MB memory |
 | `verifyPassword()` | Scrypt | ✅ | Constant-time comparison |
 | `analyzePasswordStrength()` | Custom scoring | ✅ | 0-100 score, feedback |
 | `generateSecurePassword()` | CSPRNG | ✅ | Configurable charset |
@@ -759,6 +759,12 @@ async getDatabaseSize(): Promise<{...}>
 - ~~**Biometric Not Integrated** (was MEDIUM)~~ ✅ WebAuthn PRF unlock and enrollment complete (S1, May 30)
 - ~~**Export Not Encrypted** (was HIGH)~~ ✅ AES-256-GCM + PBKDF2 600k (exportEncryption.ts + ExportDialog, May 30)
 - ~~**Password Breach Checking** (was MEDIUM)~~ ✅ HIBP k-anonymity breach detection with 5-char prefixes (P4, June 10)
+- ~~**No Per-User Data Partitioning** (was HIGH, F1)~~ ✅ DB v9 adds indexed `userId` to credentials/breach tables; legacy rows claimed only via AES-GCM decryption proof (June 12)
+- ~~**Auth Snapshot Persisted Secrets** (was HIGH, F2)~~ ✅ Zustand persists only a secret-free `PersistedAuthShell`; v1 migration wipes secret-bearing v0 snapshots (June 12)
+- ~~**Vault Key Wrapped Under PBKDF2** (was MEDIUM, F3)~~ ✅ scrypt-v1 wrap (N=131072) with `vaultKdf` marker + transparent legacy upgrade on login (June 12)
+- ~~**Rate Limiter Overstated** (was LOW, F4)~~ ✅ Documented as client-local UX hardening, not a security boundary (June 12)
+- ~~**Autofill Stored Passwords Without Opt-In** (was MEDIUM, F5)~~ ✅ All `storeCredentialInBrowser` paths (incl. batch) gated on the autofill opt-in, default off (June 12)
+- ~~**Stale argon2.wasm + KDF Doc Drift** (was LOW, F6)~~ ✅ Dead WASM removed; docs/comments corrected to scrypt N=131072 (June 12)
 
 **REMAINING (Minor):**
 1. **Chrome Extension Secrets at Rest** (was MEDIUM) ✅ FIXED June 11

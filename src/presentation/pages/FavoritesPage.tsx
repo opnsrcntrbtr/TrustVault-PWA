@@ -39,10 +39,11 @@ import { Credential } from '@/domain/entities/Credential';
 import { useAuthStore } from '../store/authStore';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { copyToClipboard } from '../utils/clipboard';
+import { normalizeUrl } from '../utils/url';
 
 export default function FavoritesPage() {
   const navigate = useNavigate();
-  const { vaultKey } = useAuthStore();
+  const { vaultKey, user } = useAuthStore();
 
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [filteredCredentials, setFilteredCredentials] = useState<Credential[]>([]);
@@ -54,7 +55,7 @@ export default function FavoritesPage() {
 
   // Load favorite credentials function
   const loadFavorites = useCallback(async () => {
-    if (!vaultKey) {
+    if (!vaultKey || !user) {
       setError('No vault key available');
       setLoading(false);
       return;
@@ -64,7 +65,7 @@ export default function FavoritesPage() {
       setLoading(true);
       setError(null);
 
-      const allCredentials = await credentialRepository.findAll(vaultKey);
+      const allCredentials = await credentialRepository.findAll(vaultKey, user.id);
 
       // Filter only favorites
       const favorites = allCredentials.filter((cred) => cred.isFavorite);
@@ -84,7 +85,7 @@ export default function FavoritesPage() {
     } finally {
       setLoading(false);
     }
-  }, [vaultKey]);
+  }, [vaultKey, user]);
 
   // Load favorite credentials on mount and when vaultKey changes
   useEffect(() => {
@@ -141,13 +142,10 @@ export default function FavoritesPage() {
   const handleOpenWebsite = (website: string) => {
     if (!website) return;
 
-    // Ensure URL has protocol
-    let url = website;
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://' + url;
+    const url = normalizeUrl(website);
+    if (url && url !== 'about:blank') {
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
-
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const getCategoryColor = (category: string) => {

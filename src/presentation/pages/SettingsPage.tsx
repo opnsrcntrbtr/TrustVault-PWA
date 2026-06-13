@@ -77,17 +77,14 @@ export default function SettingsPage() {
         clipboardClearSeconds: clipboardClearSeconds,
       });
 
-      // Update user in store
-      const updatedUser = {
-        ...user,
-        securitySettings: {
-          ...user.securitySettings,
-          sessionTimeoutMinutes: sessionTimeout,
-          clipboardClearSeconds: clipboardClearSeconds,
-        },
-      };
-
-      setUser(updatedUser);
+      // Refresh the store from the repository's canonical record rather
+      // than spreading the in-memory user: after a reload it may still be
+      // the rehydrated PersistedAuthShell (no securitySettings et al.),
+      // and spreading it would push a partial User into the store.
+      const updatedUser = await userRepository.findById(user.id);
+      if (updatedUser) {
+        setUser(updatedUser);
+      }
 
       setSaveMessage('Settings saved successfully');
       setTimeout(() => { setSaveMessage(null); }, 3000);

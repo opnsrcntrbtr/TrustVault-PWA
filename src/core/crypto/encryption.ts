@@ -13,6 +13,7 @@
 
 import { pbkdf2 } from '@noble/hashes/pbkdf2';
 import { sha256 } from '@noble/hashes/sha256';
+import { scrypt } from '@noble/hashes/scrypt';
 
 /**
  * Validates that Web Crypto API is available
@@ -89,6 +90,34 @@ export async function deriveKeyFromPassword(
   } finally {
     // S7: zeroize the transient derived key bytes after import
     derivedKey.fill(0);
+  }
+}
+
+/**
+ * Derives the vault-key wrap key from the master password using scrypt
+ * (S4 params: N=2^17, r=8, p=1 — the same cost as login verification).
+ *
+ * Finding 3 (2026-06-11): encryptedVaultKey is the artifact an offline
+ * attacker actually attacks; wrapping it under PBKDF2 made the weaker KDF
+ * the real vault KDF. scrypt's memory hardness now bounds offline guessing.
+ * The derived bytes are zeroized after import; the key is non-extractable.
+ */
+export async function deriveVaultWrapKey(
+  password: string,
+  salt: Uint8Array
+): Promise<CryptoKey> {
+  validateCryptoAPI();
+  const derived = scrypt(password, salt, { N: 131072, r: 8, p: 1, dkLen: 32 });
+  try {
+    return await crypto.subtle.importKey(
+      'raw',
+      derived as BufferSource,
+      { name: 'AES-GCM' },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  } finally {
+    derived.fill(0);
   }
 }
 

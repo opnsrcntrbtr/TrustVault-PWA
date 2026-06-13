@@ -45,8 +45,10 @@ import {
 } from '@mui/icons-material';
 import type { Credential } from '@/domain/entities/Credential';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
+import { normalizeUrl } from '@/presentation/utils/url';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import { getBreachResult, saveBreachResult } from '@/data/repositories/breachResultsRepository';
+import { useAuthStore } from '@/presentation/store/authStore';
 import type { BreachCheckResult } from '@/core/breach/breachTypes';
 import TotpDisplay from './TotpDisplay';
 import BreachDetailsModal from './BreachDetailsModal';
@@ -122,7 +124,10 @@ export default function CredentialDetailsDialog({
 
     try {
       const result = await checkPasswordBreach(credential.password);
-      await saveBreachResult(credential.id, 'password', result);
+      const userId = useAuthStore.getState().user?.id;
+      if (userId) {
+        await saveBreachResult(credential.id, 'password', result, userId);
+      }
       setBreachResult(result);
     } catch (error) {
       console.error('Breach check failed:', error);
@@ -338,7 +343,7 @@ export default function CredentialDetailsDialog({
                 primary="Website"
                 secondary={
                   <a
-                    href={credential.url}
+                    href={normalizeUrl(credential.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: 'inherit' }}

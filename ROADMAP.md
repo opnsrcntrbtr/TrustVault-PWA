@@ -1,6 +1,6 @@
 # TrustVault PWA - Development Roadmap
 
-**Last Updated:** 2026-06-11 (coverage-gap test suite G1–G7 per TEST_PLAN.md; prev: security hardening A–E + PWA offline suite P1/P3/P4)
+**Last Updated:** 2026-06-12 (Finding 7: re-unlock session loss; prev: security findings remediation F1–F6, coverage-gap test suite G1–G7, security hardening A–E + PWA offline suite P1/P3/P4)
 **Current Status:** Beta (93% complete) - Security hardening + PWA offline suite complete (P1/P3/P4 manual validation done), Phase 1 complete (2026-05-30)
 **Target:** Production-ready PWA with feature parity to a native Android app
 
@@ -40,6 +40,27 @@ This roadmap provides a structured, phased approach to incrementally develop Tru
 > (P5 — argon2-browser, dexie-encrypted). The ZK invariant in
 > `src/test/integration.test.ts` is now a real test. See
 > `SECURITY_HARDENING_PLAN_2026-06.md` and `SECURITY_PWA_ENHANCEMENT_PLAN.md` §0.
+
+> **Security Findings Remediation F1–F6 (2026-06-12, complete):** per-user data
+> partitioning with `userId` on credentials/breach tables + AES-GCM decryption
+> proof for legacy claims (F1, DB v9); Zustand persists only a secret-free
+> `PersistedAuthShell` and the v1 migration wipes secret-bearing v0 snapshots
+> (F2); the vault key is wrapped under scrypt-v1 (N=131072) with transparent
+> legacy upgrade on login (F3); local rate limiting re-scoped as UX hardening,
+> not a security boundary (F4); browser credential storage gated behind the
+> autofill opt-in on all paths including batch (F5); stale `argon2.wasm` removed
+> and KDF doc drift fixed (F6). See `SECURITY_AUDIT_REPORT.md` Patch Notes
+> 2026-06-12 and `docs/superpowers/plans/2026-06-11-security-findings-remediation.md`.
+
+> **Finding 7 — Re-Unlock Session Loss (2026-06-12, complete):** after any
+> reload → re-unlock (master password or biometric), `UnlockPage` restored the
+> vault key but never restored `session`, since `session` is intentionally not
+> persisted (F2) and `unlockVault` only refreshes an existing session. Export
+> Vault / Import Vault both gate on `session?.vaultKey`/`session.userId` and
+> silently no-op'd as a result. Fixed by calling `setSession(session)` on both
+> unlock paths, matching `SigninPage`/`SignupPage`/`LoginPage`. See
+> `SECURITY_AUDIT_REPORT.md` Patch Notes 2026-06-12 (Finding 7) and
+> `TEST_STATUS.md` "Finding 7: Re-Unlock Session Loss".
 
 🟡 **Partial (20-70%)**
 - Credential CRUD operations ✅ (backend 100%, UI 100% — ADD/EDIT/DETAIL pages all complete as of May 2026)

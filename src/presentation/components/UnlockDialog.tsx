@@ -20,7 +20,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { Lock, Visibility, VisibilityOff } from '@mui/icons-material';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore, isFullUser } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
 interface UnlockDialogProps {
@@ -29,7 +29,7 @@ interface UnlockDialogProps {
 }
 
 export default function UnlockDialog({ open, onClose }: UnlockDialogProps) {
-  const { user, unlockVault } = useAuthStore();
+  const { user, unlockVault, setUser } = useAuthStore();
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,6 +52,15 @@ export default function UnlockDialog({ open, onClose }: UnlockDialogProps) {
     try {
       // Authenticate with password to get vault key
       const session = await userRepository.authenticateWithPassword(user.username ?? user.id, password);
+
+      // Promote a rehydrated shell user to the full User before unlock
+      // completes, so authenticated flows never read a partial User.
+      if (!isFullUser(useAuthStore.getState().user)) {
+        const fullUser = await userRepository.findById(session.userId);
+        if (fullUser) {
+          setUser(fullUser);
+        }
+      }
 
       // Unlock vault with the vault key
       unlockVault(session.vaultKey);

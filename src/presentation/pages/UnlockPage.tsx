@@ -21,12 +21,12 @@ import {
   Divider,
 } from '@mui/material';
 import { Lock, Visibility, VisibilityOff, LockOpen, Fingerprint } from '@mui/icons-material';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore, isFullUser } from '../store/authStore';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 
 export default function UnlockPage() {
   const navigate = useNavigate();
-  const { user, unlockVault, signout } = useAuthStore();
+  const { user, unlockVault, signout, setUser, setSession } = useAuthStore();
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +48,21 @@ export default function UnlockPage() {
     return () => { mounted = false; };
   }, [user]);
 
+  // Rehydrated `user` may still be the persisted shell (no
+  // hashedMasterPassword/securitySettings) if App's boot refetch lost the
+  // race against the 2s init timeout. Promote it to the full User from
+  // IndexedDB before completing unlock so authenticated flows never see
+  // a partial User.
+  const promoteShellUser = async (userId: string): Promise<void> => {
+    if (isFullUser(useAuthStore.getState().user)) {
+      return;
+    }
+    const fullUser = await userRepository.findById(userId);
+    if (fullUser) {
+      setUser(fullUser);
+    }
+  };
+
   const handleUnlock = async () => {
     if (!user) {
       setError('User session not found. Please sign in again.');
@@ -66,7 +81,14 @@ export default function UnlockPage() {
       // Authenticate with password to get vault key
       const session = await userRepository.authenticateWithPassword(user.username ?? user.id, password);
 
-      // Unlock vault with the vault key
+      // Ensure the store holds the full User (not the rehydrated shell)
+      // before any authenticated screen can read security-bearing fields.
+      await promoteShellUser(session.userId);
+
+      // Restore the session (not persisted across reloads) alongside the
+      // vault key, so screens that gate on session?.vaultKey/session.userId
+      // (e.g. ExportDialog/ImportDialog) work after a re-unlock.
+      setSession(session);
       unlockVault(session.vaultKey);
 
       // Clear password from memory
@@ -100,7 +122,14 @@ export default function UnlockPage() {
       // Authenticate with biometric to recover the vault key
       const session = await userRepository.authenticateWithBiometric(user.id, biometricCredentialId);
 
-      // Unlock vault with the vault key
+      // Ensure the store holds the full User (not the rehydrated shell)
+      // before any authenticated screen can read security-bearing fields.
+      await promoteShellUser(session.userId);
+
+      // Restore the session (not persisted across reloads) alongside the
+      // vault key, so screens that gate on session?.vaultKey/session.userId
+      // (e.g. ExportDialog/ImportDialog) work after a re-unlock.
+      setSession(session);
       unlockVault(session.vaultKey);
 
       // Navigate to dashboard

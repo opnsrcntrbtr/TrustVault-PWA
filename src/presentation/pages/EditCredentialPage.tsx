@@ -42,6 +42,7 @@ import {
   storeCredentialInBrowser,
   toBrowserCredential,
   isCredentialManagementSupported,
+  shouldStoreInBrowser,
 } from '@/core/autofill/credentialManagementService';
 import { CameraScanDialog } from '@/presentation/components/CameraScanDialog';
 import { OcrResultDialog } from '@/presentation/components/OcrResultDialog';
@@ -60,7 +61,7 @@ const CATEGORIES: { value: CredentialCategory; label: string }[] = [
 export default function EditCredentialPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { vaultKey } = useAuthStore();
+  const { vaultKey, user } = useAuthStore();
 
   // Loading state
   const [loadingCredential, setLoadingCredential] = useState(true);
@@ -105,14 +106,14 @@ export default function EditCredentialPage() {
   // Load credential on mount
   useEffect(() => {
     const loadCredential = async () => {
-      if (!id || !vaultKey) {
+      if (!id || !vaultKey || !user) {
         setError('Invalid credential or session expired');
         setLoadingCredential(false);
         return;
       }
 
       try {
-        const cred = await credentialRepository.findById(id, vaultKey);
+        const cred = await credentialRepository.findById(id, vaultKey, user.id);
         if (!cred) {
           setError('Credential not found');
           setLoadingCredential(false);
@@ -151,7 +152,7 @@ export default function EditCredentialPage() {
     };
 
     loadCredential();
-  }, [id, vaultKey]);
+  }, [id, vaultKey, user]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -240,7 +241,7 @@ export default function EditCredentialPage() {
       return;
     }
 
-    if (!vaultKey || !id) {
+    if (!vaultKey || !id || !user) {
       setError('Session expired. Please sign in again.');
       return;
     }
@@ -276,12 +277,13 @@ export default function EditCredentialPage() {
         updateData.totpSecret = totpSecret.trim() || undefined;
       }
 
-      const updatedCredential = await credentialRepository.update(id, updateData, vaultKey);
+      const updatedCredential = await credentialRepository.update(id, updateData, vaultKey, user.id);
 
       // Store credential in browser for autofill (if supported and applicable)
       if (
         updatedCredential.category === 'login' &&
         updatedCredential.url &&
+        shouldStoreInBrowser(updatedCredential.url) &&
         isCredentialManagementSupported()
       ) {
         try {
@@ -306,7 +308,7 @@ export default function EditCredentialPage() {
   };
 
   const handleDelete = async () => {
-    if (!id) {
+    if (!id || !user || !vaultKey) {
       setError('Invalid credential ID');
       return;
     }
@@ -315,7 +317,7 @@ export default function EditCredentialPage() {
     setError(null);
 
     try {
-      await credentialRepository.delete(id);
+      await credentialRepository.delete(id, vaultKey, user.id);
       navigate('/dashboard');
     } catch (err) {
       console.error('Failed to delete credential:', err);

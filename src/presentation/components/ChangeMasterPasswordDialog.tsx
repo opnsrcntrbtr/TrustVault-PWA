@@ -22,7 +22,7 @@ import ReEncryptionProgress from './ReEncryptionProgress';
 import { verifyPassword } from '@/core/crypto/password';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore, isFullUser } from '../store/authStore';
 
 interface ChangeMasterPasswordDialogProps {
   open: boolean;
@@ -66,10 +66,27 @@ export default function ChangeMasterPasswordDialog({
     setProcessing(true);
 
     try {
+      // Step 0: The store user may still be the rehydrated localStorage
+      // shell (no hashedMasterPassword) if the boot refetch hasn't landed.
+      // Refetch the full User deterministically before verifying.
+      // (`user` is statically User here, so re-read the nullable store
+      // slot for the guard — the shell only masquerades as User at runtime.)
+      let activeUser = user;
+      if (!isFullUser(useAuthStore.getState().user)) {
+        const fullUser = await userRepository.findById(user.id);
+        if (!fullUser) {
+          setError('Account data is still loading. Please try again.');
+          setProcessing(false);
+          return;
+        }
+        useAuthStore.getState().setUser(fullUser);
+        activeUser = fullUser;
+      }
+
       // Step 1: Verify current password
       const isCurrentPasswordValid = await verifyPassword(
         currentPassword,
-        user.hashedMasterPassword
+        activeUser.hashedMasterPassword
       );
 
       if (!isCurrentPasswordValid) {
@@ -92,19 +109,19 @@ export default function ChangeMasterPasswordDialog({
       setReEncrypting(true);
 
       // Step 4: Get all credentials
-      const allCredentials = await credentialRepository.findAll(oldVaultKey);
+      const allCredentials = await credentialRepository.findAll(oldVaultKey, activeUser.id);
       setProgress({ current: 0, total: allCredentials.length });
 
       // Step 5: Change master password (this derives new vault key)
       await userRepository.changeMasterPassword(
-        user.id,
+        activeUser.id,
         currentPassword,
         newPassword
       );
 
       // Step 6: Re-authenticate to get new vault key
       const authResult = await userRepository.authenticateWithPassword(
-        user.username ?? user.id,
+        activeUser.username ?? activeUser.id,
         newPassword
       );
 
@@ -119,10 +136,10 @@ export default function ChangeMasterPasswordDialog({
         const credential = allCredentials[i]!;
 
         // Delete old encrypted version
-        await credentialRepository.delete(credential.id);
+        await credentialRepository.delete(credential.id, oldVaultKey, activeUser.id);
 
         // Save with new key (will encrypt with new vault key)
-        await credentialRepository.create(credential, newVaultKey);
+        await credentialRepository.create(credential, newVaultKey, activeUser.id);
 
         // Update progress
         setProgress({ current: i + 1, total: allCredentials.length });

@@ -4,7 +4,7 @@
  */
 
 import { hashPassword, verifyPassword, needsRehash } from '@/core/crypto/password';
-import { deriveKeyFromPassword, encrypt, decrypt } from '@/core/crypto/encryption';
+import { deriveKeyFromPassword, deriveVaultWrapKey, encrypt, decrypt } from '@/core/crypto/encryption';
 import { decodeBase64ToUint8Array, encodeUint8ArrayToBase64 } from '@/core/utils/base64';
 import { db, type StoredUser } from '../storage/database';
 import type { User, AuthSession, SecuritySettings } from '@/domain/entities/User';
@@ -34,8 +34,8 @@ export class UserRepositoryImpl implements IUserRepository {
     crypto.getRandomValues(salt);
     const saltBase64 = btoa(String.fromCharCode(...salt));
 
-    // Derive vault key from password + salt
-    const vaultKey = await deriveKeyFromPassword(masterPassword, salt);
+    // Derive the vault-key wrap key from password + salt (scrypt, Finding 3)
+    const vaultKey = await deriveVaultWrapKey(masterPassword, salt);
 
     // Generate and encrypt the master vault key
     const masterVaultKey = new Uint8Array(32);
@@ -72,6 +72,7 @@ export class UserRepositoryImpl implements IUserRepository {
       usernameLower: usernameKey(username),
       createdAt: user.createdAt.getTime(),
       lastLoginAt: user.lastLoginAt.getTime(),
+      vaultKdf: 'scrypt-v1',
     };
 
     await db.users.add(storedUser);
@@ -116,13 +117,32 @@ export class UserRepositoryImpl implements IUserRepository {
       }
     }
 
-    // Derive temporary key from password + salt (used to decrypt the vault key)
+    // Derive temporary key from password + salt (used to decrypt the vault key).
+    // Finding 3: scrypt-v1 rows use the memory-hard wrap KDF; absent marker =
+    // legacy PBKDF2-600k wrap.
     const salt = Uint8Array.from(atob(storedUser.salt), c => c.charCodeAt(0));
-    const tempKey = await deriveKeyFromPassword(masterPassword, salt);
+    const isScryptWrapped = storedUser.vaultKdf === 'scrypt-v1';
+    const tempKey = isScryptWrapped
+      ? await deriveVaultWrapKey(masterPassword, salt)
+      : await deriveKeyFromPassword(masterPassword, salt); // legacy PBKDF2
 
     // Decrypt the actual vault key (masterVaultKey) from storage
     const encryptedVaultKeyData = JSON.parse(storedUser.encryptedVaultKey);
     const masterVaultKeyBase64 = await decrypt(encryptedVaultKeyData, tempKey);
+
+    // Transparent KDF upgrade (Finding 3). Best-effort: never blocks login.
+    if (!isScryptWrapped) {
+      try {
+        const upgradedWrapKey = await deriveVaultWrapKey(masterPassword, salt);
+        const upgradedCiphertext = await encrypt(masterVaultKeyBase64, upgradedWrapKey);
+        await db.users.update(storedUser.id, {
+          encryptedVaultKey: JSON.stringify(upgradedCiphertext),
+          vaultKdf: 'scrypt-v1',
+        });
+      } catch {
+        /* legacy wrap remains valid */
+      }
+    }
 
     // Convert base64 master vault key to raw bytes
     const masterVaultKeyBytes = Uint8Array.from(atob(masterVaultKeyBase64), c => c.charCodeAt(0));
@@ -150,7 +170,7 @@ export class UserRepositoryImpl implements IUserRepository {
 
     // Seal any pre-v5 credentials that still carry plaintext metadata (S5).
     try {
-      await sealLegacyMetadata(resolvedVaultKey);
+      await sealLegacyMetadata(resolvedVaultKey, storedUser.id);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
@@ -241,7 +261,7 @@ export class UserRepositoryImpl implements IUserRepository {
     });
 
     try {
-      await sealLegacyMetadata(vaultKey);
+      await sealLegacyMetadata(vaultKey, userId);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
@@ -376,7 +396,10 @@ export class UserRepositoryImpl implements IUserRepository {
     // Recover the raw vault key bytes from storage using the master password,
     // wrap them under the PRF-derived key, then zeroize all transient material.
     const userSalt = Uint8Array.from(atob(user.salt), c => c.charCodeAt(0));
-    const tempKey = await deriveKeyFromPassword(masterPassword, userSalt);
+    // Finding 3: select the wrap KDF by marker (scrypt-v1 vs legacy PBKDF2).
+    const tempKey = user.vaultKdf === 'scrypt-v1'
+      ? await deriveVaultWrapKey(masterPassword, userSalt)
+      : await deriveKeyFromPassword(masterPassword, userSalt);
     const vaultKeyBase64 = await decrypt(
       JSON.parse(user.encryptedVaultKey) as Parameters<typeof decrypt>[0],
       tempKey,
@@ -479,20 +502,25 @@ export class UserRepositoryImpl implements IUserRepository {
     const newHashedPassword = await hashPassword(newPassword);
 
     const currentSalt = Uint8Array.from(atob(user.salt), c => c.charCodeAt(0));
-    const currentVaultKey = await deriveKeyFromPassword(currentPassword, currentSalt);
+    // Finding 3: decrypt with the marker-selected KDF (scrypt-v1 vs legacy PBKDF2).
+    const currentVaultKey = user.vaultKdf === 'scrypt-v1'
+      ? await deriveVaultWrapKey(currentPassword, currentSalt)
+      : await deriveKeyFromPassword(currentPassword, currentSalt);
 
     const encryptedVaultKeyData = JSON.parse(user.encryptedVaultKey);
     const masterVaultKey = await decrypt(encryptedVaultKeyData, currentVaultKey);
 
     const newSalt = new Uint8Array(32);
     crypto.getRandomValues(newSalt);
-    const newVaultKey = await deriveKeyFromPassword(newPassword, newSalt);
+    // Always re-wrap under scrypt (Finding 3) regardless of the previous KDF.
+    const newVaultKey = await deriveVaultWrapKey(newPassword, newSalt);
     const newEncryptedVaultKey = await encrypt(masterVaultKey, newVaultKey);
 
     await db.users.update(userId, {
       hashedMasterPassword: newHashedPassword,
       salt: btoa(String.fromCharCode(...newSalt)),
       encryptedVaultKey: JSON.stringify(newEncryptedVaultKey),
+      vaultKdf: 'scrypt-v1',
     });
   }
 

@@ -313,6 +313,7 @@ IV_LENGTH = 12     // 96 bits (GCM standard)
 **Fix**: `src/core/auth/rateLimiter.ts` — IndexedDB-backed exponential backoff, surviving page refresh.  
 Thresholds: 5 failures→30s, 10→5min, 15→30min, 20+→1hr lockout.  
 `checkRateLimit()` called before Scrypt verification (fast fail). `recordFailedAttempt()` called for unknown email and wrong password (uniform error path prevents user enumeration). `clearAttempts()` called on successful login.  
+Local rate limiting is UX-layer mitigation only — it is clearable by anyone with storage access; offline resistance comes from scrypt cost and password strength.  
 **Files**: `src/core/auth/rateLimiter.ts`, `src/data/repositories/UserRepositoryImpl.ts`, `src/data/storage/database.ts` (v4 migration).
 
 #### M2: Non-Extractable Vault Keys
@@ -678,3 +679,67 @@ Delivered per `SECURITY_HARDENING_PLAN_2026-06.md`; status table in
   longer match. The matcher was not yet wired to any fill path. 17 tests pin
   the secure behavior
   (`src/core/autofill/__tests__/credentialManagementService.test.ts`).
+
+## Patch Notes — 2026-06-12 (Security Findings Remediation F1–F6)
+
+- **F1 (per-user data partitioning, DB v9):** `credentials`, `breachResults`,
+  and `breachPrefixes` now carry an indexed `userId`; reads/writes are scoped
+  to the authenticated user. Pre-v9 rows without an owner are claimed lazily —
+  ownership is proven by successfully AES-GCM-decrypting the row with the
+  session vault key (a cryptographic proof, not a heuristic), and `delete()`
+  requires the same proof before removing unowned legacy rows. The post-login
+  S5 metadata-sealing pass (`sealLegacyMetadata`) is scoped the same way:
+  it seals only rows the caller owns or can decrypt, preventing cross-user
+  corruption of unclaimed legacy rows (b4d2688). Pinned by
+  `userIsolation.test.ts` (9 tests).
+- **F2 (auth snapshot no longer persists secrets):** the Zustand auth store
+  previously persisted the full `User` object (incl. `hashedMasterPassword`,
+  `encryptedVaultKey`, `salt`, WebAuthn `wrappedVaultKey`/`prfSalt`) to
+  localStorage. It now persists only a secret-free `PersistedAuthShell`; the
+  persist `version: 1` migration wipes any secret-bearing v0 snapshot on load.
+  An `isFullUser` guard plus shell→full-User promotion on both unlock paths
+  closes the shell-user race. Pinned by `authStorePersistence.test.ts`.
+- **F3 (vault key wrap KDF upgraded to scrypt-v1):** `encryptedVaultKey` — the
+  artifact an offline attacker actually attacks — was wrapped under
+  PBKDF2-600k while password *hashing* used memory-hard scrypt. The wrap now
+  uses `deriveVaultWrapKey` (scrypt, N=131072, r=8, p=1, dkLen=32) with a
+  `vaultKdf: 'scrypt-v1'` marker; legacy users upgrade transparently on the
+  next successful password login (best-effort, never blocks login). Pinned by
+  `vaultWrapKdf.test.ts` and the UserRepositoryImpl KDF-binding tests.
+- **F4 (rate limiter re-scoped):** the Dexie-backed `loginAttempts` lockout is
+  client-local and trivially clearable by anyone with device/devtools access;
+  documentation now scopes it as UX hardening against casual guessing, not a
+  security boundary. The real boundary remains the memory-hard KDF (doc-only
+  change, bb67716).
+- **F5 (autofill opt-in gates browser credential storage):** add/edit/batch
+  flows pushed decrypted passwords into the browser Credential Management API
+  regardless of the autofill setting (default **off**). All
+  `storeCredentialInBrowser` paths, including `batchStoreCredentials`, are now
+  gated on `shouldStoreInBrowser` honoring the opt-in. Pinned by
+  `autofillGating.test.ts`.
+- **F6 (dead WASM + KDF doc drift):** unreferenced `src/assets/argon2.wasm`
+  removed; `User.ts` "Argon2id" comments and CLAUDE.md/SECURITY.md scrypt
+  params corrected to the actual N=131072 (2^17).
+
+**Verification (2026-06-12):** `npm run type-check` 0 errors; ESLint 851
+problems (below the ~855 approved baseline, 0 new); targeted vitest run
+(repositories, stores, crypto, autofill, security suites) 23 files / 496
+tests all passing; `npm run build` green. Details in `TEST_STATUS.md`
+"Security Findings Remediation (F1–F6) — 2026-06-12".
+
+## Patch Notes — 2026-06-12 (Finding 7: re-unlock session loss)
+
+- **F7 (Export/Import silently no-op after re-unlock):** `UnlockPage`'s
+  `handleUnlock` and `handleBiometricUnlock` called `unlockVault(session.vaultKey)`
+  but never `setSession(session)`. Since `session` is intentionally excluded
+  from the persisted auth shell (F2) and `unlockVault`'s reducer only refreshes
+  an *existing* `session` (`state.session ? {...} : null`), `session` stayed
+  `null` for the rest of the page lifetime after any reload → re-unlock, or
+  auto-lock → re-unlock. `ExportDialog` and `ImportDialog` both guard their
+  entire flow on `session?.vaultKey`/`session.userId`, so clicking "Export
+  Vault"/"Import Vault" after a re-unlock did nothing — no error, no file, no
+  console output. Fixed by calling `setSession(session)` alongside
+  `unlockVault(session.vaultKey)` on both unlock paths, mirroring the
+  `setUser`/`setSession`/`setVaultKey` pattern already used by
+  `SigninPage`/`SignupPage`/`LoginPage`. Pinned by `UnlockPage.test.tsx`
+  (2 tests: master-password and biometric re-unlock both restore `session`).

@@ -25,7 +25,7 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 ### Master Password Hashing
 - **Algorithm**: Scrypt (memory-hard, RFC 7914) via `@noble/hashes/scrypt`
 - **Parameters**:
-  - N (CPU/memory cost): 32768 (2^15, ~32 MB working memory)
+  - N (CPU/memory cost): 131072 (2^17, ~128 MB working memory)
   - r (block size): 8
   - p (parallelism): 1
   - Derived key length: 32 bytes
@@ -34,7 +34,12 @@ TrustVault is designed with enterprise-grade security matching a 9.5/10 security
 - **History**: Originally Argon2id via `argon2-browser` — migrated to Scrypt to resolve CSP/WASM loading issues. See `DATABASE_MIGRATION.md`.
 
 ### Key Derivation
-- **Algorithm**: PBKDF2-SHA256
+- **Vault key wrapping (scrypt-v1, Finding 3, 2026-06-11)**: `encryptedVaultKey`
+  is wrapped under a scrypt-derived key (`deriveVaultWrapKey`, N=131072, r=8,
+  p=1, dkLen=32 — memory-hard, GPU-resistant). Users carry a `vaultKdf:
+  'scrypt-v1'` marker; legacy PBKDF2-wrapped users are upgraded transparently
+  on the next successful password login (best-effort, never blocks login).
+- **Legacy/general derivation**: PBKDF2-SHA256
 - **Iterations**: 600,000+ (OWASP 2025 compliant)
 - **Salt**: 256-bit cryptographically secure random
 - **Output**: 256-bit AES key

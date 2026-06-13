@@ -7,6 +7,7 @@
  */
 
 import type { Credential } from '@/domain/entities/Credential';
+import { isAutofillEnabledForOrigin, loadAutofillSettings } from './autofillSettings';
 
 /**
  * Browser credential object matching Credential Management API spec
@@ -49,6 +50,17 @@ export function extractOrigin(url: string): string | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * Single decision point for whether a credential may be handed to the
+ * browser's Credential Management store. Requires the global opt-in
+ * (off by default) plus the per-origin allow/HTTPS rules.
+ */
+export function shouldStoreInBrowser(credentialUrl: string): boolean {
+  const origin = extractOrigin(credentialUrl);
+  if (!origin) return false;
+  return isAutofillEnabledForOrigin(origin, loadAutofillSettings());
 }
 
 /**
@@ -310,6 +322,12 @@ export async function batchStoreCredentials(
 
   for (const credential of credentials) {
     if (credential.category !== 'login' || !credential.url) {
+      continue;
+    }
+
+    // Same opt-in gate as the single-credential paths (Finding 5):
+    // never store for origins the user hasn't enabled autofill for.
+    if (!shouldStoreInBrowser(credential.url)) {
       continue;
     }
 
