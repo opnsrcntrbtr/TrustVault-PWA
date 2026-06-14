@@ -17,12 +17,14 @@ async function setupAuthenticatedUserWithMultipleCredentials(user: ReturnType<ty
     expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
   }, { timeout: 5000 });
 
+  const usernameInput = screen.getByLabelText(/username/i);
   const emailInput = screen.getByLabelText(/email/i);
   // Both password fields have "Master Password" in label, so we use getAllByLabelText
   const passwordInputs = screen.getAllByLabelText(/master password/i);
   const passwordInput = passwordInputs[0]; // First one is the password field
   const confirmInput = passwordInputs[1]; // Second one is confirm field
 
+  await user.type(usernameInput, 'exporttestuser');
   await user.type(emailInput, 'exporttest@example.com');
   await user.type(passwordInput, 'TestPassword123!');
   await user.type(confirmInput, 'TestPassword123!');

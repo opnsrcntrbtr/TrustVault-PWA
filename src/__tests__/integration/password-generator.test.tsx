@@ -17,12 +17,14 @@ async function setupAuthenticatedUser(user: ReturnType<typeof userEvent.setup>) 
     expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
   }, { timeout: 5000 });
 
+  const usernameInput = screen.getByLabelText(/username/i);
   const emailInput = screen.getByLabelText(/email/i);
   // Both password fields have "Master Password" in label, so we use getAllByLabelText
   const passwordInputs = screen.getAllByLabelText(/master password/i);
   const passwordInput = passwordInputs[0]; // First one is the password field
   const confirmInput = passwordInputs[1]; // Second one is confirm field
 
+  await user.type(usernameInput, 'gentestuser');
   await user.type(emailInput, 'gentest@example.com');
   await user.type(passwordInput, 'TestPassword123!');
   await user.type(confirmInput, 'TestPassword123!');
@@ -34,6 +36,11 @@ async function setupAuthenticatedUser(user: ReturnType<typeof userEvent.setup>) 
     const state = useAuthStore.getState();
     expect(state.isAuthenticated).toBe(true);
   }, { timeout: 10000 });
+
+  // Wait for post-signup navigation to the dashboard to complete
+  await waitFor(() => {
+    expect(screen.getByLabelText('add')).toBeInTheDocument();
+  }, { timeout: 5000 });
 }
 
 describe('Password Generator Integration', () => {

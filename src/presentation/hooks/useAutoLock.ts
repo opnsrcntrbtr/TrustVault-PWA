@@ -27,6 +27,8 @@ export function useAutoLock(config: AutoLockConfig) {
   const lastActivityRef = useRef<number>(Date.now());
   const isLockedRef = useRef<boolean>(false);
 
+  const { timeoutMinutes, lockOnTabHidden, onLock } = config;
+
   /**
    * Lock the vault and clear sensitive data
    */
@@ -41,19 +43,19 @@ export function useAutoLock(config: AutoLockConfig) {
     clearCredentials();
 
     // Call optional callback
-    config.onLock?.();
+    onLock?.();
 
     // Navigate to signin with locked state indicator
     navigate('/signin', {
       state: { locked: true, message: 'Session locked due to inactivity' }
     });
-  }, [lock, clearCredentials, navigate, config]);
+  }, [lock, clearCredentials, navigate, onLock]);
 
   /**
    * Reset the inactivity timer
    */
   const resetTimer = useCallback(() => {
-    if (config.timeoutMinutes === 0) return; // Never lock
+    if (timeoutMinutes === 0) return; // Never lock
     if (!isAuthenticated) return; // Not authenticated, no need to track
 
     lastActivityRef.current = Date.now();
@@ -64,7 +66,7 @@ export function useAutoLock(config: AutoLockConfig) {
     }
 
     // Set new timeout
-    const timeoutMs = config.timeoutMinutes * 60 * 1000;
+    const timeoutMs = timeoutMinutes * 60 * 1000;
     timeoutRef.current = setTimeout(() => {
       const elapsed = Date.now() - lastActivityRef.current;
 
@@ -73,7 +75,7 @@ export function useAutoLock(config: AutoLockConfig) {
         performLock();
       }
     }, timeoutMs);
-  }, [config.timeoutMinutes, isAuthenticated, performLock]);
+  }, [timeoutMinutes, isAuthenticated, performLock]);
 
   /**
    * Handle user activity events
@@ -90,7 +92,7 @@ export function useAutoLock(config: AutoLockConfig) {
     if (!isAuthenticated) return;
 
     if (document.visibilityState === 'hidden') {
-      if (config.lockOnTabHidden) {
+      if (lockOnTabHidden) {
         console.log('[AutoLock] Tab hidden, locking immediately');
         performLock();
       }
@@ -100,13 +102,13 @@ export function useAutoLock(config: AutoLockConfig) {
       isLockedRef.current = false; // Allow locking again
       resetTimer();
     }
-  }, [isAuthenticated, config.lockOnTabHidden, performLock, resetTimer]);
+  }, [isAuthenticated, lockOnTabHidden, performLock, resetTimer]);
 
   /**
    * Setup event listeners for activity detection
    */
   useEffect(() => {
-    if (!isAuthenticated || config.timeoutMinutes === 0) {
+    if (!isAuthenticated || timeoutMinutes === 0) {
       // Clean up if not authenticated or auto-lock disabled
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -151,16 +153,16 @@ export function useAutoLock(config: AutoLockConfig) {
         timeoutRef.current = null;
       }
     };
-  }, [isAuthenticated, config.timeoutMinutes, config.lockOnTabHidden, handleActivity, handleVisibilityChange, resetTimer]);
+  }, [isAuthenticated, timeoutMinutes, lockOnTabHidden, handleActivity, handleVisibilityChange, resetTimer]);
 
   /**
    * Reset timer when config changes
    */
   useEffect(() => {
-    if (isAuthenticated && config.timeoutMinutes > 0) {
+    if (isAuthenticated && timeoutMinutes > 0) {
       resetTimer();
     }
-  }, [config.timeoutMinutes, isAuthenticated, resetTimer]);
+  }, [timeoutMinutes, isAuthenticated, resetTimer]);
 
   return {
     resetTimer,
