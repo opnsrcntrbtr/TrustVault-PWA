@@ -5,8 +5,8 @@
 export function sanitizeUrl(url: string | null | undefined): string {
   if (!url) return '';
 
-  // Trim whitespace
-  const trimmedUrl = url.trim();
+  // Trim whitespace and remove control characters
+  const trimmedUrl = url.trim().replace(/[\x00-\x1F\x7F-\x9F]/g, '');
   if (!trimmedUrl) return '';
 
   try {
