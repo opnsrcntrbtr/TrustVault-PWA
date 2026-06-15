@@ -6,6 +6,45 @@
 
 ---
 
+## Security Audit "Scan All" Bug Fixes — June 15, 2026
+
+**Bug report**: "Security audit page in settings 'Scan All' button does not
+scan security audit correctly."
+
+**Root cause 1** (`SecurityAuditPage.tsx`): the page read `credentials` from
+`useCredentialStore` (Zustand), but `DashboardPage` never populates that
+store — it keeps its own local `useState<Credential[]>([])`. So
+`useCredentialStore().credentials` was always `[]`: the Security Score was
+always 100/"Excellent", every issue category (weak/reused/old/missing) was
+always 0, and `scanForBreaches()` iterated zero credentials — "Scan complete!
+Checked 0 credentials." regardless of vault size. Fixed by loading
+credentials directly via `credentialRepository.findAll(vaultKey, user.id)`,
+the same pattern `DashboardPage` uses.
+
+**Root cause 2** (`breachResultsRepository.ts`): `getAllBreachedCredentials`
+queried `db.breachResults.where('breached').equals(1)`. IndexedDB cannot
+index a `boolean` column, so Dexie never created index entries for `breached`
+— the query always returned `[]`. Breach stats (`getBreachStatistics`, which
+scans `.toArray()` and filters in JS) showed the correct counts, but the
+"Password Found in Data Breach" issue never appeared in the Security Issues
+list. Fixed by fetching all rows and filtering `r.breached` in JS, matching
+`getBreachStatistics`'s approach.
+
+**Verification**: signed up a fresh user, added a credential with password
+`password123` (known HIBP entry, 2,254,650 hits), navigated to Security
+Audit. Before fix: score 100, "All Clear!", 0 issues, "Scan complete! Checked
+0 credentials." After fix: score 0, "Needs Improvement", 2 issues (Password
+Found in Data Breach + Weak Password), "Scan complete! Checked 1
+credentials."
+
+- [x] `src/data/repositories/__tests__/breachResultsRepository.test.ts` —
+  2/2 passing (new, covers the boolean-index regression)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors on touched files
+- [x] Manually verified in browser (dev server + Playwright)
+
+---
+
 ## Un-skip Integration Tests: jsdom Navigation Bug — June 15, 2026
 
 **Change**: One-line fix in `SignupPage.tsx`. Root cause: after a successful

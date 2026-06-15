@@ -109,14 +109,13 @@ export async function getAllBreachedCredentials(userId: string): Promise<
     checkedAt: number;
   }>
 > {
-  const results = await db.breachResults
-    .where('breached')
-    .equals(1) // IndexedDB stores boolean as 1/0
-    .toArray();
+  // IndexedDB cannot index boolean values, so `breached` can't be queried
+  // via where().equals() - fetch all rows and filter in JS instead.
+  const results = await db.breachResults.toArray();
 
   // Filter out expired results and other users' rows
   const now = Date.now();
-  const validResults = results.filter(r => now < r.expiresAt && r.userId === userId);
+  const validResults = results.filter(r => r.breached && now < r.expiresAt && r.userId === userId);
 
   // Remove expired results
   const expiredIds = results.filter(r => now >= r.expiresAt).map(r => r.id);
