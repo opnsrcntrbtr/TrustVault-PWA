@@ -1,16 +1,16 @@
-# Graph Report - trustvault-pwa  (2026-06-15)
+# Graph Report - trustvault-pwa  (2026-06-14)
 
 ## Corpus Check
-- 225 files · ~210,606 words
+- 225 files · ~209,964 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2671 nodes · 3668 edges · 255 communities (204 shown, 51 thin omitted)
+- 2671 nodes · 3667 edges · 255 communities (204 shown, 51 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 102 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b1d545dc`
+- Built from commit: `58a6b5f2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -1116,7 +1116,7 @@ Cohesion: 0.67
 Nodes (3): Current Test Status: 85% Pass Rate (417/490 passing), Failing Tests Breakdown, Test Failures Analysis
 
 ## Knowledge Gaps
-- **1503 isolated node(s):** `PasswordGeneratorDialogProps`, `AutoLockConfig`, `🎯 Overview`, `K-Anonymity & Origin Validation`, `Security Features` (+1498 more)
+- **1503 isolated node(s):** `AutoLockConfig`, `🎯 Overview`, `K-Anonymity & Origin Validation`, `Security Features`, `Browser Support` (+1498 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **51 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1124,12 +1124,12 @@ Nodes (3): Current Test Status: 85% Pass Rate (417/490 passing), Failing Tests B
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `WebAuthn Ceremony`, `Breach UI & Category Icons`, `Clipboard & Generator UI`, `Community 107`, `Community 108`, `Community 143`, `Community 148`, `Community 149`, `Community 55`, `Community 91`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `CredentialRepository` connect `Community 184` to `Crypto Error & Dialogs`, `Community 101`, `Breach UI & Category Icons`, `Clipboard & Generator UI`, `Community 107`, `Credential Repo & Metadata Sealing`, `Community 148`, `Community 55`, `Community 91`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `TrustVault PWA - Security Audit Report` connect `Community 171` to `Agent & Project Docs`, `Community 166`, `Community 202`, `Community 237`, `Community 238`, `Community 239`, `Community 179`, `Community 251`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **What connects `PasswordGeneratorDialogProps`, `AutoLockConfig`, `🎯 Overview` to the rest of the system?**
+- **Why does `registerHibpPeriodicSync()` connect `Community 143` to `Community 145`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **What connects `AutoLockConfig`, `🎯 Overview`, `K-Anonymity & Origin Validation` to the rest of the system?**
   _1513 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `TOTP / 2FA Core` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
