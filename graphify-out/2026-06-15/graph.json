@@ -555,7 +555,7 @@
       "label": "setupAuthenticatedUserWithMultipleCredentials()",
       "file_type": "code",
       "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L14",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials",
       "community": 3,
@@ -582,14 +582,44 @@
       "norm_label": "setupauthenticateduserwithcredentials()"
     },
     {
+      "label": "PasswordGeneratorDialog.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "components_passwordgeneratordialog",
+      "community": 8,
+      "norm_label": "passwordgeneratordialog.tsx"
+    },
+    {
+      "label": "PasswordGeneratorDialogProps",
+      "file_type": "code",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "components_passwordgeneratordialog_passwordgeneratordialogprops",
+      "community": 8,
+      "norm_label": "passwordgeneratordialogprops"
+    },
+    {
+      "label": "PasswordGeneratorDialog()",
+      "file_type": "code",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "components_passwordgeneratordialog_passwordgeneratordialog",
+      "community": 149,
+      "norm_label": "passwordgeneratordialog()"
+    },
+    {
       "label": "useAutoLock.ts",
       "file_type": "code",
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "hooks_useautolock",
       "community": 108,
-      "norm_label": "useautolock.ts"
+      "norm_label": "useautolock.ts",
+      "id": "hooks_useautolock"
     },
     {
       "label": "AutoLockConfig",
@@ -597,9 +627,9 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "hooks_useautolock_autolockconfig",
       "community": 108,
-      "norm_label": "autolockconfig"
+      "norm_label": "autolockconfig",
+      "id": "hooks_useautolock_autolockconfig"
     },
     {
       "label": "useAutoLock()",
@@ -607,9 +637,9 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "hooks_useautolock_useautolock",
       "community": 108,
-      "norm_label": "useautolock()"
+      "norm_label": "useautolock()",
+      "id": "hooks_useautolock_useautolock"
     },
     {
       "label": "getDefaultAutoLockConfig()",
@@ -617,9 +647,9 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "id": "hooks_useautolock_getdefaultautolockconfig",
       "community": 32,
-      "norm_label": "getdefaultautolockconfig()"
+      "norm_label": "getdefaultautolockconfig()",
+      "id": "hooks_useautolock_getdefaultautolockconfig"
     },
     {
       "label": "AUTOFILL_INTEGRATION.md",
@@ -14834,36 +14864,6 @@
       "id": "components_offlineindicator_offlineindicator"
     },
     {
-      "label": "PasswordGeneratorDialog.tsx",
-      "file_type": "code",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "passwordgeneratordialog.tsx",
-      "id": "components_passwordgeneratordialog"
-    },
-    {
-      "label": "PasswordGeneratorDialogProps",
-      "file_type": "code",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 8,
-      "norm_label": "passwordgeneratordialogprops",
-      "id": "components_passwordgeneratordialog_passwordgeneratordialogprops"
-    },
-    {
-      "label": "PasswordGeneratorDialog()",
-      "file_type": "code",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L38",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "passwordgeneratordialog()",
-      "id": "components_passwordgeneratordialog_passwordgeneratordialog"
-    },
-    {
       "label": "PasswordStrengthIndicator.tsx",
       "file_type": "code",
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
@@ -28045,6 +28045,17 @@
   ],
   "links": [
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "integration_import_export_test",
+      "target": "crypto_exportencryption_encryptexport",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/__tests__/integration/import-export.test.tsx",
@@ -28173,6 +28184,154 @@
       "confidence_score": 1.0,
       "source": "integration_master_password_change_test",
       "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "components_passwordgeneratordialog_passwordgeneratordialog"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "components_passwordgeneratordialog_passwordgeneratordialogprops"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "components_passwordstrengthindicator"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "hooks_usepasswordgenerator"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "hooks_usepasswordgenerator_usepasswordgenerator"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "utils_clipboard"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_passwordgeneratordialog",
+      "target": "utils_clipboard_copypassword"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_passwordgeneratordialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_passwordgeneratordialog"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.55,
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": null,
+      "weight": 0.55,
+      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
+      "target": "components_exportdialog_exportdialog"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "line 28",
+      "weight": 1.0,
+      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
+      "target": "components_passwordstrengthindicator_passwordstrengthindicator"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "line 27",
+      "weight": 1.0,
+      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
+      "target": "hooks_usepasswordgenerator"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
+      "target": "hooks_usepasswordgenerator_usepasswordgenerator"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
+      "source_location": "line 29",
+      "weight": 1.0,
+      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
+      "target": "presentation_utils_clipboard"
     },
     {
       "relation": "contains",
@@ -43254,16 +43413,6 @@
       "target": "store_authstore_useauthstore"
     },
     {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.55,
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": null,
-      "weight": 0.55,
-      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
-      "target": "components_exportdialog_exportdialog"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/ImportDialog.tsx",
@@ -43539,17 +43688,6 @@
       "confidence_score": 1.0,
       "source": "pages_addcredentialpage",
       "target": "components_ocrresultdialog_ocrresultdialog"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_passwordgeneratordialog"
     },
     {
       "relation": "imports_from",
@@ -44028,17 +44166,6 @@
       "confidence_score": 1.0,
       "source": "pages_editcredentialpage",
       "target": "components_ocrresultdialog_ocrresultdialog"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L36",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_passwordgeneratordialog"
     },
     {
       "relation": "imports_from",
@@ -53845,122 +53972,6 @@
       "confidence_score": 1.0,
       "source": "components_offlineindicator",
       "target": "components_offlineindicator_offlineindicator"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "components_passwordgeneratordialog_passwordgeneratordialog"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "components_passwordgeneratordialog_passwordgeneratordialogprops"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "components_passwordstrengthindicator"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "hooks_usepasswordgenerator"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "hooks_usepasswordgenerator_usepasswordgenerator"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "utils_clipboard"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_passwordgeneratordialog",
-      "target": "utils_clipboard_copypassword"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "line 28",
-      "weight": 1.0,
-      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
-      "target": "components_passwordstrengthindicator_passwordstrengthindicator"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "line 27",
-      "weight": 1.0,
-      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
-      "target": "hooks_usepasswordgenerator"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "L54",
-      "weight": 1.0,
-      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
-      "target": "hooks_usepasswordgenerator_usepasswordgenerator"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
-      "source_location": "line 29",
-      "weight": 1.0,
-      "source": "components_passwordgeneratordialog_passwordgeneratordialog",
-      "target": "presentation_utils_clipboard"
     },
     {
       "relation": "contains",
@@ -66324,5 +66335,5 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts"
     }
   ],
-  "built_at_commit": "58a6b5f2df2a5cfa1012f722c0ad7c3176de38bc"
+  "built_at_commit": "b1d545dcd1cc6c41dc0f97448b78d566275d616e"
 }
