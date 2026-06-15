@@ -365,14 +365,35 @@ export class CredentialRepository implements ICredentialRepository {
     return JSON.stringify(exportable, null, 2);
   }
 
-  async importFromJson(data: string, encryptionKey: CryptoKey, userId: string): Promise<number> {
+  async importFromJson(
+    data: string,
+    encryptionKey: CryptoKey,
+    userId: string,
+    mode: 'append' | 'merge' = 'append'
+  ): Promise<number> {
     // S8: schema-validate BEFORE any row touches the repository. Throws a
     // user-facing error on malformed/oversized/wrong-shaped payloads.
     const { parseImportPayload } = await import('@/data/repositories/importValidation');
     const parsed = parseImportPayload(data);
 
+    // 'merge' mode: skip rows matching an existing credential's title+username
+    // (case-insensitive), mirroring ImportDialog.tsx's UI-layer dedupe.
+    let existingKeys: Set<string> | null = null;
+    if (mode === 'merge') {
+      const existing = await this.findAll(encryptionKey, userId);
+      existingKeys = new Set(
+        existing.map((c) => `${c.title.toLowerCase()} ${c.username.toLowerCase()}`)
+      );
+    }
+
     let imported = 0;
     for (const item of parsed) {
+      if (existingKeys) {
+        const key = `${(item.title ?? '').toLowerCase()} ${(item.username ?? '').toLowerCase()}`;
+        if (existingKeys.has(key)) continue;
+        existingKeys.add(key); // dedupe within the import payload itself too
+      }
+
       try {
         await this.create(
           {

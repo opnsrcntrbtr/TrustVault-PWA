@@ -6,6 +6,33 @@
 
 ---
 
+## Import Merge Dedupe in Repository Layer — June 16, 2026
+
+**Gap**: `CredentialRepositoryImpl.importFromJson()` appended every row
+unconditionally; merge-mode dedupe by (title+username, case-insensitive)
+existed only in `ImportDialog.tsx`. Any import path other than the dialog
+(future API/CLI, repository-level scripting) would silently duplicate
+credentials (GAP_ANALYSIS.md Section 17 #3, ROADMAP gap #4).
+
+**Fix**: `importFromJson()` now takes an optional
+`mode: 'append' | 'merge'` (default `'append'`, unchanged for existing
+callers). `'merge'` builds a set of `title+username` keys from existing
+credentials, skips payload rows that match, and also dedupes duplicates
+within the payload itself.
+
+- [x] `src/data/repositories/__tests__/importMerge.test.ts` — 7/7 passing
+  (added: merge-skips-existing-row, merge-dedupes-within-payload; renamed
+  the old "DOCUMENTS GAP" test to reflect default `'append'` behavior)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors (30 pre-existing `CredentialRepositoryImpl.ts`
+  errors unchanged)
+- [x] `npx vitest run src/data/repositories/`: 154/154 passing
+
+See `GAP_ANALYSIS.md` Section 17 #3 and `ROADMAP.md` Top Critical Gaps #4
+(both marked RESOLVED).
+
+---
+
 ## Security Audit "Scan All" Bug Fixes — June 15, 2026
 
 **Bug report**: "Security audit page in settings 'Scan All' button does not

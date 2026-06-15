@@ -1168,7 +1168,6 @@ async getDatabaseSize(): Promise<{...}>
 - ✅ Security hardening cycles A–E + X1–X3 (CSP, key hygiene, OCR self-host, breach detection, extension fixes)
 
 **What Needs Work** (non-blocking, see Section 17 for detail):
-- ⚠️ Import merge dedupe only in `ImportDialog.tsx`, not `importFromJson()`
 - ⚠️ Extension autofill matcher not wired to fill path
 - ⚠️ TOTP SMS/backup codes not implemented (19/25 tests)
 - ⚠️ CSV import/export not implemented
@@ -1193,7 +1192,7 @@ async getDatabaseSize(): Promise<{...}>
 **REMAINING** (non-blocking for early access):
 - [x] Fix dashboard credential dedup bug (Section 17 #1) — RESOLVED 2026-06-15
 - [x] Un-skip ~15 integration tests (Section 17 #2) — RESOLVED 2026-06-15
-- [ ] Import merge dedupe in repository layer (Section 17 #3)
+- [x] Import merge dedupe in repository layer (Section 17 #3) — RESOLVED 2026-06-16
 - [ ] Wire autofill matcher to extension fill path (Section 17 #4)
 - [ ] E2E tests (Playwright)
 - [ ] Lighthouse audit (target >90 on production build)
@@ -1233,7 +1232,7 @@ The TrustVault PWA has a **production-grade security foundation** with all criti
 
 - **Phase 1 (security + core CRUD)**: ✅ Complete
 - **Phase 2 (UI completion)**: ✅ Complete (2026-06-15)
-- **Now (1–2 weeks)**: Import merge dedupe, extension autofill wiring (Section 17); dashboard dedup bug and integration test un-skip both resolved 2026-06-15
+- **Now (1–2 weeks)**: Extension autofill wiring (Section 17); dashboard dedup bug, integration test un-skip, and import merge dedupe all resolved 2026-06-15/16
 - **Production hardening (1–2 weeks)**: Lighthouse >90, external security review, deployment docs
 - **Total to full GA**: **2–4 weeks** from this snapshot (mid-late June 2026)
 
@@ -1294,11 +1293,13 @@ commit `b1d545d` (2026-06-15), superseding the severity table in Section 12.
    `master-password-change.test.tsx` and `import-export.test.tsx` now pass
    (6/6 and 7/7 respectively, 0 skipped).
 
-3. **Import merge dedupe gap** — `CredentialRepositoryImpl.importFromJson()`
-   appends duplicates on import; merge-mode dedupe by (title+username) exists
-   only in `ImportDialog.tsx`. Pinned by `importMerge.test.ts` (ROADMAP UC5
-   "Remaining"). Anyone importing via a path other than `ImportDialog` (e.g.
-   future API/CLI) would get duplicates.
+3. ~~**Import merge dedupe gap**~~ ✅ RESOLVED (2026-06-16) —
+   `CredentialRepositoryImpl.importFromJson()` now accepts a
+   `mode: 'append' | 'merge'` parameter. `'merge'` dedupes by (title+username,
+   case-insensitive) against existing rows and within the payload itself,
+   mirroring `ImportDialog.tsx`'s UI-layer dedupe. Default stays `'append'`
+   for backward compatibility. Pinned by `importMerge.test.ts` (3 tests:
+   default-append duplication, merge-skips-existing, merge-dedupes-within-payload).
 
 4. **Extension autofill matcher not wired to fill path** (X3 residual) —
    `credentialManagementService.ts`'s dot-boundary host-suffix matcher is
