@@ -25,10 +25,10 @@ The TrustVault PWA codebase is **architecture-complete with core security infras
 - ✅ **Authentication**: 95% complete - password auth + biometric PRF unlock (both paths working)
 - ✅ **Core CRUD Operations**: 100% complete - all operations decrypt/encrypt credentials correctly
 - ✅ **State Management**: 100% complete - Zustand stores operational, dashboard auto-loads credentials on mount
-- ✅ **UI Components**: ~90% complete - credential display, add/edit forms, Settings page, Security Audit page, password strength meter all shipped; remaining gaps are dashboard dedup bug + CSV import/export
+- ✅ **UI Components**: ~90% complete - credential display, add/edit forms, Settings page, Security Audit page, password strength meter all shipped; dashboard dedup bug fixed (2026-06-15); remaining gap is CSV import/export
 - ✅ **PWA Features**: 100% complete - service worker, manifest, offline, installability, icons all production-ready
 - ✅ **Advanced Features**: 85% complete (2026-06-11) - export/import encrypted, TOTP/2FA, breach detection (HIBP k-anonymity), biometric zero-knowledge via PRF; chrome extension hardened (X1-X3) but autofill matcher not yet wired to fill path
-- 🆕 **Test Reliability**: ~15 integration tests `.skip`'d as of 2026-06-15 (`b1d545d`) due to a jsdom mis-click/navigation issue and a **real dashboard credential-list dedup bug** surfaced after delete — see Section 17
+- 🆕 **Test Reliability**: ~15 integration tests `.skip`'d as of 2026-06-15 (`b1d545d`) due to a jsdom mis-click/navigation issue — see Section 17. The separate **dashboard credential-list dedup bug** surfaced after delete has since been fixed (2026-06-15, Section 17 #1).
 
 ---
 
@@ -405,16 +405,20 @@ const actualVaultKey = await decrypt(encryptedVaultKey, derivedKey);
 - ✅ Copy password/username via `clipboardManager` with 30s auto-clear
 - ✅ More options menu (edit/delete/favorite actions)
 
-**Known Bug (2026-06-15)**:
-- 🔴 **Credential-list dedup after delete**: after deleting one of two
-  credentials, the dashboard's `findAll()` re-fetch can render a transient
-  duplicate (state momentarily holds both the optimistic-removal array and
-  the re-fetched array before the re-fetch settles), so two cards with the
-  same title can appear briefly. `it.skip('should maintain other credentials
-  after deleting one')` in `credential-crud.test.tsx:446` pins this gap.
-  **Fix**: replace the optimistic `setCredentials((prev) => prev.filter(...))`
-  + re-fetch with a single source of truth (either skip the optimistic update
-  or de-dupe by `id` when merging the re-fetch result).
+**Known Bug — RESOLVED (2026-06-15)**:
+- ✅ **Credential-list dedup after delete (fixed)**: root cause was *not* a
+  `findAll()` re-fetch race. The credential Grid item's `onClick` handler
+  navigated to `/credentials/:id` (`handleViewDetail`) whenever a click
+  wasn't on a `button`/`[role="button"]` — but MUI `MenuItem`s (Edit/
+  Favorite/Delete) render `<li role="menuitem">` via a Portal, and React's
+  synthetic event system re-fires the click through the *component* tree, so
+  it bubbled to the Grid's `onClick` too. That unintended navigation called
+  `findById()` → `updateAccessTime()`, setting `lastAccessedAt` and causing
+  the credential to render in both "Recently Used" and the main grid.
+  **Fix**: excluded `[role="menuitem"]` and `[role="menu"]` from the Grid
+  `onClick` guard in `DashboardPage.tsx`. `it('should maintain other
+  credentials after deleting one')` in `credential-crud.test.tsx` is
+  un-skipped and passing.
 
 ### Pages (all shipped as of 2026-06-15)
 
@@ -1189,7 +1193,7 @@ async getDatabaseSize(): Promise<{...}>
 - [x] Security findings remediation F1–F7 (per-user partitioning, secret-free persistence, scrypt-v1 wrap, re-unlock session fix)
 
 **REMAINING** (non-blocking for early access):
-- [ ] Fix dashboard credential dedup bug (Section 17 #1)
+- [x] Fix dashboard credential dedup bug (Section 17 #1) — RESOLVED 2026-06-15
 - [ ] Un-skip ~15 integration tests (Section 17 #2)
 - [ ] Import merge dedupe in repository layer (Section 17 #3)
 - [ ] Wire autofill matcher to extension fill path (Section 17 #4)
@@ -1256,7 +1260,7 @@ The TrustVault PWA has a **production-grade security foundation** with all criti
 - Users relying on the browser extension's autofill (still inert pending X3 wiring)
 
 **Next steps** (see Section 17 for full prioritization):
-1. Fix dashboard credential dedup bug (real production bug, not just a test artifact)
+1. ~~Fix dashboard credential dedup bug~~ — RESOLVED 2026-06-15
 2. Investigate and fix the jsdom Settings-navigation issue blocking ~15 integration tests
 3. External security audit (cryptography, key hygiene, WebAuthn)
 4. E2E test suite and Lighthouse optimization

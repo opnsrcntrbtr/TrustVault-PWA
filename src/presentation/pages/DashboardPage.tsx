@@ -664,7 +664,19 @@ export default function DashboardPage() {
                 key={credential.id}
                 onClick={(e) => {
                   const target = e.target as HTMLElement;
-                  if (!target.closest('button') && !target.closest('[role="button"]')) {
+                  // MUI Menu/MenuItem content is rendered via a portal, but React
+                  // re-fires the synthetic click through the component tree, so
+                  // it bubbles to this handler even though it's not a DOM
+                  // descendant. Exclude menu items (and the menu itself) so
+                  // clicking "Edit"/"Delete"/"Favorite" doesn't also navigate to
+                  // the detail page (which marks the credential as accessed and
+                  // duplicates it into "Recently Used").
+                  if (
+                    !target.closest('button') &&
+                    !target.closest('[role="button"]') &&
+                    !target.closest('[role="menuitem"]') &&
+                    !target.closest('[role="menu"]')
+                  ) {
                     handleViewDetail(credential.id);
                   }
                 }}

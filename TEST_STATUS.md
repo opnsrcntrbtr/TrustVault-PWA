@@ -6,6 +6,31 @@
 
 ---
 
+## Dashboard Credential Dedup Bug Fix — June 15, 2026
+
+**Change**: One-line fix in `DashboardPage.tsx`'s credential Grid item
+`onClick` guard. Root cause: MUI `MenuItem`s (Edit/Favorite/Delete) render
+`<li role="menuitem">` via a Portal, but React's synthetic event system
+re-fires the click through the component tree, so it bubbled to the Grid's
+`onClick` and triggered `handleViewDetail` → `findById()` →
+`updateAccessTime()`, setting `lastAccessedAt` and causing the credential to
+render in both "Recently Used" and the main grid. Fixed by excluding
+`[role="menuitem"]` and `[role="menu"]` from the guard — this also fixes the
+same unintended navigation for Edit and Favorite/Unfavorite menu actions.
+
+- [x] `src/__tests__/integration/credential-crud.test.tsx > should maintain
+  other credentials after deleting one` — un-skipped (was `it.skip`), now
+  passing (9 passed | 1 unrelated skip in full-file run)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors (line-number shifts only vs. baseline)
+- [x] `npx vitest run src/__tests__/integration/`: 36 passed | 18 skipped (6
+  files) — no regressions
+
+See `GAP_ANALYSIS.md` Section 17 #1 and `ROADMAP.md` Top Critical Gaps #1
+(both marked RESOLVED).
+
+---
+
 ## Coverage-Gap Test Suite (TEST_PLAN.md G1–G7) — June 11, 2026
 
 **Change**: Tests only — no production code touched. Added 7 suites (61 tests)

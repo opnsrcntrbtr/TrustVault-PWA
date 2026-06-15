@@ -438,12 +438,7 @@ describe('Credential CRUD Integration', () => {
       });
     });
 
-    // TODO: Fix dashboard credential-list dedup bug - after deleting one of
-    // two credentials, the dashboard's findAll() re-fetch can render a
-    // duplicate card for the remaining credential (db row count stays
-    // correct, but two cards with the same title appear), causing
-    // getByText('Delete This') to find multiple elements.
-    it.skip('should maintain other credentials after deleting one', async () => {
+    it('should maintain other credentials after deleting one', async () => {
       const user = userEvent.setup();
       render(
 
