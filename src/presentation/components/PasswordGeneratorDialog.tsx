@@ -134,7 +134,7 @@ export default function PasswordGeneratorDialog({
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Generate new password">
-                      <IconButton size="small" onClick={generatePassword} color="primary">
+                      <IconButton size="small" onClick={generatePassword} color="primary" aria-label="Regenerate password">
                         <RefreshIcon />
                       </IconButton>
                     </Tooltip>
@@ -164,6 +164,7 @@ export default function PasswordGeneratorDialog({
               </Typography>
             </Box>
             <Slider
+              aria-label="Length"
               value={options.length}
               onChange={handleLengthChange}
               min={8}
