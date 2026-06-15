@@ -1585,7 +1585,7 @@
       "label": "Pre-Production Readiness Checklist",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1180",
+      "source_location": "L1178",
       "_origin": "ast",
       "id": "gap_analysis_pre_production_readiness_checklist",
       "community": 152,
@@ -1595,7 +1595,7 @@
       "label": "16. CONCLUSION",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1209",
+      "source_location": "L1207",
       "_origin": "ast",
       "id": "gap_analysis_16_conclusion",
       "community": 208,
@@ -1605,7 +1605,7 @@
       "label": "What Changed Since May 2026",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1213",
+      "source_location": "L1211",
       "_origin": "ast",
       "id": "gap_analysis_what_changed_since_may_2026",
       "community": 208,
@@ -1615,7 +1615,7 @@
       "label": "Estimated Timeline to Production",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1234",
+      "source_location": "L1232",
       "_origin": "ast",
       "id": "gap_analysis_estimated_timeline_to_production",
       "community": 208,
@@ -1625,7 +1625,7 @@
       "label": "Security Rating",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1242",
+      "source_location": "L1240",
       "_origin": "ast",
       "id": "gap_analysis_security_rating",
       "community": 208,
@@ -1635,7 +1635,7 @@
       "label": "Recommendation (2026-06-15)",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1248",
+      "source_location": "L1246",
       "_origin": "ast",
       "id": "gap_analysis_recommendation_2026_06_15",
       "community": 208,
@@ -1645,7 +1645,7 @@
       "label": "17. CURRENT VERIFIED GAPS (2026-06-15) \u2014 START HERE FOR PRIORITIZATION",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1271",
+      "source_location": "L1269",
       "_origin": "ast",
       "id": "gap_analysis_17_current_verified_gaps_2026_06_15_start_here_for_prioritization",
       "community": 11,
@@ -1655,21 +1655,21 @@
       "label": "\ud83d\udd34 HIGH \u2014 Real production bug",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1276",
+      "source_location": "L1274",
       "_origin": "ast",
       "id": "gap_analysis_high_real_production_bug",
       "community": 11,
       "norm_label": "\ud83d\udd34 high \u2014 real production bug"
     },
     {
-      "label": "\ud83d\udfe1 MEDIUM \u2014 Test infrastructure masking real coverage",
+      "label": "\u2705 RESOLVED (2026-06-15)",
       "file_type": "document",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1286",
+      "source_location": "L1284",
       "_origin": "ast",
-      "id": "gap_analysis_medium_test_infrastructure_masking_real_coverage",
+      "id": "gap_analysis_resolved_2026_06_15",
       "community": 11,
-      "norm_label": "\ud83d\udfe1 medium \u2014 test infrastructure masking real coverage"
+      "norm_label": "\u2705 resolved (2026-06-15)"
     },
     {
       "label": "\ud83d\udfe2 LOW \u2014 Minor feature completions",
@@ -2298,7 +2298,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "test_status",
-      "community": 6,
+      "community": 92,
       "norm_label": "test_status.md"
     },
     {
@@ -2312,10 +2312,20 @@
       "norm_label": "test suite status report"
     },
     {
-      "label": "Dashboard Credential Dedup Bug Fix \u2014 June 15, 2026",
+      "label": "Un-skip Integration Tests: jsdom Navigation Bug \u2014 June 15, 2026",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
       "source_location": "L9",
+      "_origin": "ast",
+      "id": "test_status_un_skip_integration_tests_jsdom_navigation_bug_june_15_2026",
+      "community": 142,
+      "norm_label": "un-skip integration tests: jsdom navigation bug \u2014 june 15, 2026"
+    },
+    {
+      "label": "Dashboard Credential Dedup Bug Fix \u2014 June 15, 2026",
+      "file_type": "document",
+      "source_file": "TEST_STATUS.md",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "test_status_dashboard_credential_dedup_bug_fix_june_15_2026",
       "community": 142,
@@ -2325,7 +2335,7 @@
       "label": "Coverage-Gap Test Suite (TEST_PLAN.md G1\u2013G7) \u2014 June 11, 2026",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L34",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "test_status_coverage_gap_test_suite_test_plan_md_g1_g7_june_11_2026",
       "community": 142,
@@ -2335,7 +2345,7 @@
       "label": "X1\u2013X3: Chrome Extension Hardening + Autofill Matcher Fix \u2014 June 11, 2026",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L63",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "test_status_x1_x3_chrome_extension_hardening_autofill_matcher_fix_june_11_2026",
       "community": 142,
@@ -2345,7 +2355,7 @@
       "label": "S1: WebAuthn PRF Vault Unlock \u2014 May 30, 2026",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L97",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "test_status_s1_webauthn_prf_vault_unlock_may_30_2026",
       "community": 142,
@@ -2355,7 +2365,7 @@
       "label": "Summary",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L128",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "test_status_summary",
       "community": 142,
@@ -2365,7 +2375,7 @@
       "label": "\u2705 Fully Passing Test Suites",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L143",
+      "source_location": "L168",
       "_origin": "ast",
       "id": "test_status_fully_passing_test_suites",
       "community": 142,
@@ -2375,7 +2385,7 @@
       "label": "1. Authentication State Management (19/19)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L145",
+      "source_location": "L170",
       "_origin": "ast",
       "id": "test_status_1_authentication_state_management_19_19",
       "community": 142,
@@ -2385,7 +2395,7 @@
       "label": "2. Password Generator Hook (21/21)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L155",
+      "source_location": "L180",
       "_origin": "ast",
       "id": "test_status_2_password_generator_hook_21_21",
       "community": 142,
@@ -2395,107 +2405,107 @@
       "label": "\u26a0\ufe0f Partial Failures (Minor Issues)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L168",
+      "source_location": "L193",
       "_origin": "ast",
       "id": "test_status_partial_failures_minor_issues",
-      "community": 220,
+      "community": 142,
       "norm_label": "\u26a0\ufe0f partial failures (minor issues)"
     },
     {
       "label": "1. Encryption Core (47/50 passing)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L170",
+      "source_location": "L195",
       "_origin": "ast",
       "id": "test_status_1_encryption_core_47_50_passing",
-      "community": 220,
+      "community": 142,
       "norm_label": "1. encryption core (47/50 passing)"
     },
     {
       "label": "2. Password Hashing (57/60 passing)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L181",
+      "source_location": "L206",
       "_origin": "ast",
       "id": "test_status_2_password_hashing_57_60_passing",
-      "community": 220,
+      "community": 142,
       "norm_label": "2. password hashing (57/60 passing)"
     },
     {
       "label": "3. TOTP Generation (19/25 passing)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L192",
+      "source_location": "L217",
       "_origin": "ast",
       "id": "test_status_3_totp_generation_19_25_passing",
-      "community": 220,
+      "community": 142,
       "norm_label": "3. totp generation (19/25 passing)"
     },
     {
       "label": "4. Auto-Lock Hook (18/20 passing)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L206",
+      "source_location": "L231",
       "_origin": "ast",
       "id": "test_status_4_auto_lock_hook_18_20_passing",
-      "community": 220,
+      "community": 142,
       "norm_label": "4. auto-lock hook (18/20 passing)"
     },
     {
       "label": "5. Clipboard Utilities (18/20 passing)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L216",
+      "source_location": "L241",
       "_origin": "ast",
       "id": "test_status_5_clipboard_utilities_18_20_passing",
-      "community": 220,
+      "community": 142,
       "norm_label": "5. clipboard utilities (18/20 passing)"
     },
     {
       "label": "6. Integration Tests (16/20 passing)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L226",
+      "source_location": "L251",
       "_origin": "ast",
       "id": "test_status_6_integration_tests_16_20_passing",
-      "community": 220,
+      "community": 142,
       "norm_label": "6. integration tests (16/20 passing)"
     },
     {
       "label": "\ud83d\udd27 Technical Fixes Applied",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L240",
+      "source_location": "L265",
       "_origin": "ast",
       "id": "test_status_technical_fixes_applied",
-      "community": 138,
+      "community": 142,
       "norm_label": "\ud83d\udd27 technical fixes applied"
     },
     {
       "label": "Fixed: Web Crypto API Mock",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L242",
+      "source_location": "L267",
       "_origin": "ast",
       "id": "test_status_fixed_web_crypto_api_mock",
-      "community": 138,
+      "community": 142,
       "norm_label": "fixed: web crypto api mock"
     },
     {
       "label": "Fixed: Password Generator Hook Tests",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L257",
+      "source_location": "L282",
       "_origin": "ast",
       "id": "test_status_fixed_password_generator_hook_tests",
-      "community": 138,
+      "community": 142,
       "norm_label": "fixed: password generator hook tests"
     },
     {
       "label": "\ud83d\udcca Phase Coverage Status",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L273",
+      "source_location": "L298",
       "_origin": "ast",
       "id": "test_status_phase_coverage_status",
       "community": 142,
@@ -2505,87 +2515,87 @@
       "label": "\ud83c\udfaf Recommendations",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L286",
+      "source_location": "L311",
       "_origin": "ast",
       "id": "test_status_recommendations",
-      "community": 261,
+      "community": 142,
       "norm_label": "\ud83c\udfaf recommendations"
     },
     {
       "label": "Priority 1: Production-Ready \u2705",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L288",
+      "source_location": "L313",
       "_origin": "ast",
       "id": "test_status_priority_1_production_ready",
-      "community": 261,
+      "community": 142,
       "norm_label": "priority 1: production-ready \u2705"
     },
     {
       "label": "Priority 2: Minor Refinements \u26a0\ufe0f",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L297",
+      "source_location": "L322",
       "_origin": "ast",
       "id": "test_status_priority_2_minor_refinements",
-      "community": 261,
+      "community": 142,
       "norm_label": "priority 2: minor refinements \u26a0\ufe0f"
     },
     {
       "label": "Priority 3: Test Quality Improvements \ud83d\udcdd",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L303",
+      "source_location": "L328",
       "_origin": "ast",
       "id": "test_status_priority_3_test_quality_improvements",
-      "community": 261,
+      "community": 142,
       "norm_label": "priority 3: test quality improvements \ud83d\udcdd"
     },
     {
       "label": "\ud83d\udd10 Security Validation",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L311",
+      "source_location": "L336",
       "_origin": "ast",
       "id": "test_status_security_validation",
-      "community": 260,
+      "community": 142,
       "norm_label": "\ud83d\udd10 security validation"
     },
     {
       "label": "Security Fix: WebAuthn Challenge Verification \u2014 May 14, 2026",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L313",
+      "source_location": "L338",
       "_origin": "ast",
       "id": "test_status_security_fix_webauthn_challenge_verification_may_14_2026",
-      "community": 260,
+      "community": 142,
       "norm_label": "security fix: webauthn challenge verification \u2014 may 14, 2026"
     },
     {
       "label": "Cryptography Tests \u2705",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L333",
+      "source_location": "L358",
       "_origin": "ast",
       "id": "test_status_cryptography_tests",
-      "community": 260,
+      "community": 142,
       "norm_label": "cryptography tests \u2705"
     },
     {
       "label": "Zero-Knowledge Architecture \u2705",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L340",
+      "source_location": "L365",
       "_origin": "ast",
       "id": "test_status_zero_knowledge_architecture",
-      "community": 260,
+      "community": 142,
       "norm_label": "zero-knowledge architecture \u2705"
     },
     {
       "label": "\ud83d\udcc8 Performance",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L348",
+      "source_location": "L373",
       "_origin": "ast",
       "id": "test_status_performance",
       "community": 142,
@@ -2595,7 +2605,7 @@
       "label": "\ud83d\ude80 Next Steps",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L357",
+      "source_location": "L382",
       "_origin": "ast",
       "id": "test_status_next_steps",
       "community": 142,
@@ -2605,7 +2615,7 @@
       "label": "\u2705 Conclusion",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L367",
+      "source_location": "L392",
       "_origin": "ast",
       "id": "test_status_conclusion",
       "community": 142,
@@ -2615,7 +2625,7 @@
       "label": "2026-06-10 \u2014 Security Hardening (SECURITY_HARDENING_PLAN_2026-06.md)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L380",
+      "source_location": "L405",
       "_origin": "ast",
       "id": "test_status_2026_06_10_security_hardening_security_hardening_plan_2026_06_md",
       "community": 142,
@@ -2625,7 +2635,7 @@
       "label": "2026-06-10 \u2014 PWA Offline Suite (P1/P3/P4, docs/superpowers/specs/2026-06-10-pwa-offline-suite-design.md)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L399",
+      "source_location": "L424",
       "_origin": "ast",
       "id": "test_status_2026_06_10_pwa_offline_suite_p1_p3_p4_docs_superpowers_specs_2026_06_10_pwa_offline_suite_design_md",
       "community": 142,
@@ -2635,7 +2645,7 @@
       "label": "2026-06-10 \u2014 PWA Offline Suite Manual Validation (P1/P3/P4)",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L415",
+      "source_location": "L440",
       "_origin": "ast",
       "id": "test_status_2026_06_10_pwa_offline_suite_manual_validation_p1_p3_p4",
       "community": 142,
@@ -2645,7 +2655,7 @@
       "label": "Security Findings Remediation (F1\u2013F6) \u2014 2026-06-12",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L430",
+      "source_location": "L455",
       "_origin": "ast",
       "id": "test_status_security_findings_remediation_f1_f6_2026_06_12",
       "community": 142,
@@ -2655,11 +2665,61 @@
       "label": "Finding 7: Re-Unlock Session Loss (Export/Import silent no-op) \u2014 2026-06-12",
       "file_type": "document",
       "source_file": "TEST_STATUS.md",
-      "source_location": "L452",
+      "source_location": "L477",
       "_origin": "ast",
       "id": "test_status_finding_7_re_unlock_session_loss_export_import_silent_no_op_2026_06_12",
       "community": 142,
       "norm_label": "finding 7: re-unlock session loss (export/import silent no-op) \u2014 2026-06-12"
+    },
+    {
+      "label": "auth-flow.test.tsx",
+      "file_type": "code",
+      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "integration_auth_flow_test",
+      "community": 101,
+      "norm_label": "auth-flow.test.tsx"
+    },
+    {
+      "label": "import-export.test.tsx",
+      "file_type": "code",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "integration_import_export_test",
+      "community": 3,
+      "norm_label": "import-export.test.tsx"
+    },
+    {
+      "label": "setupAuthenticatedUserWithMultipleCredentials()",
+      "file_type": "code",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials",
+      "community": 3,
+      "norm_label": "setupauthenticateduserwithmultiplecredentials()"
+    },
+    {
+      "label": "master-password-change.test.tsx",
+      "file_type": "code",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "integration_master_password_change_test",
+      "community": 3,
+      "norm_label": "master-password-change.test.tsx"
+    },
+    {
+      "label": "setupAuthenticatedUserWithCredentials()",
+      "file_type": "code",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "integration_master_password_change_test_setupauthenticateduserwithcredentials",
+      "community": 3,
+      "norm_label": "setupauthenticateduserwithcredentials()"
     },
     {
       "label": "DashboardPage.tsx",
@@ -2678,48 +2738,28 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "pages_dashboardpage_dashboardpage",
-      "community": 3,
+      "community": 148,
       "norm_label": "dashboardpage()"
     },
     {
-      "label": "import-export.test.tsx",
+      "label": "SignupPage.tsx",
       "file_type": "code",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 101,
-      "norm_label": "import-export.test.tsx",
-      "id": "integration_import_export_test"
+      "id": "pages_signuppage",
+      "community": 3,
+      "norm_label": "signuppage.tsx"
     },
     {
-      "label": "setupAuthenticatedUserWithMultipleCredentials()",
+      "label": "SignupPage()",
       "file_type": "code",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L16",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L32",
       "_origin": "ast",
-      "community": 101,
-      "norm_label": "setupauthenticateduserwithmultiplecredentials()",
-      "id": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials"
-    },
-    {
-      "label": "master-password-change.test.tsx",
-      "file_type": "code",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 101,
-      "norm_label": "master-password-change.test.tsx",
-      "id": "integration_master_password_change_test"
-    },
-    {
-      "label": "setupAuthenticatedUserWithCredentials()",
-      "file_type": "code",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L14",
-      "_origin": "ast",
-      "community": 101,
-      "norm_label": "setupauthenticateduserwithcredentials()",
-      "id": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
+      "id": "pages_signuppage_signuppage",
+      "community": 3,
+      "norm_label": "signuppage()"
     },
     {
       "label": "PasswordGeneratorDialog.tsx",
@@ -7657,7 +7697,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "ratelimiter.ts",
       "id": "auth_ratelimiter"
     },
@@ -7667,7 +7707,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "thresholds",
       "id": "auth_ratelimiter_thresholds"
     },
@@ -7677,7 +7717,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "lockoutms()",
       "id": "auth_ratelimiter_lockoutms"
     },
@@ -7687,7 +7727,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "formatremaining()",
       "id": "auth_ratelimiter_formatremaining"
     },
@@ -7697,7 +7737,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "checkratelimit()",
       "id": "auth_ratelimiter_checkratelimit"
     },
@@ -7707,7 +7747,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "recordfailedattempt()",
       "id": "auth_ratelimiter_recordfailedattempt"
     },
@@ -7717,7 +7757,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "clearattempts()",
       "id": "auth_ratelimiter_clearattempts"
     },
@@ -8017,7 +8057,7 @@
       "source_file": "src/core/crypto/__tests__/vaultWrapKdf.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "vaultwrapkdf.test.ts",
       "id": "tests_vaultwrapkdf_test"
     },
@@ -8027,7 +8067,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "encryption.ts",
       "id": "crypto_encryption"
     },
@@ -8037,7 +8077,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "validatecryptoapi()",
       "id": "crypto_encryption_validatecryptoapi"
     },
@@ -8047,7 +8087,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "encrypteddata",
       "id": "crypto_encryption_encrypteddata"
     },
@@ -8057,7 +8097,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "generaterandombytes()",
       "id": "crypto_encryption_generaterandombytes"
     },
@@ -8067,7 +8107,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L56",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "generatesalt()",
       "id": "crypto_encryption_generatesalt"
     },
@@ -8077,7 +8117,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "derivekeyfrompassword()",
       "id": "crypto_encryption_derivekeyfrompassword"
     },
@@ -8087,7 +8127,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L105",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "derivevaultwrapkey()",
       "id": "crypto_encryption_derivevaultwrapkey"
     },
@@ -8097,7 +8137,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L127",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "generateencryptionkey()",
       "id": "crypto_encryption_generateencryptionkey"
     },
@@ -8107,7 +8147,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "encrypt()",
       "id": "crypto_encryption_encrypt"
     },
@@ -8117,7 +8157,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L175",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "decrypt()",
       "id": "crypto_encryption_decrypt"
     },
@@ -8127,7 +8167,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L206",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "encryptwithpassword()",
       "id": "crypto_encryption_encryptwithpassword"
     },
@@ -8137,7 +8177,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L223",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "decryptwithpassword()",
       "id": "crypto_encryption_decryptwithpassword"
     },
@@ -8147,7 +8187,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L239",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "exportkey()",
       "id": "crypto_encryption_exportkey"
     },
@@ -8157,7 +8197,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L247",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "importkey()",
       "id": "crypto_encryption_importkey"
     },
@@ -8167,7 +8207,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L263",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "securewipe()",
       "id": "crypto_encryption_securewipe"
     },
@@ -8177,7 +8217,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L270",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "arraybuffertobase64()",
       "id": "crypto_encryption_arraybuffertobase64"
     },
@@ -8187,7 +8227,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L279",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "base64toarraybuffer()",
       "id": "crypto_encryption_base64toarraybuffer"
     },
@@ -8197,7 +8237,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L291",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "computehash()",
       "id": "crypto_encryption_computehash"
     },
@@ -8207,7 +8247,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L299",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "tohexstring()",
       "id": "crypto_encryption_tohexstring"
     },
@@ -8217,7 +8257,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L308",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "constanttimeequal()",
       "id": "crypto_encryption_constanttimeequal"
     },
@@ -8237,7 +8277,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": "credentialrepository",
       "id": "repositories_credentialrepositoryimpl_credentialrepository"
     },
@@ -8247,7 +8287,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".encryptfield()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_encryptfield"
     },
@@ -8257,7 +8297,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".encryptoptional()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_encryptoptional"
     },
@@ -8267,7 +8307,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".decryptfield()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptfield"
     },
@@ -8277,7 +8317,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".decryptoptional()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptoptional"
     },
@@ -8287,7 +8327,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".canclaim()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_canclaim"
     },
@@ -8297,7 +8337,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L75",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".claimdecryptable()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_claimdecryptable"
     },
@@ -8307,7 +8347,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L94",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".getownedandclaimable()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_getownedandclaimable"
     },
@@ -8317,7 +8357,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L109",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".createwithid()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_createwithid"
     },
@@ -8337,7 +8377,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L165",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".findbyid()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_findbyid"
     },
@@ -8347,7 +8387,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L183",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".findall()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_findall"
     },
@@ -8357,7 +8397,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L188",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".update()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_update"
     },
@@ -8367,7 +8407,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L282",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".delete()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_delete"
     },
@@ -8377,7 +8417,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L298",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".search()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_search"
     },
@@ -8387,7 +8427,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L310",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".findbycategory()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_findbycategory"
     },
@@ -8397,7 +8437,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L328",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".findfavorites()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_findfavorites"
     },
@@ -8407,7 +8447,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L339",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".exportall()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_exportall"
     },
@@ -8427,7 +8467,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L407",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".updateaccesstime()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_updateaccesstime"
     },
@@ -8437,7 +8477,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L415",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".analyzesecurityscore()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_analyzesecurityscore"
     },
@@ -8447,7 +8487,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L433",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".decryptcredential()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptcredential"
     },
@@ -8457,7 +8497,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L520",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": ".save()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_save"
     },
@@ -8467,7 +8507,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "userrepositoryimpl.ts",
       "id": "repositories_userrepositoryimpl"
     },
@@ -8487,7 +8527,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": ".createuser()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_createuser"
     },
@@ -8497,7 +8537,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L86",
       "_origin": "ast",
-      "community": 113,
+      "community": 4,
       "norm_label": ".authenticatewithpassword()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_authenticatewithpassword"
     },
@@ -8507,7 +8547,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L208",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": ".authenticatewithbiometric()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_authenticatewithbiometric"
     },
@@ -8567,7 +8607,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L347",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": ".registerbiometric()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_registerbiometric"
     },
@@ -8637,7 +8677,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L491",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": ".changemasterpassword()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_changemasterpassword"
     },
@@ -8707,7 +8747,7 @@
       "source_file": "src/data/repositories/__tests__/UserRepositoryImpl.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "userrepositoryimpl.test.ts",
       "id": "tests_userrepositoryimpl_test"
     },
@@ -8717,7 +8757,7 @@
       "source_file": "src/data/repositories/__tests__/UserRepositoryImpl.test.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "expectsamekey()",
       "id": "tests_userrepositoryimpl_test_expectsamekey"
     },
@@ -8727,7 +8767,7 @@
       "source_file": "src/data/repositories/__tests__/UserRepositoryImpl.test.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "makelegacyscrypthash()",
       "id": "tests_userrepositoryimpl_test_makelegacyscrypthash"
     },
@@ -8847,7 +8887,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "breachresultsrepository.ts",
       "id": "repositories_breachresultsrepository"
     },
@@ -8867,7 +8907,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "getbreachresult()",
       "id": "repositories_breachresultsrepository_getbreachresult"
     },
@@ -8877,7 +8917,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L83",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "getallbreachresultsforcredential()",
       "id": "repositories_breachresultsrepository_getallbreachresultsforcredential"
     },
@@ -8887,7 +8927,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L102",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "getallbreachedcredentials()",
       "id": "repositories_breachresultsrepository_getallbreachedcredentials"
     },
@@ -8897,7 +8937,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L152",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "getbreachstatistics()",
       "id": "repositories_breachresultsrepository_getbreachstatistics"
     },
@@ -8907,7 +8947,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L206",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "deletebreachresults()",
       "id": "repositories_breachresultsrepository_deletebreachresults"
     },
@@ -8917,7 +8957,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L218",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "cleanupexpiredresults()",
       "id": "repositories_breachresultsrepository_cleanupexpiredresults"
     },
@@ -8927,7 +8967,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L233",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "clearallbreachresults()",
       "id": "repositories_breachresultsrepository_clearallbreachresults"
     },
@@ -8997,7 +9037,7 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 184,
+      "community": 101,
       "norm_label": "storedcredential",
       "id": "storage_database_storedcredential"
     },
@@ -9027,7 +9067,7 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L109",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "storedbreachresult",
       "id": "storage_database_storedbreachresult"
     },
@@ -9187,7 +9227,7 @@
       "source_file": "src/domain/entities/User.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "securitysettings",
       "id": "entities_user_securitysettings"
     },
@@ -9357,7 +9397,7 @@
       "source_file": "src/presentation/App.tsx",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "approutes()",
       "id": "presentation_app_approutes"
     },
@@ -9367,7 +9407,7 @@
       "source_file": "src/presentation/App.tsx",
       "source_location": "L268",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "appcontent()",
       "id": "presentation_app_appcontent"
     },
@@ -9377,7 +9417,7 @@
       "source_file": "src/presentation/App.tsx",
       "source_location": "L432",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "app()",
       "id": "presentation_app_app"
     },
@@ -9387,7 +9427,7 @@
       "source_file": "src/presentation/components/BreachAlertBanner.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "breachalertbanner.tsx",
       "id": "components_breachalertbanner"
     },
@@ -9397,7 +9437,7 @@
       "source_file": "src/presentation/components/BreachAlertBanner.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "breachalertbannerprops",
       "id": "components_breachalertbanner_breachalertbannerprops"
     },
@@ -9407,7 +9447,7 @@
       "source_file": "src/presentation/components/BreachAlertBanner.tsx",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 143,
+      "community": 8,
       "norm_label": "breachalertbanner()",
       "id": "components_breachalertbanner_breachalertbanner"
     },
@@ -9417,7 +9457,7 @@
       "source_file": "src/presentation/components/ChangeMasterPasswordDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 3,
       "norm_label": "changemasterpassworddialog.tsx",
       "id": "components_changemasterpassworddialog"
     },
@@ -9427,7 +9467,7 @@
       "source_file": "src/presentation/components/ChangeMasterPasswordDialog.tsx",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 31,
+      "community": 3,
       "norm_label": "changemasterpassworddialogprops",
       "id": "components_changemasterpassworddialog_changemasterpassworddialogprops"
     },
@@ -9437,7 +9477,7 @@
       "source_file": "src/presentation/components/ChangeMasterPasswordDialog.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "changemasterpassworddialog()",
       "id": "components_changemasterpassworddialog_changemasterpassworddialog"
     },
@@ -9517,7 +9557,7 @@
       "source_file": "src/presentation/components/ExportDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "exportdialog.tsx",
       "id": "components_exportdialog"
     },
@@ -9527,7 +9567,7 @@
       "source_file": "src/presentation/components/ExportDialog.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "exportdialogprops",
       "id": "components_exportdialog_exportdialogprops"
     },
@@ -9547,7 +9587,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 3,
       "norm_label": "importdialog.tsx",
       "id": "components_importdialog"
     },
@@ -9557,7 +9597,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 14,
+      "community": 3,
       "norm_label": "importdialogprops",
       "id": "components_importdialog_importdialogprops"
     },
@@ -9567,7 +9607,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 14,
+      "community": 3,
       "norm_label": "importmode",
       "id": "components_importdialog_importmode"
     },
@@ -9637,7 +9677,7 @@
       "source_file": "src/presentation/pages/AddCredentialPage.tsx",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 3,
+      "community": 148,
       "norm_label": "addcredentialpage()",
       "id": "pages_addcredentialpage_addcredentialpage"
     },
@@ -9747,7 +9787,7 @@
       "source_file": "src/presentation/pages/SettingsPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 63,
       "norm_label": "settingspage.tsx",
       "id": "pages_settingspage"
     },
@@ -9787,7 +9827,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "unlockpage.test.tsx",
       "id": "tests_unlockpage_test"
     },
@@ -9797,7 +9837,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "mockvaultkey",
       "id": "tests_unlockpage_test_mockvaultkey"
     },
@@ -9807,7 +9847,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "fulluser",
       "id": "tests_unlockpage_test_fulluser"
     },
@@ -9817,7 +9857,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "mocksession",
       "id": "tests_unlockpage_test_mocksession"
     },
@@ -11984,16 +12024,6 @@
       "id": "hooks_useautolock_test_mocknavigate"
     },
     {
-      "label": "auth-flow.test.tsx",
-      "file_type": "code",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 101,
-      "norm_label": "auth-flow.test.tsx",
-      "id": "integration_auth_flow_test"
-    },
-    {
       "label": "ocr-capture.test.ts",
       "file_type": "code",
       "source_file": "src/__tests__/integration/ocr-capture.test.ts",
@@ -12009,7 +12039,7 @@
       "source_file": "src/__tests__/security/crypto-validation.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "crypto-validation.test.ts",
       "id": "security_crypto_validation_test"
     },
@@ -12169,7 +12199,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "biometricvaultkey.test.ts",
       "id": "tests_biometricvaultkey_test"
     },
@@ -12179,7 +12209,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "fixedprfoutput()",
       "id": "tests_biometricvaultkey_test_fixedprfoutput"
     },
@@ -12189,7 +12219,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "fixedvaultkeyraw()",
       "id": "tests_biometricvaultkey_test_fixedvaultkeyraw"
     },
@@ -12199,7 +12229,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "importraw()",
       "id": "tests_biometricvaultkey_test_importraw"
     },
@@ -12209,7 +12239,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "expectsamekey()",
       "id": "tests_biometricvaultkey_test_expectsamekey"
     },
@@ -12219,7 +12249,7 @@
       "source_file": "src/core/auth/__tests__/rateLimiter.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 113,
+      "community": 101,
       "norm_label": "ratelimiter.test.ts",
       "id": "tests_ratelimiter_test"
     },
@@ -12429,7 +12459,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "biometricvaultkey.ts",
       "id": "auth_biometricvaultkey"
     },
@@ -12439,7 +12469,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "generateprfsalt()",
       "id": "auth_biometricvaultkey_generateprfsalt"
     },
@@ -12449,7 +12479,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "derivewrapkeyfromprf()",
       "id": "auth_biometricvaultkey_derivewrapkeyfromprf"
     },
@@ -12459,7 +12489,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "wrapvaultkeywithprf()",
       "id": "auth_biometricvaultkey_wrapvaultkeywithprf"
     },
@@ -12469,7 +12499,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "unwrapvaultkeywithprf()",
       "id": "auth_biometricvaultkey_unwrapvaultkeywithprf"
     },
@@ -12789,7 +12819,7 @@
       "source_file": "src/core/auth/webauthn.ts",
       "source_location": "L228",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "verifyauthenticationresponse()",
       "id": "auth_webauthn_verifyauthenticationresponse"
     },
@@ -12899,7 +12929,7 @@
       "source_file": "src/core/auth/webauthn.ts",
       "source_location": "L476",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "getprfoutput()",
       "id": "auth_webauthn_getprfoutput"
     },
@@ -13199,7 +13229,7 @@
       "source_file": "src/core/breach/hibpService.ts",
       "source_location": "L96",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "hashpassword()",
       "id": "breach_hibpservice_hashpassword"
     },
@@ -13339,7 +13369,7 @@
       "source_file": "src/core/crypto/__tests__/encryption-edge-cases.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "encryption-edge-cases.test.ts",
       "id": "tests_encryption_edge_cases_test"
     },
@@ -13349,7 +13379,7 @@
       "source_file": "src/core/crypto/__tests__/encryption.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
+      "community": 4,
       "norm_label": "encryption.test.ts",
       "id": "tests_encryption_test"
     },
@@ -13359,7 +13389,7 @@
       "source_file": "src/core/crypto/__tests__/exportEncryption.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "exportencryption.test.ts",
       "id": "tests_exportencryption_test"
     },
@@ -13369,7 +13399,7 @@
       "source_file": "src/core/crypto/__tests__/exportEncryption.test.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "samplecredentials",
       "id": "tests_exportencryption_test_samplecredentials"
     },
@@ -13379,7 +13409,7 @@
       "source_file": "src/core/crypto/__tests__/exportEncryption.test.ts",
       "source_location": "L172",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "mockfilereader",
       "id": "tests_exportencryption_test_mockfilereader"
     },
@@ -13389,7 +13419,7 @@
       "source_file": "src/core/crypto/__tests__/exportEncryption.test.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": ".readastext()",
       "id": "tests_exportencryption_test_mockfilereader_readastext"
     },
@@ -13399,7 +13429,7 @@
       "source_file": "src/core/crypto/__tests__/exportEncryption.test.ts",
       "source_location": "L200",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "errorfilereader",
       "id": "tests_exportencryption_test_errorfilereader"
     },
@@ -13409,7 +13439,7 @@
       "source_file": "src/core/crypto/__tests__/exportEncryption.test.ts",
       "source_location": "L204",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": ".readastext()",
       "id": "tests_exportencryption_test_errorfilereader_readastext"
     },
@@ -13429,7 +13459,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "exportencryption.ts",
       "id": "crypto_exportencryption"
     },
@@ -13439,7 +13469,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "vaultexport",
       "id": "crypto_exportencryption_vaultexport"
     },
@@ -13449,7 +13479,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "exportdata",
       "id": "crypto_exportencryption_exportdata"
     },
@@ -13459,7 +13489,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "encryptexport()",
       "id": "crypto_exportencryption_encryptexport"
     },
@@ -13469,7 +13499,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L83",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "decryptimport()",
       "id": "crypto_exportencryption_decryptimport"
     },
@@ -13479,7 +13509,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L159",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "generateexportfilename()",
       "id": "crypto_exportencryption_generateexportfilename"
     },
@@ -13489,7 +13519,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L170",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "downloadexportfile()",
       "id": "crypto_exportencryption_downloadexportfile"
     },
@@ -13499,7 +13529,7 @@
       "source_file": "src/core/crypto/exportEncryption.ts",
       "source_location": "L187",
       "_origin": "ast",
-      "community": 14,
+      "community": 4,
       "norm_label": "readimportfile()",
       "id": "crypto_exportencryption_readimportfile"
     },
@@ -13749,7 +13779,7 @@
       "source_file": "src/core/utils/__tests__/base64.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "base64.test.ts",
       "id": "tests_base64_test"
     },
@@ -13759,7 +13789,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "base64.ts",
       "id": "utils_base64"
     },
@@ -13769,7 +13799,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "normalizebase64()",
       "id": "utils_base64_normalizebase64"
     },
@@ -13779,7 +13809,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "decodebase64tostring()",
       "id": "utils_base64_decodebase64tostring"
     },
@@ -13789,7 +13819,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "decodebase64touint8array()",
       "id": "utils_base64_decodebase64touint8array"
     },
@@ -13799,7 +13829,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 8,
+      "community": 4,
       "norm_label": "encodeuint8arraytobase64()",
       "id": "utils_base64_encodeuint8arraytobase64"
     },
@@ -13969,7 +13999,7 @@
       "source_file": "src/domain/repositories/IUserRepository.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "iuserrepository.ts",
       "id": "repositories_iuserrepository"
     },
@@ -13979,7 +14009,7 @@
       "source_file": "src/domain/repositories/IUserRepository.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "iuserrepository",
       "id": "repositories_iuserrepository_iuserrepository"
     },
@@ -13989,7 +14019,7 @@
       "source_file": "src/features/vault/generator/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "index.ts",
       "id": "generator_index"
     },
@@ -13999,7 +14029,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "passphrasegenerator.ts",
       "id": "generator_passphrasegenerator"
     },
@@ -14009,7 +14039,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "diceware_words",
       "id": "generator_passphrasegenerator_diceware_words"
     },
@@ -14019,7 +14049,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getrandomindex()",
       "id": "generator_passphrasegenerator_getrandomindex"
     },
@@ -14029,7 +14059,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L82",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getrandomword()",
       "id": "generator_passphrasegenerator_getrandomword"
     },
@@ -14039,7 +14069,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L90",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "capitalizeword()",
       "id": "generator_passphrasegenerator_capitalizeword"
     },
@@ -14049,7 +14079,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "insertrandomdigits()",
       "id": "generator_passphrasegenerator_insertrandomdigits"
     },
@@ -14059,7 +14089,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L106",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getrandomseparator()",
       "id": "generator_passphrasegenerator_getrandomseparator"
     },
@@ -14069,7 +14099,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L118",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "passphraseoptions",
       "id": "generator_passphrasegenerator_passphraseoptions"
     },
@@ -14079,7 +14109,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L128",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatepassphrase()",
       "id": "generator_passphrasegenerator_generatepassphrase"
     },
@@ -14089,7 +14119,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L211",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getdefaultpassphraseoptions()",
       "id": "generator_passphrasegenerator_getdefaultpassphraseoptions"
     },
@@ -14099,7 +14129,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L224",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatememorablepassphrase()",
       "id": "generator_passphrasegenerator_generatememorablepassphrase"
     },
@@ -14109,7 +14139,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "passwordgenerator.ts",
       "id": "generator_passwordgenerator"
     },
@@ -14119,7 +14149,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "passwordgeneratoroptions",
       "id": "generator_passwordgenerator_passwordgeneratoroptions"
     },
@@ -14129,7 +14159,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatedpassword",
       "id": "generator_passwordgenerator_generatedpassword"
     },
@@ -14139,7 +14169,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getrandombytes()",
       "id": "generator_passwordgenerator_getrandombytes"
     },
@@ -14149,7 +14179,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getrandomint()",
       "id": "generator_passwordgenerator_getrandomint"
     },
@@ -14159,7 +14189,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "buildcharset()",
       "id": "generator_passwordgenerator_buildcharset"
     },
@@ -14169,7 +14199,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "calculateentropy()",
       "id": "generator_passwordgenerator_calculateentropy"
     },
@@ -14179,7 +14209,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L109",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "determinestrength()",
       "id": "generator_passwordgenerator_determinestrength"
     },
@@ -14189,7 +14219,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L124",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "validateoptions()",
       "id": "generator_passwordgenerator_validateoptions"
     },
@@ -14199,7 +14229,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "ensurecharacterdiversity()",
       "id": "generator_passwordgenerator_ensurecharacterdiversity"
     },
@@ -14209,7 +14239,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L165",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatepassword()",
       "id": "generator_passwordgenerator_generatepassword"
     },
@@ -14219,7 +14249,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L206",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatepasswords()",
       "id": "generator_passwordgenerator_generatepasswords"
     },
@@ -14229,7 +14259,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L224",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "getdefaultoptions()",
       "id": "generator_passwordgenerator_getdefaultoptions"
     },
@@ -14239,7 +14269,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L239",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatepronounceablepassword()",
       "id": "generator_passwordgenerator_generatepronounceablepassword"
     },
@@ -14249,7 +14279,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "strengthanalyzer.ts",
       "id": "generator_strengthanalyzer"
     },
@@ -14259,7 +14289,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "passwordstrengthresult",
       "id": "generator_strengthanalyzer_passwordstrengthresult"
     },
@@ -14269,7 +14299,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "common_patterns",
       "id": "generator_strengthanalyzer_common_patterns"
     },
@@ -14279,7 +14309,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "detectcommonpatterns()",
       "id": "generator_strengthanalyzer_detectcommonpatterns"
     },
@@ -14289,7 +14319,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L76",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "calculateactualentropy()",
       "id": "generator_strengthanalyzer_calculateactualentropy"
     },
@@ -14299,7 +14329,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L99",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "formatcracktime()",
       "id": "generator_strengthanalyzer_formatcracktime"
     },
@@ -14309,7 +14339,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L128",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "convertzxcvbnscore()",
       "id": "generator_strengthanalyzer_convertzxcvbnscore"
     },
@@ -14319,7 +14349,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "determinestrength()",
       "id": "generator_strengthanalyzer_determinestrength"
     },
@@ -14329,7 +14359,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L158",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "analyzepasswordstrength()",
       "id": "generator_strengthanalyzer_analyzepasswordstrength"
     },
@@ -14339,7 +14369,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L243",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "quickstrengthcheck()",
       "id": "generator_strengthanalyzer_quickstrengthcheck"
     },
@@ -14349,7 +14379,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L283",
       "_origin": "ast",
-      "community": 184,
+      "community": 1,
       "norm_label": "meetsminimumrequirements()",
       "id": "generator_strengthanalyzer_meetsminimumrequirements"
     },
@@ -14459,7 +14489,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "autolocksettings.tsx",
       "id": "components_autolocksettings"
     },
@@ -14469,7 +14499,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "autolocksettingsprops",
       "id": "components_autolocksettings_autolocksettingsprops"
     },
@@ -14479,7 +14509,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "timeout_options",
       "id": "components_autolocksettings_timeout_options"
     },
@@ -14489,7 +14519,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "autolocksettings()",
       "id": "components_autolocksettings_autolocksettings"
     },
@@ -14549,7 +14579,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 7,
+      "community": 2,
       "norm_label": "breachdetailsmodal()",
       "id": "components_breachdetailsmodal_breachdetailsmodal"
     },
@@ -14759,7 +14789,7 @@
       "source_file": "src/presentation/components/CryptoAPIError.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "cryptoapierror.tsx",
       "id": "components_cryptoapierror"
     },
@@ -14769,7 +14799,7 @@
       "source_file": "src/presentation/components/CryptoAPIError.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "cryptoapierrorprops",
       "id": "components_cryptoapierror_cryptoapierrorprops"
     },
@@ -14779,7 +14809,7 @@
       "source_file": "src/presentation/components/CryptoAPIError.tsx",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 92,
+      "community": 32,
       "norm_label": "cryptoapierror()",
       "id": "components_cryptoapierror_cryptoapierror"
     },
@@ -14859,7 +14889,7 @@
       "source_file": "src/presentation/components/InstallPrompt.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 126,
+      "community": 32,
       "norm_label": "installprompt.tsx",
       "id": "components_installprompt"
     },
@@ -14869,7 +14899,7 @@
       "source_file": "src/presentation/components/InstallPrompt.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 126,
+      "community": 32,
       "norm_label": "installprompt()",
       "id": "components_installprompt_installprompt"
     },
@@ -14959,7 +14989,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 184,
+      "community": 55,
       "norm_label": "passwordstrengthindicator.tsx",
       "id": "components_passwordstrengthindicator"
     },
@@ -14969,7 +14999,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 184,
+      "community": 55,
       "norm_label": "passwordstrengthindicatorprops",
       "id": "components_passwordstrengthindicator_passwordstrengthindicatorprops"
     },
@@ -14989,7 +15019,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 133,
+      "community": 3,
       "norm_label": "reencryptionprogress.tsx",
       "id": "components_reencryptionprogress"
     },
@@ -14999,7 +15029,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 133,
+      "community": 3,
       "norm_label": "reencryptionprogressprops",
       "id": "components_reencryptionprogress_reencryptionprogressprops"
     },
@@ -15009,7 +15039,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 133,
+      "community": 3,
       "norm_label": "reencryptionprogress()",
       "id": "components_reencryptionprogress_reencryptionprogress"
     },
@@ -15209,7 +15239,7 @@
       "source_file": "src/presentation/components/UpdateAvailableSnackbar.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 126,
+      "community": 32,
       "norm_label": "updateavailablesnackbar.tsx",
       "id": "components_updateavailablesnackbar"
     },
@@ -15219,7 +15249,7 @@
       "source_file": "src/presentation/components/UpdateAvailableSnackbar.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 126,
+      "community": 32,
       "norm_label": "updateavailablesnackbar()",
       "id": "components_updateavailablesnackbar_updateavailablesnackbar"
     },
@@ -15229,7 +15259,7 @@
       "source_file": "src/presentation/components/UpdateNotification.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "updatenotification.tsx",
       "id": "components_updatenotification"
     },
@@ -15239,7 +15269,7 @@
       "source_file": "src/presentation/components/UpdateNotification.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "slidetransition()",
       "id": "components_updatenotification_slidetransition"
     },
@@ -15249,7 +15279,7 @@
       "source_file": "src/presentation/components/UpdateNotification.tsx",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "updatenotification()",
       "id": "components_updatenotification_updatenotification"
     },
@@ -15299,7 +15329,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "useserviceworkerupdate.test.ts",
       "id": "tests_useserviceworkerupdate_test"
     },
@@ -15309,7 +15339,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "mockworker",
       "id": "tests_useserviceworkerupdate_test_mockworker"
     },
@@ -15319,7 +15349,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "createmockworker()",
       "id": "tests_useserviceworkerupdate_test_createmockworker"
     },
@@ -15329,7 +15359,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "mockregistration",
       "id": "tests_useserviceworkerupdate_test_mockregistration"
     },
@@ -15339,7 +15369,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "createmockregistration()",
       "id": "tests_useserviceworkerupdate_test_createmockregistration"
     },
@@ -15349,7 +15379,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "installserviceworkermock()",
       "id": "tests_useserviceworkerupdate_test_installserviceworkermock"
     },
@@ -15359,7 +15389,7 @@
       "source_file": "src/presentation/hooks/__tests__/useServiceWorkerUpdate.test.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "removeserviceworkermock()",
       "id": "tests_useserviceworkerupdate_test_removeserviceworkermock"
     },
@@ -15439,7 +15469,7 @@
       "source_file": "src/presentation/hooks/useServiceWorkerUpdate.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "useserviceworkerupdate.ts",
       "id": "hooks_useserviceworkerupdate"
     },
@@ -15449,7 +15479,7 @@
       "source_file": "src/presentation/hooks/useServiceWorkerUpdate.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "serviceworkerupdatestate",
       "id": "hooks_useserviceworkerupdate_serviceworkerupdatestate"
     },
@@ -15459,7 +15489,7 @@
       "source_file": "src/presentation/hooks/useServiceWorkerUpdate.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 108,
+      "community": 63,
       "norm_label": "useserviceworkerupdate()",
       "id": "hooks_useserviceworkerupdate_useserviceworkerupdate"
     },
@@ -15539,7 +15569,7 @@
       "source_file": "src/presentation/pages/PasswordGeneratorPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "passwordgeneratorpage.tsx",
       "id": "pages_passwordgeneratorpage"
     },
@@ -15549,7 +15579,7 @@
       "source_file": "src/presentation/pages/PasswordGeneratorPage.tsx",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "generatortype",
       "id": "pages_passwordgeneratorpage_generatortype"
     },
@@ -15559,7 +15589,7 @@
       "source_file": "src/presentation/pages/PasswordGeneratorPage.tsx",
       "source_location": "L50",
       "_origin": "ast",
-      "community": 12,
+      "community": 1,
       "norm_label": "passwordgeneratorpage()",
       "id": "pages_passwordgeneratorpage_passwordgeneratorpage"
     },
@@ -15582,26 +15612,6 @@
       "community": 3,
       "norm_label": "signinpage()",
       "id": "pages_signinpage_signinpage"
-    },
-    {
-      "label": "SignupPage.tsx",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 19,
-      "norm_label": "signuppage.tsx",
-      "id": "pages_signuppage"
-    },
-    {
-      "label": "SignupPage()",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L32",
-      "_origin": "ast",
-      "community": 3,
-      "norm_label": "signuppage()",
-      "id": "pages_signuppage_signuppage"
     },
     {
       "label": "authStore.test.ts",
@@ -22759,7 +22769,7 @@
       "source_file": "TEST_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 174,
+      "community": 14,
       "norm_label": "test_plan.md",
       "id": "test_plan"
     },
@@ -22769,7 +22779,7 @@
       "source_file": "TEST_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 157,
+      "community": 14,
       "norm_label": "trustvault pwa \u2014 test plan for unimplemented / partially implemented features",
       "id": "test_plan_trustvault_pwa_test_plan_for_unimplemented_partially_implemented_features"
     },
@@ -22779,7 +22789,7 @@
       "source_file": "TEST_PLAN.md",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 157,
+      "community": 14,
       "norm_label": "1. coverage gap analysis",
       "id": "test_plan_1_coverage_gap_analysis"
     },
@@ -22869,7 +22879,7 @@
       "source_file": "TEST_PLAN.md",
       "source_location": "L88",
       "_origin": "ast",
-      "community": 157,
+      "community": 14,
       "norm_label": "3. constraints honored",
       "id": "test_plan_3_constraints_honored"
     },
@@ -22879,7 +22889,7 @@
       "source_file": "TEST_PLAN.md",
       "source_location": "L96",
       "_origin": "ast",
-      "community": 157,
+      "community": 14,
       "norm_label": "4. recommendations (not done in this run)",
       "id": "test_plan_4_recommendations_not_done_in_this_run"
     },
@@ -22889,7 +22899,7 @@
       "source_file": "TEST_RUN_REPORT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 174,
+      "community": 14,
       "norm_label": "test_run_report.md",
       "id": "test_run_report"
     },
@@ -25029,7 +25039,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 17,
+      "community": 108,
       "norm_label": "useautolock hook tests",
       "id": "tests_hooks_autolock_test"
     },
@@ -25042,7 +25052,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 17,
+      "community": 108,
       "norm_label": "useautolock hook",
       "id": "concept_use_auto_lock"
     },
@@ -25055,7 +25065,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 17,
+      "community": 108,
       "norm_label": "useauthstore (zustand)",
       "id": "concept_auth_store"
     },
@@ -25068,35 +25078,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 17,
+      "community": 108,
       "norm_label": "usecredentialstore (zustand)",
       "id": "concept_credential_store"
-    },
-    {
-      "label": "Authentication Flow Integration Tests",
-      "file_type": "code",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 17,
-      "norm_label": "authentication flow integration tests",
-      "id": "tests_integration_auth_flow_test"
-    },
-    {
-      "label": "Presentation App Component",
-      "file_type": "concept",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 17,
-      "norm_label": "presentation app component",
-      "id": "concept_presentation_app"
     },
     {
       "label": "OCR Credential Parser Tests",
@@ -25277,7 +25261,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 113,
+      "community": 101,
       "norm_label": "ratelimiter tests",
       "id": "test_ratelimiter"
     },
@@ -25421,7 +25405,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Vault key is wrapped with HKDF-SHA256-derived key from WebAuthn PRF output. PRF output never stored \u2014 XSS or full IndexedDB dump cannot re-derive wrapping key. Previous device-key scheme was insecure because inputs (credentialId, userId, salt) were all stored and recomputable.",
-      "community": 8,
+      "community": 4,
       "norm_label": "prf-v1 vault key wrapping scheme",
       "id": "auth_biometricvaultkey_prf_v1_scheme"
     },
@@ -25435,7 +25419,7 @@
       "author": null,
       "contributor": null,
       "rationale": "unwrapVaultKeyWithPRF takes raw vault key bytes (not a CryptoKey) so the session CryptoKey can stay non-extractable; transient raw bytes zeroized in finally block after import",
-      "community": 8,
+      "community": 4,
       "norm_label": "s7 non-extractable session key",
       "id": "auth_biometricvaultkey_s7_non_extractable"
     },
@@ -25591,7 +25575,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
+      "community": 4,
       "norm_label": "encryption edge cases test suite",
       "id": "tests_encryption_edge_cases"
     },
@@ -25604,7 +25588,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
+      "community": 4,
       "norm_label": "encryption core test suite",
       "id": "tests_encryption_core"
     },
@@ -25617,7 +25601,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 4,
       "norm_label": "exportencryption test suite",
       "id": "tests_exportencryption"
     },
@@ -25736,7 +25720,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 12,
+      "community": 1,
       "norm_label": "generator feature index",
       "id": "generator_index_generatorindex"
     },
@@ -25762,7 +25746,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 92,
+      "community": 32,
       "norm_label": "main entry point",
       "id": "src_main_main"
     },
@@ -25829,7 +25813,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
+      "community": 2,
       "norm_label": "dompurify.sanitize usage in breachdetailsmodal",
       "id": "components_breachdetailsmodal_dompurify_sanitize"
     },
@@ -26817,7 +26801,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 17,
+      "community": 113,
       "norm_label": "github pages spa 404 redirect",
       "id": "public_404_spa_redirect"
     },
@@ -27374,7 +27358,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 92,
       "norm_label": "etld public-suffix autofill vulnerability",
       "id": "concept_etld_autofill_vulnerability"
     },
@@ -27465,7 +27449,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 174,
+      "community": 14,
       "norm_label": "repository-level import merge dedupe gap",
       "id": "concept_import_merge_dedupe_gap"
     },
@@ -27478,7 +27462,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 92,
       "norm_label": "s1 webauthn prf vault-key wrapping",
       "id": "concept_s1_webauthn_prf_wrapping"
     },
@@ -27504,7 +27488,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 92,
       "norm_label": "biometricvaultkey test suite",
       "id": "biometricvaultkey_test"
     },
@@ -27530,7 +27514,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 92,
       "norm_label": "credentialmanagementservice test suite",
       "id": "credentialmanagementservice_test"
     },
@@ -27556,7 +27540,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 92,
       "norm_label": "unlockbreachrefresh test suite",
       "id": "unlockbreachrefresh_test"
     },
@@ -29258,11 +29242,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "GAP_ANALYSIS.md",
-      "source_location": "L1282",
+      "source_location": "L1284",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "gap_analysis_17_current_verified_gaps_2026_06_15_start_here_for_prioritization",
-      "target": "gap_analysis_medium_test_infrastructure_masking_real_coverage"
+      "target": "gap_analysis_resolved_2026_06_15",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -29990,9 +29974,9 @@
       "source_file": "TEST_STATUS.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "test_status_test_suite_status_report",
-      "target": "test_status_dashboard_credential_dedup_bug_fix_june_15_2026",
-      "confidence_score": 1.0
+      "target": "test_status_dashboard_credential_dedup_bug_fix_june_15_2026"
     },
     {
       "relation": "contains",
@@ -30113,6 +30097,16 @@
       "confidence_score": 1.0,
       "source": "test_status_test_suite_status_report",
       "target": "test_status_technical_fixes_applied"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "TEST_STATUS.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "test_status_test_suite_status_report",
+      "target": "test_status_un_skip_integration_tests_jsdom_navigation_bug_june_15_2026",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -30283,6 +30277,202 @@
       "confidence_score": 1.0,
       "source": "test_status_security_validation",
       "target": "test_status_zero_knowledge_architecture"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_auth_flow_test",
+      "target": "presentation_app"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_auth_flow_test",
+      "target": "storage_database"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_auth_flow_test",
+      "target": "storage_database_db"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_auth_flow_test",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_auth_flow_test",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "crypto_exportencryption_encryptexport"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "presentation_app"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "storage_database"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "storage_database_db"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/import-export.test.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_import_export_test",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_master_password_change_test",
+      "target": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_master_password_change_test",
+      "target": "presentation_app"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_master_password_change_test",
+      "target": "storage_database"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_master_password_change_test",
+      "target": "storage_database_db"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_master_password_change_test",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "integration_master_password_change_test",
+      "target": "store_authstore_useauthstore"
     },
     {
       "relation": "imports_from",
@@ -30556,144 +30746,100 @@
       "target": "store_authstore_useauthstore"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_signuppage",
+      "target": "auth_usernamevalidation"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L12",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L30",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_import_export_test",
-      "target": "crypto_exportencryption_encryptexport"
+      "source": "pages_signuppage",
+      "target": "auth_usernamevalidation_validateusername"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L14",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L32",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_import_export_test",
-      "target": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials"
+      "source": "pages_signuppage",
+      "target": "pages_signuppage_signuppage"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L9",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L29",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_import_export_test",
-      "target": "presentation_app"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_import_export_test",
-      "target": "storage_database"
+      "source": "pages_signuppage",
+      "target": "repositories_userrepositoryimpl"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L11",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L29",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_import_export_test",
-      "target": "storage_database_db"
+      "source": "pages_signuppage",
+      "target": "repositories_userrepositoryimpl_userrepository"
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L10",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L28",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_import_export_test",
+      "source": "pages_signuppage",
       "target": "store_authstore"
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/import-export.test.tsx",
-      "source_location": "L10",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "L28",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_import_export_test",
+      "source": "pages_signuppage",
       "target": "store_authstore_useauthstore"
     },
     {
-      "relation": "contains",
+      "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L14",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_master_password_change_test",
-      "target": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
+      "source_file": "src/presentation/pages/SigninPage.tsx",
+      "source_location": "line 231",
+      "weight": 1.0,
+      "source": "pages_signinpage_signinpage",
+      "target": "pages_signuppage_signuppage"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "integration_master_password_change_test",
-      "target": "presentation_app"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L11",
+      "source_file": "src/presentation/pages/SignupPage.tsx",
+      "source_location": "line 44",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_master_password_change_test",
-      "target": "storage_database"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_master_password_change_test",
-      "target": "storage_database_db"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_master_password_change_test",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/master-password-change.test.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_master_password_change_test",
+      "source": "pages_signuppage_signuppage",
       "target": "store_authstore_useauthstore"
     },
     {
@@ -39993,17 +40139,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
-      "target": "repositories_userrepositoryimpl"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/UnlockPage.tsx",
       "source_location": "L25",
       "weight": 1.0,
@@ -41048,17 +41183,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
-      "target": "repositories_userrepositoryimpl_userrepository"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/UnlockPage.tsx",
       "source_location": "L25",
       "weight": 1.0,
@@ -41870,17 +41994,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_auth_flow_test",
-      "target": "storage_database"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/App.tsx",
       "source_location": "L13",
       "weight": 1.0,
@@ -42177,17 +42290,6 @@
       "weight": 1.0,
       "source": "storage_debugutils_clearalldata",
       "target": "storage_database_trustvaultdb"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_auth_flow_test",
-      "target": "storage_database_db"
     },
     {
       "relation": "imports",
@@ -42553,17 +42655,6 @@
       "weight": 0.85,
       "source": "components_credentialdetailsdialog_credentialdetailsdialog",
       "target": "repositories_icredentialrepository_icredentialrepository"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_auth_flow_test",
-      "target": "presentation_app"
     },
     {
       "relation": "imports_from",
@@ -45118,17 +45209,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_auth_flow_test",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/LoginPage.tsx",
       "source_location": "L29",
       "weight": 1.0,
@@ -45145,17 +45225,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "pages_signinpage",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
       "target": "store_authstore"
     },
     {
@@ -45245,17 +45314,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "integration_auth_flow_test",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/LoginPage.tsx",
       "source_location": "L29",
       "weight": 1.0,
@@ -45294,28 +45352,6 @@
       "source_location": "line 42",
       "weight": 1.0,
       "source": "pages_signinpage_signinpage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "line 44",
-      "weight": 1.0,
-      "source": "pages_signuppage_signuppage",
       "target": "store_authstore_useauthstore"
     },
     {
@@ -49311,17 +49347,6 @@
       "target": "auth_usernamevalidation_validateusername"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
-      "target": "auth_usernamevalidation"
-    },
-    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -49382,17 +49407,6 @@
       "weight": 1.0,
       "source": "auth_usernamevalidation_validateusername",
       "target": "auth_usernamevalidation_username_regex"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
-      "target": "auth_usernamevalidation_validateusername"
     },
     {
       "relation": "references",
@@ -54869,26 +54883,6 @@
       "confidence_score": 1.0,
       "source": "pages_signinpage",
       "target": "pages_signinpage_signinpage"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/SigninPage.tsx",
-      "source_location": "line 231",
-      "weight": 1.0,
-      "source": "pages_signinpage_signinpage",
-      "target": "pages_signuppage_signuppage"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SignupPage.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_signuppage",
-      "target": "pages_signuppage_signuppage"
     },
     {
       "relation": "contains",
@@ -64541,46 +64535,6 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "line 10",
-      "weight": 1.0,
-      "source": "tests_integration_auth_flow_test",
-      "target": "concept_auth_store"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "line 11",
-      "weight": 1.0,
-      "source": "tests_integration_auth_flow_test",
-      "target": "concept_database_ts"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/__tests__/integration/auth-flow.test.tsx",
-      "source_location": "line 9",
-      "weight": 1.0,
-      "source": "tests_integration_auth_flow_test",
-      "target": "concept_presentation_app"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
-      "source_file": "public/404.html",
-      "source_location": null,
-      "weight": 0.75,
-      "source": "public_404_spa_redirect",
-      "target": "concept_presentation_app"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/__tests__/integration/ocr-capture.test.ts",
       "source_location": "line 6",
       "weight": 1.0,
@@ -66515,5 +66469,5 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts"
     }
   ],
-  "built_at_commit": "86a563da0e8ea39a7c88454e4bcb0297186e7b50"
+  "built_at_commit": "0c715f05f82c1c6cf304f8bb80d677b3288669d3"
 }
