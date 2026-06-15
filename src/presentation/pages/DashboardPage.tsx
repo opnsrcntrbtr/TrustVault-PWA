@@ -376,7 +376,7 @@ export default function DashboardPage() {
           <IconButton color="inherit" onClick={handleLockVault}>
             <LockIcon />
           </IconButton>
-          <IconButton color="inherit" onClick={(e) => { setMenuAnchor(e.currentTarget); }}>
+          <IconButton color="inherit" aria-label="account menu" onClick={(e) => { setMenuAnchor(e.currentTarget); }}>
             <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
               {(user?.username || user?.email)?.[0]?.toUpperCase() || 'U'}
             </Avatar>

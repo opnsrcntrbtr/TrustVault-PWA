@@ -328,13 +328,12 @@ describe('Credential CRUD Integration', () => {
       });
     });
 
-    // TODO: Fix this cross-session test - requires proper unmount/remount handling
-    it.skip('should persist updates after signout and signin', async () => {
+    it('should persist updates after signout and signin', async () => {
       const user = userEvent.setup();
       const { unmount } = render(
-        
+
           <App />
-        
+
       );
 
       await setupAuthenticatedUser(user);
@@ -343,8 +342,8 @@ describe('Credential CRUD Integration', () => {
       await createCredentialFromDashboard(user, 'Amazon', 'updateduser', 'amazonpass123');
 
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByText('Amazon')).toBeInTheDocument();
+      });
 
       // Signout
       useAuthStore.getState().clearSession();
@@ -352,27 +351,27 @@ describe('Credential CRUD Integration', () => {
 
       // Signin again
       render(
-        
+
           <App />
-        
+
       );
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      }, { timeout: 10000 });
 
-      const emailInput = screen.getByLabelText(/email/i);
-      const passwordInput = screen.getByLabelText(/password/i);
+      const usernameInput = screen.getByLabelText(/username/i);
+      const passwordInput = screen.getByLabelText(/^master password/i);
 
-      await user.type(emailInput, 'crudtest@example.com');
+      await user.type(usernameInput, 'crudtestuser');
       await user.type(passwordInput, 'TestPassword123!');
 
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^sign in$/i });
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       // Credential should still exist with updated data
       await waitFor(() => {

@@ -6,6 +6,31 @@
 
 ---
 
+## Un-skip Integration Tests: jsdom Navigation Bug — June 15, 2026
+
+**Change**: One-line fix in `SignupPage.tsx`. Root cause: after a successful
+signup, `setTimeout(() => navigate('/dashboard'), 1500)` was scheduled. The
+`/signup` route guard in `App.tsx` already redirects to `/dashboard` the
+instant `isAuthenticated` becomes true, so this timeout was dead in the happy
+path — but it fired ~1.5s later regardless of where the user had since
+navigated, redirecting Settings → Change Master Password / Export / Import
+flows back to `/dashboard` mid-task. This was a **real navigation bug**, not
+test-only — removed the stray `setTimeout`.
+
+- [x] `src/__tests__/integration/master-password-change.test.tsx` — 6/6
+  passing (was 1/6 passing, 5 `it.skip`)
+- [x] `src/__tests__/integration/import-export.test.tsx` — 7/7 passing (was
+  1/7 passing, 6 `it.skip`)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors on touched files
+- [x] `npx vitest run src/__tests__/integration/`: 54 passed (6 files), 0
+  skipped — no regressions
+
+See `GAP_ANALYSIS.md` Section 17 #2 and `ROADMAP.md` Top Critical Gaps #2
+(both marked RESOLVED).
+
+---
+
 ## Dashboard Credential Dedup Bug Fix — June 15, 2026
 
 **Change**: One-line fix in `DashboardPage.tsx`'s credential Grid item

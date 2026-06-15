@@ -18,7 +18,7 @@
 
 ## EXECUTIVE SUMMARY
 
-The TrustVault PWA codebase is **architecture-complete with core security infrastructure fully implemented**, and **UI/business-logic feature work that was "partial" in the June 11 snapshot has since landed**. Remaining gaps are now concentrated in **test-suite reliability** (real dashboard dedup bug + jsdom navigation issues masking several integration tests) and a handful of **minor feature completions** (CSV export/import, SMS/backup 2FA codes, extension autofill wiring, import merge dedupe).
+The TrustVault PWA codebase is **architecture-complete with core security infrastructure fully implemented**, and **UI/business-logic feature work that was "partial" in the June 11 snapshot has since landed**. The dashboard dedup bug and the navigation bug masking ~15 integration tests have both been fixed (2026-06-15). Remaining gaps are now concentrated in a handful of **minor feature completions** (CSV export/import, SMS/backup 2FA codes, extension autofill wiring, import merge dedupe).
 
 ### Key Findings:
 - ✅ **Encryption & Security**: 100% complete - all cryptographic standards implemented, vault key decryption & credential reads working
@@ -28,7 +28,7 @@ The TrustVault PWA codebase is **architecture-complete with core security infras
 - ✅ **UI Components**: ~90% complete - credential display, add/edit forms, Settings page, Security Audit page, password strength meter all shipped; dashboard dedup bug fixed (2026-06-15); remaining gap is CSV import/export
 - ✅ **PWA Features**: 100% complete - service worker, manifest, offline, installability, icons all production-ready
 - ✅ **Advanced Features**: 85% complete (2026-06-11) - export/import encrypted, TOTP/2FA, breach detection (HIBP k-anonymity), biometric zero-knowledge via PRF; chrome extension hardened (X1-X3) but autofill matcher not yet wired to fill path
-- 🆕 **Test Reliability**: ~15 integration tests `.skip`'d as of 2026-06-15 (`b1d545d`) due to a jsdom mis-click/navigation issue — see Section 17. The separate **dashboard credential-list dedup bug** surfaced after delete has since been fixed (2026-06-15, Section 17 #1).
+- ✅ **Test Reliability**: the ~15 integration tests `.skip`'d as of 2026-06-15 (`b1d545d`) due to a navigation bug (stray `setTimeout` in `SignupPage.tsx` redirecting to `/dashboard` ~1.5s post-signup) are now un-skipped and passing — see Section 17 #2. The separate **dashboard credential-list dedup bug** surfaced after delete has also been fixed (2026-06-15, Section 17 #1).
 
 ---
 
@@ -1041,7 +1041,7 @@ async getDatabaseSize(): Promise<{...}>
 3. ~~**No favorites filter UI**~~ ✅ shipped
 4. ~~**Stats hardcoded in dashboard**~~ ✅ shipped (computed from real array)
 5. **No error boundaries** - still open, see Section 17
-6. **Test coverage incomplete** - see Section 17 (~15 integration tests now `.skip`'d)
+6. ~~**Test coverage incomplete** - ~15 integration tests `.skip`'d~~ ✅ resolved, see Section 17 #2
 
 ---
 
@@ -1168,8 +1168,6 @@ async getDatabaseSize(): Promise<{...}>
 - ✅ Security hardening cycles A–E + X1–X3 (CSP, key hygiene, OCR self-host, breach detection, extension fixes)
 
 **What Needs Work** (non-blocking, see Section 17 for detail):
-- ⚠️ Dashboard credential-list dedup bug after delete
-- ⚠️ ~15 integration tests `.skip`'d pending jsdom navigation-bug investigation
 - ⚠️ Import merge dedupe only in `ImportDialog.tsx`, not `importFromJson()`
 - ⚠️ Extension autofill matcher not wired to fill path
 - ⚠️ TOTP SMS/backup codes not implemented (19/25 tests)
@@ -1194,7 +1192,7 @@ async getDatabaseSize(): Promise<{...}>
 
 **REMAINING** (non-blocking for early access):
 - [x] Fix dashboard credential dedup bug (Section 17 #1) — RESOLVED 2026-06-15
-- [ ] Un-skip ~15 integration tests (Section 17 #2)
+- [x] Un-skip ~15 integration tests (Section 17 #2) — RESOLVED 2026-06-15
 - [ ] Import merge dedupe in repository layer (Section 17 #3)
 - [ ] Wire autofill matcher to extension fill path (Section 17 #4)
 - [ ] E2E tests (Playwright)
@@ -1235,7 +1233,7 @@ The TrustVault PWA has a **production-grade security foundation** with all criti
 
 - **Phase 1 (security + core CRUD)**: ✅ Complete
 - **Phase 2 (UI completion)**: ✅ Complete (2026-06-15)
-- **Now (1–2 weeks)**: Fix dashboard dedup bug, un-skip integration tests, import merge dedupe, extension autofill wiring (Section 17)
+- **Now (1–2 weeks)**: Import merge dedupe, extension autofill wiring (Section 17); dashboard dedup bug and integration test un-skip both resolved 2026-06-15
 - **Production hardening (1–2 weeks)**: Lighthouse >90, external security review, deployment docs
 - **Total to full GA**: **2–4 weeks** from this snapshot (mid-late June 2026)
 
@@ -1283,16 +1281,18 @@ commit `b1d545d` (2026-06-15), superseding the severity table in Section 12.
    **Fix**: de-dupe by `id` when merging re-fetch results, or drop the
    optimistic filter and rely solely on the re-fetch.
 
-### 🟡 MEDIUM — Test infrastructure masking real coverage
-2. **~15 integration tests `.skip`'d due to a jsdom mis-click/navigation bug**
-   Clicking certain `IconButton`s (Settings gear, Export/Import triggers) in
-   jsdom appears to navigate the page away before the target dialog
-   (`ChangeMasterPasswordDialog`, `ExportDialog`, `ImportDialog`) opens.
-   Affects all of `master-password-change.test.tsx` (6 tests) and most of
-   `import-export.test.tsx` (4 tests), plus one cross-session test in
-   `credential-crud.test.tsx`. Unknown whether this is test-harness-only or a
-   real navigation regression — **needs manual browser verification** of
-   Settings → Change Master Password / Export / Import flows.
+### ✅ RESOLVED (2026-06-15)
+2. ~~**~15 integration tests `.skip`'d due to a jsdom mis-click/navigation bug**~~
+   Root cause found: `SignupPage.tsx` scheduled
+   `setTimeout(() => navigate('/dashboard'), 1500)` after signup success. The
+   `/signup` route guard already redirects to `/dashboard` the instant
+   `isAuthenticated` becomes true, so this timeout was dead in the happy path
+   — but it still fired ~1.5s later regardless of where the user had since
+   navigated (e.g. to Settings → Export/Import), yanking them back to
+   `/dashboard` mid-flow. This was a **real navigation bug**, not test-only.
+   Removed the stray `setTimeout`. All 16 previously-skipped tests across
+   `master-password-change.test.tsx` and `import-export.test.tsx` now pass
+   (6/6 and 7/7 respectively, 0 skipped).
 
 3. **Import merge dedupe gap** — `CredentialRepositoryImpl.importFromJson()`
    appends duplicates on import; merge-mode dedupe by (title+username) exists

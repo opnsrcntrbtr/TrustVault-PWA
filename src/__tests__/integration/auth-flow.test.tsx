@@ -149,8 +149,7 @@ describe('Authentication Flow Integration', () => {
   });
 
   describe('Signin Flow', () => {
-    // Skip: Complex cross-session tests require proper Zustand store reset between renders
-    it.skip('should signin with correct credentials after signup', async () => {
+    it('should signin with correct credentials after signup', async () => {
       const user = userEvent.setup();
       const { unmount } = render(
 
@@ -174,9 +173,12 @@ describe('Authentication Flow Integration', () => {
       let submitButton = screen.getByRole('button', { name: /create account/i });
       await user.click(submitButton);
 
+      // "TrustVault" appears in the signup page copy too, so wait for the
+      // dashboard's add-credential FAB (only rendered post-auth) instead of
+      // matching /vault/i, which matches immediately on the signup page.
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       // Verify user was created in database before signing out
       const userCount = await db.users.count();
@@ -198,23 +200,23 @@ describe('Authentication Flow Integration', () => {
 
       );
 
-      // Wait for initialization to complete first, then look for sign in button
+      // Wait for initialization to complete first, then look for the signin heading
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
       }, { timeout: 10000 });
 
       usernameInput = screen.getByLabelText(/username/i);
-      passwordInput = screen.getByLabelText(/^master password$/i);
+      passwordInput = screen.getByLabelText(/^master password/i);
 
       await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'TestPassword123!');
 
-      submitButton = screen.getByRole('button', { name: /sign in/i });
+      submitButton = screen.getByRole('button', { name: /^sign in$/i });
       await user.click(submitButton);
 
       // Should navigate to dashboard
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
       }, { timeout: 5000 });
 
       const state = useAuthStore.getState();
@@ -222,8 +224,7 @@ describe('Authentication Flow Integration', () => {
       expect(state.user?.username).toBe('testuser');
     });
 
-    // Skip: Complex cross-session tests require proper Zustand store reset between renders
-    it.skip('should reject signin with incorrect password', async () => {
+    it('should reject signin with incorrect password', async () => {
       const user = userEvent.setup();
       render(
 
@@ -247,24 +248,27 @@ describe('Authentication Flow Integration', () => {
       let submitButton = screen.getByRole('button', { name: /create account/i });
       await user.click(submitButton);
 
+      // "TrustVault" appears in the signup page copy too, so wait for the
+      // dashboard's add-credential FAB (only rendered post-auth) instead of
+      // matching /vault/i, which matches immediately on the signup page.
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       // Sign out and try wrong password
       useAuthStore.getState().clearSession();
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
       });
 
       usernameInput = screen.getByLabelText(/username/i);
-      passwordInput = screen.getByLabelText(/master password/i);
+      passwordInput = screen.getByLabelText(/^master password/i);
 
       await user.type(usernameInput, 'testuser');
       await user.type(passwordInput, 'WrongPassword123!');
 
-      submitButton = screen.getByRole('button', { name: /sign in/i });
+      submitButton = screen.getByRole('button', { name: /^sign in$/i });
       await user.click(submitButton);
 
       // Should show error
@@ -273,11 +277,10 @@ describe('Authentication Flow Integration', () => {
       });
 
       // Should still be on signin page
-      expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^sign in$/i })).toBeInTheDocument();
     });
 
-    // Skip: Requires user in database from different session
-    it.skip('should reject signin with non-existent username', async () => {
+    it('should reject signin with non-existent username', async () => {
       const user = userEvent.setup();
       render(
 
@@ -285,18 +288,38 @@ describe('Authentication Flow Integration', () => {
 
       );
 
+      // With no users in the DB, the app shows signup, not signin — but the
+      // signin form is still reachable, and "Invalid username or password"
+      // is what the signin handler returns regardless of whether any user
+      // exists, so route through signup-page's "Sign in" link if present;
+      // otherwise this app instance has no users and signin isn't reachable
+      // without one, so seed a user first via signup.
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
       }, { timeout: 5000 });
 
       const usernameInput = screen.getByLabelText(/username/i);
-      const passwordInput = screen.getByLabelText(/master password/i);
+      const passwordInputs = screen.getAllByLabelText(/master password/i);
+      await user.type(usernameInput, 'someuser');
+      await user.type(passwordInputs[0]!, 'SecurePassword123!');
+      await user.type(passwordInputs[1]!, 'SecurePassword123!');
+      await user.click(screen.getByRole('button', { name: /create account/i }));
 
-      await user.type(usernameInput, 'nobody');
-      await user.type(passwordInput, 'AnyPassword123!');
+      await waitFor(() => {
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
-      await user.click(submitButton);
+      // Sign out, then try a username that was never registered
+      useAuthStore.getState().clearSession();
+
+      await waitFor(() => {
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      });
+
+      await user.type(screen.getByLabelText(/username/i), 'nobody');
+      await user.type(screen.getByLabelText(/^master password/i), 'AnyPassword123!');
+
+      await user.click(screen.getByRole('button', { name: /^sign in$/i }));
 
       // Should show error
       await waitFor(() => {
@@ -307,7 +330,7 @@ describe('Authentication Flow Integration', () => {
 
   describe('Signout Flow', () => {
     // Skip: Complex cross-session tests require proper Zustand store reset between renders
-    it.skip('should clear session and redirect to signin on signout', async () => {
+    it('should clear session and redirect to signin on signout', async () => {
       const user = userEvent.setup();
       render(
 
@@ -331,28 +354,31 @@ describe('Authentication Flow Integration', () => {
       const submitButton = screen.getByRole('button', { name: /create account/i });
       await user.click(submitButton);
 
+      // "TrustVault" appears in the signup page copy too, so wait for the
+      // dashboard's add-credential FAB (only rendered post-auth) instead of
+      // matching /vault/i, which matches immediately on the signup page.
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       // Verify authenticated
       let state = useAuthStore.getState();
       expect(state.isAuthenticated).toBe(true);
 
-      // Find and click signout button (look for Settings page)
-      const settingsButton = screen.getByRole('button', { name: /settings/i });
-      await user.click(settingsButton);
+      // Open the account menu and click "Logout"
+      const accountMenuButton = screen.getByRole('button', { name: /account menu/i });
+      await user.click(accountMenuButton);
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument();
+        expect(screen.getByRole('menuitem', { name: /logout/i })).toBeInTheDocument();
       });
 
-      const signoutButton = screen.getByRole('button', { name: /sign out/i });
-      await user.click(signoutButton);
+      const logoutMenuItem = screen.getByRole('menuitem', { name: /logout/i });
+      await user.click(logoutMenuItem);
 
       // Should redirect to signin
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
       });
 
       // Session should be cleared
@@ -364,8 +390,7 @@ describe('Authentication Flow Integration', () => {
   });
 
   describe('Complete Auth Cycle', () => {
-    // Skip: Complex cross-session tests require proper Zustand store reset between renders
-    it.skip('should complete signup → signin → signout → signin cycle', async () => {
+    it('should complete signup → signin → signout → signin cycle', async () => {
       const user = userEvent.setup();
       const testUsername = 'cycleuser';
       const testPassword = 'CycleTest123!';
@@ -393,9 +418,12 @@ describe('Authentication Flow Integration', () => {
       let submitButton = screen.getByRole('button', { name: /create account/i });
       await user.click(submitButton);
 
+      // "TrustVault" appears in the signup page copy too, so wait for the
+      // dashboard's add-credential FAB (only rendered post-auth) instead of
+      // matching /vault/i, which matches immediately on the signup page.
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       // STEP 2: SIGNOUT
       useAuthStore.getState().clearSession();
@@ -409,20 +437,20 @@ describe('Authentication Flow Integration', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       usernameInput = screen.getByLabelText(/username/i);
-      passwordInput = screen.getByLabelText(/master password/i);
+      passwordInput = screen.getByLabelText(/^master password/i);
 
       await user.type(usernameInput, testUsername);
       await user.type(passwordInput, testPassword);
 
-      submitButton = screen.getByRole('button', { name: /sign in/i });
+      submitButton = screen.getByRole('button', { name: /^sign in$/i });
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
       }, { timeout: 5000 });
 
       let state = useAuthStore.getState();
@@ -433,21 +461,21 @@ describe('Authentication Flow Integration', () => {
       useAuthStore.getState().clearSession();
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
       });
 
       // STEP 5: SIGNIN #2
       usernameInput = screen.getByLabelText(/username/i);
-      passwordInput = screen.getByLabelText(/master password/i);
+      passwordInput = screen.getByLabelText(/^master password/i);
 
       await user.type(usernameInput, testUsername);
       await user.type(passwordInput, testPassword);
 
-      submitButton = screen.getByRole('button', { name: /sign in/i });
+      submitButton = screen.getByRole('button', { name: /^sign in$/i });
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
       }, { timeout: 5000 });
 
       state = useAuthStore.getState();
