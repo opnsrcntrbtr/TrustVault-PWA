@@ -1,8 +1,28 @@
 # TrustVault PWA - Development Roadmap
 
-**Last Updated:** 2026-06-12 (Finding 7: re-unlock session loss; prev: security findings remediation F1–F6, coverage-gap test suite G1–G7, security hardening A–E + PWA offline suite P1/P3/P4)
-**Current Status:** Beta (93% complete) - Security hardening + PWA offline suite complete (P1/P3/P4 manual validation done), Phase 1 complete (2026-05-30)
+**Last Updated:** 2026-06-15 (GAP_ANALYSIS.md refresh — Section 17 verified gaps; prev: Finding 7 re-unlock session loss, security findings remediation F1–F6, coverage-gap test suite G1–G7, security hardening A–E + PWA offline suite P1/P3/P4)
+**Current Status:** Beta (~94% complete) - Phase 1 + Phase 2 UI completion done (Settings, Security Audit, password strength meter, clipboard auto-clear, dashboard auto-load all shipped); remaining work is test-suite reliability + minor feature completions
 **Target:** Production-ready PWA with feature parity to a native Android app
+
+---
+
+## 🚨 TOP CRITICAL GAPS (2026-06-15)
+
+Prioritized from `GAP_ANALYSIS.md` § 17 ("Current Verified Gaps"). Tackle in
+this order before the next roadmap cycle:
+
+| # | Gap | Severity | Why it matters | Where |
+|---|-----|----------|-----------------|-------|
+| 1 | **Dashboard credential-list dedup bug after delete** | 🔴 High (real bug, not just test artifact) | Optimistic local-state filter races with `findAll()` re-fetch — can render duplicate credential cards after a delete | `DashboardPage.tsx`; pinned by `credential-crud.test.tsx:446` (`it.skip`) |
+| 2 | **~15 integration tests `.skip`'d (jsdom navigation bug)** | 🟡 Medium | Settings → Change Master Password / Export / Import flows have zero passing integration coverage; unknown if the underlying click-navigation issue is test-only or a real regression — needs manual browser verification | `master-password-change.test.tsx`, `import-export.test.tsx`, `credential-crud.test.tsx` |
+| 3 | **Extension autofill matcher not wired to fill path** | 🟡 Medium | X3's secure dot-boundary matcher (17/17 tests) is dead code — `GET_CREDENTIALS` returns empty (X1), so autofill is non-functional end-to-end | `chrome-extension/`, `src/core/autofill/credentialManagementService.ts` |
+| 4 | **Import merge dedupe only in UI layer** | 🟡 Medium | `CredentialRepositoryImpl.importFromJson()` appends duplicates; dedupe by (title+username) exists only in `ImportDialog.tsx` | `CredentialRepositoryImpl.ts`; pinned by `importMerge.test.ts` |
+| 5 | **TOTP SMS/backup codes, CSV import/export, ErrorBoundary, WCAG AA audit** | 🟢 Low | Minor feature completions; schedule alongside Phase 3 polish | various |
+
+> **Guideline:** Item 1 is the only genuine production data-integrity bug —
+> fix it first. Items 2–4 restore test confidence and complete previously
+> "done" features (X3 extension hardening, F-series import work). See
+> `GAP_ANALYSIS.md` § 17 for full detail and suggested fixes.
 
 ---
 

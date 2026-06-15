@@ -1,23 +1,34 @@
 # TrustVault PWA - Comprehensive Gap Analysis Report
-**Analysis Date:** October 22, 2025 | **Updated:** June 12, 2026 (F1–F6 remediation)  
+**Analysis Date:** October 22, 2025 | **Updated:** June 15, 2026 (post F1–F7 remediation + test-flakiness pass)  
 **Analyzed Version:** 1.0.0-beta.2  
-**Security Rating:** 9.5/10 (architecture), 9.2/10 (implementation)  
-**Completeness:** ~92% feature-complete (2026-06-11 — Phase 1 complete, hardening cycles A-E + X1-X3 deployed)
+**Security Rating:** 9.5/10 (architecture), 9.3/10 (implementation)  
+**Completeness:** ~94% feature-complete (2026-06-15 — Phase 1 complete; Settings, Security Audit, password strength meter, clipboard auto-clear, and credential auto-load all shipped since the June 11 snapshot)
+
+> **Note (2026-06-15):** Several "MEDIUM/LOW remaining" items from the June 11–12
+> snapshot of this report have since shipped (`SettingsPage.tsx`,
+> `SecurityAuditPage.tsx`, `PasswordStrengthIndicator.tsx`,
+> `clipboard.ts`/`ClipboardNotification.tsx`/`ClipboardSettings.tsx`,
+> `useAutoLock.ts`, and `DashboardPage.tsx` now calls
+> `credentialRepository.findAll()` on mount). See Section 17 for the current,
+> verified gap list — **start there** for prioritization. Sections 1–16 below
+> are kept for historical detail but contain stale "missing" markers in
+> places; Section 17 supersedes Section 12's severity table.
 
 ---
 
 ## EXECUTIVE SUMMARY
 
-The TrustVault PWA codebase is **architecture-complete with core security infrastructure fully implemented**, but **UI and business logic features are partially complete**. The foundation is solid and production-ready for core operations, with clear areas for feature expansion.
+The TrustVault PWA codebase is **architecture-complete with core security infrastructure fully implemented**, and **UI/business-logic feature work that was "partial" in the June 11 snapshot has since landed**. Remaining gaps are now concentrated in **test-suite reliability** (real dashboard dedup bug + jsdom navigation issues masking several integration tests) and a handful of **minor feature completions** (CSV export/import, SMS/backup 2FA codes, extension autofill wiring, import merge dedupe).
 
 ### Key Findings:
 - ✅ **Encryption & Security**: 100% complete - all cryptographic standards implemented, vault key decryption & credential reads working
 - ✅ **Authentication**: 95% complete - password auth + biometric PRF unlock (both paths working)
 - ✅ **Core CRUD Operations**: 100% complete - all operations decrypt/encrypt credentials correctly
-- ✅ **State Management**: 100% complete - Zustand stores operational
-- ✅ **UI Components**: 65% complete - core credential display + add/edit forms; missing security audit & advanced filters
+- ✅ **State Management**: 100% complete - Zustand stores operational, dashboard auto-loads credentials on mount
+- ✅ **UI Components**: ~90% complete - credential display, add/edit forms, Settings page, Security Audit page, password strength meter all shipped; remaining gaps are dashboard dedup bug + CSV import/export
 - ✅ **PWA Features**: 100% complete - service worker, manifest, offline, installability, icons all production-ready
-- ✅ **Advanced Features**: 85% complete (2026-06-11) - export/import encrypted, TOTP/2FA, breach detection (HIBP k-anonymity), biometric zero-knowledge via PRF; chrome extension in hardening phase (storage removed, permissions minimized, domain matcher fixed)
+- ✅ **Advanced Features**: 85% complete (2026-06-11) - export/import encrypted, TOTP/2FA, breach detection (HIBP k-anonymity), biometric zero-knowledge via PRF; chrome extension hardened (X1-X3) but autofill matcher not yet wired to fill path
+- 🆕 **Test Reliability**: ~15 integration tests `.skip`'d as of 2026-06-15 (`b1d545d`) due to a jsdom mis-click/navigation issue and a **real dashboard credential-list dedup bug** surfaced after delete — see Section 17
 
 ---
 
@@ -373,46 +384,61 @@ const actualVaultKey = await decrypt(encryptedVaultKey, derivedKey);
 - Redirects to signup if no users
 - ⚠️ Again redundant with LoginPage flow
 
-#### DashboardPage ⚠️ (40%)
+#### DashboardPage ✅ RESOLVED (2026-06-15) (90%)
 **File**: `src/presentation/pages/DashboardPage.tsx`
 
 **Implemented**:
 - ✅ Top app bar with user avatar
 - ✅ Sidebar navigation
 - ✅ Search bar
-- ✅ Statistics cards (hardcoded)
-- ✅ Credential grid display
+- ✅ Statistics cards (computed from real credentials, line ~107)
+- ✅ Credential grid display, loaded via `credentialRepository.findAll(vaultKey, user.id)` on mount
 - ✅ Logout menu
 - ✅ Responsive layout
+- ✅ Lock vault button (wired to `useAutoLock`/authStore)
+- ✅ Settings menu → navigates to `/settings`
+- ✅ Security audit → navigates to `SecurityAuditPage.tsx`
+- ✅ Favorites filter wired to dashboard filter
+- ✅ Add credential button → `AddCredentialPage.tsx`
+- ✅ Credential detail view (dedicated page, 272 lines)
+- ✅ Edit credentials → `EditCredentialPage.tsx`
+- ✅ Copy password/username via `clipboardManager` with 30s auto-clear
+- ✅ More options menu (edit/delete/favorite actions)
 
-**Non-Functional**:
-- ❌ Lock vault button (does nothing)
-- ❌ Settings menu (no click handler)
-- ❌ Security audit (no implementation)
-- ❌ Favorites filter (shows in sidebar, not wired)
-- ❌ Credential stats (hardcoded zeros)
-- ❌ Add credential button (no form)
-- ❌ Credential detail view (no modal)
-- ❌ Edit credentials (no form)
-- ❌ Copy password button (no handler)
-- ❌ More options menu (no actions)
+**Known Bug (2026-06-15)**:
+- 🔴 **Credential-list dedup after delete**: after deleting one of two
+  credentials, the dashboard's `findAll()` re-fetch can render a transient
+  duplicate (state momentarily holds both the optimistic-removal array and
+  the re-fetched array before the re-fetch settles), so two cards with the
+  same title can appear briefly. `it.skip('should maintain other credentials
+  after deleting one')` in `credential-crud.test.tsx:446` pins this gap.
+  **Fix**: replace the optimistic `setCredentials((prev) => prev.filter(...))`
+  + re-fetch with a single source of truth (either skip the optimistic update
+  or de-dupe by `id` when merging the re-fetch result).
 
-### Missing Pages (40%)
+### Pages (all shipped as of 2026-06-15)
 
-#### Settings Page ❌
-- ❌ Security settings UI
-- ❌ Change master password
-- ❌ Biometric management
-- ❌ Session timeout config
-- ❌ Password generation settings
+#### Settings Page ✅ RESOLVED (2026-06-XX)
+- ✅ `SettingsPage.tsx` — security settings UI
+- ✅ Change master password (`ChangeMasterPasswordDialog.tsx`)
+- ✅ Biometric management
+- ✅ Session timeout config (`AutoLockSettings.tsx`)
+- ✅ Password generation defaults + clipboard timeout (`ClipboardSettings.tsx`)
+- ⚠️ Test-only issue: clicking the Settings/gear `IconButton` in jsdom triggers
+  a navigation away from the page before `ChangeMasterPasswordDialog`/
+  `ExportDialog`/`ImportDialog` open, so 10 integration tests across
+  `master-password-change.test.tsx` and `import-export.test.tsx` are
+  `it.skip`'d (see Section 17). Manual verification in a real browser is
+  needed to confirm whether this is test-harness-only or a real regression.
 
-#### Add/Edit Credential Modal ❌
-- ❌ Form for new credential
-- ❌ Form for editing credential
-- ❌ Category selector
-- ❌ Tag input
-- ❌ URL detection/validation
-- ❌ Password strength display
+#### Add/Edit Credential Pages ✅ RESOLVED (2026-05-30)
+- ✅ `AddCredentialPage.tsx` (610 lines), `EditCredentialPage.tsx` (733 lines)
+- ✅ Category selector, tag input, URL validation
+- ✅ Password strength display (`PasswordStrengthIndicator.tsx`)
+
+#### Security Audit Page ✅ RESOLVED
+- ✅ `SecurityAuditPage.tsx` — weak/duplicate/old password detection, security
+  score breakdown (see Section 17 for remaining coverage gaps)
 
 #### Credential Detail View ✅ RESOLVED (2026-05-30)
 - ✅ Full credential display (272-line page)
@@ -424,12 +450,13 @@ const actualVaultKey = await decrypt(encryptedVaultKey, derivedKey);
 - ⚠️ Security score badge (partial)
 - ⚠️ History/access log (lastAccessedAt tracked, no UI yet)
 
-#### Security Audit ❌
-- ❌ Weak password list
-- ❌ Duplicate password detection
-- ❌ Old password warnings
-- ❌ Security score breakdown
-- ❌ Recommendations
+#### Security Audit ✅ RESOLVED
+- ✅ Weak password list (`SecurityAuditPage.tsx`)
+- ✅ Duplicate password detection
+- ✅ Old password warnings
+- ✅ Security score breakdown
+- ✅ Recommendations
+- See Section 17 for outstanding test-coverage gaps on this page
 
 #### Import/Export UI ✅ RESOLVED (2026-05-30)
 - ✅ ExportDialog.tsx (222 lines) - Export with password protection, strength indicator
@@ -438,15 +465,13 @@ const actualVaultKey = await decrypt(encryptedVaultKey, derivedKey);
 - ✅ `.tvault` encrypted format with AES-256-GCM + PBKDF2
 - ⚠️ Backup scheduling (manual export only for now)
 
-### Component Library (0%)
-**Missing**:
-- ❌ CredentialCard component (standalone)
-- ❌ CredentialForm component
-- ❌ PasswordStrengthMeter component
-- ❌ SecurityScoreBadge component
-- ❌ ConfirmDialog component
-- ❌ ErrorBoundary component
-- ❌ LoadingSpinner component
+### Component Library ✅ MOSTLY RESOLVED (2026-06-15)
+- ✅ `PasswordStrengthIndicator.tsx`
+- ✅ `ClipboardNotification.tsx`, `ClipboardSettings.tsx`
+- ✅ `AutoLockSettings.tsx`, `ChangeMasterPasswordDialog.tsx`
+- ✅ `ExportDialog.tsx`, `ImportDialog.tsx`, `PasswordGeneratorDialog.tsx`
+- ❌ Still missing: standalone `ErrorBoundary` component (no error boundaries
+  found in `src/presentation/` — see Section 17)
 
 ---
 
@@ -988,7 +1013,10 @@ async getDatabaseSize(): Promise<{...}>
 
 ---
 
-## 12. GAPS SUMMARY BY SEVERITY
+## 12. GAPS SUMMARY BY SEVERITY (superseded by Section 17 — 2026-06-15)
+
+> This table reflects the June 11–12 snapshot. **Items 1–4 below have since
+> shipped** (see Section 4). Use Section 17 for the current list.
 
 ### CRITICAL 🔴
 **NONE** — All critical blocking bugs resolved as of June 2026
@@ -996,58 +1024,58 @@ async getDatabaseSize(): Promise<{...}>
 ### HIGH 🟠
 **NONE** — Export encryption, biometric, vault key decryption all implemented
 
-### MEDIUM 🟡
-1. **No password strength meter UI** - Analyzer exists, display missing from add/edit forms
-2. **No security audit page** - Dashboard shows counts, missing weak/duplicate/old password detection
-3. **Clipboard auto-clear not integrated** - Setting exists, clipboard manager needs timer hook
-4. **Credentials not auto-loaded on login** - Store stays empty until manually triggered
-5. **Extension autofill path still inert** - Domain matcher now secure, but credential transport not wired
+### MEDIUM 🟡 (historical — see Section 17 for current state)
+1. ~~**No password strength meter UI**~~ ✅ shipped (`PasswordStrengthIndicator.tsx`)
+2. ~~**No security audit page**~~ ✅ shipped (`SecurityAuditPage.tsx`)
+3. ~~**Clipboard auto-clear not integrated**~~ ✅ shipped (`clipboardManager`)
+4. ~~**Credentials not auto-loaded on login**~~ ✅ shipped (Dashboard `findAll()` on mount)
+5. **Extension autofill path still inert** - Domain matcher secure (X3), but credential transport still not wired to fill path — still open, see Section 17
 
-### LOW 🟢
-1. **No import/export UI** - Backend + encryption complete, just needs UI wiring in SettingsPage
-2. **No credential history view** - lastAccessedAt tracked in DB, UI not yet built
-3. **No favorites filter UI** - Sidebar shows option, not wired to dashboard filter
-4. **Stats hardcoded in dashboard** - Should calculate from real credentials array
-5. **No error boundaries** - Crashes not gracefully caught/displayed
-6. **Test coverage incomplete** - Crypto/auth tested, UI/integration tests partial
+### LOW 🟢 (historical — see Section 17 for current state)
+1. ~~**No import/export UI**~~ ✅ shipped
+2. **No credential history view** - lastAccessedAt tracked in DB, UI not yet built — still open
+3. ~~**No favorites filter UI**~~ ✅ shipped
+4. ~~**Stats hardcoded in dashboard**~~ ✅ shipped (computed from real array)
+5. **No error boundaries** - still open, see Section 17
+6. **Test coverage incomplete** - see Section 17 (~15 integration tests now `.skip`'d)
 
 ---
 
-## 13. RECOMMENDATIONS
+## 13. RECOMMENDATIONS (historical — see Section 17 for the current priority order)
 
 ### Immediate Actions (Day 1-2)
-1. Fix vault key decryption - **BLOCKING** issue
-2. Fix password decryption in reads - **BLOCKING** issue
-3. Add unit test suite for crypto
-4. Write integration test for login flow
+1. Fix vault key decryption - **BLOCKING** issue ✅ done
+2. Fix password decryption in reads - **BLOCKING** issue ✅ done
+3. Add unit test suite for crypto ✅ done
+4. Write integration test for login flow ✅ done
 
 ### Short Term (Week 1-2)
-1. Complete biometric authentication integration
-2. Build add/edit credential modal
-3. Build settings page
-4. Wire auto-lock timeout
-5. Encrypt credential exports
+1. Complete biometric authentication integration ✅ done
+2. Build add/edit credential modal ✅ done
+3. Build settings page ✅ done
+4. Wire auto-lock timeout ✅ done
+5. Encrypt credential exports ✅ done
 
 ### Medium Term (Week 3-4)
-1. Build security audit dashboard
-2. Implement password breach checking
-3. Add credential detail views
-4. Build import/export UI
-5. Implement clipboard auto-clear
+1. Build security audit dashboard ✅ done
+2. Implement password breach checking ✅ done
+3. Add credential detail views ✅ done
+4. Build import/export UI ✅ done
+5. Implement clipboard auto-clear ✅ done
 
 ### Long Term (Month 2+)
-1. Add sync capability (if needed)
-2. Build multi-device support
-3. Add credential sharing
-4. Implement password history
-5. Add advanced filtering/tagging
+1. Add sync capability (if needed) - still open
+2. Build multi-device support - still open
+3. Add credential sharing - still open
+4. Implement password history - still open
+5. Add advanced filtering/tagging - still open
 
 ### Quality Improvements (Ongoing)
-1. Add E2E tests (Cypress/Playwright)
-2. Performance optimization
-3. Security audit (OWASP ZAP)
-4. Accessibility audit (WCAG 2.1)
-5. Cross-browser testing
+1. Add E2E tests (Cypress/Playwright) - still open
+2. Performance optimization - still open
+3. Security audit (OWASP ZAP) - still open
+4. Accessibility audit (WCAG 2.1) - partial, still open
+5. Cross-browser testing - still open
 
 ---
 
@@ -1104,6 +1132,16 @@ async getDatabaseSize(): Promise<{...}>
 - ✅ Fixed eTLD confusion (extractDomain last-two-labels → dot-boundary host-suffix)
 - ✅ Scheme equality required (no https→http fills)
 - ✅ 17 tests pin secure behavior (5 vulnerability cases tested and passing)
+- ⚠️ Matcher still not wired to the fill path (residual, see Section 17)
+
+### Phase 4: F1–F7 — Security Findings Remediation (June 12)
+- ✅ **F1** Per-user data partitioning (DB v9, `userId` on credentials/breach tables, AES-GCM decryption proof for legacy claims)
+- ✅ **F2** Auth snapshot persists only secret-free `PersistedAuthShell`, v1 migration wipes v0 snapshots
+- ✅ **F3** Vault key wrapped under scrypt-v1 (N=131072) with transparent legacy upgrade
+- ✅ **F4** Rate limiter re-scoped as UX hardening, not a security boundary (doc-only)
+- ✅ **F5** Browser credential storage gated on autofill opt-in (incl. batch paths)
+- ✅ **F6** Dead `argon2.wasm` removed, KDF doc drift fixed (scrypt N=131072)
+- ✅ **F7** (June 12) Re-unlock session loss: `UnlockPage` now calls `setSession(session)` on both master-password and biometric unlock paths, fixing silent no-op of Export/Import Vault after re-unlock
 
 ---
 
@@ -1125,12 +1163,14 @@ async getDatabaseSize(): Promise<{...}>
 - ✅ Build configuration (Vite, PWA plugin, security headers)
 - ✅ Security hardening cycles A–E + X1–X3 (CSP, key hygiene, OCR self-host, breach detection, extension fixes)
 
-**What Needs Work** (Phase 2–3, non-blocking):
-- ⚠️ UI completeness (password strength meter, security audit, advanced filters)
-- ⚠️ State management wiring (auto-load credentials on login)
-- ⚠️ Settings page and auto-lock timeout integration
-- ⚠️ Clipboard auto-clear timer hook
-- ⚠️ Test coverage (crypto/auth solid, UI/integration partial)
+**What Needs Work** (non-blocking, see Section 17 for detail):
+- ⚠️ Dashboard credential-list dedup bug after delete
+- ⚠️ ~15 integration tests `.skip`'d pending jsdom navigation-bug investigation
+- ⚠️ Import merge dedupe only in `ImportDialog.tsx`, not `importFromJson()`
+- ⚠️ Extension autofill matcher not wired to fill path
+- ⚠️ TOTP SMS/backup codes not implemented (19/25 tests)
+- ⚠️ CSV import/export not implemented
+- ⚠️ No `ErrorBoundary` components
 - ⚠️ User documentation and onboarding tour
 
 ### Pre-Production Readiness Checklist
@@ -1139,16 +1179,20 @@ async getDatabaseSize(): Promise<{...}>
 - [x] All critical bugs fixed (vault key, credential decryption, export encryption)
 - [x] Core authentication (password + biometric PRF)
 - [x] CRUD operations (create/read/update/delete with encryption)
-- [x] Security audit passed (9.5/10 architecture, 9.2/10 implementation)
+- [x] Security audit passed (9.5/10 architecture, 9.3/10 implementation)
 - [x] OWASP mobile compliance verified (M1–M10)
 - [x] Cryptographic standards validated (AES-256, PBKDF2 600k, Scrypt, HKDF)
 - [x] PWA features (offline, installable, 100+ Lighthouse score potential)
 - [x] Biometric (zero-knowledge, PRF-based, non-extractable)
 - [x] Breach detection (HIBP integration, k-anonymity)
+- [x] UI feature completion (settings page, security audit, password meter, clipboard auto-clear, dashboard auto-load)
+- [x] Security findings remediation F1–F7 (per-user partitioning, secret-free persistence, scrypt-v1 wrap, re-unlock session fix)
 
 **REMAINING** (non-blocking for early access):
-- [ ] UI feature completion (settings page, security audit, password meter)
-- [ ] Integration test suite (>80% coverage)
+- [ ] Fix dashboard credential dedup bug (Section 17 #1)
+- [ ] Un-skip ~15 integration tests (Section 17 #2)
+- [ ] Import merge dedupe in repository layer (Section 17 #3)
+- [ ] Wire autofill matcher to extension fill path (Section 17 #4)
 - [ ] E2E tests (Playwright)
 - [ ] Lighthouse audit (target >90 on production build)
 - [ ] User documentation and help center
@@ -1160,7 +1204,7 @@ async getDatabaseSize(): Promise<{...}>
 
 ## 16. CONCLUSION
 
-The TrustVault PWA has a **production-grade security foundation** with all critical blocking bugs resolved. Phase 1 implementation is complete, and three major security hardening cycles (A–E + X1–X3, May–June 2026) have been deployed. The codebase is **ready for early access beta** with real credentials.
+The TrustVault PWA has a **production-grade security foundation** with all critical blocking bugs resolved, and as of 2026-06-15 the **UI feature set from the June 11 "remaining" list has fully shipped** (Settings, Security Audit, password strength meter, clipboard auto-clear, dashboard auto-load). Four major security hardening cycles (A–E, X1–X3, F1–F7, May–June 2026) have been deployed. The codebase is **ready for early access beta** with real credentials; remaining work is concentrated in test-suite reliability and a small number of minor feature completions (Section 17).
 
 ### What Changed Since May 2026
 
@@ -1178,38 +1222,104 @@ The TrustVault PWA has a **production-grade security foundation** with all criti
 - ✅ P2: Self-hosted OCR (no CDN)
 - ✅ P4: HIBP background re-checks (k-anonymity)
 - ✅ X1–X3: Chrome extension hardening (no plaintext storage, minimized permissions, fixed eTLD matcher)
+- ✅ F1–F7: Per-user data partitioning, secret-free auth persistence, scrypt-v1 vault wrap, autofill opt-in gating, re-unlock session fix
+
+**UI Completed Since June 11**:
+- ✅ SettingsPage, SecurityAuditPage, PasswordStrengthIndicator, ClipboardNotification/Settings, AutoLockSettings, dashboard credential auto-load + computed stats + favorites filter
 
 ### Estimated Timeline to Production
 
-- **Current phase (Phase 1)**: ✅ Complete — security + core CRUD
-- **Next phase (Phase 2, 1–2 weeks)**: Settings page, auto-lock timer, UI completion
-- **Phase 3 (2–3 weeks)**: Security audit page, advanced filters, E2E tests
+- **Phase 1 (security + core CRUD)**: ✅ Complete
+- **Phase 2 (UI completion)**: ✅ Complete (2026-06-15)
+- **Now (1–2 weeks)**: Fix dashboard dedup bug, un-skip integration tests, import merge dedupe, extension autofill wiring (Section 17)
 - **Production hardening (1–2 weeks)**: Lighthouse >90, external security review, deployment docs
-- **Total to full GA**: **4–8 weeks** from Phase 1 complete (mid-June 2026)
+- **Total to full GA**: **2–4 weeks** from this snapshot (mid-late June 2026)
 
 ### Security Rating
 
 - **Architecture**: 9.5/10 (crypto, auth, key management all gold-standard)
-- **Implementation**: 9.2/10 (all critical paths working; minor UI gaps)
+- **Implementation**: 9.3/10 (all critical paths working; remaining gaps are test reliability + minor features)
 - **Overall**: **Production-grade for early access**
 
-### Recommendation (June 11, 2026)
+### Recommendation (2026-06-15)
 
 **✅ BETA-READY FOR EARLY ACCESS** with real credentials.
 
 **Who should use it**:
 - Individual users managing non-critical passwords
 - Security enthusiasts and open-source testers
-- Teams willing to provide feedback on Phase 2/3 features
+- Teams willing to provide feedback on the items in Section 17
 
 **Not yet recommended for**:
 - High-assurance use cases (finance, healthcare) without external audit
 - Enterprises requiring compliance documentation (HIPAA, SOC2, FedRAMP)
-- Users needing all Phase 2/3 features immediately
+- Users relying on the browser extension's autofill (still inert pending X3 wiring)
 
-**Next steps**:
-1. External security audit (cryptography, key hygiene, WebAuthn)
-2. Phase 2 UI completion (settings, auto-lock, password meter)
-3. E2E test suite and Lighthouse optimization
-4. Public beta launch with invite-only access
+**Next steps** (see Section 17 for full prioritization):
+1. Fix dashboard credential dedup bug (real production bug, not just a test artifact)
+2. Investigate and fix the jsdom Settings-navigation issue blocking ~15 integration tests
+3. External security audit (cryptography, key hygiene, WebAuthn)
+4. E2E test suite and Lighthouse optimization
+5. Public beta launch with invite-only access
+
+---
+
+## 17. CURRENT VERIFIED GAPS (2026-06-15) — START HERE FOR PRIORITIZATION
+
+This section reflects a direct check of the codebase and test suite as of
+commit `b1d545d` (2026-06-15), superseding the severity table in Section 12.
+
+### 🔴 HIGH — Real production bug
+1. **Dashboard credential-list dedup after delete** (`DashboardPage.tsx`)
+   After deleting one of two credentials, an optimistic local-state filter
+   races with the `findAll()` re-fetch and can transiently render duplicate
+   cards for the same credential. Pinned by
+   `it.skip('should maintain other credentials after deleting one')` in
+   `src/__tests__/integration/credential-crud.test.tsx:446`.
+   **Fix**: de-dupe by `id` when merging re-fetch results, or drop the
+   optimistic filter and rely solely on the re-fetch.
+
+### 🟡 MEDIUM — Test infrastructure masking real coverage
+2. **~15 integration tests `.skip`'d due to a jsdom mis-click/navigation bug**
+   Clicking certain `IconButton`s (Settings gear, Export/Import triggers) in
+   jsdom appears to navigate the page away before the target dialog
+   (`ChangeMasterPasswordDialog`, `ExportDialog`, `ImportDialog`) opens.
+   Affects all of `master-password-change.test.tsx` (6 tests) and most of
+   `import-export.test.tsx` (4 tests), plus one cross-session test in
+   `credential-crud.test.tsx`. Unknown whether this is test-harness-only or a
+   real navigation regression — **needs manual browser verification** of
+   Settings → Change Master Password / Export / Import flows.
+
+3. **Import merge dedupe gap** — `CredentialRepositoryImpl.importFromJson()`
+   appends duplicates on import; merge-mode dedupe by (title+username) exists
+   only in `ImportDialog.tsx`. Pinned by `importMerge.test.ts` (ROADMAP UC5
+   "Remaining"). Anyone importing via a path other than `ImportDialog` (e.g.
+   future API/CLI) would get duplicates.
+
+4. **Extension autofill matcher not wired to fill path** (X3 residual) —
+   `credentialManagementService.ts`'s dot-boundary host-suffix matcher is
+   secure and tested (17/17), but `GET_CREDENTIALS` still returns empty
+   (X1) so the matcher is never invoked by the content script. Autofill
+   remains non-functional end-to-end.
+
+### 🟢 LOW — Minor feature completions
+5. **TOTP SMS/backup codes not implemented** (19/25 TOTP tests passing) —
+   core RFC 6238 TOTP works; SMS fallback and backup codes are stubs.
+6. **CSV import/export not implemented** — `.tvault` encrypted format works;
+   CSV format (mentioned in original Phase 3.3 spec) not built.
+7. **No `ErrorBoundary` components** — no React error boundaries in
+   `src/presentation/`; unhandled component errors show the default
+   white-screen.
+8. **S5 residual** — immutable base64 copies of decrypted metadata persist
+   transiently during decrypt (storage-format migration tracked, not yet
+   scheduled).
+9. **WCAG 2.1 AA partial** — viewport zoom fixed (S8), but a full
+   accessibility audit has not been run.
+
+### Suggested priority order
+1. #1 (real dedup bug — user-visible data-integrity issue)
+2. #2 (unblock ~15 skipped tests — restores confidence in Settings/Export/Import flows)
+3. #4 (extension autofill — currently a dead feature end-to-end)
+4. #3 (import merge dedupe — defense in depth for non-UI import paths)
+5. #5–9 (minor completions, schedule alongside Phase 3 polish)
 
