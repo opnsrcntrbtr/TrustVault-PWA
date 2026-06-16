@@ -21,6 +21,15 @@
       "js": ["scripts/content.js"],
       "run_at": "document_idle",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "https://trust-vault-pwa.vercel.app/*",
+        "http://localhost:3000/*"
+      ],
+      "js": ["scripts/vault-bridge.js"],
+      "run_at": "document_idle",
+      "all_frames": false
     }
   ],
   "action": {

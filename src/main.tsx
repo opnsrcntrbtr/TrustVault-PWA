@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './presentation/App';
+import { initExtensionBridge } from './core/autofill/extensionBridge';
 import './index.css';
 
 // Load debug utilities in development
 if (import.meta.env.DEV) {
   import('./data/storage/debugUtils');
 }
+
+// Answer credential requests from the TrustVault browser extension's
+// vault-bridge content script (no-op if the extension isn't installed).
+initExtensionBridge();
 
 console.log('=== TrustVault App Loading ===');
 
