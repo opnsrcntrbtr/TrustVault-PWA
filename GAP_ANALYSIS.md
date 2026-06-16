@@ -1168,7 +1168,7 @@ async getDatabaseSize(): Promise<{...}>
 - ✅ Security hardening cycles A–E + X1–X3 (CSP, key hygiene, OCR self-host, breach detection, extension fixes)
 
 **What Needs Work** (non-blocking, see Section 17 for detail):
-- ⚠️ Extension autofill matcher not wired to fill path
+- ⚠️ TOTP SMS/backup codes not implemented (19/25 tests)
 - ⚠️ TOTP SMS/backup codes not implemented (19/25 tests)
 - ⚠️ CSV import/export not implemented
 - ⚠️ No `ErrorBoundary` components
@@ -1301,11 +1301,19 @@ commit `b1d545d` (2026-06-15), superseding the severity table in Section 12.
    for backward compatibility. Pinned by `importMerge.test.ts` (3 tests:
    default-append duplication, merge-skips-existing, merge-dedupes-within-payload).
 
-4. **Extension autofill matcher not wired to fill path** (X3 residual) —
-   `credentialManagementService.ts`'s dot-boundary host-suffix matcher is
-   secure and tested (17/17), but `GET_CREDENTIALS` still returns empty
-   (X1) so the matcher is never invoked by the content script. Autofill
-   remains non-functional end-to-end.
+4. ~~**Extension autofill matcher not wired to fill path**~~ ✅ RESOLVED (2026-06-16) —
+   `src/core/autofill/extensionBridge.ts` (new, PWA side) listens for
+   `TRUSTVAULT_EXTENSION_REQUEST_CREDENTIALS` postMessages from the new
+   `chrome-extension/scripts/vault-bridge.js` content script. On request it
+   calls `findMatchingCredentials` (dot-boundary matcher, wiring the
+   previously-dead code) on the unlocked vault and responds with minimal
+   `{username, password, title}` only — never persisted by the extension.
+   `background.js` `getCredentialsForOrigin` now queries an open TrustVault
+   tab via `chrome.tabs.sendMessage` rather than returning empty. Gated by
+   vault-unlocked + autofill opt-in (`isAutofillEnabledForOrigin`). 8 new
+   tests in `extensionBridge.test.ts` (8/8 pass) cover lock-gate, autofill-
+   gate, exact-origin match, subdomain match, sibling-subdomain rejection,
+   non-login filtering, error resilience, and sort order.
 
 ### 🟢 LOW — Minor feature completions
 5. **TOTP SMS/backup codes not implemented** (19/25 TOTP tests passing) —

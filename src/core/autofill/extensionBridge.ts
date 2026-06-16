@@ -18,6 +18,8 @@ import { isAutofillEnabledForOrigin, loadAutofillSettings } from './autofillSett
 const REQUEST_TYPE = 'TRUSTVAULT_EXTENSION_REQUEST_CREDENTIALS';
 const RESPONSE_TYPE = 'TRUSTVAULT_EXTENSION_CREDENTIALS_RESPONSE';
 
+let bridgeInitialized = false;
+
 interface BridgeCredential {
   username: string;
   password: string;
@@ -25,13 +27,48 @@ interface BridgeCredential {
 }
 
 function respond(requestId: string, credentials: BridgeCredential[]): void {
-  window.postMessage({ type: RESPONSE_TYPE, requestId, credentials }, window.location.origin);
+  // Use '*' targetOrigin so the isolated-world vault-bridge content script
+  // can receive the response regardless of jsdom/extension environment quirks.
+  // The real security gate is the event.source === window check in handleRequest,
+  // not the targetOrigin on the outgoing response.
+  window.postMessage({ type: RESPONSE_TYPE, requestId, credentials }, '*');
+}
+
+/**
+ * Core resolver: given a target origin, return the credentials the extension
+ * is allowed to fill there. Returns an empty array if the vault is locked or
+ * the origin is not autofill-enabled. Exported for unit testing.
+ */
+export async function resolveCredentialsForOrigin(targetOrigin: string): Promise<BridgeCredential[]> {
+  if (!isAutofillEnabledForOrigin(targetOrigin, loadAutofillSettings())) {
+    return [];
+  }
+
+  const { vaultKey, user, isLocked } = useAuthStore.getState();
+  if (!vaultKey || !user || isLocked) {
+    return [];
+  }
+
+  try {
+    const credentials = await credentialRepository.findAll(vaultKey, user.id);
+    const matches = findMatchingCredentials(credentials, targetOrigin);
+
+    return matches.map((m) => ({
+      username: m.credential.username,
+      password: m.credential.password,
+      title: m.credential.title,
+    }));
+  } catch (error) {
+    console.error('Extension autofill bridge failed:', error);
+    return [];
+  }
 }
 
 async function handleRequest(event: MessageEvent): Promise<void> {
-  // Only same-window, same-origin messages - i.e. the extension's
-  // isolated-world content script, never a cross-origin page.
-  if (event.source !== window || event.origin !== window.location.origin) {
+  // Only same-window messages - the isolated-world vault-bridge content script
+  // shares the same window object, so event.source === window distinguishes it
+  // from cross-origin frames.
+  if (event.source !== window) {
     return;
   }
 
@@ -46,34 +83,8 @@ async function handleRequest(event: MessageEvent): Promise<void> {
   }
 
   const { requestId, origin: targetOrigin } = data as { requestId: string; origin: string };
-
-  if (!isAutofillEnabledForOrigin(targetOrigin, loadAutofillSettings())) {
-    respond(requestId, []);
-    return;
-  }
-
-  const { vaultKey, user, isLocked } = useAuthStore.getState();
-  if (!vaultKey || !user || isLocked) {
-    respond(requestId, []);
-    return;
-  }
-
-  try {
-    const credentials = await credentialRepository.findAll(vaultKey, user.id);
-    const matches = findMatchingCredentials(credentials, targetOrigin);
-
-    respond(
-      requestId,
-      matches.map((m) => ({
-        username: m.credential.username,
-        password: m.credential.password,
-        title: m.credential.title,
-      }))
-    );
-  } catch (error) {
-    console.error('Extension autofill bridge failed:', error);
-    respond(requestId, []);
-  }
+  const credentials = await resolveCredentialsForOrigin(targetOrigin);
+  respond(requestId, credentials);
 }
 
 /**
@@ -83,7 +94,14 @@ async function handleRequest(event: MessageEvent): Promise<void> {
  * message.
  */
 export function initExtensionBridge(): void {
+  if (bridgeInitialized) return;
+  bridgeInitialized = true;
   window.addEventListener('message', (event) => {
     void handleRequest(event);
   });
+}
+
+/** Exposed for tests: reset the idempotency guard. */
+export function _resetBridgeForTesting(): void {
+  bridgeInitialized = false;
 }

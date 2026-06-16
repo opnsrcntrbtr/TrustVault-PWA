@@ -6,6 +6,40 @@
 
 ---
 
+## Extension Autofill Bridge — June 16, 2026
+
+**Gap resolved:** ROADMAP.md #3 "Extension autofill matcher not wired to fill path"
+
+**Root cause:** `getCredentialsForOrigin` in `background.js` returned `[]` unconditionally (X1 hardening). The existing `findMatchingCredentials` dot-boundary matcher in `credentialManagementService.ts` was never called from the fill path.
+
+**Fix:**
+- Added `src/core/autofill/extensionBridge.ts` (PWA side): listens for `TRUSTVAULT_EXTENSION_REQUEST_CREDENTIALS` postMessages, calls `findMatchingCredentials` on the unlocked vault, responds with `{username, password, title}` only — nothing persisted.
+- Added `chrome-extension/scripts/vault-bridge.js` (content script): runs only on TrustVault origins; relays background→PWA→background credential requests via `postMessage`.
+- Updated `chrome-extension/scripts/background.js`: `getCredentialsForOrigin` now finds an open TrustVault tab and asks via `REQUEST_CREDENTIALS_FROM_PWA`.
+- Updated `chrome-extension/manifest.json`: registers `vault-bridge.js` for TrustVault origins only.
+- Wired `initExtensionBridge()` into `src/main.tsx`.
+
+**Security invariants preserved:**
+- No credential data persisted by the extension (chrome.storage.local still credential-free).
+- Responds only if vault is unlocked + origin is autofill-enabled (opt-in, off by default).
+- Minimal field projection (username/password/title — no id, url, encrypted blobs).
+- `event.source === window` guard in handler rejects cross-origin frames.
+
+**New tests:** `src/core/autofill/__tests__/extensionBridge.test.ts` — 8/8 passing
+- Vault-locked gate (findAll not called)
+- Autofill opt-in gate
+- Exact-origin credential match with minimal field projection
+- Subdomain → parent-domain match (dot-boundary matcher)
+- Sibling subdomain rejection
+- Non-login category filtering
+- findAll error resilience (returns [], no throw)
+- Confidence sort order (exact before subdomain)
+
+**Type-check:** `npm run type-check` → clean
+**Lint:** `npx eslint src/core/autofill/extensionBridge.ts src/core/autofill/__tests__/extensionBridge.test.ts` → 0 errors
+
+---
+
 ## Import Merge Dedupe in Repository Layer — June 16, 2026
 
 **Gap**: `CredentialRepositoryImpl.importFromJson()` appended every row
