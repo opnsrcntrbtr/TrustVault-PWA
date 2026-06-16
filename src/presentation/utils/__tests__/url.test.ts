@@ -36,6 +36,23 @@ describe('sanitizeUrl', () => {
     expect(sanitizeUrl('\x00javascript:alert(1)')).toBe('about:blank');
     expect(sanitizeUrl('data:text/html,x')).toBe('about:blank');
   });
+
+  // Allowlist posture: only http(s) are safe link schemes. A blocklist lets any
+  // unlisted scheme through (blob:, filesystem:, intent:, etc.), so we deny by
+  // default and permit only the explicitly-safe protocols.
+  it('blocks non-http(s) schemes not on the legacy blocklist', () => {
+    expect(sanitizeUrl('blob:https://evil.com/uuid')).toBe('about:blank');
+    expect(sanitizeUrl('filesystem:https://evil.com/temporary/x')).toBe('about:blank');
+    expect(sanitizeUrl('intent://evil#Intent;scheme=https;end')).toBe('about:blank');
+    expect(sanitizeUrl('ftp://evil.com/x')).toBe('about:blank');
+    expect(sanitizeUrl('chrome://settings')).toBe('about:blank');
+  });
+
+  it('still allows plain http(s) and bare hosts', () => {
+    expect(sanitizeUrl('http://example.com')).toBe('http://example.com/');
+    expect(sanitizeUrl('https://example.com/path?q=1')).toBe('https://example.com/path?q=1');
+    expect(sanitizeUrl('example.com')).toBe('example.com');
+  });
 });
 
 describe('normalizeUrl', () => {

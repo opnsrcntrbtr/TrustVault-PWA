@@ -1,7 +1,14 @@
 /**
- * Sanitizes a URL to prevent javascript: and data: protocol XSS attacks.
- * If the URL is invalid or uses a dangerous protocol, returns a safe fallback or empty string.
+ * Sanitizes a URL to prevent protocol-based XSS (javascript:, data:, etc.).
+ *
+ * Uses an ALLOWLIST: only http(s) — the safe schemes for a rendered website
+ * link — are permitted. Every other protocol (javascript:, data:, vbscript:,
+ * file:, blob:, filesystem:, intent:, chrome:, ftp:, …) collapses to
+ * 'about:blank'. Deny-lists are unsafe here because any unlisted scheme would
+ * otherwise survive validation.
  */
+const ALLOWED_PROTOCOLS = new Set(['http:', 'https:']);
+
 export function sanitizeUrl(url: string | null | undefined): string {
   if (!url) return '';
 
@@ -14,35 +21,28 @@ export function sanitizeUrl(url: string | null | undefined): string {
   if (!trimmedUrl) return '';
 
   try {
-    // If it doesn't have a protocol, add https:// to parse it
-    // But if it's explicitly javascript: or data:, URL parsing will catch it
+    // If it doesn't have a protocol, add https:// to parse it.
+    // An explicit scheme (javascript:, blob:, http://, …) is parsed as-is so
+    // its protocol can be checked against the allowlist.
     const hasProtocol = /^[a-zA-Z0-9+.-]+:\/\//.test(trimmedUrl);
-    const hasSchemaWithoutSlashes = /^[a-zA-Z0-9+.-]+:/.test(trimmedUrl) && !hasProtocol;
+    const hasSchemeWithoutSlashes = /^[a-zA-Z0-9+.-]+:/.test(trimmedUrl) && !hasProtocol;
+    const hasScheme = hasProtocol || hasSchemeWithoutSlashes;
 
-    // If it has a schema like javascript: without //
-    if (hasSchemaWithoutSlashes) {
-      const parsed = new URL(trimmedUrl);
-      if (['javascript:', 'data:', 'vbscript:', 'file:'].includes(parsed.protocol)) {
-        return 'about:blank';
-      }
-      return trimmedUrl;
-    }
-
-    const urlToParse = hasProtocol ? trimmedUrl : `https://${trimmedUrl}`;
+    const urlToParse = hasScheme ? trimmedUrl : `https://${trimmedUrl}`;
     const parsedUrl = new URL(urlToParse);
 
-    if (['javascript:', 'data:', 'vbscript:', 'file:'].includes(parsedUrl.protocol)) {
+    if (!ALLOWED_PROTOCOLS.has(parsedUrl.protocol)) {
       return 'about:blank';
     }
 
-    // Return original if no protocol was added, otherwise return parsed href
-    return hasProtocol ? parsedUrl.href : trimmedUrl;
+    // For an explicitly-schemed URL return the parsed (normalized) href; for a
+    // bare host return the original input so callers can re-display it verbatim.
+    return hasScheme ? parsedUrl.href : trimmedUrl;
 
   } catch {
-    // If URL parsing fails, it's likely a malformed string
-    // Let's do a fallback string check just in case
-    const lowerUrl = trimmedUrl.toLowerCase();
-    if (lowerUrl.startsWith('javascript:') || lowerUrl.startsWith('data:') || lowerUrl.startsWith('vbscript:') || lowerUrl.startsWith('file:')) {
+    // Malformed string that URL() could not parse. If it carries any explicit
+    // scheme we cannot vouch for, deny it; otherwise treat it as a bare host.
+    if (/^[a-zA-Z0-9+.-]+:/.test(trimmedUrl)) {
       return 'about:blank';
     }
     return trimmedUrl;
