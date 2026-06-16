@@ -40,8 +40,9 @@ import {
   Refresh,
   Visibility,
 } from '@mui/icons-material';
-import { useCredentialStore } from '../store/credentialStore';
 import { useAuthStore } from '../store/authStore';
+import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
+import type { Credential } from '@/domain/entities/Credential';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import { getLastFullCheckAt, markBreachCheckComplete } from '@/core/breach/unlockBreachRefresh';
@@ -66,8 +67,8 @@ interface SecurityIssue {
 
 export default function SecurityAuditPage() {
   const navigate = useNavigate();
-  const { credentials } = useCredentialStore();
-  const { user } = useAuthStore();
+  const { user, vaultKey } = useAuthStore();
+  const [credentials, setCredentials] = useState<Credential[]>([]);
   const [loading, setLoading] = useState(true);
   const [securityScore, setSecurityScore] = useState(0);
   const [issues, setIssues] = useState<SecurityIssue[]>([]);
@@ -84,6 +85,33 @@ export default function SecurityAuditPage() {
   } | null>(null);
   // P4: timestamp of the last full HIBP re-check (manual scan or on-unlock refresh)
   const [lastFullCheckAt, setLastFullCheckAt] = useState<number | null>(() => getLastFullCheckAt());
+
+  // Load credentials directly from the repository - this page is not
+  // backed by the (unused) credentialStore, so it must fetch its own copy.
+  useEffect(() => {
+    let mounted = true;
+
+    const loadCredentials = async () => {
+      if (!vaultKey || !user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const creds = await credentialRepository.findAll(vaultKey, user.id);
+        if (mounted) setCredentials(creds);
+      } catch (error) {
+        console.error('Failed to load credentials:', error);
+        if (mounted) setLoading(false);
+      }
+    };
+
+    void loadCredentials();
+
+    return () => {
+      mounted = false;
+    };
+  }, [vaultKey, user]);
 
   useEffect(() => {
     analyzeCredentials();

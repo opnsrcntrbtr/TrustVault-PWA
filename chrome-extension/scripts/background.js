@@ -29,12 +29,36 @@ async function isTrustVaultAccessible() {
  *
  * Secrets are never persisted in extension storage: the vault lives
  * encrypted inside the PWA, and chrome.storage.local is plaintext at rest.
- * Until a secure transport from the PWA exists (e.g. authenticated
- * externally_connectable messaging that returns per-origin entries on
- * demand), this returns no credentials and the fill path stays inert.
+ * Instead, this asks the open TrustVault tab (via the vault-bridge content
+ * script) for credentials matching `origin`. The PWA only answers if its
+ * vault is unlocked and the origin is autofill-enabled; if no TrustVault tab
+ * is open, or the vault is locked, this resolves to an empty array and the
+ * fill path stays inert.
  */
-async function getCredentialsForOrigin(_origin) {
-  return [];
+async function getCredentialsForOrigin(origin) {
+  try {
+    const tabs = await chrome.tabs.query({
+      url: [`${TRUSTVAULT_ORIGIN}/*`, `${TRUSTVAULT_LOCAL}/*`],
+    });
+
+    const tab = tabs.find((t) => t.id !== undefined);
+    if (!tab || tab.id === undefined) {
+      return [];
+    }
+
+    const response = await chrome.tabs.sendMessage(tab.id, {
+      type: 'REQUEST_CREDENTIALS_FROM_PWA',
+      origin,
+    });
+
+    return response && response.success && Array.isArray(response.credentials)
+      ? response.credentials
+      : [];
+  } catch {
+    // No TrustVault tab open, or the vault-bridge content script hasn't
+    // loaded yet - inert.
+    return [];
+  }
 }
 
 /**

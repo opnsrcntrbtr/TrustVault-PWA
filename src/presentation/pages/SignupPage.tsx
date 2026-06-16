@@ -80,7 +80,10 @@ export default function SignupPage() {
       setVaultKey(session.vaultKey);
       setSuccess('Account created successfully! Redirecting to dashboard...');
 
-      setTimeout(() => { navigate('/dashboard'); }, 1500);
+      // No explicit navigate here: the route guard in App.tsx redirects to
+      // /dashboard as soon as isAuthenticated becomes true above. A delayed
+      // setTimeout-based navigate would fire later regardless of where the
+      // user has since navigated.
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create account');
     } finally {

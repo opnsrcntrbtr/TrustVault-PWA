@@ -29,7 +29,15 @@ export interface ICredentialRepository {
 
   // Bulk operations
   exportAll(decryptionKey: CryptoKey, userId: string): Promise<string>; // Encrypted JSON export
-  importFromJson(data: string, encryptionKey: CryptoKey, userId: string): Promise<number>;
+  // mode 'merge' skips rows that match an existing credential's title+username
+  // (case-insensitive), mirroring ImportDialog.tsx's UI-layer dedupe. Defaults
+  // to 'append' (current behavior) for backward compatibility.
+  importFromJson(
+    data: string,
+    encryptionKey: CryptoKey,
+    userId: string,
+    mode?: 'append' | 'merge'
+  ): Promise<number>;
 
   // Security
   updateAccessTime(id: string, userId: string): Promise<void>;

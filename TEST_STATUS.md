@@ -6,6 +6,156 @@
 
 ---
 
+## Extension Autofill Bridge — June 16, 2026
+
+**Gap resolved:** ROADMAP.md #3 "Extension autofill matcher not wired to fill path"
+
+**Root cause:** `getCredentialsForOrigin` in `background.js` returned `[]` unconditionally (X1 hardening). The existing `findMatchingCredentials` dot-boundary matcher in `credentialManagementService.ts` was never called from the fill path.
+
+**Fix:**
+- Added `src/core/autofill/extensionBridge.ts` (PWA side): listens for `TRUSTVAULT_EXTENSION_REQUEST_CREDENTIALS` postMessages, calls `findMatchingCredentials` on the unlocked vault, responds with `{username, password, title}` only — nothing persisted.
+- Added `chrome-extension/scripts/vault-bridge.js` (content script): runs only on TrustVault origins; relays background→PWA→background credential requests via `postMessage`.
+- Updated `chrome-extension/scripts/background.js`: `getCredentialsForOrigin` now finds an open TrustVault tab and asks via `REQUEST_CREDENTIALS_FROM_PWA`.
+- Updated `chrome-extension/manifest.json`: registers `vault-bridge.js` for TrustVault origins only.
+- Wired `initExtensionBridge()` into `src/main.tsx`.
+
+**Security invariants preserved:**
+- No credential data persisted by the extension (chrome.storage.local still credential-free).
+- Responds only if vault is unlocked + origin is autofill-enabled (opt-in, off by default).
+- Minimal field projection (username/password/title — no id, url, encrypted blobs).
+- `event.source === window` guard in handler rejects cross-origin frames.
+
+**New tests:** `src/core/autofill/__tests__/extensionBridge.test.ts` — 8/8 passing
+- Vault-locked gate (findAll not called)
+- Autofill opt-in gate
+- Exact-origin credential match with minimal field projection
+- Subdomain → parent-domain match (dot-boundary matcher)
+- Sibling subdomain rejection
+- Non-login category filtering
+- findAll error resilience (returns [], no throw)
+- Confidence sort order (exact before subdomain)
+
+**Type-check:** `npm run type-check` → clean
+**Lint:** `npx eslint src/core/autofill/extensionBridge.ts src/core/autofill/__tests__/extensionBridge.test.ts` → 0 errors
+
+---
+
+## Import Merge Dedupe in Repository Layer — June 16, 2026
+
+**Gap**: `CredentialRepositoryImpl.importFromJson()` appended every row
+unconditionally; merge-mode dedupe by (title+username, case-insensitive)
+existed only in `ImportDialog.tsx`. Any import path other than the dialog
+(future API/CLI, repository-level scripting) would silently duplicate
+credentials (GAP_ANALYSIS.md Section 17 #3, ROADMAP gap #4).
+
+**Fix**: `importFromJson()` now takes an optional
+`mode: 'append' | 'merge'` (default `'append'`, unchanged for existing
+callers). `'merge'` builds a set of `title+username` keys from existing
+credentials, skips payload rows that match, and also dedupes duplicates
+within the payload itself.
+
+- [x] `src/data/repositories/__tests__/importMerge.test.ts` — 7/7 passing
+  (added: merge-skips-existing-row, merge-dedupes-within-payload; renamed
+  the old "DOCUMENTS GAP" test to reflect default `'append'` behavior)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors (30 pre-existing `CredentialRepositoryImpl.ts`
+  errors unchanged)
+- [x] `npx vitest run src/data/repositories/`: 154/154 passing
+
+See `GAP_ANALYSIS.md` Section 17 #3 and `ROADMAP.md` Top Critical Gaps #4
+(both marked RESOLVED).
+
+---
+
+## Security Audit "Scan All" Bug Fixes — June 15, 2026
+
+**Bug report**: "Security audit page in settings 'Scan All' button does not
+scan security audit correctly."
+
+**Root cause 1** (`SecurityAuditPage.tsx`): the page read `credentials` from
+`useCredentialStore` (Zustand), but `DashboardPage` never populates that
+store — it keeps its own local `useState<Credential[]>([])`. So
+`useCredentialStore().credentials` was always `[]`: the Security Score was
+always 100/"Excellent", every issue category (weak/reused/old/missing) was
+always 0, and `scanForBreaches()` iterated zero credentials — "Scan complete!
+Checked 0 credentials." regardless of vault size. Fixed by loading
+credentials directly via `credentialRepository.findAll(vaultKey, user.id)`,
+the same pattern `DashboardPage` uses.
+
+**Root cause 2** (`breachResultsRepository.ts`): `getAllBreachedCredentials`
+queried `db.breachResults.where('breached').equals(1)`. IndexedDB cannot
+index a `boolean` column, so Dexie never created index entries for `breached`
+— the query always returned `[]`. Breach stats (`getBreachStatistics`, which
+scans `.toArray()` and filters in JS) showed the correct counts, but the
+"Password Found in Data Breach" issue never appeared in the Security Issues
+list. Fixed by fetching all rows and filtering `r.breached` in JS, matching
+`getBreachStatistics`'s approach.
+
+**Verification**: signed up a fresh user, added a credential with password
+`password123` (known HIBP entry, 2,254,650 hits), navigated to Security
+Audit. Before fix: score 100, "All Clear!", 0 issues, "Scan complete! Checked
+0 credentials." After fix: score 0, "Needs Improvement", 2 issues (Password
+Found in Data Breach + Weak Password), "Scan complete! Checked 1
+credentials."
+
+- [x] `src/data/repositories/__tests__/breachResultsRepository.test.ts` —
+  2/2 passing (new, covers the boolean-index regression)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors on touched files
+- [x] Manually verified in browser (dev server + Playwright)
+
+---
+
+## Un-skip Integration Tests: jsdom Navigation Bug — June 15, 2026
+
+**Change**: One-line fix in `SignupPage.tsx`. Root cause: after a successful
+signup, `setTimeout(() => navigate('/dashboard'), 1500)` was scheduled. The
+`/signup` route guard in `App.tsx` already redirects to `/dashboard` the
+instant `isAuthenticated` becomes true, so this timeout was dead in the happy
+path — but it fired ~1.5s later regardless of where the user had since
+navigated, redirecting Settings → Change Master Password / Export / Import
+flows back to `/dashboard` mid-task. This was a **real navigation bug**, not
+test-only — removed the stray `setTimeout`.
+
+- [x] `src/__tests__/integration/master-password-change.test.tsx` — 6/6
+  passing (was 1/6 passing, 5 `it.skip`)
+- [x] `src/__tests__/integration/import-export.test.tsx` — 7/7 passing (was
+  1/7 passing, 6 `it.skip`)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors on touched files
+- [x] `npx vitest run src/__tests__/integration/`: 54 passed (6 files), 0
+  skipped — no regressions
+
+See `GAP_ANALYSIS.md` Section 17 #2 and `ROADMAP.md` Top Critical Gaps #2
+(both marked RESOLVED).
+
+---
+
+## Dashboard Credential Dedup Bug Fix — June 15, 2026
+
+**Change**: One-line fix in `DashboardPage.tsx`'s credential Grid item
+`onClick` guard. Root cause: MUI `MenuItem`s (Edit/Favorite/Delete) render
+`<li role="menuitem">` via a Portal, but React's synthetic event system
+re-fires the click through the component tree, so it bubbled to the Grid's
+`onClick` and triggered `handleViewDetail` → `findById()` →
+`updateAccessTime()`, setting `lastAccessedAt` and causing the credential to
+render in both "Recently Used" and the main grid. Fixed by excluding
+`[role="menuitem"]` and `[role="menu"]` from the guard — this also fixes the
+same unintended navigation for Edit and Favorite/Unfavorite menu actions.
+
+- [x] `src/__tests__/integration/credential-crud.test.tsx > should maintain
+  other credentials after deleting one` — un-skipped (was `it.skip`), now
+  passing (9 passed | 1 unrelated skip in full-file run)
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: no new errors (line-number shifts only vs. baseline)
+- [x] `npx vitest run src/__tests__/integration/`: 36 passed | 18 skipped (6
+  files) — no regressions
+
+See `GAP_ANALYSIS.md` Section 17 #1 and `ROADMAP.md` Top Critical Gaps #1
+(both marked RESOLVED).
+
+---
+
 ## Coverage-Gap Test Suite (TEST_PLAN.md G1–G7) — June 11, 2026
 
 **Change**: Tests only — no production code touched. Added 7 suites (61 tests)

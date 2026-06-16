@@ -1,13 +1,11 @@
 /**
  * Import Merge / Round-Trip Tests (Use Case 5 — encrypted import/export)
  *
- * ROADMAP UC5 lists "merge-conflict resolution" as the remaining gap: the
- * merge/duplicate handling lives only inside ImportDialog.tsx, while
- * CredentialRepository.importFromJson() appends unconditionally. These tests
- * pin the repository-layer contract: round-trip fidelity, encryption at
- * rest, S8 validation before any write, and the (documented) absence of
- * repo-level dedupe. If repo-level merge mode is implemented later, the
- * duplication test below is expected to change — update it deliberately.
+ * Pins the repository-layer contract: round-trip fidelity, encryption at
+ * rest, S8 validation before any write, default 'append' behavior, and the
+ * 'merge' mode dedupe by (title+username), mirroring ImportDialog.tsx's
+ * UI-layer dedupe so non-UI import paths get the same defense in depth
+ * (GAP_ANALYSIS.md Section 17 #3).
  *
  * Uses the real repository, real PBKDF2/AES-GCM crypto, and fake-indexeddb.
  */
@@ -75,18 +73,46 @@ describe('importFromJson() merge behavior and round-trips', () => {
     expect(bank?.username).toBe('acct-1');
   });
 
-  it('DOCUMENTS GAP: re-importing the same payload duplicates rows (no repo-level merge)', async () => {
+  it("default ('append') mode re-importing the same payload duplicates rows", async () => {
     await repository.create(loginInput(), vaultKey, TEST_USER);
     const exported = await repository.exportAll(vaultKey, TEST_USER);
 
-    // Import the exported payload back WITHOUT wiping — "merge" at the
-    // repository layer simply appends; dedupe only exists in ImportDialog.
+    // Import the exported payload back WITHOUT wiping and without
+    // requesting 'merge' - default mode simply appends.
     const imported = await repository.importFromJson(exported, vaultKey, TEST_USER);
     expect(imported).toBe(1);
 
     const all = await repository.findAll(vaultKey, TEST_USER);
     expect(all).toHaveLength(2); // original + duplicate
     expect(all.filter((c) => c.title === 'Gmail' && c.username === 'user@gmail.com')).toHaveLength(2);
+  });
+
+  it("'merge' mode skips rows matching an existing title+username (case-insensitive)", async () => {
+    await repository.create(loginInput(), vaultKey, TEST_USER);
+    const exported = await repository.exportAll(vaultKey, TEST_USER);
+
+    const imported = await repository.importFromJson(exported, vaultKey, TEST_USER, 'merge');
+    expect(imported).toBe(0);
+
+    const all = await repository.findAll(vaultKey, TEST_USER);
+    expect(all).toHaveLength(1); // no duplicate created
+  });
+
+  it("'merge' mode imports new rows and dedupes duplicates within the same payload", async () => {
+    await repository.create(loginInput({ title: 'Gmail' }), vaultKey, TEST_USER);
+
+    const payload = JSON.stringify([
+      loginInput({ title: 'GMAIL', username: 'USER@GMAIL.COM' }), // dupes existing (case-insensitive)
+      loginInput({ title: 'Bank', username: 'acct-1', password: 'BankSecret2@' }), // new
+      loginInput({ title: 'Bank', username: 'acct-1', password: 'BankSecret2@' }), // dupes the row above
+    ]);
+
+    const imported = await repository.importFromJson(payload, vaultKey, TEST_USER, 'merge');
+    expect(imported).toBe(1);
+
+    const all = await repository.findAll(vaultKey, TEST_USER);
+    expect(all).toHaveLength(2);
+    expect(all.map((c) => c.title).sort()).toEqual(['Bank', 'Gmail']);
   });
 
   it('stores imported credentials encrypted at rest (no plaintext secrets in IndexedDB)', async () => {

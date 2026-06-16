@@ -85,6 +85,12 @@ describe('Credential CRUD Integration', () => {
     await db.credentials.clear();
     await db.sessions.clear();
     await vi.waitFor(() => {}, { timeout: 100 });
+    // BrowserRouter reads jsdom's shared window.history, which persists
+    // across tests in this file (e.g. a prior test navigating to /dashboard).
+    window.history.pushState({}, '', '/');
+    // Prevent the driver.js onboarding tour from auto-launching: it clones
+    // highlighted elements into a popover, creating duplicate text matches.
+    localStorage.setItem('trustvault_tour_state', JSON.stringify({ completed: true, version: '1.0.0', tours: {} }));
   });
 
   describe('Create Credential', () => {
@@ -242,7 +248,12 @@ describe('Credential CRUD Integration', () => {
       // Create credential
       await createCredentialFromDashboard(user, 'Facebook', 'fbuser', 'fbpass123');
 
-      // The credential card shows the title, and has Copy/Edit buttons
+      // The credential card shows the title, and has Copy/Edit buttons.
+      // Wait for the list to refresh and render the new card.
+      await waitFor(() => {
+        expect(screen.getByText('Facebook')).toBeInTheDocument();
+      });
+
       // Click Edit to view details
       const editButton = screen.getByRole('button', { name: /edit/i });
       await user.click(editButton);
@@ -304,6 +315,9 @@ describe('Credential CRUD Integration', () => {
       }, { timeout: 5000 });
 
       // Click edit again to verify the update persisted
+      await waitFor(() => {
+        expect(screen.getAllByRole('button', { name: /edit/i }).length).toBeGreaterThan(0);
+      });
       const editButtons = screen.getAllByRole('button', { name: /edit/i });
       await user.click(editButtons[0]);
 
@@ -314,13 +328,12 @@ describe('Credential CRUD Integration', () => {
       });
     });
 
-    // TODO: Fix this cross-session test - requires proper unmount/remount handling
-    it.skip('should persist updates after signout and signin', async () => {
+    it('should persist updates after signout and signin', async () => {
       const user = userEvent.setup();
       const { unmount } = render(
-        
+
           <App />
-        
+
       );
 
       await setupAuthenticatedUser(user);
@@ -329,8 +342,8 @@ describe('Credential CRUD Integration', () => {
       await createCredentialFromDashboard(user, 'Amazon', 'updateduser', 'amazonpass123');
 
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByText('Amazon')).toBeInTheDocument();
+      });
 
       // Signout
       useAuthStore.getState().clearSession();
@@ -338,27 +351,27 @@ describe('Credential CRUD Integration', () => {
 
       // Signin again
       render(
-        
+
           <App />
-        
+
       );
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByRole('heading', { name: /welcome back/i })).toBeInTheDocument();
+      }, { timeout: 10000 });
 
-      const emailInput = screen.getByLabelText(/email/i);
-      const passwordInput = screen.getByLabelText(/password/i);
+      const usernameInput = screen.getByLabelText(/username/i);
+      const passwordInput = screen.getByLabelText(/^master password/i);
 
-      await user.type(emailInput, 'crudtest@example.com');
+      await user.type(usernameInput, 'crudtestuser');
       await user.type(passwordInput, 'TestPassword123!');
 
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^sign in$/i });
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/vault/i)).toBeInTheDocument();
-      }, { timeout: 5000 });
+        expect(screen.getByLabelText('add')).toBeInTheDocument();
+      }, { timeout: 10000 });
 
       // Credential should still exist with updated data
       await waitFor(() => {
@@ -427,9 +440,9 @@ describe('Credential CRUD Integration', () => {
     it('should maintain other credentials after deleting one', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       await setupAuthenticatedUser(user);
@@ -498,8 +511,11 @@ describe('Credential CRUD Integration', () => {
       });
 
       // UPDATE - click Edit button on the card
-      const editButton = screen.getByRole('button', { name: /edit/i });
-      await user.click(editButton);
+      let editButton: HTMLElement;
+      await waitFor(() => {
+        editButton = screen.getByRole('button', { name: /edit/i });
+      });
+      await user.click(editButton!);
 
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: /edit credential/i })).toBeInTheDocument();
@@ -521,6 +537,9 @@ describe('Credential CRUD Integration', () => {
       }, { timeout: 5000 });
 
       // Verify update - click Edit again
+      await waitFor(() => {
+        expect(screen.getAllByRole('button', { name: /edit/i }).length).toBeGreaterThan(0);
+      });
       const editButtons = screen.getAllByRole('button', { name: /edit/i });
       await user.click(editButtons[0]);
 
