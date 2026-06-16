@@ -176,11 +176,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'mui-vendor': ['@mui/material', '@mui/icons-material'],
-          'storage-vendor': ['dexie'],
-          'security-vendor': ['@noble/hashes']
+        // Function form required by Vite 8 / Rolldown (object form unsupported).
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (/[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom)[\\/]/.test(id)) return 'react-vendor';
+          if (/[\\/]node_modules[\\/]@mui[\\/]/.test(id)) return 'mui-vendor';
+          if (/[\\/]node_modules[\\/]dexie[\\/]/.test(id)) return 'storage-vendor';
+          if (/[\\/]node_modules[\\/]@noble[\\/]hashes[\\/]/.test(id)) return 'security-vendor';
+          return undefined;
         }
       }
     }
