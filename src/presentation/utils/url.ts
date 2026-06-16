@@ -5,7 +5,11 @@
 export function sanitizeUrl(url: string | null | undefined): string {
   if (!url) return '';
 
-  // Trim whitespace and remove control characters
+  // Trim whitespace and strip control characters BEFORE any protocol check —
+  // browsers drop \n/\t/\0 etc. when interpreting href, so an obfuscated
+  // `java\nscript:` would otherwise survive validation and run as `javascript:`.
+  // Control chars are intentional here; the no-control-regex lint rule does not apply.
+  // eslint-disable-next-line no-control-regex
   const trimmedUrl = url.trim().replace(/[\x00-\x1F\x7F-\x9F]/g, '');
   if (!trimmedUrl) return '';
 
