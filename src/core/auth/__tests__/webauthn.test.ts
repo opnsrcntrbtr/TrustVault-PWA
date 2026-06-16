@@ -28,11 +28,16 @@ describe('WebAuthn Core Functions', () => {
       };
     };
 
+    // In real browsers PublicKeyCredential is a class (typeof === 'function'),
+    // so isWebAuthnSupported checks for a function. Mock it as one, carrying
+    // the static availability methods, rather than as a plain object.
+    const PublicKeyCredentialMock = Object.assign(function PublicKeyCredential() {}, {
+      isUserVerifyingPlatformAuthenticatorAvailable: vi.fn().mockResolvedValue(true),
+      isConditionalMediationAvailable: vi.fn().mockResolvedValue(true),
+    });
+
     global.window = {
-      PublicKeyCredential: {
-        isUserVerifyingPlatformAuthenticatorAvailable: vi.fn().mockResolvedValue(true),
-        isConditionalMediationAvailable: vi.fn().mockResolvedValue(true),
-      },
+      PublicKeyCredential: PublicKeyCredentialMock,
       location: {
         hostname: 'localhost',
         origin: 'http://localhost:3000',

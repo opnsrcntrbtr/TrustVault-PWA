@@ -62,8 +62,11 @@ function detectCommonPatterns(password: string): string[] {
     weaknesses.push('Contains year or date pattern');
   }
 
-  // Check for repeated sequences
-  if (/(.{2,})\1{2,}/.test(password)) {
+  // Check for repeated sequences. The repeated chunk is length-bounded (2–16)
+  // on purpose: an unbounded `(.{2,})\1{2,}` backtracks catastrophically on long
+  // inputs (≈4s for 1k chars, minutes for 5k), which would freeze the UI when a
+  // long password is analyzed. Realistic weak repeats use short chunks anyway.
+  if (/(.{2,16})\1{2,}/.test(password)) {
     weaknesses.push('Contains repeated sequences');
   }
 

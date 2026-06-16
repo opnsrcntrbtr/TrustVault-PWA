@@ -312,7 +312,9 @@ export function getDeviceName(userAgentOverride?: string): string {
   if (ua.includes('iPad')) return 'iPad Face ID';
   if (ua.includes('Mac')) return 'Mac Touch ID';
   if (ua.includes('Windows')) return 'Windows Hello';
+  // Android before Linux: Android user-agents also contain "Linux".
   if (ua.includes('Android')) return 'Android Biometric';
+  if (ua.includes('Linux')) return 'Linux Biometric';
 
   return 'Biometric Device';
 }

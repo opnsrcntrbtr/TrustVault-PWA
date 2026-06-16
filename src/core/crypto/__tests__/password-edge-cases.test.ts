@@ -4,7 +4,7 @@
  * Addresses identified gaps in password module coverage
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   hashPassword,
   verifyPassword,
@@ -12,6 +12,12 @@ import {
   generateSecurePassword,
   generatePassphrase
 } from '../password';
+
+// These tests exercise real scrypt (N=131072) many times per case. Under the
+// full suite's parallel CPU contention, individual cases can exceed Vitest's
+// default 5s timeout even though each passes comfortably in isolation. Raise
+// the timeout file-wide rather than chasing per-test bumps.
+vi.setConfig({ testTimeout: 30000 });
 
 describe('Password Edge Cases and Security', () => {
   describe('Unicode and Special Character Handling', () => {
