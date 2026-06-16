@@ -12,7 +12,10 @@ import { useThemeStore } from './store/themeStore';
 import { useEffect, useState, useMemo, lazy, Suspense } from 'react';
 import { initializeDatabase } from '@/data/storage/database';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Stack, Typography } from '@mui/material';
+import { Refresh, Warning } from '@mui/icons-material';
+import ErrorBoundary from './components/ErrorBoundary';
+import RouteErrorBoundary from './components/RouteErrorBoundary';
 import { useAutoLock, getDefaultAutoLockConfig } from './hooks/useAutoLock';
 import ClipboardNotification from './components/ClipboardNotification';
 import MobileNavigation from './components/MobileNavigation';
@@ -86,6 +89,7 @@ function AppRoutes() {
       {/* Onboarding tour - only for authenticated users with vault unlocked */}
       {isAuthenticated && !effectivelyLocked && <OnboardingTour autoStart delay={1500} />}
       
+      <RouteErrorBoundary>
       <Suspense fallback={<PageLoader />}>
         <Routes>
         {/* Signin route */}
@@ -261,6 +265,7 @@ function AppRoutes() {
         <Route path="*" element={<Navigate to="/signin" replace />} />
       </Routes>
       </Suspense>
+      </RouteErrorBoundary>
     </>
   );
 }
@@ -429,6 +434,44 @@ function AppContent() {
   );
 }
 
+/** Full-screen fallback for a crash in the app shell/providers (root boundary). */
+function AppErrorFallback() {
+  return (
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          gap: 2,
+          minHeight: '100vh',
+          py: 8,
+        }}
+      >
+        <Warning sx={{ fontSize: 80, color: 'error.main' }} />
+        <Typography variant="h4" component="h1">
+          Something went wrong
+        </Typography>
+        <Typography color="text.secondary">
+          The app ran into an unexpected error. Your vault data is safe and stored
+          locally. Reloading usually fixes this.
+        </Typography>
+        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            startIcon={<Refresh />}
+            onClick={() => window.location.reload()}
+          >
+            Reload app
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
+  );
+}
+
 function App() {
   const { mode } = useThemeStore();
 
@@ -438,7 +481,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppContent />
+      <ErrorBoundary fallback={() => <AppErrorFallback />}>
+        <AppContent />
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }
