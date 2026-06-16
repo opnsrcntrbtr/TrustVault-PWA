@@ -53,6 +53,7 @@ import DeleteConfirmDialog from '@/presentation/components/DeleteConfirmDialog';
 import SearchBar from '@/presentation/components/SearchBar';
 import FilterChips from '@/presentation/components/FilterChips';
 import SortDropdown, { type SortOption } from '@/presentation/components/SortDropdown';
+import { sortCredentials, loadSortPreference, saveSortPreference } from '@/presentation/utils/credentialSort';
 import ThemeToggle from '@/presentation/components/ThemeToggle';
 import TourHelpButton from '@/components/TourHelpButton';
 import type { Credential, CredentialCategory } from '@/domain/entities/Credential';
@@ -81,7 +82,13 @@ export default function DashboardPage() {
   const [selectedCategory, setSelectedCategory] = useState<CredentialCategory | 'all'>('all');
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<SortOption>('updated-desc');
+  // Lazy-init from the persisted preference so the chosen order survives reloads.
+  const [sortBy, setSortBy] = useState<SortOption>(loadSortPreference);
+
+  // Persist the sort preference whenever it changes.
+  useEffect(() => {
+    saveSortPreference(sortBy);
+  }, [sortBy]);
 
   // Credentials state
   const [credentials, setCredentials] = useState<Credential[]>([]);
@@ -292,31 +299,8 @@ export default function DashboardPage() {
       );
     }
 
-    // Apply sorting
-    switch (sortBy) {
-      case 'title-asc':
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case 'title-desc':
-        filtered.sort((a, b) => b.title.localeCompare(a.title));
-        break;
-      case 'updated-desc':
-        filtered.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
-        break;
-      case 'created-desc':
-        filtered.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-        break;
-      case 'favorites-first':
-        filtered.sort((a, b) => {
-          if (a.isFavorite === b.isFavorite) {
-            return b.updatedAt.getTime() - a.updatedAt.getTime();
-          }
-          return a.isFavorite ? -1 : 1;
-        });
-        break;
-    }
-
-    return filtered;
+    // Apply sorting (shared comparator — see credentialSort.ts)
+    return sortCredentials(filtered, sortBy);
   }, [credentials, searchQuery, selectedCategory, favoritesOnly, selectedTags, sortBy]);
 
   // Separate credentials into sections
