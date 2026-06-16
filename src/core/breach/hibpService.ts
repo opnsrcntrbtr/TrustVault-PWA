@@ -37,26 +37,48 @@ const rateLimitState: RateLimitState = {
 const breachCache = new Map<string, { result: BreachCheckResult; expiresAt: number }>();
 
 /**
- * Enforces rate limiting with exponential backoff
+ * Serializes rate-limit acquisition. Concurrent callers chain off this promise
+ * so each waits for the previous caller's slot before computing its own delay,
+ * instead of all reading the same stale `lastRequestAt` and racing through.
+ */
+let rateLimitGate: Promise<void> = Promise.resolve();
+
+/**
+ * Enforces rate limiting with a minimum delay between requests.
+ * Calls are serialized: parallel callers are processed one at a time.
  */
 async function enforceRateLimit(): Promise<void> {
-  const now = Date.now();
-  const timeSinceLastRequest = now - rateLimitState.lastRequestAt;
+  const prior = rateLimitGate;
+  let release!: () => void;
+  rateLimitGate = new Promise<void>(resolve => {
+    release = resolve;
+  });
 
-  // Reset window if expired
-  if (now >= rateLimitState.windowResetAt) {
-    rateLimitState.requestCount = 0;
-    rateLimitState.windowResetAt = now + 60000;
+  try {
+    // Wait for the previous caller to acquire its slot first.
+    await prior;
+
+    const now = Date.now();
+    const timeSinceLastRequest = now - rateLimitState.lastRequestAt;
+
+    // Reset window if expired
+    if (now >= rateLimitState.windowResetAt) {
+      rateLimitState.requestCount = 0;
+      rateLimitState.windowResetAt = now + 60000;
+    }
+
+    // Wait if needed
+    if (timeSinceLastRequest < RATE_LIMIT_DELAY) {
+      const waitTime = RATE_LIMIT_DELAY - timeSinceLastRequest;
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+
+    rateLimitState.lastRequestAt = Date.now();
+    rateLimitState.requestCount++;
+  } finally {
+    // Release the next caller in the chain even if this one failed.
+    release();
   }
-
-  // Wait if needed
-  if (timeSinceLastRequest < RATE_LIMIT_DELAY) {
-    const waitTime = RATE_LIMIT_DELAY - timeSinceLastRequest;
-    await new Promise(resolve => setTimeout(resolve, waitTime));
-  }
-
-  rateLimitState.lastRequestAt = Date.now();
-  rateLimitState.requestCount++;
 }
 
 /**
@@ -109,7 +131,8 @@ function hashPassword(password: string): string {
  */
 export async function checkPasswordBreach(
   password: string,
-  options: BreachCheckOptions = {}
+  options: BreachCheckOptions = {},
+  retryCount = 0
 ): Promise<BreachCheckResult> {
   try {
     // Check cache first
@@ -158,7 +181,7 @@ export async function checkPasswordBreach(
         return result;
       }
 
-      await handleApiError(response);
+      await handleApiError(response, retryCount);
     }
 
     // Parse response - format is "SUFFIX:COUNT\r\n"
@@ -176,15 +199,17 @@ export async function checkPasswordBreach(
       }
     }
 
-    // Determine severity based on breach count
+    // Determine severity based on breach count.
+    // Bands are tuned for password pwn-counts (which reach millions):
+    //   critical > 100k, high 10k–100k, medium 1k–10k, low < 1k.
     let severity: BreachSeverity;
     if (breachCount === 0) {
       severity = 'safe';
-    } else if (breachCount >= 10000) {
+    } else if (breachCount > 100000) {
       severity = 'critical';
-    } else if (breachCount >= 1000) {
+    } else if (breachCount >= 10000) {
       severity = 'high';
-    } else if (breachCount >= 100) {
+    } else if (breachCount >= 1000) {
       severity = 'medium';
     } else {
       severity = 'low';
@@ -220,8 +245,9 @@ export async function checkPasswordBreach(
       }
 
       if (error.message === 'RETRY') {
-        // Retry the request
-        return checkPasswordBreach(password, options);
+        // Retry the request, advancing the retry counter so backoff escalates
+        // and the attempt eventually gives up instead of looping forever.
+        return checkPasswordBreach(password, options, retryCount + 1);
       }
     }
 

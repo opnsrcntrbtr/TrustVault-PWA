@@ -68,13 +68,13 @@ describe('HIBP Breach Detection Security', () => {
     });
 
     it('should compute SHA-1 hash correctly', async () => {
-      // Password "password" has SHA-1: 5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8
+      // Password "password" has SHA-1: 5BAA1E4C9B93F3F0682250B6CF8331B7EE68FD8
       const password = 'password';
 
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => '61E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471'
       } as Response);
 
       try {
@@ -475,7 +475,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471'
       } as Response);
 
       try {
@@ -514,7 +514,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:1234567'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:1234567'
       } as Response);
 
       try {
@@ -534,7 +534,7 @@ describe('HIBP Breach Detection Security', () => {
         status: 200,
         text: async () =>
           'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:10\n' +
-          'E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471\n' +
+          '1E4C9B93F3F0682250B6CF8331B7EE68FD8:3730471\n' +
           'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:5'
       } as Response);
 
@@ -556,7 +556,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:100001'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:100001'
       } as Response);
 
       try {
@@ -574,7 +574,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:50000'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:50000'
       } as Response);
 
       try {
@@ -592,7 +592,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:5000'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:5000'
       } as Response);
 
       try {
@@ -610,7 +610,7 @@ describe('HIBP Breach Detection Security', () => {
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => 'E4C9B93F3F0682250B6CF8331B7EE68FD8:500'
+        text: async () => '1E4C9B93F3F0682250B6CF8331B7EE68FD8:500'
       } as Response);
 
       try {
@@ -645,26 +645,29 @@ describe('HIBP Breach Detection Security', () => {
 
   describe('Email Breach Check', () => {
     it('should check email breaches with API key', async () => {
+      // checkEmailBreach short-circuits when VITE_HIBP_API_KEY is unset, so the
+      // with-key path is only exercised once the env var is stubbed.
+      vi.stubEnv('VITE_HIBP_API_KEY', 'test-api-key');
       const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         status: 200,
         json: async () => [
           {
-            Name: 'Adobe',
-            Title: 'Adobe',
-            Domain: 'adobe.com',
-            BreachDate: '2013-10-04',
-            AddedDate: '2013-12-04T00:00:00Z',
-            ModifiedDate: '2022-05-15T23:52:49Z',
-            PwnCount: 152445165,
-            Description: 'In October 2013...',
-            DataClasses: ['Email addresses', 'Password hints', 'Passwords', 'Usernames'],
-            IsVerified: true,
-            IsFabricated: false,
-            IsSensitive: false,
-            IsRetired: false,
-            IsSpamList: false,
-            LogoPath: 'https://haveibeenpwned.com/Content/Images/PwnedLogos/Adobe.png'
+            name: 'Adobe',
+            title: 'Adobe',
+            domain: 'adobe.com',
+            breachDate: '2013-10-04',
+            addedDate: '2013-12-04T00:00:00Z',
+            modifiedDate: '2022-05-15T23:52:49Z',
+            pwnCount: 152445165,
+            description: 'In October 2013...',
+            dataClasses: ['Email addresses', 'Password hints', 'Passwords', 'Usernames'],
+            isVerified: true,
+            isFabricated: false,
+            isSensitive: false,
+            isRetired: false,
+            isSpamList: false,
+            logoPath: 'https://haveibeenpwned.com/Content/Images/PwnedLogos/Adobe.png'
           }
         ]
       } as Response);
@@ -678,6 +681,7 @@ describe('HIBP Breach Detection Security', () => {
         expect(result.breaches.length).toBeGreaterThan(0);
       } finally {
         fetchSpy.mockRestore();
+        vi.unstubAllEnvs();
       }
     });
 

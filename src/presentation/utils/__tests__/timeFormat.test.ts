@@ -76,7 +76,9 @@ describe('timeFormat utilities', () => {
   });
 
   it('accepts string date input for distance formatting', () => {
-    const value = formatDistanceToNow('2026-01-14T12:00:00.000Z');
+    // No 'Z': parsed in the local frame to match baseTime (also local), so the
+    // gap is exactly 24h regardless of the test runner's timezone.
+    const value = formatDistanceToNow('2026-01-14T12:00:00');
     expect(value).toBe('1 day');
   });
 });

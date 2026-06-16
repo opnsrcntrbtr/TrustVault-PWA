@@ -25,6 +25,11 @@ describe('Clipboard Utilities', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.clearAllMocks();
+    // clearAllMocks does NOT drain the mockResolvedValueOnce queue, so a test
+    // that queues more Once values than it consumes would leak them into later
+    // tests. Reset the clipboard mocks to their default implementations here.
+    vi.mocked(navigator.clipboard.writeText).mockReset().mockResolvedValue(undefined);
+    vi.mocked(navigator.clipboard.readText).mockReset().mockResolvedValue('');
   });
 
   afterEach(() => {
