@@ -28,6 +28,7 @@ import {
   Delete,
   AutoAwesome,
   CameraAlt,
+  Refresh,
 } from '@mui/icons-material';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { useAuthStore } from '@/presentation/store/authStore';
@@ -36,8 +37,11 @@ import DeleteConfirmDialog from '@/presentation/components/DeleteConfirmDialog';
 import PasswordGeneratorDialog from '@/presentation/components/PasswordGeneratorDialog';
 import TotpDisplay from '@/presentation/components/TotpDisplay';
 import TagInput from '@/presentation/components/TagInput';
+import BackupCodesModal from '@/presentation/components/BackupCodesModal';
 import { isValidTOTPSecret } from '@/core/auth/totp';
+import { generateBackupCodes } from '@/core/auth/backupCodes';
 import type { CredentialCategory, Credential } from '@/domain/entities/Credential';
+import type { BackupCode } from '@/domain/entities/Credential';
 import {
   storeCredentialInBrowser,
   toBrowserCredential,
@@ -99,6 +103,11 @@ export default function EditCredentialPage() {
   const [scanDialogOpen, setScanDialogOpen] = useState(false);
   const [ocrResultDialogOpen, setOcrResultDialogOpen] = useState(false);
   const [ocrResult, setOcrResult] = useState<ParsedCredential | null>(null);
+
+  // Backup codes modal state
+  const [showBackupCodesModal, setShowBackupCodesModal] = useState(false);
+  const [generatedBackupCodes, setGeneratedBackupCodes] = useState<BackupCode[]>([]);
+  const [confirmedRegeneration, setConfirmedRegeneration] = useState(false);
 
   // Validation
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -236,6 +245,24 @@ export default function EditCredentialPage() {
     setScanDialogOpen(true);
   };
 
+  const handleRegenerateBackupCodes = () => {
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      'Regenerate backup codes? Old codes will no longer work.'
+    );
+    if (!confirmed) return;
+
+    const codes = generateBackupCodes(12);
+    setGeneratedBackupCodes(codes);
+    setShowBackupCodesModal(true);
+    setConfirmedRegeneration(false);
+  };
+
+  const handleBackupCodesConfirmed = () => {
+    setShowBackupCodesModal(false);
+    setConfirmedRegeneration(true);
+  };
+
   const handleSave = async () => {
     if (!validateForm()) {
       return;
@@ -275,6 +302,10 @@ export default function EditCredentialPage() {
         updateData.username = username.trim();
         updateData.password = password;
         updateData.totpSecret = totpSecret.trim() || undefined;
+        // Include regenerated codes if confirmed
+        if (confirmedRegeneration && generatedBackupCodes.length > 0) {
+          updateData.backupCodes = generatedBackupCodes;
+        }
       }
 
       const updatedCredential = await credentialRepository.update(id, updateData, vaultKey, user.id);
@@ -624,6 +655,21 @@ export default function EditCredentialPage() {
               {totpSecret.trim() && isValidTOTPSecret(totpSecret.trim()) && (
                 <Box sx={{ mt: 2 }}>
                   <TotpDisplay totpSecret={totpSecret.trim()} />
+                  {/* Regenerate Backup Codes */}
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="caption" color="textSecondary">
+                      12 backup codes saved
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={handleRegenerateBackupCodes}
+                      startIcon={<Refresh />}
+                      sx={{ ml: 1 }}
+                    >
+                      Regenerate codes
+                    </Button>
+                  </Box>
                 </Box>
               )}
 
@@ -729,6 +775,15 @@ export default function EditCredentialPage() {
         onApply={handleApplyOcrResult}
         onRescan={handleRescan}
       />
+
+      {/* Backup Codes Modal */}
+      {showBackupCodesModal && (
+        <BackupCodesModal
+          codes={generatedBackupCodes}
+          onConfirm={handleBackupCodesConfirmed}
+          title="New backup codes"
+        />
+      )}
     </Container>
   );
 }
