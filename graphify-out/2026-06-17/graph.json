@@ -542,14 +542,74 @@
   },
   "nodes": [
     {
+      "label": "EditCredentialPage.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "pages_editcredentialpage",
+      "community": 149,
+      "norm_label": "editcredentialpage.tsx"
+    },
+    {
+      "label": "CATEGORIES",
+      "file_type": "code",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "pages_editcredentialpage_categories",
+      "community": 149,
+      "norm_label": "categories"
+    },
+    {
+      "label": "EditCredentialPage()",
+      "file_type": "code",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L65",
+      "_origin": "ast",
+      "id": "pages_editcredentialpage_editcredentialpage",
+      "community": 3,
+      "norm_label": "editcredentialpage()"
+    },
+    {
+      "label": "AddCredentialPage.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 149,
+      "norm_label": "addcredentialpage.tsx",
+      "id": "pages_addcredentialpage"
+    },
+    {
+      "label": "CATEGORIES",
+      "file_type": "code",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L50",
+      "_origin": "ast",
+      "community": 149,
+      "norm_label": "categories",
+      "id": "pages_addcredentialpage_categories"
+    },
+    {
+      "label": "AddCredentialPage()",
+      "file_type": "code",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L60",
+      "_origin": "ast",
+      "community": 149,
+      "norm_label": "addcredentialpage()",
+      "id": "pages_addcredentialpage_addcredentialpage"
+    },
+    {
       "label": "2026-06-17-totp-backup-codes.md",
       "file_type": "document",
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes",
       "community": 23,
-      "norm_label": "2026-06-17-totp-backup-codes.md"
+      "norm_label": "2026-06-17-totp-backup-codes.md",
+      "id": "plans_2026_06_17_totp_backup_codes"
     },
     {
       "label": "TOTP Backup Codes Implementation Plan",
@@ -557,9 +617,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
       "community": 23,
-      "norm_label": "totp backup codes implementation plan"
+      "norm_label": "totp backup codes implementation plan",
+      "id": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan"
     },
     {
       "label": "Global Constraints",
@@ -567,9 +627,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_global_constraints",
       "community": 23,
-      "norm_label": "global constraints"
+      "norm_label": "global constraints",
+      "id": "plans_2026_06_17_totp_backup_codes_global_constraints"
     },
     {
       "label": "File Structure",
@@ -577,9 +637,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_file_structure",
       "community": 23,
-      "norm_label": "file structure"
+      "norm_label": "file structure",
+      "id": "plans_2026_06_17_totp_backup_codes_file_structure"
     },
     {
       "label": "New Files to Create",
@@ -587,9 +647,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_new_files_to_create",
       "community": 23,
-      "norm_label": "new files to create"
+      "norm_label": "new files to create",
+      "id": "plans_2026_06_17_totp_backup_codes_new_files_to_create"
     },
     {
       "label": "Files to Modify",
@@ -597,9 +657,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L34",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_files_to_modify",
       "community": 23,
-      "norm_label": "files to modify"
+      "norm_label": "files to modify",
+      "id": "plans_2026_06_17_totp_backup_codes_files_to_modify"
     },
     {
       "label": "Phase 1: Core Utility Functions & Unit Tests",
@@ -607,9 +667,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L43",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests",
       "community": 23,
-      "norm_label": "phase 1: core utility functions & unit tests"
+      "norm_label": "phase 1: core utility functions & unit tests",
+      "id": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests"
     },
     {
       "label": "Task 1: Define BackupCode Type & Add to Credential Entity",
@@ -617,9 +677,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L45",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_1_define_backupcode_type_add_to_credential_entity",
       "community": 23,
-      "norm_label": "task 1: define backupcode type & add to credential entity"
+      "norm_label": "task 1: define backupcode type & add to credential entity",
+      "id": "plans_2026_06_17_totp_backup_codes_task_1_define_backupcode_type_add_to_credential_entity"
     },
     {
       "label": "Task 2: Implement Core Backup Code Utility Functions",
@@ -627,9 +687,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L99",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_2_implement_core_backup_code_utility_functions",
       "community": 23,
-      "norm_label": "task 2: implement core backup code utility functions"
+      "norm_label": "task 2: implement core backup code utility functions",
+      "id": "plans_2026_06_17_totp_backup_codes_task_2_implement_core_backup_code_utility_functions"
     },
     {
       "label": "Task 3: Write Unit Tests for Backup Code Functions",
@@ -637,9 +697,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L232",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_3_write_unit_tests_for_backup_code_functions",
       "community": 23,
-      "norm_label": "task 3: write unit tests for backup code functions"
+      "norm_label": "task 3: write unit tests for backup code functions",
+      "id": "plans_2026_06_17_totp_backup_codes_task_3_write_unit_tests_for_backup_code_functions"
     },
     {
       "label": "Phase 2: UI Components",
@@ -647,9 +707,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L426",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components",
       "community": 23,
-      "norm_label": "phase 2: ui components"
+      "norm_label": "phase 2: ui components",
+      "id": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components"
     },
     {
       "label": "Task 4: Implement BackupCodesModal Component",
@@ -657,9 +717,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L428",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_4_implement_backupcodesmodal_component",
       "community": 23,
-      "norm_label": "task 4: implement backupcodesmodal component"
+      "norm_label": "task 4: implement backupcodesmodal component",
+      "id": "plans_2026_06_17_totp_backup_codes_task_4_implement_backupcodesmodal_component"
     },
     {
       "label": "Task 5: Implement BackupCodeInput Component",
@@ -667,9 +727,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L616",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_5_implement_backupcodeinput_component",
       "community": 23,
-      "norm_label": "task 5: implement backupcodeinput component"
+      "norm_label": "task 5: implement backupcodeinput component",
+      "id": "plans_2026_06_17_totp_backup_codes_task_5_implement_backupcodeinput_component"
     },
     {
       "label": "Task 6: Write Component Tests for BackupCodesModal",
@@ -677,9 +737,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L774",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_6_write_component_tests_for_backupcodesmodal",
       "community": 23,
-      "norm_label": "task 6: write component tests for backupcodesmodal"
+      "norm_label": "task 6: write component tests for backupcodesmodal",
+      "id": "plans_2026_06_17_totp_backup_codes_task_6_write_component_tests_for_backupcodesmodal"
     },
     {
       "label": "Task 7: Write Component Tests for BackupCodeInput",
@@ -687,9 +747,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L881",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_7_write_component_tests_for_backupcodeinput",
       "community": 23,
-      "norm_label": "task 7: write component tests for backupcodeinput"
+      "norm_label": "task 7: write component tests for backupcodeinput",
+      "id": "plans_2026_06_17_totp_backup_codes_task_7_write_component_tests_for_backupcodeinput"
     },
     {
       "label": "Phase 3: Integration & Wiring",
@@ -697,9 +757,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1088",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
       "community": 23,
-      "norm_label": "phase 3: integration & wiring"
+      "norm_label": "phase 3: integration & wiring",
+      "id": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring"
     },
     {
       "label": "Task 8: Extend CredentialRepositoryImpl to Handle Backup Code Encryption",
@@ -707,9 +767,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1090",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_8_extend_credentialrepositoryimpl_to_handle_backup_code_encryption",
       "community": 23,
-      "norm_label": "task 8: extend credentialrepositoryimpl to handle backup code encryption"
+      "norm_label": "task 8: extend credentialrepositoryimpl to handle backup code encryption",
+      "id": "plans_2026_06_17_totp_backup_codes_task_8_extend_credentialrepositoryimpl_to_handle_backup_code_encryption"
     },
     {
       "label": "Task 9: Wire BackupCodesModal into AddCredentialPage",
@@ -717,9 +777,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1163",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_9_wire_backupcodesmodal_into_addcredentialpage",
       "community": 23,
-      "norm_label": "task 9: wire backupcodesmodal into addcredentialpage"
+      "norm_label": "task 9: wire backupcodesmodal into addcredentialpage",
+      "id": "plans_2026_06_17_totp_backup_codes_task_9_wire_backupcodesmodal_into_addcredentialpage"
     },
     {
       "label": "Task 10: Add \"Regenerate Backup Codes\" to EditCredentialPage",
@@ -727,9 +787,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1265",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_10_add_regenerate_backup_codes_to_editcredentialpage",
       "community": 23,
-      "norm_label": "task 10: add \"regenerate backup codes\" to editcredentialpage"
+      "norm_label": "task 10: add \"regenerate backup codes\" to editcredentialpage",
+      "id": "plans_2026_06_17_totp_backup_codes_task_10_add_regenerate_backup_codes_to_editcredentialpage"
     },
     {
       "label": "Task 11: Add \"Lost Authenticator?\" Button to CredentialDetailsDialog",
@@ -737,9 +797,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1385",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_11_add_lost_authenticator_button_to_credentialdetailsdialog",
       "community": 23,
-      "norm_label": "task 11: add \"lost authenticator?\" button to credentialdetailsdialog"
+      "norm_label": "task 11: add \"lost authenticator?\" button to credentialdetailsdialog",
+      "id": "plans_2026_06_17_totp_backup_codes_task_11_add_lost_authenticator_button_to_credentialdetailsdialog"
     },
     {
       "label": "Task 12: Write Integration Test for Full Backup Code Flow",
@@ -747,9 +807,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1487",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_12_write_integration_test_for_full_backup_code_flow",
       "community": 23,
-      "norm_label": "task 12: write integration test for full backup code flow"
+      "norm_label": "task 12: write integration test for full backup code flow",
+      "id": "plans_2026_06_17_totp_backup_codes_task_12_write_integration_test_for_full_backup_code_flow"
     },
     {
       "label": "Task 13: Run Full Test Suite and Verify No Regressions",
@@ -757,9 +817,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1605",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_task_13_run_full_test_suite_and_verify_no_regressions",
       "community": 23,
-      "norm_label": "task 13: run full test suite and verify no regressions"
+      "norm_label": "task 13: run full test suite and verify no regressions",
+      "id": "plans_2026_06_17_totp_backup_codes_task_13_run_full_test_suite_and_verify_no_regressions"
     },
     {
       "label": "Self-Review Against Spec",
@@ -767,9 +827,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1654",
       "_origin": "ast",
-      "id": "plans_2026_06_17_totp_backup_codes_self_review_against_spec",
       "community": 23,
-      "norm_label": "self-review against spec"
+      "norm_label": "self-review against spec",
+      "id": "plans_2026_06_17_totp_backup_codes_self_review_against_spec"
     },
     {
       "label": "2026-06-17-totp-backup-codes-design.md",
@@ -777,9 +837,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design",
       "community": 1,
-      "norm_label": "2026-06-17-totp-backup-codes-design.md"
+      "norm_label": "2026-06-17-totp-backup-codes-design.md",
+      "id": "specs_2026_06_17_totp_backup_codes_design"
     },
     {
       "label": "TOTP Backup Codes \u2014 Design Spec",
@@ -787,9 +847,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
       "community": 1,
-      "norm_label": "totp backup codes \u2014 design spec"
+      "norm_label": "totp backup codes \u2014 design spec",
+      "id": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec"
     },
     {
       "label": "Goal",
@@ -797,9 +857,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_goal",
       "community": 1,
-      "norm_label": "goal"
+      "norm_label": "goal",
+      "id": "specs_2026_06_17_totp_backup_codes_design_goal"
     },
     {
       "label": "Decisions (from brainstorming)",
@@ -807,9 +867,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_decisions_from_brainstorming",
       "community": 1,
-      "norm_label": "decisions (from brainstorming)"
+      "norm_label": "decisions (from brainstorming)",
+      "id": "specs_2026_06_17_totp_backup_codes_design_decisions_from_brainstorming"
     },
     {
       "label": "Data Model",
@@ -817,9 +877,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_data_model",
       "community": 1,
-      "norm_label": "data model"
+      "norm_label": "data model",
+      "id": "specs_2026_06_17_totp_backup_codes_design_data_model"
     },
     {
       "label": "BackupCode Type",
@@ -827,9 +887,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_backupcode_type",
       "community": 1,
-      "norm_label": "backupcode type"
+      "norm_label": "backupcode type",
+      "id": "specs_2026_06_17_totp_backup_codes_design_backupcode_type"
     },
     {
       "label": "Credential Entity Extension",
@@ -837,9 +897,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_credential_entity_extension",
       "community": 1,
-      "norm_label": "credential entity extension"
+      "norm_label": "credential entity extension",
+      "id": "specs_2026_06_17_totp_backup_codes_design_credential_entity_extension"
     },
     {
       "label": "Code Generation",
@@ -847,9 +907,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L50",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_code_generation",
       "community": 1,
-      "norm_label": "code generation"
+      "norm_label": "code generation",
+      "id": "specs_2026_06_17_totp_backup_codes_design_code_generation"
     },
     {
       "label": "Components & UI Flows",
@@ -857,9 +917,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L58",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows",
       "community": 1,
-      "norm_label": "components & ui flows"
+      "norm_label": "components & ui flows",
+      "id": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows"
     },
     {
       "label": "Component 1: `BackupCodesModal`",
@@ -867,9 +927,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L60",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_component_1_backupcodesmodal",
       "community": 1,
-      "norm_label": "component 1: `backupcodesmodal`"
+      "norm_label": "component 1: `backupcodesmodal`",
+      "id": "specs_2026_06_17_totp_backup_codes_design_component_1_backupcodesmodal"
     },
     {
       "label": "Component 2: `BackupCodeInput`",
@@ -877,9 +937,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L85",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_component_2_backupcodeinput",
       "community": 1,
-      "norm_label": "component 2: `backupcodeinput`"
+      "norm_label": "component 2: `backupcodeinput`",
+      "id": "specs_2026_06_17_totp_backup_codes_design_component_2_backupcodeinput"
     },
     {
       "label": "Component 3: Credential Form Enhancement",
@@ -887,9 +947,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L117",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_component_3_credential_form_enhancement",
       "community": 1,
-      "norm_label": "component 3: credential form enhancement"
+      "norm_label": "component 3: credential form enhancement",
+      "id": "specs_2026_06_17_totp_backup_codes_design_component_3_credential_form_enhancement"
     },
     {
       "label": "Recovery Flow: \"Lost Authenticator?\"",
@@ -897,9 +957,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L136",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_recovery_flow_lost_authenticator",
       "community": 1,
-      "norm_label": "recovery flow: \"lost authenticator?\""
+      "norm_label": "recovery flow: \"lost authenticator?\"",
+      "id": "specs_2026_06_17_totp_backup_codes_design_recovery_flow_lost_authenticator"
     },
     {
       "label": "Encryption & Persistence",
@@ -907,9 +967,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L156",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_encryption_persistence",
       "community": 1,
-      "norm_label": "encryption & persistence"
+      "norm_label": "encryption & persistence",
+      "id": "specs_2026_06_17_totp_backup_codes_design_encryption_persistence"
     },
     {
       "label": "Key Points",
@@ -917,9 +977,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L158",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_key_points",
       "community": 1,
-      "norm_label": "key points"
+      "norm_label": "key points",
+      "id": "specs_2026_06_17_totp_backup_codes_design_key_points"
     },
     {
       "label": "No Persistence Bypass",
@@ -927,9 +987,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L165",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_no_persistence_bypass",
       "community": 1,
-      "norm_label": "no persistence bypass"
+      "norm_label": "no persistence bypass",
+      "id": "specs_2026_06_17_totp_backup_codes_design_no_persistence_bypass"
     },
     {
       "label": "Error Handling",
@@ -937,9 +997,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L172",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_error_handling",
       "community": 1,
-      "norm_label": "error handling"
+      "norm_label": "error handling",
+      "id": "specs_2026_06_17_totp_backup_codes_design_error_handling"
     },
     {
       "label": "Generation Failures",
@@ -947,9 +1007,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L174",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_generation_failures",
       "community": 1,
-      "norm_label": "generation failures"
+      "norm_label": "generation failures",
+      "id": "specs_2026_06_17_totp_backup_codes_design_generation_failures"
     },
     {
       "label": "Recovery Failures",
@@ -957,9 +1017,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L180",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_recovery_failures",
       "community": 1,
-      "norm_label": "recovery failures"
+      "norm_label": "recovery failures",
+      "id": "specs_2026_06_17_totp_backup_codes_design_recovery_failures"
     },
     {
       "label": "Regeneration",
@@ -967,9 +1027,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L189",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_regeneration",
       "community": 1,
-      "norm_label": "regeneration"
+      "norm_label": "regeneration",
+      "id": "specs_2026_06_17_totp_backup_codes_design_regeneration"
     },
     {
       "label": "Testing Strategy",
@@ -977,9 +1037,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L196",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_testing_strategy",
       "community": 1,
-      "norm_label": "testing strategy"
+      "norm_label": "testing strategy",
+      "id": "specs_2026_06_17_totp_backup_codes_design_testing_strategy"
     },
     {
       "label": "Unit Tests (`src/core/auth/totp.test.ts` expansion)",
@@ -987,9 +1047,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L198",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_unit_tests_src_core_auth_totp_test_ts_expansion",
       "community": 1,
-      "norm_label": "unit tests (`src/core/auth/totp.test.ts` expansion)"
+      "norm_label": "unit tests (`src/core/auth/totp.test.ts` expansion)",
+      "id": "specs_2026_06_17_totp_backup_codes_design_unit_tests_src_core_auth_totp_test_ts_expansion"
     },
     {
       "label": "Component Tests",
@@ -997,9 +1057,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L260",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_component_tests",
       "community": 1,
-      "norm_label": "component tests"
+      "norm_label": "component tests",
+      "id": "specs_2026_06_17_totp_backup_codes_design_component_tests"
     },
     {
       "label": "Integration Tests (`credential-crud.test.tsx` expansion)",
@@ -1007,9 +1067,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L285",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_integration_tests_credential_crud_test_tsx_expansion",
       "community": 1,
-      "norm_label": "integration tests (`credential-crud.test.tsx` expansion)"
+      "norm_label": "integration tests (`credential-crud.test.tsx` expansion)",
+      "id": "specs_2026_06_17_totp_backup_codes_design_integration_tests_credential_crud_test_tsx_expansion"
     },
     {
       "label": "Files to Create / Modify",
@@ -1017,9 +1077,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L301",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_files_to_create_modify",
       "community": 1,
-      "norm_label": "files to create / modify"
+      "norm_label": "files to create / modify",
+      "id": "specs_2026_06_17_totp_backup_codes_design_files_to_create_modify"
     },
     {
       "label": "New Files",
@@ -1027,9 +1087,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L303",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_new_files",
       "community": 1,
-      "norm_label": "new files"
+      "norm_label": "new files",
+      "id": "specs_2026_06_17_totp_backup_codes_design_new_files"
     },
     {
       "label": "Modify",
@@ -1037,9 +1097,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L311",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_modify",
       "community": 1,
-      "norm_label": "modify"
+      "norm_label": "modify",
+      "id": "specs_2026_06_17_totp_backup_codes_design_modify"
     },
     {
       "label": "Known Limitations (Documented, Out of Scope)",
@@ -1047,9 +1107,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L321",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_known_limitations_documented_out_of_scope",
       "community": 1,
-      "norm_label": "known limitations (documented, out of scope)"
+      "norm_label": "known limitations (documented, out of scope)",
+      "id": "specs_2026_06_17_totp_backup_codes_design_known_limitations_documented_out_of_scope"
     },
     {
       "label": "Success Criteria",
@@ -1057,9 +1117,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L330",
       "_origin": "ast",
-      "id": "specs_2026_06_17_totp_backup_codes_design_success_criteria",
       "community": 1,
-      "norm_label": "success criteria"
+      "norm_label": "success criteria",
+      "id": "specs_2026_06_17_totp_backup_codes_design_success_criteria"
     },
     {
       "label": "CredentialRepositoryImpl.ts",
@@ -1067,9 +1127,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl",
       "community": 14,
-      "norm_label": "credentialrepositoryimpl.ts"
+      "norm_label": "credentialrepositoryimpl.ts",
+      "id": "repositories_credentialrepositoryimpl"
     },
     {
       "label": "CredentialRepository",
@@ -1077,9 +1137,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository",
       "community": 8,
-      "norm_label": "credentialrepository"
+      "norm_label": "credentialrepository",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository"
     },
     {
       "label": ".encryptField()",
@@ -1087,9 +1147,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_encryptfield",
       "community": 8,
-      "norm_label": ".encryptfield()"
+      "norm_label": ".encryptfield()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_encryptfield"
     },
     {
       "label": ".encryptOptional()",
@@ -1097,9 +1157,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L33",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_encryptoptional",
       "community": 8,
-      "norm_label": ".encryptoptional()"
+      "norm_label": ".encryptoptional()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_encryptoptional"
     },
     {
       "label": ".decryptField()",
@@ -1107,9 +1167,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptfield",
       "community": 8,
-      "norm_label": ".decryptfield()"
+      "norm_label": ".decryptfield()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptfield"
     },
     {
       "label": ".decryptOptional()",
@@ -1117,9 +1177,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptoptional",
       "community": 8,
-      "norm_label": ".decryptoptional()"
+      "norm_label": ".decryptoptional()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptoptional"
     },
     {
       "label": ".canClaim()",
@@ -1127,9 +1187,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L62",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_canclaim",
       "community": 8,
-      "norm_label": ".canclaim()"
+      "norm_label": ".canclaim()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_canclaim"
     },
     {
       "label": ".claimDecryptable()",
@@ -1137,9 +1197,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L75",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_claimdecryptable",
       "community": 8,
-      "norm_label": ".claimdecryptable()"
+      "norm_label": ".claimdecryptable()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_claimdecryptable"
     },
     {
       "label": ".getOwnedAndClaimable()",
@@ -1147,9 +1207,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L94",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_getownedandclaimable",
       "community": 8,
-      "norm_label": ".getownedandclaimable()"
+      "norm_label": ".getownedandclaimable()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_getownedandclaimable"
     },
     {
       "label": ".createWithId()",
@@ -1157,9 +1217,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L109",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_createwithid",
       "community": 8,
-      "norm_label": ".createwithid()"
+      "norm_label": ".createwithid()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_createwithid"
     },
     {
       "label": ".create()",
@@ -1167,9 +1227,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L165",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_create",
       "community": 8,
-      "norm_label": ".create()"
+      "norm_label": ".create()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_create"
     },
     {
       "label": ".findById()",
@@ -1177,9 +1237,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L173",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_findbyid",
       "community": 8,
-      "norm_label": ".findbyid()"
+      "norm_label": ".findbyid()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_findbyid"
     },
     {
       "label": ".findAll()",
@@ -1187,9 +1247,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L191",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_findall",
       "community": 8,
-      "norm_label": ".findall()"
+      "norm_label": ".findall()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_findall"
     },
     {
       "label": ".update()",
@@ -1197,9 +1257,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L196",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_update",
       "community": 8,
-      "norm_label": ".update()"
+      "norm_label": ".update()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_update"
     },
     {
       "label": ".delete()",
@@ -1207,9 +1267,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L299",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_delete",
       "community": 8,
-      "norm_label": ".delete()"
+      "norm_label": ".delete()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_delete"
     },
     {
       "label": ".search()",
@@ -1217,9 +1277,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L315",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_search",
       "community": 8,
-      "norm_label": ".search()"
+      "norm_label": ".search()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_search"
     },
     {
       "label": ".findByCategory()",
@@ -1227,9 +1287,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L327",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_findbycategory",
       "community": 8,
-      "norm_label": ".findbycategory()"
+      "norm_label": ".findbycategory()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_findbycategory"
     },
     {
       "label": ".findFavorites()",
@@ -1237,9 +1297,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L345",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_findfavorites",
       "community": 8,
-      "norm_label": ".findfavorites()"
+      "norm_label": ".findfavorites()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_findfavorites"
     },
     {
       "label": ".exportAll()",
@@ -1247,9 +1307,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L356",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_exportall",
       "community": 8,
-      "norm_label": ".exportall()"
+      "norm_label": ".exportall()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_exportall"
     },
     {
       "label": ".importFromJson()",
@@ -1257,9 +1317,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L386",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_importfromjson",
       "community": 8,
-      "norm_label": ".importfromjson()"
+      "norm_label": ".importfromjson()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_importfromjson"
     },
     {
       "label": ".updateAccessTime()",
@@ -1267,9 +1327,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L447",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_updateaccesstime",
       "community": 8,
-      "norm_label": ".updateaccesstime()"
+      "norm_label": ".updateaccesstime()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_updateaccesstime"
     },
     {
       "label": ".analyzeSecurityScore()",
@@ -1277,9 +1337,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L455",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_analyzesecurityscore",
       "community": 8,
-      "norm_label": ".analyzesecurityscore()"
+      "norm_label": ".analyzesecurityscore()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_analyzesecurityscore"
     },
     {
       "label": ".decryptCredential()",
@@ -1287,9 +1347,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L473",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptcredential",
       "community": 8,
-      "norm_label": ".decryptcredential()"
+      "norm_label": ".decryptcredential()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_decryptcredential"
     },
     {
       "label": ".save()",
@@ -1297,9 +1357,9 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L573",
       "_origin": "ast",
-      "id": "repositories_credentialrepositoryimpl_credentialrepository_save",
       "community": 8,
-      "norm_label": ".save()"
+      "norm_label": ".save()",
+      "id": "repositories_credentialrepositoryimpl_credentialrepository_save"
     },
     {
       "label": "importValidation.ts",
@@ -1307,9 +1367,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "repositories_importvalidation",
       "community": 8,
-      "norm_label": "importvalidation.ts"
+      "norm_label": "importvalidation.ts",
+      "id": "repositories_importvalidation"
     },
     {
       "label": "IMPORT_LIMITS",
@@ -1317,9 +1377,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "repositories_importvalidation_import_limits",
       "community": 8,
-      "norm_label": "import_limits"
+      "norm_label": "import_limits",
+      "id": "repositories_importvalidation_import_limits"
     },
     {
       "label": "boundedString()",
@@ -1327,9 +1387,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "repositories_importvalidation_boundedstring",
       "community": 8,
-      "norm_label": "boundedstring()"
+      "norm_label": "boundedstring()",
+      "id": "repositories_importvalidation_boundedstring"
     },
     {
       "label": "credentialCategorySchema",
@@ -1337,9 +1397,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "repositories_importvalidation_credentialcategoryschema",
       "community": 8,
-      "norm_label": "credentialcategoryschema"
+      "norm_label": "credentialcategoryschema",
+      "id": "repositories_importvalidation_credentialcategoryschema"
     },
     {
       "label": "cardTypeSchema",
@@ -1347,9 +1407,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "repositories_importvalidation_cardtypeschema",
       "community": 8,
-      "norm_label": "cardtypeschema"
+      "norm_label": "cardtypeschema",
+      "id": "repositories_importvalidation_cardtypeschema"
     },
     {
       "label": "backupCodeSchema",
@@ -1357,9 +1417,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "id": "repositories_importvalidation_backupcodeschema",
       "community": 8,
-      "norm_label": "backupcodeschema"
+      "norm_label": "backupcodeschema",
+      "id": "repositories_importvalidation_backupcodeschema"
     },
     {
       "label": "importedCredentialSchema",
@@ -1367,9 +1427,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L46",
       "_origin": "ast",
-      "id": "repositories_importvalidation_importedcredentialschema",
       "community": 8,
-      "norm_label": "importedcredentialschema"
+      "norm_label": "importedcredentialschema",
+      "id": "repositories_importvalidation_importedcredentialschema"
     },
     {
       "label": "importPayloadSchema",
@@ -1377,9 +1437,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L68",
       "_origin": "ast",
-      "id": "repositories_importvalidation_importpayloadschema",
       "community": 8,
-      "norm_label": "importpayloadschema"
+      "norm_label": "importpayloadschema",
+      "id": "repositories_importvalidation_importpayloadschema"
     },
     {
       "label": "ImportedCredential",
@@ -1387,9 +1447,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L72",
       "_origin": "ast",
-      "id": "repositories_importvalidation_importedcredential",
       "community": 8,
-      "norm_label": "importedcredential"
+      "norm_label": "importedcredential",
+      "id": "repositories_importvalidation_importedcredential"
     },
     {
       "label": "parseImportPayload()",
@@ -1397,9 +1457,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L78",
       "_origin": "ast",
-      "id": "repositories_importvalidation_parseimportpayload",
       "community": 8,
-      "norm_label": "parseimportpayload()"
+      "norm_label": "parseimportpayload()",
+      "id": "repositories_importvalidation_parseimportpayload"
     },
     {
       "label": "database.ts",
@@ -1407,9 +1467,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "storage_database",
       "community": 14,
-      "norm_label": "database.ts"
+      "norm_label": "database.ts",
+      "id": "storage_database"
     },
     {
       "label": "StoredCredential",
@@ -1417,9 +1477,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "storage_database_storedcredential",
       "community": 8,
-      "norm_label": "storedcredential"
+      "norm_label": "storedcredential",
+      "id": "storage_database_storedcredential"
     },
     {
       "label": "StoredUser",
@@ -1427,9 +1487,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L85",
       "_origin": "ast",
-      "id": "storage_database_storeduser",
-      "community": 13,
-      "norm_label": "storeduser"
+      "community": 14,
+      "norm_label": "storeduser",
+      "id": "storage_database_storeduser"
     },
     {
       "label": "StoredSession",
@@ -1437,9 +1497,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L101",
       "_origin": "ast",
-      "id": "storage_database_storedsession",
       "community": 14,
-      "norm_label": "storedsession"
+      "norm_label": "storedsession",
+      "id": "storage_database_storedsession"
     },
     {
       "label": "StoredBreachResult",
@@ -1447,9 +1507,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L110",
       "_origin": "ast",
-      "id": "storage_database_storedbreachresult",
       "community": 143,
-      "norm_label": "storedbreachresult"
+      "norm_label": "storedbreachresult",
+      "id": "storage_database_storedbreachresult"
     },
     {
       "label": "StoredBreachPrefix",
@@ -1457,9 +1517,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L136",
       "_origin": "ast",
-      "id": "storage_database_storedbreachprefix",
-      "community": 14,
-      "norm_label": "storedbreachprefix"
+      "community": 8,
+      "norm_label": "storedbreachprefix",
+      "id": "storage_database_storedbreachprefix"
     },
     {
       "label": "StoredLoginAttempt",
@@ -1467,9 +1527,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L148",
       "_origin": "ast",
-      "id": "storage_database_storedloginattempt",
       "community": 14,
-      "norm_label": "storedloginattempt"
+      "norm_label": "storedloginattempt",
+      "id": "storage_database_storedloginattempt"
     },
     {
       "label": "TrustVaultDB",
@@ -1477,9 +1537,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L159",
       "_origin": "ast",
-      "id": "storage_database_trustvaultdb",
-      "community": 14,
-      "norm_label": "trustvaultdb"
+      "community": 8,
+      "norm_label": "trustvaultdb",
+      "id": "storage_database_trustvaultdb"
     },
     {
       "label": ".constructor()",
@@ -1487,9 +1547,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L168",
       "_origin": "ast",
-      "id": "storage_database_trustvaultdb_constructor",
-      "community": 14,
-      "norm_label": ".constructor()"
+      "community": 8,
+      "norm_label": ".constructor()",
+      "id": "storage_database_trustvaultdb_constructor"
     },
     {
       "label": ".clearAll()",
@@ -1497,9 +1557,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L363",
       "_origin": "ast",
-      "id": "storage_database_trustvaultdb_clearall",
-      "community": 14,
-      "norm_label": ".clearall()"
+      "community": 8,
+      "norm_label": ".clearall()",
+      "id": "storage_database_trustvaultdb_clearall"
     },
     {
       "label": ".exportToJSON()",
@@ -1507,9 +1567,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L375",
       "_origin": "ast",
-      "id": "storage_database_trustvaultdb_exporttojson",
-      "community": 14,
-      "norm_label": ".exporttojson()"
+      "community": 8,
+      "norm_label": ".exporttojson()",
+      "id": "storage_database_trustvaultdb_exporttojson"
     },
     {
       "label": ".importFromJSON()",
@@ -1517,9 +1577,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L390",
       "_origin": "ast",
-      "id": "storage_database_trustvaultdb_importfromjson",
-      "community": 14,
-      "norm_label": ".importfromjson()"
+      "community": 8,
+      "norm_label": ".importfromjson()",
+      "id": "storage_database_trustvaultdb_importfromjson"
     },
     {
       "label": ".getDatabaseSize()",
@@ -1527,9 +1587,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L418",
       "_origin": "ast",
-      "id": "storage_database_trustvaultdb_getdatabasesize",
-      "community": 14,
-      "norm_label": ".getdatabasesize()"
+      "community": 8,
+      "norm_label": ".getdatabasesize()",
+      "id": "storage_database_trustvaultdb_getdatabasesize"
     },
     {
       "label": "db",
@@ -1537,9 +1597,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L434",
       "_origin": "ast",
-      "id": "storage_database_db",
       "community": 14,
-      "norm_label": "db"
+      "norm_label": "db",
+      "id": "storage_database_db"
     },
     {
       "label": "initializeDatabase()",
@@ -1547,9 +1607,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L439",
       "_origin": "ast",
-      "id": "storage_database_initializedatabase",
       "community": 32,
-      "norm_label": "initializedatabase()"
+      "norm_label": "initializedatabase()",
+      "id": "storage_database_initializedatabase"
     },
     {
       "label": "closeDatabase()",
@@ -1557,9 +1617,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L454",
       "_origin": "ast",
-      "id": "storage_database_closedatabase",
       "community": 14,
-      "norm_label": "closedatabase()"
+      "norm_label": "closedatabase()",
+      "id": "storage_database_closedatabase"
     },
     {
       "label": "deleteDatabase()",
@@ -1567,9 +1627,9 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L461",
       "_origin": "ast",
-      "id": "storage_database_deletedatabase",
       "community": 14,
-      "norm_label": "deletedatabase()"
+      "norm_label": "deletedatabase()",
+      "id": "storage_database_deletedatabase"
     },
     {
       "label": "BackupCodesModal.test.tsx",
@@ -1577,9 +1637,9 @@
       "source_file": "src/presentation/components/__tests__/BackupCodesModal.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "tests_backupcodesmodal_test",
       "community": 101,
-      "norm_label": "backupcodesmodal.test.tsx"
+      "norm_label": "backupcodesmodal.test.tsx",
+      "id": "tests_backupcodesmodal_test"
     },
     {
       "label": "BackupCodeInput.test.tsx",
@@ -2555,7 +2615,7 @@
       "source_file": "package.json",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 275,
+      "community": 25,
       "norm_label": "overrides",
       "id": "package_overrides"
     },
@@ -2565,7 +2625,7 @@
       "source_file": "package.json",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 275,
+      "community": 25,
       "norm_label": "uuid",
       "id": "package_overrides_uuid"
     },
@@ -2575,7 +2635,7 @@
       "source_file": "package.json",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 275,
+      "community": 25,
       "norm_label": "esbuild",
       "id": "package_overrides_esbuild"
     },
@@ -3919,7 +3979,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 14,
       "norm_label": "master-password-change.test.tsx",
       "id": "integration_master_password_change_test"
     },
@@ -3929,7 +3989,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 3,
+      "community": 14,
       "norm_label": "setupauthenticateduserwithcredentials()",
       "id": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
     },
@@ -4179,7 +4239,7 @@
       "source_file": "src/core/auth/__tests__/rateLimiter.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "ratelimiter.test.ts",
       "id": "tests_ratelimiter_test"
     },
@@ -4439,7 +4499,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "ratelimiter.ts",
       "id": "auth_ratelimiter"
     },
@@ -4449,7 +4509,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "thresholds",
       "id": "auth_ratelimiter_thresholds"
     },
@@ -4459,7 +4519,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "lockoutms()",
       "id": "auth_ratelimiter_lockoutms"
     },
@@ -4469,7 +4529,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "formatremaining()",
       "id": "auth_ratelimiter_formatremaining"
     },
@@ -4479,7 +4539,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "checkratelimit()",
       "id": "auth_ratelimiter_checkratelimit"
     },
@@ -4489,7 +4549,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "recordfailedattempt()",
       "id": "auth_ratelimiter_recordfailedattempt"
     },
@@ -4499,7 +4559,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": "clearattempts()",
       "id": "auth_ratelimiter_clearattempts"
     },
@@ -5369,7 +5429,7 @@
       "source_file": "src/core/breach/__tests__/breachPrefixStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 8,
       "norm_label": "breachprefixstore.test.ts",
       "id": "tests_breachprefixstore_test"
     },
@@ -5409,7 +5469,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 8,
       "norm_label": "breachprefixstore.ts",
       "id": "breach_breachprefixstore"
     },
@@ -5419,7 +5479,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 14,
+      "community": 8,
       "norm_label": "computesha1prefix()",
       "id": "breach_breachprefixstore_computesha1prefix"
     },
@@ -5429,7 +5489,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 14,
+      "community": 8,
       "norm_label": "savebreachprefix()",
       "id": "breach_breachprefixstore_savebreachprefix"
     },
@@ -5439,7 +5499,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L54",
       "_origin": "ast",
-      "community": 14,
+      "community": 8,
       "norm_label": "deletebreachprefix()",
       "id": "breach_breachprefixstore_deletebreachprefix"
     },
@@ -5449,7 +5509,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 14,
+      "community": 8,
       "norm_label": "getallbreachprefixes()",
       "id": "breach_breachprefixstore_getallbreachprefixes"
     },
@@ -6489,7 +6549,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 14,
       "norm_label": "userrepositoryimpl.ts",
       "id": "repositories_userrepositoryimpl"
     },
@@ -6519,7 +6579,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L86",
       "_origin": "ast",
-      "community": 140,
+      "community": 126,
       "norm_label": ".authenticatewithpassword()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_authenticatewithpassword"
     },
@@ -6729,7 +6789,7 @@
       "source_file": "src/data/repositories/__tests__/UserRepositoryImpl.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 14,
       "norm_label": "userrepositoryimpl.test.ts",
       "id": "tests_userrepositoryimpl_test"
     },
@@ -6739,7 +6799,7 @@
       "source_file": "src/data/repositories/__tests__/UserRepositoryImpl.test.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 2,
+      "community": 14,
       "norm_label": "expectsamekey()",
       "id": "tests_userrepositoryimpl_test_expectsamekey"
     },
@@ -6749,7 +6809,7 @@
       "source_file": "src/data/repositories/__tests__/UserRepositoryImpl.test.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 2,
+      "community": 14,
       "norm_label": "makelegacyscrypthash()",
       "id": "tests_userrepositoryimpl_test_makelegacyscrypthash"
     },
@@ -7079,7 +7139,7 @@
       "source_file": "src/domain/entities/User.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 140,
       "norm_label": "user.ts",
       "id": "entities_user"
     },
@@ -8449,7 +8509,7 @@
       "source_file": "src/presentation/components/InstallPrompt.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 271,
       "norm_label": "installprompt.tsx",
       "id": "components_installprompt"
     },
@@ -8459,7 +8519,7 @@
       "source_file": "src/presentation/components/InstallPrompt.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 229,
+      "community": 271,
       "norm_label": "installprompt()",
       "id": "components_installprompt_installprompt"
     },
@@ -8879,7 +8939,7 @@
       "source_file": "src/presentation/components/UpdateAvailableSnackbar.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 271,
       "norm_label": "updateavailablesnackbar.tsx",
       "id": "components_updateavailablesnackbar"
     },
@@ -8889,7 +8949,7 @@
       "source_file": "src/presentation/components/UpdateAvailableSnackbar.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 229,
+      "community": 271,
       "norm_label": "updateavailablesnackbar()",
       "id": "components_updateavailablesnackbar_updateavailablesnackbar"
     },
@@ -9274,36 +9334,6 @@
       "id": "hooks_useswipegesture_useswipegesture"
     },
     {
-      "label": "AddCredentialPage.tsx",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "addcredentialpage.tsx",
-      "id": "pages_addcredentialpage"
-    },
-    {
-      "label": "CATEGORIES",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L48",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "categories",
-      "id": "pages_addcredentialpage_categories"
-    },
-    {
-      "label": "AddCredentialPage()",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L58",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "addcredentialpage()",
-      "id": "pages_addcredentialpage_addcredentialpage"
-    },
-    {
       "label": "CredentialDetailPage.tsx",
       "file_type": "code",
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
@@ -9342,36 +9372,6 @@
       "community": 149,
       "norm_label": "dashboardpage()",
       "id": "pages_dashboardpage_dashboardpage"
-    },
-    {
-      "label": "EditCredentialPage.tsx",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "editcredentialpage.tsx",
-      "id": "pages_editcredentialpage"
-    },
-    {
-      "label": "CATEGORIES",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L51",
-      "_origin": "ast",
-      "community": 149,
-      "norm_label": "categories",
-      "id": "pages_editcredentialpage_categories"
-    },
-    {
-      "label": "EditCredentialPage()",
-      "file_type": "code",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L61",
-      "_origin": "ast",
-      "community": 3,
-      "norm_label": "editcredentialpage()",
-      "id": "pages_editcredentialpage_editcredentialpage"
     },
     {
       "label": "FavoritesPage.tsx",
@@ -9569,7 +9569,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 3,
       "norm_label": "unlockpage.test.tsx",
       "id": "tests_unlockpage_test"
     },
@@ -9579,7 +9579,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 13,
+      "community": 3,
       "norm_label": "mockvaultkey",
       "id": "tests_unlockpage_test_mockvaultkey"
     },
@@ -9589,7 +9589,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 13,
+      "community": 3,
       "norm_label": "fulluser",
       "id": "tests_unlockpage_test_fulluser"
     },
@@ -9599,7 +9599,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 13,
+      "community": 3,
       "norm_label": "mocksession",
       "id": "tests_unlockpage_test_mocksession"
     },
@@ -9739,7 +9739,7 @@
       "source_file": "src/presentation/store/authStore.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "persistedauthshell",
       "id": "store_authstore_persistedauthshell"
     },
@@ -17529,7 +17529,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 122,
+      "community": 272,
       "norm_label": "deployment options",
       "id": "deployment_guide_deployment_options"
     },
@@ -17539,7 +17539,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 122,
+      "community": 272,
       "norm_label": "option 1: vercel (recommended)",
       "id": "deployment_guide_option_1_vercel_recommended"
     },
@@ -17549,7 +17549,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 122,
+      "community": 272,
       "norm_label": "option 2: github pages",
       "id": "deployment_guide_option_2_github_pages"
     },
@@ -17559,7 +17559,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 122,
+      "community": 272,
       "norm_label": "option 3: self-hosted (aws, gcp, azure)",
       "id": "deployment_guide_option_3_self_hosted_aws_gcp_azure"
     },
@@ -17569,7 +17569,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L100",
       "_origin": "ast",
-      "community": 122,
+      "community": 138,
       "norm_label": "post-deployment steps",
       "id": "deployment_guide_post_deployment_steps"
     },
@@ -17579,7 +17579,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L102",
       "_origin": "ast",
-      "community": 122,
+      "community": 138,
       "norm_label": "1. verify deployment",
       "id": "deployment_guide_1_verify_deployment"
     },
@@ -17589,7 +17589,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L115",
       "_origin": "ast",
-      "community": 122,
+      "community": 138,
       "norm_label": "2. security headers",
       "id": "deployment_guide_2_security_headers"
     },
@@ -17599,7 +17599,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L128",
       "_origin": "ast",
-      "community": 122,
+      "community": 138,
       "norm_label": "3. pwa validation",
       "id": "deployment_guide_3_pwa_validation"
     },
@@ -17609,7 +17609,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L150",
       "_origin": "ast",
-      "community": 122,
+      "community": 138,
       "norm_label": "4. performance check",
       "id": "deployment_guide_4_performance_check"
     },
@@ -17619,7 +17619,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L163",
       "_origin": "ast",
-      "community": 122,
+      "community": 138,
       "norm_label": "5. functionality test",
       "id": "deployment_guide_5_functionality_test"
     },
@@ -17689,7 +17689,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L260",
       "_origin": "ast",
-      "community": 122,
+      "community": 160,
       "norm_label": "monitoring & maintenance",
       "id": "deployment_guide_monitoring_maintenance"
     },
@@ -17699,7 +17699,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L262",
       "_origin": "ast",
-      "community": 122,
+      "community": 160,
       "norm_label": "daily",
       "id": "deployment_guide_daily"
     },
@@ -17709,7 +17709,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L267",
       "_origin": "ast",
-      "community": 122,
+      "community": 160,
       "norm_label": "weekly",
       "id": "deployment_guide_weekly"
     },
@@ -17719,7 +17719,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L272",
       "_origin": "ast",
-      "community": 122,
+      "community": 160,
       "norm_label": "monthly",
       "id": "deployment_guide_monthly"
     },
@@ -17729,7 +17729,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L277",
       "_origin": "ast",
-      "community": 122,
+      "community": 160,
       "norm_label": "quarterly",
       "id": "deployment_guide_quarterly"
     },
@@ -17739,7 +17739,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L284",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "troubleshooting",
       "id": "deployment_guide_troubleshooting"
     },
@@ -17749,7 +17749,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L286",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: \"npm install\" fails on vercel",
       "id": "deployment_guide_issue_npm_install_fails_on_vercel"
     },
@@ -17759,7 +17759,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L296",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: service worker not updating",
       "id": "deployment_guide_issue_service_worker_not_updating"
     },
@@ -17769,7 +17769,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L306",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: cors errors in production",
       "id": "deployment_guide_issue_cors_errors_in_production"
     },
@@ -17779,7 +17779,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L315",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: large bundle size",
       "id": "deployment_guide_issue_large_bundle_size"
     },
@@ -23219,7 +23219,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 53,
+      "community": 5,
       "norm_label": "security_pwa_enhancement_plan.md",
       "id": "security_pwa_enhancement_plan"
     },
@@ -23349,7 +23349,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L201",
       "_origin": "ast",
-      "community": 271,
+      "community": 53,
       "norm_label": "3. pwa architecture findings",
       "id": "security_pwa_enhancement_plan_3_pwa_architecture_findings"
     },
@@ -23359,7 +23359,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L203",
       "_origin": "ast",
-      "community": 271,
+      "community": 53,
       "norm_label": "p1 \u2014 offline resilience gaps",
       "id": "security_pwa_enhancement_plan_p1_offline_resilience_gaps"
     },
@@ -23369,7 +23369,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L208",
       "_origin": "ast",
-      "community": 271,
+      "community": 53,
       "norm_label": "p2 \u2014 supply chain / runtime cdn dependency",
       "id": "security_pwa_enhancement_plan_p2_supply_chain_runtime_cdn_dependency"
     },
@@ -23379,7 +23379,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L211",
       "_origin": "ast",
-      "community": 271,
+      "community": 53,
       "norm_label": "p3 \u2014 manifest modernization",
       "id": "security_pwa_enhancement_plan_p3_manifest_modernization"
     },
@@ -23389,7 +23389,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L214",
       "_origin": "ast",
-      "community": 271,
+      "community": 53,
       "norm_label": "p4 \u2014 background breach re-checks",
       "id": "security_pwa_enhancement_plan_p4_background_breach_re_checks"
     },
@@ -23399,7 +23399,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L217",
       "_origin": "ast",
-      "community": 271,
+      "community": 53,
       "norm_label": "p5 \u2014 remove dead dependencies",
       "id": "security_pwa_enhancement_plan_p5_remove_dead_dependencies"
     },
@@ -26631,7 +26631,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 126,
       "norm_label": "ratelimiter tests",
       "id": "test_ratelimiter"
     },
@@ -28376,7 +28376,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 272,
+      "community": 5,
       "norm_label": "00_start_here (deprecated pointer)",
       "id": "00_start_here_deprecated"
     },
@@ -28454,7 +28454,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 272,
+      "community": 5,
       "norm_label": "getting started guide",
       "id": "getting_started_guide"
     },
@@ -28467,7 +28467,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 272,
+      "community": 5,
       "norm_label": "project context & overview",
       "id": "project_context_overview"
     },
@@ -28480,7 +28480,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 272,
+      "community": 5,
       "norm_label": "readme project overview",
       "id": "readme_project_overview"
     },
@@ -28493,7 +28493,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 272,
+      "community": 5,
       "norm_label": "clean architecture (domain/data/presentation/core)",
       "id": "concept_clean_architecture"
     },
@@ -28519,7 +28519,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 53,
+      "community": 5,
       "norm_label": "metadata-at-rest encryption (s5)",
       "id": "concept_metadata_encryption"
     },
@@ -28532,7 +28532,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 53,
+      "community": 5,
       "norm_label": "zod vault import validation (s8)",
       "id": "concept_zod_import_validation"
     },
@@ -29397,14 +29397,657 @@
   ],
   "links": [
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "auth_backupcodes_generatebackupcodes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "auth_totp"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "auth_totp_isvalidtotpsecret"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "autofill_credentialmanagementservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "autofill_credentialmanagementservice_iscredentialmanagementsupported"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "autofill_credentialmanagementservice_shouldstoreinbrowser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "autofill_credentialmanagementservice_storecredentialinbrowser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "autofill_credentialmanagementservice_tobrowsercredential"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_camerascandialog"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_camerascandialog_camerascandialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_deleteconfirmdialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_ocrresultdialog"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_ocrresultdialog_ocrresultdialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_passwordgeneratordialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_passwordstrengthindicator"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_taginput"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "components_totpdisplay"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "ocr_cameracapture_iscamerasupported"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "ocr_credentialparser_parsedcredential"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "ocr_index"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "pages_editcredentialpage_categories"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L60",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "pages_editcredentialpage_editcredentialpage"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "repositories_credentialrepositoryimpl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "repositories_credentialrepositoryimpl_credentialrepository"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_editcredentialpage",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
+      "source_location": "line 93",
+      "weight": 1.0,
+      "source": "pages_credentialdetailpage_credentialdetailpage",
+      "target": "pages_editcredentialpage_editcredentialpage"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L622",
+      "weight": 1.0,
+      "source": "pages_editcredentialpage_editcredentialpage",
+      "target": "auth_totp_isvalidtotpsecret"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "L366",
+      "weight": 1.0,
+      "source": "pages_editcredentialpage_editcredentialpage",
+      "target": "ocr_cameracapture_iscamerasupported"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
+      "source_location": "line 63",
+      "weight": 1.0,
+      "source": "pages_editcredentialpage_editcredentialpage",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "auth_backupcodes_generatebackupcodes"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "auth_totp"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "auth_totp_isvalidtotpsecret"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "autofill_credentialmanagementservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "autofill_credentialmanagementservice_iscredentialmanagementsupported"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "autofill_credentialmanagementservice_shouldstoreinbrowser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "autofill_credentialmanagementservice_storecredentialinbrowser"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "autofill_credentialmanagementservice_tobrowsercredential"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L43",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_camerascandialog"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L43",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_camerascandialog_camerascandialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L44",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_ocrresultdialog"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L44",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_ocrresultdialog_ocrresultdialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_passwordgeneratordialog"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_passwordstrengthindicator"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_taginput"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "components_totpdisplay"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "ocr_cameracapture_iscamerasupported"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "ocr_credentialparser_parsedcredential"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "ocr_index"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "pages_addcredentialpage_addcredentialpage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "pages_addcredentialpage_categories"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "repositories_credentialrepositoryimpl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "repositories_credentialrepositoryimpl_credentialrepository"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_addcredentialpage",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L508",
+      "weight": 1.0,
+      "source": "pages_addcredentialpage_addcredentialpage",
+      "target": "auth_totp_isvalidtotpsecret"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "L262",
+      "weight": 1.0,
+      "source": "pages_addcredentialpage_addcredentialpage",
+      "target": "ocr_cameracapture_iscamerasupported"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "line 242",
+      "weight": 1.0,
+      "source": "pages_addcredentialpage_addcredentialpage",
+      "target": "pages_dashboardpage_dashboardpage"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
+      "source_location": "line 59",
+      "weight": 1.0,
+      "source": "pages_addcredentialpage_addcredentialpage",
+      "target": "store_authstore_useauthstore"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes",
-      "target": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan"
     },
     {
       "relation": "contains",
@@ -29412,9 +30055,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "target": "plans_2026_06_17_totp_backup_codes_file_structure",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_file_structure"
     },
     {
       "relation": "contains",
@@ -29422,9 +30065,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "target": "plans_2026_06_17_totp_backup_codes_global_constraints",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_global_constraints"
     },
     {
       "relation": "contains",
@@ -29432,9 +30075,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "target": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests"
     },
     {
       "relation": "contains",
@@ -29442,9 +30085,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L426",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "target": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components"
     },
     {
       "relation": "contains",
@@ -29452,9 +30095,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1088",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "target": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring"
     },
     {
       "relation": "contains",
@@ -29462,9 +30105,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1654",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_totp_backup_codes_implementation_plan",
-      "target": "plans_2026_06_17_totp_backup_codes_self_review_against_spec",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_self_review_against_spec"
     },
     {
       "relation": "contains",
@@ -29472,9 +30115,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_file_structure",
-      "target": "plans_2026_06_17_totp_backup_codes_files_to_modify",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_files_to_modify"
     },
     {
       "relation": "contains",
@@ -29482,9 +30125,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_file_structure",
-      "target": "plans_2026_06_17_totp_backup_codes_new_files_to_create",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_new_files_to_create"
     },
     {
       "relation": "contains",
@@ -29492,9 +30135,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests",
-      "target": "plans_2026_06_17_totp_backup_codes_task_1_define_backupcode_type_add_to_credential_entity",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_1_define_backupcode_type_add_to_credential_entity"
     },
     {
       "relation": "contains",
@@ -29502,9 +30145,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests",
-      "target": "plans_2026_06_17_totp_backup_codes_task_2_implement_core_backup_code_utility_functions",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_2_implement_core_backup_code_utility_functions"
     },
     {
       "relation": "contains",
@@ -29512,9 +30155,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L232",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_1_core_utility_functions_unit_tests",
-      "target": "plans_2026_06_17_totp_backup_codes_task_3_write_unit_tests_for_backup_code_functions",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_3_write_unit_tests_for_backup_code_functions"
     },
     {
       "relation": "contains",
@@ -29522,9 +30165,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L428",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components",
-      "target": "plans_2026_06_17_totp_backup_codes_task_4_implement_backupcodesmodal_component",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_4_implement_backupcodesmodal_component"
     },
     {
       "relation": "contains",
@@ -29532,9 +30175,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L616",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components",
-      "target": "plans_2026_06_17_totp_backup_codes_task_5_implement_backupcodeinput_component",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_5_implement_backupcodeinput_component"
     },
     {
       "relation": "contains",
@@ -29542,9 +30185,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L774",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components",
-      "target": "plans_2026_06_17_totp_backup_codes_task_6_write_component_tests_for_backupcodesmodal",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_6_write_component_tests_for_backupcodesmodal"
     },
     {
       "relation": "contains",
@@ -29552,9 +30195,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L881",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_2_ui_components",
-      "target": "plans_2026_06_17_totp_backup_codes_task_7_write_component_tests_for_backupcodeinput",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_7_write_component_tests_for_backupcodeinput"
     },
     {
       "relation": "contains",
@@ -29562,9 +30205,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1265",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "target": "plans_2026_06_17_totp_backup_codes_task_10_add_regenerate_backup_codes_to_editcredentialpage",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_10_add_regenerate_backup_codes_to_editcredentialpage"
     },
     {
       "relation": "contains",
@@ -29572,9 +30215,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1385",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "target": "plans_2026_06_17_totp_backup_codes_task_11_add_lost_authenticator_button_to_credentialdetailsdialog",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_11_add_lost_authenticator_button_to_credentialdetailsdialog"
     },
     {
       "relation": "contains",
@@ -29582,9 +30225,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1487",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "target": "plans_2026_06_17_totp_backup_codes_task_12_write_integration_test_for_full_backup_code_flow",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_12_write_integration_test_for_full_backup_code_flow"
     },
     {
       "relation": "contains",
@@ -29592,9 +30235,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1605",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "target": "plans_2026_06_17_totp_backup_codes_task_13_run_full_test_suite_and_verify_no_regressions",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_13_run_full_test_suite_and_verify_no_regressions"
     },
     {
       "relation": "contains",
@@ -29602,9 +30245,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1090",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "target": "plans_2026_06_17_totp_backup_codes_task_8_extend_credentialrepositoryimpl_to_handle_backup_code_encryption",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_8_extend_credentialrepositoryimpl_to_handle_backup_code_encryption"
     },
     {
       "relation": "contains",
@@ -29612,9 +30255,9 @@
       "source_file": "docs/superpowers/plans/2026-06-17-totp-backup-codes.md",
       "source_location": "L1163",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "plans_2026_06_17_totp_backup_codes_phase_3_integration_wiring",
-      "target": "plans_2026_06_17_totp_backup_codes_task_9_wire_backupcodesmodal_into_addcredentialpage",
-      "confidence_score": 1.0
+      "target": "plans_2026_06_17_totp_backup_codes_task_9_wire_backupcodesmodal_into_addcredentialpage"
     },
     {
       "relation": "contains",
@@ -29622,9 +30265,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design",
-      "target": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec"
     },
     {
       "relation": "contains",
@@ -29632,9 +30275,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L58",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows"
     },
     {
       "relation": "contains",
@@ -29642,9 +30285,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_data_model",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_data_model"
     },
     {
       "relation": "contains",
@@ -29652,9 +30295,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_decisions_from_brainstorming",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_decisions_from_brainstorming"
     },
     {
       "relation": "contains",
@@ -29662,9 +30305,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L156",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_encryption_persistence",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_encryption_persistence"
     },
     {
       "relation": "contains",
@@ -29672,9 +30315,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_error_handling",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_error_handling"
     },
     {
       "relation": "contains",
@@ -29682,9 +30325,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L301",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_files_to_create_modify",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_files_to_create_modify"
     },
     {
       "relation": "contains",
@@ -29692,9 +30335,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_goal",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_goal"
     },
     {
       "relation": "contains",
@@ -29702,9 +30345,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L321",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_known_limitations_documented_out_of_scope",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_known_limitations_documented_out_of_scope"
     },
     {
       "relation": "contains",
@@ -29712,9 +30355,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L330",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_success_criteria",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_success_criteria"
     },
     {
       "relation": "contains",
@@ -29722,9 +30365,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_totp_backup_codes_design_spec",
-      "target": "specs_2026_06_17_totp_backup_codes_design_testing_strategy",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_testing_strategy"
     },
     {
       "relation": "contains",
@@ -29732,9 +30375,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_data_model",
-      "target": "specs_2026_06_17_totp_backup_codes_design_backupcode_type",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_backupcode_type"
     },
     {
       "relation": "contains",
@@ -29742,9 +30385,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_data_model",
-      "target": "specs_2026_06_17_totp_backup_codes_design_code_generation",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_code_generation"
     },
     {
       "relation": "contains",
@@ -29752,9 +30395,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_data_model",
-      "target": "specs_2026_06_17_totp_backup_codes_design_credential_entity_extension",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_credential_entity_extension"
     },
     {
       "relation": "contains",
@@ -29762,9 +30405,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows",
-      "target": "specs_2026_06_17_totp_backup_codes_design_component_1_backupcodesmodal",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_component_1_backupcodesmodal"
     },
     {
       "relation": "contains",
@@ -29772,9 +30415,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows",
-      "target": "specs_2026_06_17_totp_backup_codes_design_component_2_backupcodeinput",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_component_2_backupcodeinput"
     },
     {
       "relation": "contains",
@@ -29782,9 +30425,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows",
-      "target": "specs_2026_06_17_totp_backup_codes_design_component_3_credential_form_enhancement",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_component_3_credential_form_enhancement"
     },
     {
       "relation": "contains",
@@ -29792,9 +30435,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L136",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_components_ui_flows",
-      "target": "specs_2026_06_17_totp_backup_codes_design_recovery_flow_lost_authenticator",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_recovery_flow_lost_authenticator"
     },
     {
       "relation": "contains",
@@ -29802,9 +30445,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L158",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_encryption_persistence",
-      "target": "specs_2026_06_17_totp_backup_codes_design_key_points",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_key_points"
     },
     {
       "relation": "contains",
@@ -29812,9 +30455,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L165",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_encryption_persistence",
-      "target": "specs_2026_06_17_totp_backup_codes_design_no_persistence_bypass",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_no_persistence_bypass"
     },
     {
       "relation": "contains",
@@ -29822,9 +30465,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L174",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_error_handling",
-      "target": "specs_2026_06_17_totp_backup_codes_design_generation_failures",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_generation_failures"
     },
     {
       "relation": "contains",
@@ -29832,9 +30475,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L180",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_error_handling",
-      "target": "specs_2026_06_17_totp_backup_codes_design_recovery_failures",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_recovery_failures"
     },
     {
       "relation": "contains",
@@ -29842,9 +30485,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L189",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_error_handling",
-      "target": "specs_2026_06_17_totp_backup_codes_design_regeneration",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_regeneration"
     },
     {
       "relation": "contains",
@@ -29852,9 +30495,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L260",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_testing_strategy",
-      "target": "specs_2026_06_17_totp_backup_codes_design_component_tests",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_component_tests"
     },
     {
       "relation": "contains",
@@ -29862,9 +30505,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L285",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_testing_strategy",
-      "target": "specs_2026_06_17_totp_backup_codes_design_integration_tests_credential_crud_test_tsx_expansion",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_integration_tests_credential_crud_test_tsx_expansion"
     },
     {
       "relation": "contains",
@@ -29872,9 +30515,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_testing_strategy",
-      "target": "specs_2026_06_17_totp_backup_codes_design_unit_tests_src_core_auth_totp_test_ts_expansion",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_unit_tests_src_core_auth_totp_test_ts_expansion"
     },
     {
       "relation": "contains",
@@ -29882,9 +30525,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L311",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_files_to_create_modify",
-      "target": "specs_2026_06_17_totp_backup_codes_design_modify",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_modify"
     },
     {
       "relation": "contains",
@@ -29892,9 +30535,9 @@
       "source_file": "docs/superpowers/specs/2026-06-17-totp-backup-codes-design.md",
       "source_location": "L303",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "specs_2026_06_17_totp_backup_codes_design_files_to_create_modify",
-      "target": "specs_2026_06_17_totp_backup_codes_design_new_files",
-      "confidence_score": 1.0
+      "target": "specs_2026_06_17_totp_backup_codes_design_new_files"
     },
     {
       "relation": "imports_from",
@@ -29955,17 +30598,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "repositories_credentialrepositoryimpl"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L26",
       "weight": 1.0,
@@ -29982,17 +30614,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "pages_dashboardpage",
-      "target": "repositories_credentialrepositoryimpl"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
       "target": "repositories_credentialrepositoryimpl"
     },
     {
@@ -30295,17 +30916,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "repositories_credentialrepositoryimpl_credentialrepository"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L26",
       "weight": 1.0,
@@ -30332,17 +30942,6 @@
       "source_location": null,
       "weight": 1.0,
       "source": "pages_dashboardpage_dashboardpage",
-      "target": "repositories_credentialrepositoryimpl_credentialrepository"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
       "target": "repositories_credentialrepositoryimpl_credentialrepository"
     },
     {
@@ -31240,9 +31839,9 @@
       "source_file": "src/data/repositories/importValidation.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "repositories_importvalidation",
-      "target": "repositories_importvalidation_backupcodeschema",
-      "confidence_score": 1.0
+      "target": "repositories_importvalidation_backupcodeschema"
     },
     {
       "relation": "contains",
@@ -32272,9 +32871,9 @@
       "source_file": "src/presentation/components/__tests__/BackupCodesModal.test.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_backupcodesmodal_test",
-      "target": "auth_backupcodes_generatebackupcodes",
-      "confidence_score": 1.0
+      "target": "auth_backupcodes_generatebackupcodes"
     },
     {
       "relation": "imports",
@@ -37003,28 +37602,6 @@
       "target": "auth_totp"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L36",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "auth_totp"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "auth_totp"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -37221,50 +37798,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "components_totpdisplay",
-      "target": "auth_totp_isvalidtotpsecret"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L36",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "auth_totp_isvalidtotpsecret"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L508",
-      "weight": 1.0,
-      "source": "pages_addcredentialpage_addcredentialpage",
-      "target": "auth_totp_isvalidtotpsecret"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L39",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "auth_totp_isvalidtotpsecret"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L622",
-      "weight": 1.0,
-      "source": "pages_editcredentialpage_editcredentialpage",
       "target": "auth_totp_isvalidtotpsecret"
     },
     {
@@ -39364,28 +39897,6 @@
       "target": "autofill_credentialmanagementservice"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "autofill_credentialmanagementservice"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L41",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "autofill_credentialmanagementservice"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -39430,28 +39941,6 @@
       "target": "autofill_credentialmanagementservice_iscredentialmanagementsupported"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "autofill_credentialmanagementservice_iscredentialmanagementsupported"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L41",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "autofill_credentialmanagementservice_iscredentialmanagementsupported"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -39493,28 +39982,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "autofill_credentialmanagementservice_batchstorecredentials",
-      "target": "autofill_credentialmanagementservice_shouldstoreinbrowser"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "autofill_credentialmanagementservice_shouldstoreinbrowser"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L41",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
       "target": "autofill_credentialmanagementservice_shouldstoreinbrowser"
     },
     {
@@ -39584,28 +40051,6 @@
       "target": "autofill_credentialmanagementservice_storecredentialinbrowser"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "autofill_credentialmanagementservice_storecredentialinbrowser"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L41",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "autofill_credentialmanagementservice_storecredentialinbrowser"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -39614,28 +40059,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "autofill_credentialmanagementservice_batchstorecredentials",
-      "target": "autofill_credentialmanagementservice_tobrowsercredential"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "autofill_credentialmanagementservice_tobrowsercredential"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L41",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
       "target": "autofill_credentialmanagementservice_tobrowsercredential"
     },
     {
@@ -43069,50 +43492,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "ocr_cameracapture_iscamerasupported"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L262",
-      "weight": 1.0,
-      "source": "pages_addcredentialpage_addcredentialpage",
-      "target": "ocr_cameracapture_iscamerasupported"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L48",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "ocr_cameracapture_iscamerasupported"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L366",
-      "weight": 1.0,
-      "source": "pages_editcredentialpage_editcredentialpage",
-      "target": "ocr_cameracapture_iscamerasupported"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/CameraScanDialog.tsx",
       "source_location": "L29",
       "weight": 1.0,
@@ -43374,28 +43753,6 @@
       "target": "ocr_credentialparser_parsedcredential"
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "ocr_credentialparser_parsedcredential"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L48",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "ocr_credentialparser_parsedcredential"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -43579,28 +43936,6 @@
       "confidence_score": 1.0,
       "source": "ocr_index",
       "target": "ocr_tesseractservice_terminateworker"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "ocr_index"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L48",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "ocr_index"
     },
     {
       "relation": "imports_from",
@@ -47414,50 +47749,6 @@
       "target": "components_camerascandialog_scanstate"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L43",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_camerascandialog"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L46",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_camerascandialog"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L43",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_camerascandialog_camerascandialog"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L46",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_camerascandialog_camerascandialog"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/CategoryIcon.tsx",
@@ -48245,17 +48536,6 @@
       "target": "components_deleteconfirmdialog"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_deleteconfirmdialog"
-    },
-    {
       "relation": "conceptually_related_to",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
@@ -48647,28 +48927,6 @@
       "target": "components_ocrresultdialog_ocrresultdialogprops"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L44",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_ocrresultdialog"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_ocrresultdialog"
-    },
-    {
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -48677,28 +48935,6 @@
       "weight": 1.0,
       "source": "components_ocrresultdialog_ocrresultdialog",
       "target": "core_ocr"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L44",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_ocrresultdialog_ocrresultdialog"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_ocrresultdialog_ocrresultdialog"
     },
     {
       "relation": "contains",
@@ -48786,28 +49022,6 @@
       "target": "utils_clipboard_copypassword"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_passwordgeneratordialog"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L36",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_passwordgeneratordialog"
-    },
-    {
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -48867,28 +49081,6 @@
       "confidence_score": 1.0,
       "source": "components_passwordstrengthindicator",
       "target": "components_passwordstrengthindicator_passwordstrengthindicatorprops"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_passwordstrengthindicator"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L34",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_passwordstrengthindicator"
     },
     {
       "relation": "calls",
@@ -49182,28 +49374,6 @@
       "target": "components_taginput_taginputprops"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_taginput"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_taginput"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/components/ThemeToggle.tsx",
@@ -49297,28 +49467,6 @@
       "confidence_score": 1.0,
       "source": "components_totpdisplay",
       "target": "components_totpdisplay_totpdisplayprops"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L34",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "components_totpdisplay"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L37",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "components_totpdisplay"
     },
     {
       "relation": "calls",
@@ -49935,69 +50083,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L57",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "pages_addcredentialpage_addcredentialpage"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "pages_addcredentialpage_categories"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_addcredentialpage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "line 242",
-      "weight": 1.0,
-      "source": "pages_addcredentialpage_addcredentialpage",
-      "target": "pages_dashboardpage_dashboardpage"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/AddCredentialPage.tsx",
-      "source_location": "line 59",
-      "weight": 1.0,
-      "source": "pages_addcredentialpage_addcredentialpage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L32",
       "weight": 1.0,
@@ -50048,16 +50133,6 @@
       "confidence_score": 1.0,
       "source": "pages_credentialdetailpage",
       "target": "utils_clipboard_clipboardmanager"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
-      "source_location": "line 93",
-      "weight": 1.0,
-      "source": "pages_credentialdetailpage_credentialdetailpage",
-      "target": "pages_editcredentialpage_editcredentialpage"
     },
     {
       "relation": "calls",
@@ -50188,59 +50263,6 @@
       "source_location": "L65",
       "weight": 1.0,
       "source": "pages_dashboardpage_dashboardpage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L50",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "pages_editcredentialpage_categories"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L60",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "pages_editcredentialpage_editcredentialpage"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "L33",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_editcredentialpage",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/pages/EditCredentialPage.tsx",
-      "source_location": "line 63",
-      "weight": 1.0,
-      "source": "pages_editcredentialpage_editcredentialpage",
       "target": "store_authstore_useauthstore"
     },
     {
@@ -69749,5 +69771,5 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts"
     }
   ],
-  "built_at_commit": "ef20380129c7da5617f1b2bc304594a712ad2597"
+  "built_at_commit": "4d7827fdf6f9356d08e5c269b5bef4536a7c745c"
 }

@@ -1,16 +1,16 @@
 # Graph Report - trustvault-pwa  (2026-06-17)
 
 ## Corpus Check
-- 246 files · ~229,824 words
+- 246 files · ~230,107 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2809 nodes · 3866 edges · 271 communities (217 shown, 54 thin omitted)
+- 2809 nodes · 3868 edges · 273 communities (219 shown, 54 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 99 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ef203801`
+- Built from commit: `4d7827fd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -133,6 +133,7 @@
 - [[_COMMUNITY_Community 123|Community 123]]
 - [[_COMMUNITY_Community 124|Community 124]]
 - [[_COMMUNITY_Community 125|Community 125]]
+- [[_COMMUNITY_Community 126|Community 126]]
 - [[_COMMUNITY_Community 127|Community 127]]
 - [[_COMMUNITY_Community 128|Community 128]]
 - [[_COMMUNITY_Community 129|Community 129]]
@@ -144,6 +145,7 @@
 - [[_COMMUNITY_Community 135|Community 135]]
 - [[_COMMUNITY_Community 136|Community 136]]
 - [[_COMMUNITY_Community 137|Community 137]]
+- [[_COMMUNITY_Community 138|Community 138]]
 - [[_COMMUNITY_Community 139|Community 139]]
 - [[_COMMUNITY_Community 140|Community 140]]
 - [[_COMMUNITY_Community 141|Community 141]]
@@ -165,6 +167,7 @@
 - [[_COMMUNITY_Community 157|Community 157]]
 - [[_COMMUNITY_Community 158|Community 158]]
 - [[_COMMUNITY_Community 159|Community 159]]
+- [[_COMMUNITY_Community 160|Community 160]]
 - [[_COMMUNITY_Community 161|Community 161]]
 - [[_COMMUNITY_Community 162|Community 162]]
 - [[_COMMUNITY_Community 163|Community 163]]
@@ -276,7 +279,6 @@
 - [[_COMMUNITY_Community 270|Community 270]]
 - [[_COMMUNITY_Community 271|Community 271]]
 - [[_COMMUNITY_Community 272|Community 272]]
-- [[_COMMUNITY_Community 275|Community 275]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAuthStore` - 51 edges
@@ -344,7 +346,7 @@
 - **P4 background breach re-check flow** — breach_breachprefixstore_savebreachprefix, breach_rangecache_checkpasswordwithcache, breach_unlockbreachrefresh_rununlockbreachrefresh, public_sw_periodic_sync, storage_database_storedbreachprefix [INFERRED 0.85]
 - **Credential CRUD keeps HIBP prefix store in sync** — repositories_credentialrepositoryimpl_createwithid, repositories_credentialrepositoryimpl_update, repositories_credentialrepositoryimpl_delete, breach_breachprefixstore_savebreachprefix, breach_breachprefixstore_deletebreachprefix [INFERRED 0.85]
 
-## Communities (271 total, 54 thin omitted)
+## Communities (273 total, 54 thin omitted)
 
 ### Community 0 - "TOTP / 2FA Core"
 Cohesion: 0.04
@@ -355,20 +357,20 @@ Cohesion: 0.07
 Nodes (28): BackupCode Type, Code Generation, Component 1: `BackupCodesModal`, Component 2: `BackupCodeInput`, Component 3: Credential Form Enhancement, Component Tests, Components & UI Flows, Credential Entity Extension (+20 more)
 
 ### Community 2 - "Breach Detection Types"
-Cohesion: 0.20
+Cohesion: 0.23
 Nodes (22): hashPassword(), arrayBufferToBase64(), base64ToArrayBuffer(), computeHash(), constantTimeEqual(), decrypt(), decryptWithPassword(), deriveKeyFromPassword() (+14 more)
 
 ### Community 3 - "Crypto Error & Dialogs"
 Cohesion: 0.09
-Nodes (25): ChangeMasterPasswordDialog(), ChangeMasterPasswordDialogProps, ExportDialog(), ImportDialog(), ReEncryptionProgress(), ReEncryptionProgressProps, UnlockDialog(), UnlockDialogProps (+17 more)
+Nodes (27): ChangeMasterPasswordDialog(), ChangeMasterPasswordDialogProps, ExportDialog(), ImportDialog(), ReEncryptionProgress(), ReEncryptionProgressProps, UnlockDialog(), UnlockDialogProps (+19 more)
 
 ### Community 4 - "WebAuthn Ceremony"
 Cohesion: 0.08
 Nodes (46): deriveWrapKeyFromPRF(), generatePrfSalt(), PRF-v1 Vault Key Wrapping Scheme, S7 Non-Extractable Session Key, unwrapVaultKeyWithPRF(), wrapVaultKeyWithPRF(), authenticateBiometric(), BiometricCredential (+38 more)
 
 ### Community 5 - "Agent & Project Docs"
-Cohesion: 0.22
-Nodes (5): AGENTS.md Agentic Coding Guide, Responsibility Lenses, HIBP Breach Detection (k-Anonymity), OWASP Mobile Top 10 2025 Compliance, Copilot AI Agent Instructions
+Cohesion: 0.15
+Nodes (12): 00_START_HERE (Deprecated Pointer), AGENTS.md Agentic Coding Guide, Responsibility Lenses, Clean Architecture (Domain/Data/Presentation/Core), HIBP Breach Detection (k-Anonymity), Metadata-at-Rest Encryption (S5), OWASP Mobile Top 10 2025 Compliance, Zod Vault Import Validation (S8) (+4 more)
 
 ### Community 6 - "Security Test Suites"
 Cohesion: 0.16
@@ -379,8 +381,8 @@ Cohesion: 0.15
 Nodes (14): ExportDialogProps, ImportDialogProps, ImportMode, decryptImport(), downloadExportFile(), encryptExport(), ExportData, generateExportFilename() (+6 more)
 
 ### Community 8 - "Clipboard & Generator UI"
-Cohesion: 0.07
-Nodes (26): PasswordStrengthIndicatorProps, analyzePasswordStrength(), calculateActualEntropy(), COMMON_PATTERNS, convertZxcvbnScore(), detectCommonPatterns(), determineStrength(), formatCrackTime() (+18 more)
+Cohesion: 0.06
+Nodes (32): computeSha1Prefix(), deleteBreachPrefix(), getAllBreachPrefixes(), saveBreachPrefix(), PasswordStrengthIndicatorProps, analyzePasswordStrength(), calculateActualEntropy(), COMMON_PATTERNS (+24 more)
 
 ### Community 9 - "TypeScript Config"
 Cohesion: 0.05
@@ -399,12 +401,12 @@ Cohesion: 0.14
 Nodes (11): ClipboardNotificationProps, Secure Clipboard Auto-Clear Pattern, ClipboardClearCallback, ClipboardCountdownCallback, clipboardManager, copyToClipboard(), copyUsername(), fallbackCopyToClipboard() (+3 more)
 
 ### Community 13 - "User Domain Model"
-Cohesion: 0.12
-Nodes (11): IUserRepository Interface, AuthSession, SecuritySettings, User, IUserRepository, UserRepositoryImpl, StoredUser, AuthState (+3 more)
+Cohesion: 0.13
+Nodes (8): IUserRepository Interface, AuthSession, SecuritySettings, User, IUserRepository, UserRepositoryImpl, AuthState, PersistedAuthShell
 
 ### Community 14 - "Credential Repo & Metadata Sealing"
-Cohesion: 0.09
-Nodes (17): computeSha1Prefix(), deleteBreachPrefix(), getAllBreachPrefixes(), saveBreachPrefix(), encryptField(), encryptOptional(), ownsRecord(), sealLegacyMetadata() (+9 more)
+Cohesion: 0.11
+Nodes (12): encryptField(), encryptOptional(), ownsRecord(), sealLegacyMetadata(), db, StoredLoginAttempt, StoredSession, StoredUser (+4 more)
 
 ### Community 15 - "NPM Scripts"
 Cohesion: 0.07
@@ -447,8 +449,8 @@ Cohesion: 0.08
 Nodes (24): 1. Module Loading Patterns, 2. React 19 Patterns, 3. PWA/Offline-First, 4. TypeScript Strict Mode, 5. Path Aliases (tsconfig + vite), 6. Security Headers, 7. PWA Icons Requirements, 8. Performance Targets (Lighthouse) (+16 more)
 
 ### Community 25 - "Community 25"
-Cohesion: 0.17
-Nodes (11): browserslist, development, production, description, engines, node, npm, name (+3 more)
+Cohesion: 0.13
+Nodes (14): browserslist, development, production, description, engines, node, npm, name (+6 more)
 
 ### Community 26 - "Community 26"
 Cohesion: 0.04
@@ -547,8 +549,8 @@ Cohesion: 0.40
 Nodes (4): permissions, allow, ask, deny
 
 ### Community 53 - "Community 53"
-Cohesion: 0.22
-Nodes (8): Metadata-at-Rest Encryption (S5), Zod Vault Import Validation (S8), 0. Implementation Status (updated 2026-06-10; originally 2026-05-29), 1. Executive Summary, 5. Quick-Win Priority Order, 6. References (May 2026), 7. Pre-existing issues found during implementation, TrustVault PWA — Security & PWA Architecture Enhancement Plan
+Cohesion: 0.17
+Nodes (12): 0. Implementation Status (updated 2026-06-10; originally 2026-05-29), 1. Executive Summary, 3. PWA Architecture Findings, 5. Quick-Win Priority Order, 6. References (May 2026), 7. Pre-existing issues found during implementation, P1 — Offline resilience gaps, P2 — Supply chain / runtime CDN dependency (+4 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.50
@@ -631,8 +633,8 @@ Cohesion: 0.40
 Nodes (5): getDefaultPassphraseOptions(), PassphraseOptions, PasswordGeneratorOptions, GeneratorType, PasswordGeneratorPage()
 
 ### Community 122 - "Community 122"
-Cohesion: 0.05
-Nodes (40): 1. Verify Deployment, 2. Security Headers, 3. PWA Validation, 4. Performance Check, 5. Functionality Test, CI/CD Integration, Commit Message Convention, Daily (+32 more)
+Cohesion: 0.10
+Nodes (20): CI/CD Integration, Commit Message Convention, Deployment Checklist, Deployment Environment, Deployment Verification Checklist, DNS Configuration, Documentation, Environment Variables (+12 more)
 
 ### Community 123 - "Community 123"
 Cohesion: 0.15
@@ -645,6 +647,10 @@ Nodes (8): Content Security Policy (CSP), Continuous Deployment, GitHub Actions 
 ### Community 125 - "Community 125"
 Cohesion: 0.05
 Nodes (38): 1. Check Headers in Browser, 1. Identify the Source, 2. Determine if Legitimate, 2. Verify No CSP Violations, 3. Fix the Issue, 3. Test in Clean Environment, Allowed Sources, Common CSP Error: Browser Extensions (+30 more)
+
+### Community 126 - "Community 126"
+Cohesion: 0.42
+Nodes (7): checkRateLimit(), clearAttempts(), formatRemaining(), lockoutMs(), recordFailedAttempt(), THRESHOLDS, rateLimiter Tests
 
 ### Community 127 - "Community 127"
 Cohesion: 0.05
@@ -690,13 +696,17 @@ Nodes (31): Architecture ✅, Core Features ✅, Cryptographic Implementation, D
 Cohesion: 0.29
 Nodes (7): Deployment Checklist, Monitoring, Performance, Post-Deployment, Pre-Deployment, PWA, Security
 
+### Community 138 - "Community 138"
+Cohesion: 0.33
+Nodes (6): 1. Verify Deployment, 2. Security Headers, 3. PWA Validation, 4. Performance Check, 5. Functionality Test, Post-Deployment Steps
+
 ### Community 139 - "Community 139"
 Cohesion: 0.08
 Nodes (24): 1. Module Loading Patterns, 2. React 19 Patterns, 3. PWA/Offline-First, 4. TypeScript Strict Mode, 5. Path Aliases (tsconfig + vite), 6. Security Headers, 7. PWA Icons Requirements, 8. Performance Targets (Lighthouse) (+16 more)
 
 ### Community 140 - "Community 140"
-Cohesion: 0.16
-Nodes (17): isPrfCredential, isPrfCredential(), stripLegacyBiometric(), StripResult, checkRateLimit(), clearAttempts(), formatRemaining(), lockoutMs() (+9 more)
+Cohesion: 0.26
+Nodes (10): isPrfCredential, isPrfCredential(), stripLegacyBiometric(), StripResult, DB v6 Biometric Migration, PRF Vault Key Scheme (prf-v1), WebAuthnCredential, biometricMigration Tests (+2 more)
 
 ### Community 141 - "Community 141"
 Cohesion: 0.38
@@ -769,6 +779,10 @@ Nodes (10): Conclusion, Deployment Steps, Pre-Launch Requirements, Production De
 ### Community 159 - "Community 159"
 Cohesion: 0.18
 Nodes (11): Critical Gaps (MUST FIX FIRST), Current State Assessment, Dexie Encryption Patterns[42][44][45], Executive Summary, Key Strengths, React 19 Features & Optimization[1][20][24], Technology Stack Validation Against Latest Best Practices, TypeScript 5.7 Security Patterns (+3 more)
+
+### Community 160 - "Community 160"
+Cohesion: 0.40
+Nodes (5): Daily, Monitoring & Maintenance, Monthly, Quarterly, Weekly
 
 ### Community 161 - "Community 161"
 Cohesion: 0.33
@@ -1034,6 +1048,10 @@ Nodes (4): Obtaining SSL Certificate, SSL Configuration Checklist, SSL/HTTPS Req
 Cohesion: 0.40
 Nodes (5): 14. SECURITY HARDENING TIMELINE (May–June 2026), Phase 1: S1 — WebAuthn PRF Vault Unlock (May 30), Phase 2: S2–S8 + P2/P4/P5 (June 10), Phase 3: X1–X3 — Chrome Extension Hardening (June 11), Phase 4: F1–F7 — Security Findings Remediation (June 12)
 
+### Community 229 - "Community 229"
+Cohesion: 0.40
+Nodes (5): Issue: CORS errors in production, Issue: Large bundle size, Issue: "npm install" fails on Vercel, Issue: Service Worker not updating, Troubleshooting
+
 ### Community 230 - "Community 230"
 Cohesion: 0.50
 Nodes (4): 7. DATABASE SCHEMA & STORAGE, Schema Definition (100%) ✅, Storage Operations (80%), Tables
@@ -1166,37 +1184,29 @@ Nodes (3): Fixed: Password Generator Hook Tests, Fixed: Web Crypto API Mock, �
 Cohesion: 0.21
 Nodes (5): UpdateNotification(), ServiceWorkerUpdateState, useServiceWorkerUpdate(), MockRegistration, MockWorker
 
-### Community 271 - "Community 271"
-Cohesion: 0.33
-Nodes (6): 3. PWA Architecture Findings, P1 — Offline resilience gaps, P2 — Supply chain / runtime CDN dependency, P3 — Manifest modernization, P4 — Background breach re-checks, P5 — Remove dead dependencies
-
 ### Community 272 - "Community 272"
-Cohesion: 0.60
-Nodes (5): 00_START_HERE (Deprecated Pointer), Clean Architecture (Domain/Data/Presentation/Core), Getting Started Guide, Project Context & Overview, README Project Overview
-
-### Community 275 - "Community 275"
-Cohesion: 0.67
-Nodes (3): overrides, esbuild, uuid
+Cohesion: 0.50
+Nodes (4): Deployment Options, Option 1: Vercel (Recommended), Option 2: GitHub Pages, Option 3: Self-Hosted (AWS, GCP, Azure)
 
 ## Knowledge Gaps
-- **1572 isolated node(s):** `Global Constraints`, `New Files to Create`, `Files to Modify`, `Task 1: Define BackupCode Type & Add to Credential Entity`, `Task 2: Implement Core Backup Code Utility Functions` (+1567 more)
+- **1572 isolated node(s):** `CATEGORIES`, `CATEGORIES`, `Global Constraints`, `New Files to Create`, `Files to Modify` (+1567 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **54 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `Community 256`, `WebAuthn Ceremony`, `Community 133`, `Breach UI & Category Icons`, `User Domain Model`, `Community 143`, `Community 148`, `Community 149`, `Community 184`, `Community 220`, `Community 63`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+- **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `Community 256`, `WebAuthn Ceremony`, `Community 133`, `Breach UI & Category Icons`, `Credential Repo & Metadata Sealing`, `Community 143`, `Community 148`, `Community 149`, `Community 184`, `Community 220`, `Community 63`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Why does `CredentialRepository` connect `Clipboard & Generator UI` to `Crypto Error & Dialogs`, `Breach UI & Category Icons`, `Credential Repo & Metadata Sealing`, `Community 143`, `Community 148`, `Community 149`, `Community 184`, `Community 220`, `Community 63`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `TrustVaultDB` connect `Clipboard & Generator UI` to `User Domain Model`, `Credential Repo & Metadata Sealing`, `Community 143`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `encrypt()` connect `Breach Detection Types` to `WebAuthn Ceremony`, `Breach UI & Category Icons`, `Clipboard & Generator UI`, `Community 140`, `User Domain Model`, `Credential Repo & Metadata Sealing`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **What connects `Global Constraints`, `New Files to Create`, `Files to Modify` to the rest of the system?**
+- **What connects `CATEGORIES`, `CATEGORIES`, `Global Constraints` to the rest of the system?**
   _1581 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `TOTP / 2FA Core` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
 - **Should `Biometric Vault Key (PRF)` be split into smaller, more focused modules?**
   _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
 - **Should `Crypto Error & Dialogs` be split into smaller, more focused modules?**
-  _Cohesion score 0.09080841638981174 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08879492600422834 - nodes in this community are weakly interconnected._
