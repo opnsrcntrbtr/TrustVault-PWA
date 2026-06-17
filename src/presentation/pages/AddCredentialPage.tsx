@@ -33,8 +33,10 @@ import PasswordStrengthIndicator from '@/presentation/components/PasswordStrengt
 import PasswordGeneratorDialog from '@/presentation/components/PasswordGeneratorDialog';
 import TotpDisplay from '@/presentation/components/TotpDisplay';
 import TagInput from '@/presentation/components/TagInput';
+import BackupCodesModal from '@/presentation/components/BackupCodesModal';
 import { isValidTOTPSecret } from '@/core/auth/totp';
-import type { CredentialCategory } from '@/domain/entities/Credential';
+import { generateBackupCodes } from '@/core/auth/backupCodes';
+import type { CredentialCategory, BackupCode } from '@/domain/entities/Credential';
 import {
   storeCredentialInBrowser,
   toBrowserCredential,
@@ -90,6 +92,10 @@ export default function AddCredentialPage() {
   const [ocrResultDialogOpen, setOcrResultDialogOpen] = useState(false);
   const [ocrResult, setOcrResult] = useState<ParsedCredential | null>(null);
 
+  // Backup codes modal state
+  const [showBackupCodesModal, setShowBackupCodesModal] = useState(false);
+  const [generatedBackupCodes, setGeneratedBackupCodes] = useState<BackupCode[]>([]);
+
   // Validation
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -144,6 +150,18 @@ export default function AddCredentialPage() {
 
   const handleUseGeneratedPassword = (generatedPassword: string) => {
     setPassword(generatedPassword);
+  };
+
+  const handleTotpSecretEntered = () => {
+    // Generate backup codes after TOTP secret is entered and validated
+    const codes = generateBackupCodes(12);
+    setGeneratedBackupCodes(codes);
+    setShowBackupCodesModal(true);
+  };
+
+  const handleBackupCodesConfirmed = () => {
+    // Close modal - codes will be saved with credential
+    setShowBackupCodesModal(false);
   };
 
   // OCR scan handlers
@@ -213,6 +231,10 @@ export default function AddCredentialPage() {
         inputData.username = username.trim();
         inputData.password = password;
         inputData.totpSecret = totpSecret.trim() || undefined;
+        // Include backup codes if they were generated
+        if (generatedBackupCodes.length > 0) {
+          inputData.backupCodes = generatedBackupCodes;
+        }
       }
 
       const credential = await credentialRepository.create(inputData, vaultKey, user.id);
@@ -496,15 +518,27 @@ export default function AddCredentialPage() {
               <PasswordStrengthIndicator password={password} showFeedback />
 
               {/* TOTP Secret (2FA) */}
-              <TextField
-                fullWidth
-                label="TOTP Secret (Optional)"
-                value={totpSecret}
-                onChange={(e) => { setTotpSecret(e.target.value); }}
-                margin="normal"
-                placeholder="Base32-encoded secret (e.g., from Google Authenticator)"
-                helperText="Enter the base32-encoded secret key for 2FA/TOTP authentication"
-              />
+              <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', mt: 2 }}>
+                <TextField
+                  fullWidth
+                  label="TOTP Secret (Optional)"
+                  value={totpSecret}
+                  onChange={(e) => { setTotpSecret(e.target.value); }}
+                  margin="normal"
+                  placeholder="Base32-encoded secret (e.g., from Google Authenticator)"
+                  helperText="Enter the base32-encoded secret key for 2FA/TOTP authentication"
+                  sx={{ flex: 1 }}
+                />
+                {totpSecret.trim() && isValidTOTPSecret(totpSecret.trim()) && (
+                  <Button
+                    variant="outlined"
+                    onClick={handleTotpSecretEntered}
+                    sx={{ mt: 1 }}
+                  >
+                    Generate Codes
+                  </Button>
+                )}
+              </Box>
 
               {/* TOTP Preview */}
               {totpSecret.trim() && isValidTOTPSecret(totpSecret.trim()) && (
@@ -606,6 +640,15 @@ export default function AddCredentialPage() {
         onApply={handleApplyOcrResult}
         onRescan={handleRescan}
       />
+
+      {/* Backup Codes Modal */}
+      {showBackupCodesModal && (
+        <BackupCodesModal
+          codes={generatedBackupCodes}
+          onConfirm={handleBackupCodesConfirmed}
+          title="Save your backup codes"
+        />
+      )}
     </Container>
   );
 }
