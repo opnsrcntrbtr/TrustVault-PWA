@@ -2428,12 +2428,117 @@ Update this file with:
 
 ---
 
+## 🎯 PHASE 7: Multi-Vault Profiles (Next Minor Release)
+
+**Goal:** Support multiple vault profiles (Personal, Work, Shared Family) for multi-persona workflows  
+**Target:** Next minor release  
+**Status:** Draft spec saved 2026-06-18
+
+### 7.1 Overview
+
+Users often separate credentials by persona (personal, work, family, side-projects). This phase introduces multiple vault profiles under a single local user, with profile switcher, CRUD, and migration from single-vault schema.
+
+### 7.2 Key Features
+
+- **Profile CRUD:** Create, rename, delete, reorder vault profiles
+- **Profile Switcher:** Quick UI switcher in header/sidebar
+- **Active Profile Scoping:** All item queries filtered by active profile
+- **Migration:** Idempotent upgrade from single-vault to default profile
+- **Lock/Unlock:** All profiles locked/unlocked together (shared master password)
+
+### 7.3 Crypto Strategy
+
+- **Iteration 1 (this phase):** Single master key; profiles are logical partitions
+  - `profileId` stored as metadata adjacent to encrypted item content
+  - Simplifies unlock UX (one password, all profiles accessible)
+  - Enables future per-profile DEK upgrade
+  - **Open decision:** encrypt `VaultProfile.name` (new `encryptedName` field,
+    mirroring `encryptedTitle` on `StoredCredential`) for consistency with the
+    S5 metadata-encryption stance, vs. accepting plaintext name as a documented
+    residual (like the HIBP prefix store residual in `SECURITY.md`). Resolve
+    before Task 1 — it changes the `VaultProfile` shape.
+
+- **Iteration 2+ (future):** Per-profile DEKs derived from root key via
+  HKDF-SHA256 (`profileKey = HKDF-SHA256(rootVaultKey, profileId)`), reusing
+  the same derivation already used for biometric vault-key wrapping
+  (`WebAuthnCredential.vaultKeyScheme: 'prf-v1'`, `src/core/auth/biometricVaultKey.ts`)
+  rather than introducing a new KDF call path. Enables selective backup/sync,
+  shared profiles, per-profile access control.
+
+### 7.4 Architecture Alignment (validated against current repo, 2026-06-18)
+
+- **Storage:** Dexie only — no localforage. `TrustVaultDB` (`src/data/storage/database.ts`)
+  is currently at **schema v9** (per-user partitioning, Finding 1). This phase bumps to
+  **v10**, adding a `vaultProfiles` table and `profileId`/`[userId+profileId]` to
+  `credentials`, following the exact `.version(N).stores().upgrade()` pattern used for
+  v9 — not a custom `schemaVersion` setting. Migration is idempotent: skip per-user if
+  that user already has ≥1 profile row.
+- **Repository pattern:** No `services/` directory exists in this repo. Follow the
+  existing triad instead: `src/domain/repositories/IProfileRepository.ts` (interface) +
+  `src/data/repositories/ProfileRepositoryImpl.ts` (impl) + `src/presentation/store/profileStore.ts`
+  (Zustand — matches `authStore.ts`/`credentialStore.ts`/`themeStore.ts`; no React
+  Context/event-emitter pattern is used elsewhere in this codebase).
+- **Method signatures:** Every existing repository method takes `(cryptoKey, userId)` as
+  trailing params (e.g. `ICredentialRepository.findAll(decryptionKey, userId)`).
+  Profile-scoped reads extend this to `(decryptionKey, userId, profileId)`, not a
+  separate unscoped-fetch-then-filter step.
+- **Entity placement:** `VaultProfile` → `src/domain/entities/VaultProfile.ts` (sibling
+  to `Credential.ts`/`User.ts`). `Credential`/`CredentialInput` gain `profileId: string`
+  (mandatory post-migration, mirroring how `userId` went optional→mandatory across v9).
+
+### 7.5 Implementation Roadmap
+
+| # | Task | Dependencies | Est. Time |
+|---|------|--------------|-----------|
+| 0 | **Decide profile-name encryption** (§7.3 open decision) — blocks Task 1 type shape | — | 0.5h |
+| 1 | Data Layer: `VaultProfile` entity, `profileId` on `Credential`/`StoredCredential`, Dexie v10 schema (`vaultProfiles` table + `[userId+profileId]` index) | Task 0 | 3h |
+| 2 | Migration: v10 `.upgrade()` — default "Personal" profile per user, idempotent, backfills `profileId` on existing credentials | Task 1 | 3h |
+| 3 | `IProfileRepository` + `ProfileRepositoryImpl`: CRUD, default/active profile, mirrors `ICredentialRepository` signature conventions | Tasks 1–2 | 4h |
+| 4 | `profileStore.ts` (Zustand): active profile state, persists `activeProfileId` | Task 3 | 2h |
+| 5 | Item Query Refactor: extend `ICredentialRepository` methods with `profileId` param, update all callers (dashboard, search, detail) | Tasks 1–4 | 5h |
+| 6 | `ProfileSwitcher` component + `Settings → Profiles` CRUD screen | Tasks 3–4 | 4h |
+| 7 | Lock/Unlock Integration: verify all profiles locked/unlocked together (no per-profile session state) | Tasks 3–6 | 2h |
+| 8 | Visual Polish: profile color accents, icons, active indicator | Task 6 | 2h |
+| 9 | Docs: README, ROADMAP, SECURITY.md (if §7.3 decision is "documented residual"), migration notes | Tasks 1–8 | 2h |
+
+**Total:** ~27.5 hours
+
+### 7.5 Success Criteria
+
+- ✅ Create/edit/delete profiles without losing items in other profiles
+- ✅ Switch profiles without re-authentication
+- ✅ No items leak between profiles (query isolation)
+- ✅ Migration transparent to users; existing single-vault data mapped to default profile
+- ✅ Profile metadata (name, color, icon) encrypted at rest or stored non-sensitive
+- ✅ Lock/unlock remains single-action (all profiles locked together)
+- ✅ Unit + integration tests for profile CRUD and migration
+- ✅ Zero-knowledge guarantee maintained (profiles do not reveal usage patterns)
+
+### 7.6 Full Specification
+
+See: `/Users/ianpinto/.claude/projects/.../memory/multi_vault_profiles_plan.md`  
+(Full spec §1–13, plus §14 "Codebase Alignment" added 2026-06-18 — corrects storage/repository/encryption assumptions against the actual repo. Read §14 before §1–13; it supersedes section 6 (Migration) and section 8.1 (Profile Service) of the original draft.)
+
+### 7.7 Next Steps
+
+When Phase 7 starts:
+1. Resolve §7.3 profile-name encryption decision first (Task 0)
+2. Read full spec from memory, §14 first
+3. Execute tasks 1–9 incrementally
+4. Keep tests green after each task
+5. Update ROADMAP as tasks complete
+6. Merge to main with feature flag if experimental
+
+---
+
 ## 🔄 Revision History
 
 | Date | Version | Changes |
 |------|---------|---------|
+| 2026-06-18 | 1.1 | Added Phase 7: Multi-Vault Profiles (next minor release) spec + memory link |
 | 2025-10-22 | 1.0 | Initial roadmap created |
 
 ---
 
-**Next Action:** Start with Phase 0.1 - Fix Vault Key Decryption
+**Current Focus:** Beta → Release Candidate (minor completions: TOTP SMS, CSV, ErrorBoundary, WCAG AA)  
+**Next Major Feature:** Phase 7 Multi-Vault Profiles (post-release)
