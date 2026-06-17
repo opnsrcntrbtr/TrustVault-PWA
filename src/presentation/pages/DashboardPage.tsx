@@ -528,18 +528,6 @@ export default function DashboardPage() {
           </Grid>
         </Grid>
 
-        {/* Credentials List Header with Sort */}
-        <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
-          <Typography variant="h5">
-            {searchQuery || selectedCategory !== 'all' || favoritesOnly
-              ? `Found ${filteredAndSortedCredentials.length} credential${
-                  filteredAndSortedCredentials.length !== 1 ? 's' : ''
-                }`
-              : 'Your Credentials'}
-          </Typography>
-          <SortDropdown value={sortBy} onChange={setSortBy} />
-        </Box>
-
         {/* Loading State */}
         {loading && (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
@@ -639,9 +627,25 @@ export default function DashboardPage() {
           </Box>
         )}
 
+        {/* Credentials List Header with Sort — sits directly above the grid it
+            controls, after the Favorites/Recently Used sections, so changing
+            the sort order is immediately visible. */}
+        {!loading && !error && filteredAndSortedCredentials.length > 0 && (
+          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+            <Typography variant="h5">
+              {searchQuery || selectedCategory !== 'all' || favoritesOnly
+                ? `Found ${filteredAndSortedCredentials.length} credential${
+                    filteredAndSortedCredentials.length !== 1 ? 's' : ''
+                  }`
+                : 'Your Credentials'}
+            </Typography>
+            <SortDropdown value={sortBy} onChange={setSortBy} />
+          </Box>
+        )}
+
         {/* Credentials Grid - Desktop & Tablet */}
         {!loading && !error && filteredAndSortedCredentials.length > 0 && !isMobile && (
-          <Grid container spacing={2}>
+          <Grid container spacing={2} data-testid="credentials-grid">
             {filteredAndSortedCredentials.map((credential) => (
               <Grid
                 size={{ xs: 12, sm: 6, md: 4 }}
@@ -680,7 +684,7 @@ export default function DashboardPage() {
 
         {/* Credentials List - Mobile with Swipe */}
         {!loading && !error && filteredAndSortedCredentials.length > 0 && isMobile && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} data-testid="credentials-grid">
             {filteredAndSortedCredentials.map((credential) => (
               <SwipeableCredentialCard
                 key={credential.id}
