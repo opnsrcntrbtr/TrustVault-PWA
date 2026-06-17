@@ -43,15 +43,17 @@ import {
   CheckCircle,
   Security,
 } from '@mui/icons-material';
-import type { Credential } from '@/domain/entities/Credential';
+import type { Credential, BackupCode } from '@/domain/entities/Credential';
 import { formatRelativeTime } from '@/presentation/utils/timeFormat';
 import { normalizeUrl } from '@/presentation/utils/url';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import { getBreachResult, saveBreachResult } from '@/data/repositories/breachResultsRepository';
 import { useAuthStore } from '@/presentation/store/authStore';
 import type { BreachCheckResult } from '@/core/breach/breachTypes';
+import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import TotpDisplay from './TotpDisplay';
 import BreachDetailsModal from './BreachDetailsModal';
+import BackupCodeInput from './BackupCodeInput';
 
 interface CredentialDetailsDialogProps {
   open: boolean;
@@ -96,6 +98,8 @@ export default function CredentialDetailsDialog({
   const [breachChecking, setBreachChecking] = useState(false);
   const [breachResult, setBreachResult] = useState<BreachCheckResult | null>(null);
   const [breachDetailsOpen, setBreachDetailsOpen] = useState(false);
+  const [showBackupCodeInput, setShowBackupCodeInput] = useState(false);
+  const { vaultKey, user } = useAuthStore();
 
   useEffect(() => {
     if (open && credential) {
@@ -134,6 +138,35 @@ export default function CredentialDetailsDialog({
       alert('Failed to check for breaches. Please try again later.');
     } finally {
       setBreachChecking(false);
+    }
+  };
+
+  const handleBackupCodeSuccess = async (consumedCode: BackupCode) => {
+    try {
+      if (!credential || !credential.backupCodes || !vaultKey || !user) {
+        return;
+      }
+
+      // Update credential with consumed code
+      const updated = credential.backupCodes.map((bc) =>
+        bc.id === consumedCode.id ? consumedCode : bc
+      );
+
+      // Save to DB via repository
+      await credentialRepository.update(
+        credential.id,
+        { backupCodes: updated },
+        vaultKey,
+        user.id
+      );
+
+      setShowBackupCodeInput(false);
+      // Show success feedback
+      alert('Backup code used successfully. Your authenticator has been reset.');
+      onClose?.();
+    } catch (error) {
+      console.error('Failed to use backup code:', error);
+      alert('Failed to use backup code. Please try again.');
     }
   };
 
@@ -487,6 +520,7 @@ export default function CredentialDetailsDialog({
           p: 2,
           display: 'flex',
           gap: 1,
+          flexWrap: 'wrap',
         }}
       >
         {credential.category === 'credit_card' ? (
@@ -536,6 +570,17 @@ export default function CredentialDetailsDialog({
             </Button>
           </>
         )}
+        {credential?.totpSecret && credential?.backupCodes && credential.backupCodes.length > 0 && (
+          <Button
+            variant="text"
+            color="warning"
+            onClick={() => setShowBackupCodeInput(true)}
+            size="small"
+            sx={{ flex: '1 0 100%' }}
+          >
+            Lost authenticator?
+          </Button>
+        )}
         <Button variant="outlined" startIcon={<Edit />} onClick={onEdit} fullWidth>
           Edit
         </Button>
@@ -565,6 +610,16 @@ export default function CredentialDetailsDialog({
           onEdit();
           onClose();
         }}
+      />
+    )}
+
+    {/* Backup Code Recovery Modal */}
+    {showBackupCodeInput && credential?.backupCodes && (
+      <BackupCodeInput
+        credentialTitle={credential.title}
+        backupCodes={credential.backupCodes}
+        onSuccess={handleBackupCodeSuccess}
+        onCancel={() => setShowBackupCodeInput(false)}
       />
     )}
     </>
