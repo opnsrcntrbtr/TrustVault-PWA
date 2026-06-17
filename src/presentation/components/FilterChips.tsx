@@ -7,12 +7,13 @@ import { Box, Chip, Autocomplete, TextField } from '@mui/material';
 import {
   Star as StarIcon,
   Lock,
-  CreditCard,
-  AccountBalance,
-  Person,
-  Code,
-  Key,
-  Note,
+  // Icons for hidden vault-type badges
+  // CreditCard,
+  // AccountBalance,
+  // Person,
+  // Code,
+  // Key,
+  // Note,
   LocalOffer as TagIcon,
 } from '@mui/icons-material';
 import type { CredentialCategory } from '@/domain/entities/Credential';
@@ -34,12 +35,13 @@ const CATEGORY_OPTIONS: Array<{
 }> = [
   { value: 'all', label: 'All' },
   { value: 'login', label: 'Login', icon: <Lock fontSize="small" /> },
-  { value: 'credit_card', label: 'Cards', icon: <CreditCard fontSize="small" /> },
-  { value: 'bank_account', label: 'Bank', icon: <AccountBalance fontSize="small" /> },
-  { value: 'identity', label: 'Identity', icon: <Person fontSize="small" /> },
-  { value: 'api_key', label: 'API Keys', icon: <Code fontSize="small" /> },
-  { value: 'ssh_key', label: 'SSH Keys', icon: <Key fontSize="small" /> },
-  { value: 'secure_note', label: 'Notes', icon: <Note fontSize="small" /> },
+  // Vault type badges temporarily hidden on dashboard
+  // { value: 'credit_card', label: 'Cards', icon: <CreditCard fontSize="small" /> },
+  // { value: 'bank_account', label: 'Bank', icon: <AccountBalance fontSize="small" /> },
+  // { value: 'identity', label: 'Identity', icon: <Person fontSize="small" /> },
+  // { value: 'api_key', label: 'API Keys', icon: <Code fontSize="small" /> },
+  // { value: 'ssh_key', label: 'SSH Keys', icon: <Key fontSize="small" /> },
+  // { value: 'secure_note', label: 'Notes', icon: <Note fontSize="small" /> },
 ];
 
 export default function FilterChips({
