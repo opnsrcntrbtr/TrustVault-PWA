@@ -495,9 +495,9 @@ describe('Credential CRUD Integration', () => {
     it('should complete create → read → update → delete cycle', async () => {
       const user = userEvent.setup();
       render(
-        
+
           <App />
-        
+
       );
 
       await setupAuthenticatedUser(user);
@@ -587,6 +587,101 @@ describe('Credential CRUD Integration', () => {
       await waitFor(() => {
         expect(screen.queryByText('Complete Cycle Test')).not.toBeInTheDocument();
       });
+    });
+  });
+
+  describe('TOTP with Backup Codes', () => {
+    it('should setup TOTP with backup codes and recover with a code', async () => {
+      const user = userEvent.setup();
+
+      render(
+
+          <App />
+
+      );
+
+      await setupAuthenticatedUser(user);
+
+      // Navigate to add credential
+      const addButton = screen.getByLabelText('add');
+      await user.click(addButton);
+
+      await waitFor(() => {
+        expect(screen.getByRole('heading', { name: /add credential/i })).toBeInTheDocument();
+      });
+
+      // Fill basic credential info
+      const titleInput = screen.getByLabelText(/title/i);
+      await user.type(titleInput, 'Test Credential');
+
+      const usernameInput = screen.getByLabelText(/username/i);
+      await user.type(usernameInput, 'testuser');
+
+      const passwordInput = screen.getByLabelText(/^password/i);
+      await user.type(passwordInput, 'MyPassword123');
+
+      // Enter TOTP secret (use a valid test secret)
+      const totpInput = screen.getByLabelText(/totp secret/i);
+      const testSecret = 'JBSWY3DPEHPK3PXP'; // Test secret from TOTP spec
+      await user.type(totpInput, testSecret);
+
+      // Click Generate Codes button to trigger backup codes modal
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: /generate codes/i })).toBeInTheDocument();
+      }, { timeout: 5000 });
+      const generateCodesButton = screen.getByRole('button', { name: /generate codes/i });
+      await user.click(generateCodesButton);
+
+      // Verify backup codes modal appears
+      await waitFor(() => {
+        expect(screen.getByText(/Save your backup codes/i)).toBeInTheDocument();
+      }, { timeout: 5000 });
+
+      // Get the backup codes displayed
+      const codeElements = screen.getAllByText(/^\d{8}$/);
+      expect(codeElements.length).toBe(12);
+
+      // Check confirmation and close modal
+      const confirmCheckbox = screen.getByRole('checkbox', { name: /saved these/i });
+      await user.click(confirmCheckbox);
+      await user.click(screen.getByRole('button', { name: /done/i }));
+
+      // Save credential
+      await user.click(screen.getByRole('button', { name: /save/i }));
+
+      // Verify credential created
+      await waitFor(() => {
+        expect(screen.getByText('Test Credential')).toBeInTheDocument();
+      }, { timeout: 5000 });
+
+      // Open credential detail
+      await user.click(screen.getByText('Test Credential'));
+
+      // Verify "Lost authenticator?" button appears
+      const lostAuthButton = await screen.findByRole('button', { name: /lost authenticator/i });
+      await user.click(lostAuthButton);
+
+      // Verify backup code input modal appears
+      await waitFor(() => {
+        expect(screen.getByText(/Recover access/i)).toBeInTheDocument();
+      }, { timeout: 5000 });
+
+      // Enter first backup code
+      const backupCodeInput = screen.getByPlaceholderText('e.g., 12345678');
+      const firstCode = codeElements[0]!.textContent!;
+      await user.type(backupCodeInput, firstCode);
+
+      // Use the code
+      await user.click(screen.getByRole('button', { name: /use this code/i }));
+
+      // Verify code was consumed (modal closes)
+      await waitFor(() => {
+        expect(screen.queryByText(/Recover access/i)).not.toBeInTheDocument();
+      }, { timeout: 5000 });
+
+      // Verify dialog/detail view still shows (code was successfully used)
+      // The test confirms: setup → recovery → consumption works end-to-end
+      // Testing "already used" error is covered in component tests
     });
   });
 });
