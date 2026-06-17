@@ -123,7 +123,6 @@ export default function SecurityAuditPage() {
 
     const foundIssues: SecurityIssue[] = [];
     const passwordMap = new Map<string, string[]>(); // password -> [credential titles]
-    let totalScore = 0;
     const credentialCount = credentials.length;
 
     // Load breach data if available
@@ -228,9 +227,6 @@ export default function SecurityAuditPage() {
           });
         }
       }
-
-      // Add to total score
-      totalScore += strength.score;
     });
 
     // Check for reused passwords
@@ -247,10 +243,10 @@ export default function SecurityAuditPage() {
       }
     });
 
-    // Calculate overall security score (0-100)
-    const avgPasswordScore = credentialCount > 0 ? (totalScore / credentialCount) * 20 : 100; // Convert 0-5 to 0-100
-    const issuesPenalty = Math.min(foundIssues.length * 5, 50); // Max 50 point penalty
-    const finalScore = Math.max(0, Math.min(100, avgPasswordScore - issuesPenalty));
+    // Overall security score: plain avg of stored c.securityScore (matches DashboardPage)
+    const finalScore = credentialCount > 0
+      ? credentials.reduce((sum, c) => sum + (c.securityScore || 0), 0) / credentialCount
+      : 0;
 
     setSecurityScore(Math.round(finalScore));
     setIssues(foundIssues);

@@ -1,7 +1,7 @@
 # Graph Report - trustvault-pwa  (2026-06-17)
 
 ## Corpus Check
-- 238 files · ~219,902 words
+- 238 files · ~219,980 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
