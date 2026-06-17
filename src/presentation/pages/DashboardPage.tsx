@@ -478,6 +478,16 @@ export default function DashboardPage() {
           />
         </Box>
 
+        {/* Sort control — kept at the top with the search/filter row so it stays
+            prominent and discoverable, rather than buried beneath the curated
+            Favorites / Recently Used sections where its "Recently Used" value
+            collided with the section heading. */}
+        {!loading && !error && credentials.length > 0 && (
+          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
+            <SortDropdown value={sortBy} onChange={setSortBy} />
+          </Box>
+        )}
+
         {/* Stats */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -627,11 +637,11 @@ export default function DashboardPage() {
           </Box>
         )}
 
-        {/* Credentials List Header with Sort — sits directly above the grid it
-            controls, after the Favorites/Recently Used sections, so changing
-            the sort order is immediately visible. */}
+        {/* Credentials list heading — labels the grid below. The sort control
+            lives at the top of the page (with the search/filter row), so this
+            row is just the heading. */}
         {!loading && !error && filteredAndSortedCredentials.length > 0 && (
-          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ mb: 3 }}>
             <Typography variant="h5">
               {searchQuery || selectedCategory !== 'all' || favoritesOnly
                 ? `Found ${filteredAndSortedCredentials.length} credential${
@@ -639,7 +649,6 @@ export default function DashboardPage() {
                   }`
                 : 'Your Credentials'}
             </Typography>
-            <SortDropdown value={sortBy} onChange={setSortBy} />
           </Box>
         )}
 

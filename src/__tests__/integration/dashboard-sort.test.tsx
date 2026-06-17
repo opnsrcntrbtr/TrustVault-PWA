@@ -1,10 +1,11 @@
 /**
  * Dashboard Sort Integration Tests
  *
- * Regression coverage for the "sort dropdown does not reflect the selected
- * option" report. The sort control must sit with the credentials grid it
- * sorts — not above the (unsorted) Favorites / Recently Used sections, which
- * pushed the sorted grid below the fold and made sorting look like a no-op.
+ * Regression coverage for the sort control's discoverability. The control must
+ * sit prominently at the TOP of the credentials area (with the search / filter
+ * row), BEFORE the curated Favorites / Recently Used sections. Burying it below
+ * those sections made the bold "Recently Used" section heading read as if it had
+ * replaced the control, and pushed the dropdown far down and to the right.
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/react';
@@ -70,7 +71,7 @@ describe('Dashboard sort layout', () => {
     localStorage.setItem('trustvault_tour_state', JSON.stringify({ completed: true, version: '1.0.0', tours: {} }));
   });
 
-  it('renders the sort control with the credentials grid, after the Favorites section', async () => {
+  it('renders the sort control at the top, before the Favorites section', async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -84,11 +85,12 @@ describe('Dashboard sort layout', () => {
     // The sort control is present.
     const sortControl = screen.getByRole('combobox', { name: /sort by/i });
 
-    // Root-cause assertion: the sort control must come AFTER the Favorites
-    // section in document order so it sits with the list it actually sorts.
-    // DOCUMENT_POSITION_FOLLOWING (4) means sortControl follows favoritesHeading.
+    // Root-cause assertion: the sort control must come BEFORE the Favorites
+    // section in document order so it stays prominent at the top of the
+    // credentials area instead of being buried under the curated sections.
+    // DOCUMENT_POSITION_PRECEDING (2) means sortControl precedes favoritesHeading.
     const position = favoritesHeading.compareDocumentPosition(sortControl);
-    expect(position & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(position & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy();
   });
 
   it('reorders the credentials grid when a sort option is selected', async () => {
