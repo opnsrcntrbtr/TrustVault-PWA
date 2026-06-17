@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
   generateBackupCodes,
   validateBackupCode,
@@ -103,7 +103,7 @@ describe('Backup Codes', () => {
       const result = consumeBackupCode(codes, firstCode.code);
       expect(result).not.toBeNull();
 
-      const consumed = result![0];
+      const consumed = result?.[0];
       if (!consumed) throw new Error('No consumed code');
       expect(consumed.consumed).toBe(true);
       expect(consumed.lastUsedAt).toBeDefined();
@@ -135,7 +135,8 @@ describe('Backup Codes', () => {
       expect(result1).not.toBeNull();
 
       // Try to consume again
-      const result2 = consumeBackupCode(result1!, firstCode.code);
+      if (!result1) throw new Error('First consumption failed');
+      const result2 = consumeBackupCode(result1, firstCode.code);
       expect(result2).toBeNull();
     });
 
@@ -145,12 +146,12 @@ describe('Backup Codes', () => {
       if (!firstCode) throw new Error('No code generated');
 
       const originalLength = codes.length;
-      const originalFirstConsumed = codes[0]!.consumed;
+      const originalFirstConsumed = codes[0]?.consumed ?? false;
 
       consumeBackupCode(codes, firstCode.code);
 
       expect(codes).toHaveLength(originalLength);
-      expect(codes[0]!.consumed).toBe(originalFirstConsumed); // unchanged
+      expect(codes[0]?.consumed).toBe(originalFirstConsumed); // unchanged
     });
 
     it('returns a new array with code consumed', () => {
