@@ -2637,7 +2637,7 @@
       "label": "setupAuthenticatedUser()",
       "file_type": "code",
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
-      "source_location": "L17",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "integration_dashboard_sort_test_setupauthenticateduser",
       "community": 32,
@@ -2647,7 +2647,7 @@
       "label": "createCredential()",
       "file_type": "code",
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
-      "source_location": "L38",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "integration_dashboard_sort_test_createcredential",
       "community": 32,
@@ -30889,9 +30889,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "integration_dashboard_sort_test_createcredential",
-      "confidence_score": 1.0
+      "target": "integration_dashboard_sort_test_createcredential"
     },
     {
       "relation": "contains",
@@ -30899,9 +30899,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "integration_dashboard_sort_test_setupauthenticateduser",
-      "confidence_score": 1.0
+      "target": "integration_dashboard_sort_test_setupauthenticateduser"
     },
     {
       "relation": "imports_from",
@@ -30910,9 +30910,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "presentation_app",
-      "confidence_score": 1.0
+      "target": "presentation_app"
     },
     {
       "relation": "imports_from",
@@ -30921,9 +30921,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "storage_database",
-      "confidence_score": 1.0
+      "target": "storage_database"
     },
     {
       "relation": "imports",
@@ -30932,9 +30932,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "storage_database_db",
-      "confidence_score": 1.0
+      "target": "storage_database_db"
     },
     {
       "relation": "imports_from",
@@ -30943,9 +30943,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "store_authstore",
-      "confidence_score": 1.0
+      "target": "store_authstore"
     },
     {
       "relation": "imports",
@@ -30954,9 +30954,9 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "integration_dashboard_sort_test",
-      "target": "store_authstore_useauthstore",
-      "confidence_score": 1.0
+      "target": "store_authstore_useauthstore"
     },
     {
       "relation": "imports_from",

@@ -1,7 +1,7 @@
 # Graph Report - trustvault-pwa  (2026-06-17)
 
 ## Corpus Check
-- 238 files · ~219,902 words
+- 238 files · ~219,980 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `19317a2b`
+- Built from commit: `44cb7bb4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -1176,7 +1176,7 @@ Cohesion: 0.50
 Nodes (3): ClipboardSettings(), ClipboardSettingsProps, TIMEOUT_OPTIONS
 
 ## Knowledge Gaps
-- **1531 isolated node(s):** `PreToolUse`, `allow`, `deny`, `ask`, `manifest_version` (+1526 more)
+- **1531 isolated node(s):** `FilterChipsProps`, `CATEGORY_OPTIONS`, `PreToolUse`, `allow`, `deny` (+1526 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **56 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1184,12 +1184,12 @@ Nodes (3): ClipboardSettings(), ClipboardSettingsProps, TIMEOUT_OPTIONS
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `WebAuthn Ceremony`, `Community 260`, `Community 133`, `Breach UI & Category Icons`, `Clipboard & Generator UI`, `Community 106`, `User Domain Model`, `Credential Repo & Metadata Sealing`, `Community 143`, `Username Migration`, `Community 148`, `Community 184`, `Community 220`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Why does `CredentialRepository` connect `Clipboard & Generator UI` to `Crypto Error & Dialogs`, `Community 260`, `Community 101`, `Breach UI & Category Icons`, `Community 106`, `Credential Repo & Metadata Sealing`, `Community 143`, `Community 148`, `Community 184`, `Community 220`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `createAppTheme()` connect `Community 91` to `Community 32`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **What connects `PreToolUse`, `allow`, `deny` to the rest of the system?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `registerHibpPeriodicSync()` connect `Community 143` to `Community 149`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **What connects `FilterChipsProps`, `CATEGORY_OPTIONS`, `PreToolUse` to the rest of the system?**
   _1541 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `TOTP / 2FA Core` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
