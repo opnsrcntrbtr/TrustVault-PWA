@@ -51,6 +51,7 @@ export interface StoredCredential {
   encryptedExpiryYear?: string | undefined;
   encryptedCardType?: string | undefined;
   encryptedBillingAddress?: string | undefined;
+  encryptedBackupCodes?: string | undefined; // AES-256-GCM encrypted JSON BackupCode[]
 
   // ── Migration sentinel ─────────────────────────────────────────────────────
   /** true = all metadata fields are encrypted; absent/false = pre-v5 legacy record */

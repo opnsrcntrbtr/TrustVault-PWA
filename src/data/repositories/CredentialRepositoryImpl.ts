@@ -129,6 +129,14 @@ export class CredentialRepository implements ICredentialRepository {
     const encryptedCardType       = await this.encryptOptional(input.cardType, encryptionKey);
     const encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey);
 
+    // Encrypt backup codes if present
+    let encryptedBackupCodes: string | undefined;
+    if (input.backupCodes && input.backupCodes.length > 0) {
+      const codesJson = JSON.stringify(input.backupCodes);
+      const encrypted = await encrypt(codesJson, encryptionKey);
+      encryptedBackupCodes = JSON.stringify(encrypted);
+    }
+
     const stored: StoredCredential = {
       id,
       userId,
@@ -136,7 +144,7 @@ export class CredentialRepository implements ICredentialRepository {
       encryptedTitle, encryptedUsername, encryptedUrl, encryptedTags,
       encryptedNotes, encryptedTotpSecret, encryptedCardNumber, encryptedCvv,
       encryptedCardholderName, encryptedExpiryMonth, encryptedExpiryYear,
-      encryptedCardType, encryptedBillingAddress,
+      encryptedCardType, encryptedBillingAddress, encryptedBackupCodes,
       category: input.category,
       tags: [],        // real tags live in encryptedTags
       isFavorite: input.isFavorite ?? false,
@@ -272,6 +280,15 @@ export class CredentialRepository implements ICredentialRepository {
       updates.encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey);
       updates.billingAddress = undefined;
     }
+    if (input.backupCodes !== undefined) {
+      if (input.backupCodes.length > 0) {
+        const codesJson = JSON.stringify(input.backupCodes);
+        const encrypted = await encrypt(codesJson, encryptionKey);
+        updates.encryptedBackupCodes = JSON.stringify(encrypted);
+      } else {
+        updates.encryptedBackupCodes = undefined;
+      }
+    }
 
     await db.credentials.update(id, updates);
     const updated = await db.credentials.get(id);
@@ -353,6 +370,7 @@ export class CredentialRepository implements ICredentialRepository {
       createdAt: c.createdAt,
       updatedAt: c.updatedAt,
       totpSecret: c.totpSecret,
+      backupCodes: c.backupCodes,
       cardNumber: c.cardNumber,
       cardholderName: c.cardholderName,
       expiryMonth: c.expiryMonth,
@@ -406,6 +424,7 @@ export class CredentialRepository implements ICredentialRepository {
             tags: item.tags ?? [],
             isFavorite: item.isFavorite ?? false,
             totpSecret: item.totpSecret,
+            backupCodes: item.backupCodes,
             cardNumber: item.cardNumber,
             cardholderName: item.cardholderName,
             expiryMonth: item.expiryMonth,
@@ -506,6 +525,19 @@ export class CredentialRepository implements ICredentialRepository {
         ? await this.decryptOptional(stored.encryptedBillingAddress, vaultKey)
         : stored.billingAddress;
 
+      // Decrypt backup codes if present
+      let backupCodes: import('@/domain/entities/Credential').BackupCode[] | undefined;
+      if (stored.encryptedBackupCodes) {
+        try {
+          const encryptedCodes = JSON.parse(stored.encryptedBackupCodes);
+          const codesJson = await decrypt(encryptedCodes, vaultKey);
+          backupCodes = JSON.parse(codesJson) as import('@/domain/entities/Credential').BackupCode[];
+        } catch (err) {
+          console.error('Failed to decrypt backup codes:', err);
+          backupCodes = [];
+        }
+      }
+
       return {
         id: stored.id, title, username, password, url, notes,
         category: stored.category, tags,
@@ -515,7 +547,7 @@ export class CredentialRepository implements ICredentialRepository {
         isFavorite: stored.isFavorite,
         securityScore: stored.securityScore,
         totpSecret, cardNumber, cardholderName, expiryMonth, expiryYear,
-        cvv, cardType, billingAddress,
+        cvv, cardType, billingAddress, backupCodes,
       };
     } catch {
       return {
@@ -554,6 +586,7 @@ export class CredentialRepository implements ICredentialRepository {
           tags: credential.tags,
           isFavorite: credential.isFavorite,
           totpSecret: credential.totpSecret,
+          backupCodes: credential.backupCodes,
           cardNumber: credential.cardNumber,
           cardholderName: credential.cardholderName,
           expiryMonth: credential.expiryMonth,
@@ -581,6 +614,7 @@ export class CredentialRepository implements ICredentialRepository {
         tags: credential.tags ?? [],
         isFavorite: credential.isFavorite,
         totpSecret: credential.totpSecret,
+        backupCodes: credential.backupCodes,
         cardNumber: credential.cardNumber,
         cardholderName: credential.cardholderName,
         expiryMonth: credential.expiryMonth,

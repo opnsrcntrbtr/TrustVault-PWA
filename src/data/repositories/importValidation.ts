@@ -31,6 +31,13 @@ const credentialCategorySchema = z.enum([
 
 const cardTypeSchema = z.enum(['visa', 'mastercard', 'amex', 'discover', 'other']);
 
+const backupCodeSchema = z.object({
+  id: z.string().uuid(),
+  code: z.string().regex(/^\d{8}$/),
+  consumed: z.boolean(),
+  lastUsedAt: z.number().optional(),
+});
+
 /**
  * One importable credential row. Unknown keys are stripped (not rejected) so
  * exports from newer app versions degrade gracefully; known keys must have
@@ -47,6 +54,7 @@ export const importedCredentialSchema = z
     tags: z.array(boundedString(256)).max(IMPORT_LIMITS.maxTags).optional(),
     isFavorite: z.boolean().optional(),
     totpSecret: boundedString(256).optional(),
+    backupCodes: z.array(backupCodeSchema).optional(),
     cardNumber: boundedString(64).optional(),
     cardholderName: boundedString().optional(),
     expiryMonth: boundedString(16).optional(),

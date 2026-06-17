@@ -59,6 +59,7 @@ export interface CredentialInput {
   tags?: string[];
   isFavorite?: boolean;
   totpSecret?: string | undefined; // TOTP/2FA secret (base32-encoded) - will be encrypted before storage
+  backupCodes?: BackupCode[] | undefined; // Single-use recovery codes - will be encrypted before storage
 
   // Card-specific fields (for credit_card category)
   cardNumber?: string | undefined;
