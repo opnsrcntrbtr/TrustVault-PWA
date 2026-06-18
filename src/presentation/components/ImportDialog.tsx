@@ -27,6 +27,7 @@ import { Visibility, VisibilityOff, Upload, Warning } from '@mui/icons-material'
 import { decryptImport, readImportFile } from '@/core/crypto/exportEncryption';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { useAuthStore } from '../store/authStore';
+import { useProfileStore } from '../store/profileStore';
 import { Credential, CredentialInput } from '@/domain/entities/Credential';
 
 interface ImportDialogProps {
@@ -39,6 +40,7 @@ type ImportMode = 'replace' | 'merge';
 
 export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogProps) {
   const { session } = useAuthStore();
+  const activeProfileId = useProfileStore((s) => s.activeProfileId);
 
   // File state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -109,9 +111,9 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
     try {
       // Replace mode: delete all existing credentials first
       if (importMode === 'replace') {
-        const existing = await credentialRepository.findAll(session.vaultKey, session.userId);
+        const existing = await credentialRepository.findAll(session.vaultKey, session.userId, activeProfileId ?? undefined);
         for (const cred of existing) {
-          await credentialRepository.delete(cred.id, session.vaultKey, session.userId);
+          await credentialRepository.delete(cred.id, session.vaultKey, session.userId, activeProfileId ?? undefined);
         }
       }
 
@@ -121,7 +123,7 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
 
         // In merge mode, check for duplicates (same title + username)
         if (importMode === 'merge') {
-          const existing = await credentialRepository.findAll(session.vaultKey, session.userId);
+          const existing = await credentialRepository.findAll(session.vaultKey, session.userId, activeProfileId ?? undefined);
           const duplicate = existing.find(
             (c) =>
               c.title.toLowerCase() === credential!.title.toLowerCase() &&
@@ -148,8 +150,8 @@ export default function ImportDialog({ open, onClose, onSuccess }: ImportDialogP
           totpSecret: credential!.totpSecret,
         };
 
-        // Save credential
-        await credentialRepository.create(newCredential, session.vaultKey, session.userId);
+        // Save credential to active profile
+        await credentialRepository.create(newCredential, session.vaultKey, session.userId, activeProfileId ?? undefined);
 
         // Update progress
         setProgress({ current: i + 1, total: credentials.length });

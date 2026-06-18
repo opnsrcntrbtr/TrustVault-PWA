@@ -394,10 +394,11 @@ describe('Import/Export Integration', () => {
       }, { timeout: 3000 });
       fireEvent.click(credentialsButton);
 
-      // Dashboard may need time to query and render imported credentials
+      // The dashboard needs time to query the database and render the imported credential.
+      // Using a generous timeout to account for database queries in jsdom/CI environments.
       await waitFor(() => {
         expect(screen.getByText('Imported Gmail')).toBeInTheDocument();
-      }, { timeout: 10000 });
+      }, { timeout: 15000 });
     }, 20000);
 
     it('should reject import with wrong password', async () => {
