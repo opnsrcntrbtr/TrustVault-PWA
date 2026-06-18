@@ -1,0 +1,48 @@
+{
+  "language": "typescript",
+  "framework": "react",
+  "mode": "copilot",
+  "max-context": 2000,
+  "architecture": "clean-architecture",
+  "layers": {
+    "presentation": "src/presentation",
+    "data": "src/data",
+    "domain": "src/domain",
+    "core": "src/core"
+  },
+  "import-rules": {
+    "presentation": {
+      "canImport": ["data", "domain", "core", "presentation"],
+      "cannotImport": []
+    },
+    "data": {
+      "canImport": ["domain", "core", "data"],
+      "cannotImport": ["presentation"]
+    },
+    "domain": {
+      "canImport": ["domain"],
+      "cannotImport": ["presentation", "data", "core"]
+    },
+    "core": {
+      "canImport": ["core"],
+      "cannotImport": ["presentation", "data", "domain"]
+    }
+  },
+  "test-conventions": {
+    "location": "colocated",
+    "pattern": "*.test.ts(x)?",
+    "framework": "vitest",
+    "coverage-target": 80
+  },
+  "security-patterns": {
+    "crypto": "non-extractable-keys",
+    "logging": "no-console-in-prod",
+    "validation": "zod-for-imports"
+  },
+  "performance-targets": {
+    "bundle-size": "200KB",
+    "lighthouse-min": 90,
+    "fcp": "1.8s",
+    "lcp": "2.5s"
+  }
+}

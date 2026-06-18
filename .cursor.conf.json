@@ -1,0 +1,38 @@
+{
+  "name": "TrustVault PWA",
+  "description": "React 19 PWA with offline-first, encryption, and biometric auth",
+  "type": "react-typescript-pwa",
+  "structure": {
+    "root": "/Users/ianpinto/Documents/projects/ipgthb/trustvault-pwa",
+    "src": "src",
+    "tests": "src/__tests__",
+    "docs": "docs"
+  },
+  "rules": {
+    "typescript-strict": true,
+    "eslint-required": true,
+    "test-coverage-min": 80,
+    "no-external-state": false,
+    "component-location": "src/presentation",
+    "business-logic-location": "src/core,src/data",
+    "forbidden-patterns": [
+      "crypto.subtle.deriveKey(..., true, ...)",
+      "localStorage.setItem('sessionVaultKey', ...)",
+      "console.log(...password...)"
+    ]
+  },
+  "entry-points": {
+    "app": "src/main.tsx",
+    "components": "src/presentation/components",
+    "stores": "src/presentation/store",
+    "repositories": "src/data/repositories",
+    "crypto": "src/core/crypto",
+    "auth": "src/core/auth"
+  },
+  "documentation": {
+    "architecture": "src/ARCHITECTURE.md",
+    "module-contracts": "src/MODULE_CONTRACTS.md",
+    "development": "DEVELOPMENT.md",
+    "testing": "TESTING_PATTERNS.md"
+  }
+}
