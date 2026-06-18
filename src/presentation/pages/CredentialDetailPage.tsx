@@ -262,7 +262,7 @@ export default function CredentialDetailPage() {
           <DeleteConfirmDialog
             open={deleteDialogOpen}
             credentialTitle={credential.title}
-            onCancel={() => setDeleteDialogOpen(false)}
+            onCancel={() => { setDeleteDialogOpen(false); }}
             onConfirm={handleDeleteConfirm}
             loading={deleting}
           />

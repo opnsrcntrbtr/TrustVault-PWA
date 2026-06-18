@@ -50,7 +50,7 @@ describe('ErrorBoundary', () => {
       const [throwing, setThrowing] = useState(true);
       return (
         <>
-          <button onClick={() => setThrowing(false)}>stop throwing</button>
+          <button onClick={() => { setThrowing(false); }}>stop throwing</button>
           <ErrorBoundary
             fallback={(_error, reset) => (
               <button onClick={reset}>try again</button>

@@ -128,9 +128,9 @@ describe('Dev-only header variant (never ships)', () => {
 });
 
 describe('vercel.json parity (drift guard)', () => {
-  const vercel = JSON.parse(
-    readFileSync(resolve(__dirname, '../../../vercel.json'), 'utf-8')
-  ) as {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const vercelContent: string = readFileSync(resolve(__dirname, '../../../vercel.json'), 'utf-8');
+  const vercel = JSON.parse(vercelContent) as {
     headers: Array<{ source: string; headers: Array<{ key: string; value: string }> }>;
   };
 

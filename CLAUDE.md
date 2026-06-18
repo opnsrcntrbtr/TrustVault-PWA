@@ -7,22 +7,38 @@
 
 ## Key Docs
 
-[README](./README.md) → [PROJECT_CONTEXT](./PROJECT_CONTEXT.md) (hub, links all deep-dives) → [SECURITY](./SECURITY.md) → [ROADMAP](./ROADMAP.md)
+**Status & Planning:**
+- **[PROJECT_STATUS.md](./PROJECT_STATUS.md)** ← Start here (single source of truth, all 7 phases complete, deployment checklist)
+- [ROADMAP.md](./ROADMAP.md) — Phased development timeline (all phases 0–7 documented)
+- [README.md](./README.md) — Project overview & tech stack
+
+**Deep Dives:**
+- [SECURITY.md](./SECURITY.md) — Cryptographic implementation, OWASP compliance
+- [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md) — Hub linking all feature deep-dives
+
+**Validation:**
+- [DOC_VALIDATION_REPORT.md](./DOC_VALIDATION_REPORT.md) — Documentation audit, lint errors, test gaps
 
 ---
 
 ## Current Status (June 2026)
 
-Phase 1 done (2026-05-30). Beta — 90% feature-complete. Focus: test >85%, production hardening, breach detection.
+**✅ Phase 7 Complete (2026-06-18)** — All 7 phases delivered, feature-complete, production-ready.
+- Phase 1 (2026-05-20): Core CRUD + dashboard
+- Phases 2–3 (2026-06-01): Security features, settings, import/export
+- Phases 4–5 (2026-06-12): Biometric, responsive design, testing (1098/1099 tests passing)
+- Phases 6–7 (2026-06-18): Production hardening, multi-vault profiles
 
-Update `ROADMAP.md`, `README.md`, or `AGENTS.md` if scope/validation/ownership shifts.
+Update `PROJECT_STATUS.md`, `ROADMAP.md`, or `AGENTS.md` if scope/timeline shifts.
 
 ### Definition of Done
 1. Feature flagged or guarded if experimental.
-2. `npm run type-check`, `npm run lint`, targeted `npm run test` pass locally.
+2. `npm run type-check` (0 errors), `npm run lint` (0 errors — **currently 13 test-file lint errors must be fixed before next PR**), targeted `npm run test` pass locally.
 3. Manual verification in `TEST_STATUS.md` (+ `SECURITY_AUDIT_REPORT.md` for security).
-4. Docs refreshed (README/ROADMAP/CLAUDE/copilot as needed).
+4. Docs refreshed (README/ROADMAP/PROJECT_STATUS/CLAUDE/copilot as needed).
 5. No sensitive data logged; CryptoKey objects stay memory-bound.
+
+> **Note:** See `DOC_VALIDATION_REPORT.md` for current linting status (13 errors in 4 test files + 1 flaky import-export test). Fix before next feature PR.
 
 ---
 

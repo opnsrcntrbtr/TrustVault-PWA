@@ -35,7 +35,7 @@ export default function BackupCodesModal({
     try {
       await navigator.clipboard.writeText(code);
       setCopiedMessage('Code copied!');
-      setTimeout(() => setCopiedMessage(null), 2000);
+      setTimeout(() => { setCopiedMessage(null); }, 2000);
     } catch (err) {
       console.error('Failed to copy code:', err);
     }
@@ -46,7 +46,7 @@ export default function BackupCodesModal({
       const allCodes = codes.map((bc) => bc.code).join(' ');
       await navigator.clipboard.writeText(allCodes);
       setCopiedMessage('All codes copied!');
-      setTimeout(() => setCopiedMessage(null), 2000);
+      setTimeout(() => { setCopiedMessage(null); }, 2000);
     } catch (err) {
       console.error('Failed to copy codes:', err);
     }
@@ -132,7 +132,7 @@ export default function BackupCodesModal({
           <input
             type="checkbox"
             checked={confirmed}
-            onChange={(e) => setConfirmed(e.target.checked)}
+            onChange={(e) => { setConfirmed(e.target.checked); }}
             id="backup-confirm"
           />
           <label htmlFor="backup-confirm" style={{ margin: 0 }}>
@@ -151,7 +151,7 @@ export default function BackupCodesModal({
         open={!!copiedMessage}
         autoHideDuration={2000}
         message={copiedMessage}
-        onClose={() => setCopiedMessage(null)}
+        onClose={() => { setCopiedMessage(null); }}
       />
     </Dialog>
   );

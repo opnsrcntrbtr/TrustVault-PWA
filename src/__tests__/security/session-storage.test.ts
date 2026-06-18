@@ -384,6 +384,7 @@ describe('OWASP M9: Insecure Data Storage', () => {
       expect(stored?.encryptedNotes).toBeDefined();
       expect(stored?.encryptedNotes).not.toBe(plainNotes);
       expect(stored?.encryptedNotes).not.toContain(plainNotes);
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expect(stored?.notes).toBeUndefined();
     });
 
@@ -434,8 +435,11 @@ describe('OWASP M9: Insecure Data Storage', () => {
 
       // S5: title/username/url/tags are sealed (encrypted); only
       // non-identifying index fields stay plaintext.
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expect(stored?.title).toBeUndefined();
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expect(stored?.username).toBeUndefined();
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expect(stored?.url).toBeUndefined();
       expect(stored?.encryptedTitle).toBeDefined();
       expect(stored?.encryptedUsername).toBeDefined();

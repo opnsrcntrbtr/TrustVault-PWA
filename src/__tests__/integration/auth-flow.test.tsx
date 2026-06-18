@@ -301,8 +301,10 @@ describe('Authentication Flow Integration', () => {
       const usernameInput = screen.getByLabelText(/username/i);
       const passwordInputs = screen.getAllByLabelText(/master password/i);
       await user.type(usernameInput, 'someuser');
-      await user.type(passwordInputs[0]!, 'SecurePassword123!');
-      await user.type(passwordInputs[1]!, 'SecurePassword123!');
+      expect(passwordInputs[0]).toBeDefined();
+      expect(passwordInputs[1]).toBeDefined();
+      await user.type(passwordInputs[0] as HTMLElement, 'SecurePassword123!');
+      await user.type(passwordInputs[1] as HTMLElement, 'SecurePassword123!');
       await user.click(screen.getByRole('button', { name: /create account/i }));
 
       await waitFor(() => {

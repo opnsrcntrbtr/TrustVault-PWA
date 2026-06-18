@@ -511,11 +511,12 @@ describe('Credential CRUD Integration', () => {
       });
 
       // UPDATE - click Edit button on the card
-      let editButton: HTMLElement;
+      let editButton: HTMLElement | null = null;
       await waitFor(() => {
         editButton = screen.getByRole('button', { name: /edit/i });
       });
-      await user.click(editButton!);
+      expect(editButton).not.toBeNull();
+      await user.click(editButton as HTMLElement);
 
       await waitFor(() => {
         expect(screen.getByRole('heading', { name: /edit credential/i })).toBeInTheDocument();
@@ -668,8 +669,10 @@ describe('Credential CRUD Integration', () => {
 
       // Enter first backup code
       const backupCodeInput = screen.getByPlaceholderText('e.g., 12345678');
-      const firstCode = codeElements[0]!.textContent!;
-      await user.type(backupCodeInput, firstCode);
+      const firstCodeElement = codeElements[0] as HTMLElement;
+      expect(firstCodeElement).toBeDefined();
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      await user.type(backupCodeInput, firstCodeElement.textContent!);
 
       // Use the code
       await user.click(screen.getByRole('button', { name: /use this code/i }));

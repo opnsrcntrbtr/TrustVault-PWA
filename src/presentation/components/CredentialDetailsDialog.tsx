@@ -574,7 +574,7 @@ export default function CredentialDetailsDialog({
           <Button
             variant="text"
             color="warning"
-            onClick={() => setShowBackupCodeInput(true)}
+            onClick={() => { setShowBackupCodeInput(true); }}
             size="small"
             sx={{ flex: '1 0 100%' }}
           >
@@ -619,7 +619,7 @@ export default function CredentialDetailsDialog({
         credentialTitle={credential.title}
         backupCodes={credential.backupCodes}
         onSuccess={handleBackupCodeSuccess}
-        onCancel={() => setShowBackupCodeInput(false)}
+        onCancel={() => { setShowBackupCodeInput(false); }}
       />
     )}
     </>

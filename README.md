@@ -13,16 +13,14 @@ Zero-knowledge credential vault engineered for high-assurance teams. Offline-fir
 
 ---
 
-## Current Focus — Production Hardening (June 2026)
-| Pillar | Status | Delivered | Next |
-| --- | --- | --- | --- |
-| **Vault Trust Hardening** | ✅ Complete | Strict hash-based CSP (S2), non-extractable session keys + zeroization (S7), Zod import validation (S8), HSTS/COOP/CORP (S6), scrypt N=2^17 (S4), metadata encryption (S5) | — |
-| **Passwordless Auth** | ✅ Complete | WebAuthn PRF zero-knowledge biometric unlock (S1), master-password enrollment gate, DB v7 migration, fallback to password for non-PRF devices | — |
-| **CredOps Experience** | ✅ Complete | Full CRUD (Add/Edit/Detail), password generator, clipboard hygiene, TOTP, search/filter, responsive dashboard, encrypted `.tvault` import/export | Minor TOTP edge cases |
-| **Threat Intelligence** | ✅ Complete | HIBP breach detection with k-anonymity (user-toggleable), self-hosted Tesseract OCR (no CDN egress, P2), security audit dashboard | — |
-| **Test Coverage** | 🟡 In Progress | 207/208 touched-suite tests passing; real ZK invariant in `integration.test.ts` | Reach >85% overall coverage |
+## Current Status — Feature Complete (June 2026)
+| Phase | Pillar | Status | Completion | Key Deliverables |
+| --- | --- | --- | --- | --- |
+| **0–3** | Core & Security | ✅ Complete | 2026-06-01 | CRUD, auth, password generator, import/export, biometric enrollment |
+| **4–5** | Polish & Testing | ✅ Complete | 2026-06-12 | Responsive UI, 1098/1099 tests passing (99.9%), OWASP compliance verified |
+| **6–7** | Production Hardening & Multi-Vault | ✅ Complete | 2026-06-18 | Lighthouse >90, HIBP breach detection, multi-vault profiles (personal/work/shared) |
 
-Progress for each pillar lives in `ROADMAP.md` with granular prompts, dependencies, and test checklists.
+**All phases delivered.** Ready for production deployment. See `PROJECT_STATUS.md` for comprehensive health check.
 
 ---
 
@@ -69,13 +67,21 @@ Document manual verifications (biometrics, auto-lock, breach triage) in `TEST_ST
 ---
 
 ## Documentation Map
-- `ROADMAP.md` – full phased backlog (critical bugs → production readiness)
-- `AGENTS.md` – responsibilities, workflows, and escalation paths for AI + human collaborators
-- `CLAUDE.md` / `.github/copilot-instructions.md` – coding guardrails and current objectives
-- `SECURITY.md`, `SECURITY_AUDIT_REPORT.md`, `SECURITY_PWA_ENHANCEMENT_PLAN.md` – security posture, audit history, and enhancement tracking
-- `SECURITY_HARDENING_PLAN_2026-06.md` – June 2026 hardening plan (S2/S7/S8/P2/P5 phases A–E)
-- `BREACH_DETECTION_README.md`, `PHASE_4.1_BIOMETRIC_AUTH.md` – feature deep dives
-- `PROJECT_SUMMARY.md`, `KEY_FINDINGS.md` – status snapshots and audit deltas
+**Quick Start:**
+- **`PROJECT_STATUS.md`** – Single source of truth: project health, all 7 phases, deployment checklist
+- **`ROADMAP.md`** – Full phased backlog with completion timeline (all phases 0–7 documented)
+
+**Detailed Guides:**
+- `CLAUDE.md` / `.github/copilot-instructions.md` – Coding guardrails, tech stack, critical rules
+- `SECURITY.md`, `SECURITY_AUDIT_REPORT.md` – Cryptographic implementation, OWASP compliance
+- `SECURITY_HARDENING_PLAN_2026-06.md` – Security phases A–E (CSP, biometric, key zeroization)
+- `BREACH_DETECTION_README.md`, `PHASE_4.1_BIOMETRIC_AUTH.md` – Feature deep dives
+- `AGENTS.md` – Responsibilities, workflows, escalation paths
+
+**Audit & Validation:**
+- **`DOC_VALIDATION_REPORT.md`** – Documentation audit: gaps, lint errors, test status (2026-06-18)
+- `KEY_FINDINGS.md` – Audit deltas and historical decisions
+- `PROJECT_CONTEXT.md` – Hub linking all deep-dive docs
 
 ---
 

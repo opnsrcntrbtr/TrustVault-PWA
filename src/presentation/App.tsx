@@ -477,7 +477,7 @@ function AppErrorFallback() {
           <Button
             variant="contained"
             startIcon={<Refresh />}
-            onClick={() => window.location.reload()}
+            onClick={() => { window.location.reload(); }}
           >
             Reload app
           </Button>
