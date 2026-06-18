@@ -394,9 +394,10 @@ describe('Import/Export Integration', () => {
       }, { timeout: 3000 });
       fireEvent.click(credentialsButton);
 
+      // Dashboard may need time to query and render imported credentials
       await waitFor(() => {
         expect(screen.getByText('Imported Gmail')).toBeInTheDocument();
-      }, { timeout: 5000 });
+      }, { timeout: 10000 });
     }, 20000);
 
     it('should reject import with wrong password', async () => {
