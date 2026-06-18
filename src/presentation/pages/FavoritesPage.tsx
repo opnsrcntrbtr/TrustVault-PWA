@@ -37,6 +37,7 @@ import {
 } from '@mui/icons-material';
 import { Credential } from '@/domain/entities/Credential';
 import { useAuthStore } from '../store/authStore';
+import { useProfileStore } from '../store/profileStore';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { copyToClipboard } from '../utils/clipboard';
 import { normalizeUrl } from '../utils/url';
@@ -44,6 +45,7 @@ import { normalizeUrl } from '../utils/url';
 export default function FavoritesPage() {
   const navigate = useNavigate();
   const { vaultKey, user } = useAuthStore();
+  const activeProfileId = useProfileStore((s) => s.activeProfileId);
 
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [filteredCredentials, setFilteredCredentials] = useState<Credential[]>([]);
@@ -65,7 +67,7 @@ export default function FavoritesPage() {
       setLoading(true);
       setError(null);
 
-      const allCredentials = await credentialRepository.findAll(vaultKey, user.id);
+      const allCredentials = await credentialRepository.findAll(vaultKey, user.id, activeProfileId ?? undefined);
 
       // Filter only favorites
       const favorites = allCredentials.filter((cred) => cred.isFavorite);
@@ -85,7 +87,7 @@ export default function FavoritesPage() {
     } finally {
       setLoading(false);
     }
-  }, [vaultKey, user]);
+  }, [vaultKey, user, activeProfileId]);
 
   // Load favorite credentials on mount and when vaultKey changes
   useEffect(() => {

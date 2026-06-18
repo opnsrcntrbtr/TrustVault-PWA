@@ -11,9 +11,17 @@ import { Credential, CredentialInput } from '../entities/Credential';
 
 export interface ICredentialRepository {
   // CRUD operations
-  create(input: CredentialInput, encryptionKey: CryptoKey, userId: string): Promise<Credential>;
+  // profileId (Phase 7, optional): create() stamps the new row; read methods
+  // filter to that profile when given, otherwise return all of the user's
+  // credentials (pre-Phase-7 behavior) — backward compatible by default.
+  create(
+    input: CredentialInput,
+    encryptionKey: CryptoKey,
+    userId: string,
+    profileId?: string
+  ): Promise<Credential>;
   findById(id: string, decryptionKey: CryptoKey, userId: string): Promise<Credential | null>;
-  findAll(decryptionKey: CryptoKey, userId: string): Promise<Credential[]>;
+  findAll(decryptionKey: CryptoKey, userId: string, profileId?: string): Promise<Credential[]>;
   update(
     id: string,
     input: Partial<CredentialInput>,
@@ -23,9 +31,19 @@ export interface ICredentialRepository {
   delete(id: string, decryptionKey: CryptoKey, userId: string): Promise<void>;
 
   // Search and filter
-  search(query: string, decryptionKey: CryptoKey, userId: string): Promise<Credential[]>;
-  findByCategory(category: string, decryptionKey: CryptoKey, userId: string): Promise<Credential[]>;
-  findFavorites(decryptionKey: CryptoKey, userId: string): Promise<Credential[]>;
+  search(
+    query: string,
+    decryptionKey: CryptoKey,
+    userId: string,
+    profileId?: string
+  ): Promise<Credential[]>;
+  findByCategory(
+    category: string,
+    decryptionKey: CryptoKey,
+    userId: string,
+    profileId?: string
+  ): Promise<Credential[]>;
+  findFavorites(decryptionKey: CryptoKey, userId: string, profileId?: string): Promise<Credential[]>;
 
   // Bulk operations
   exportAll(decryptionKey: CryptoKey, userId: string): Promise<string>; // Encrypted JSON export

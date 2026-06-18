@@ -44,6 +44,7 @@ import {
   VpnKey as VpnKeyIcon,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
+import { useProfileStore } from '../store/profileStore';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import CredentialCard from '@/presentation/components/CredentialCard';
 import SwipeableCredentialCard from '@/presentation/components/SwipeableCredentialCard';
@@ -55,6 +56,7 @@ import FilterChips from '@/presentation/components/FilterChips';
 import SortDropdown, { type SortOption } from '@/presentation/components/SortDropdown';
 import { sortCredentials, loadSortPreference, saveSortPreference } from '@/presentation/utils/credentialSort';
 import ThemeToggle from '@/presentation/components/ThemeToggle';
+import ProfileSwitcher from '@/presentation/components/ProfileSwitcher';
 import TourHelpButton from '@/components/TourHelpButton';
 import type { Credential, CredentialCategory } from '@/domain/entities/Credential';
 import { clipboardManager } from '@/presentation/utils/clipboard';
@@ -64,6 +66,7 @@ import { runUnlockBreachRefresh } from '@/core/breach/unlockBreachRefresh';
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { user, logout, vaultKey } = useAuthStore();
+  const activeProfileId = useProfileStore((s) => s.activeProfileId);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -111,7 +114,7 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const creds = await credentialRepository.findAll(vaultKey, user.id);
+      const creds = await credentialRepository.findAll(vaultKey, user.id, activeProfileId ?? undefined);
       setCredentials(creds);
       // P4: fire-and-forget weekly breach re-check (cache-first, offline-safe).
       void runUnlockBreachRefresh(creds, user.id);
@@ -121,7 +124,7 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, [vaultKey, user]);
+  }, [vaultKey, user, activeProfileId]);
 
   // Load credentials on mount and when vaultKey changes
   useEffect(() => {
@@ -356,6 +359,7 @@ export default function DashboardPage() {
             TrustVault
           </Typography>
           <TourHelpButton />
+          <ProfileSwitcher />
           <ThemeToggle />
           <IconButton color="inherit" onClick={handleLockVault}>
             <LockIcon />

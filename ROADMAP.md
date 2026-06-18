@@ -2432,7 +2432,7 @@ Update this file with:
 
 **Goal:** Support multiple vault profiles (Personal, Work, Shared Family) for multi-persona workflows  
 **Target:** Next minor release  
-**Status:** Draft spec saved 2026-06-18
+**Status:** Implemented 2026-06-18 (Tasks 0–7 complete; Task 8 visual polish deferred, not required for core feature)
 
 ### 7.1 Overview
 
@@ -2483,35 +2483,54 @@ Users often separate credentials by persona (personal, work, family, side-projec
   Profile-scoped reads extend this to `(decryptionKey, userId, profileId)`, not a
   separate unscoped-fetch-then-filter step.
 - **Entity placement:** `VaultProfile` → `src/domain/entities/VaultProfile.ts` (sibling
-  to `Credential.ts`/`User.ts`). `Credential`/`CredentialInput` gain `profileId: string`
-  (mandatory post-migration, mirroring how `userId` went optional→mandatory across v9).
+  to `Credential.ts`/`User.ts`). **Corrected during implementation:** `Credential`/
+  `CredentialInput` do **not** gain a `profileId` field — `userId` was checked directly
+  in `Credential.ts` and is *not* on the domain entity, only on `StoredCredential` +
+  passed as a repository method parameter. `profileId` follows the identical
+  convention: optional on `StoredCredential`, passed as a trailing `profileId?: string`
+  param to `create`/`findAll`/`search`/`findByCategory`/`findFavorites` (omitted =
+  pre-Phase-7 behavior, all of the user's credentials — backward compatible).
+- **Migration split (discovered during implementation):** Dexie's `.version(10).upgrade()`
+  callback cannot encrypt the default profile's name — the vault key isn't available
+  during a schema migration (the same constraint that limited v5/S5 to schema-only
+  changes). So v10 only adds the `vaultProfiles` table + `profileId` index; the actual
+  default-"Personal"-profile creation and `profileId` backfill happens in
+  `ensureDefaultProfile()` (`src/data/repositories/profileMigration.ts`), called
+  post-login from `UserRepositoryImpl` at the same two call sites as `sealLegacyMetadata()`.
+- **Boolean index correction:** `isDefault` is not part of any Dexie compound index —
+  IndexedDB doesn't support booleans as keys (same reason `isFavorite` is filtered in
+  memory in `CredentialRepositoryImpl`). `vaultProfiles` is indexed on `id, userId, createdAt`
+  only; default-profile lookups filter `isDefault` in memory over the user's rows.
 
 ### 7.5 Implementation Roadmap
 
-| # | Task | Dependencies | Est. Time |
-|---|------|--------------|-----------|
-| 0 | **Decide profile-name encryption** (§7.3 open decision) — blocks Task 1 type shape | — | 0.5h |
-| 1 | Data Layer: `VaultProfile` entity, `profileId` on `Credential`/`StoredCredential`, Dexie v10 schema (`vaultProfiles` table + `[userId+profileId]` index) | Task 0 | 3h |
-| 2 | Migration: v10 `.upgrade()` — default "Personal" profile per user, idempotent, backfills `profileId` on existing credentials | Task 1 | 3h |
-| 3 | `IProfileRepository` + `ProfileRepositoryImpl`: CRUD, default/active profile, mirrors `ICredentialRepository` signature conventions | Tasks 1–2 | 4h |
-| 4 | `profileStore.ts` (Zustand): active profile state, persists `activeProfileId` | Task 3 | 2h |
-| 5 | Item Query Refactor: extend `ICredentialRepository` methods with `profileId` param, update all callers (dashboard, search, detail) | Tasks 1–4 | 5h |
-| 6 | `ProfileSwitcher` component + `Settings → Profiles` CRUD screen | Tasks 3–4 | 4h |
-| 7 | Lock/Unlock Integration: verify all profiles locked/unlocked together (no per-profile session state) | Tasks 3–6 | 2h |
-| 8 | Visual Polish: profile color accents, icons, active indicator | Task 6 | 2h |
-| 9 | Docs: README, ROADMAP, SECURITY.md (if §7.3 decision is "documented residual"), migration notes | Tasks 1–8 | 2h |
+| # | Task | Status |
+|---|------|--------|
+| 0 | Decide profile-name encryption (§7.3) | ✅ Done — encrypt (`encryptedName`), confirmed via user decision 2026-06-18 |
+| 1 | Data Layer: `VaultProfile` entity, `StoredVaultProfile`/`profileId` on `StoredCredential`, Dexie v10 schema | ✅ Done |
+| 2 | Migration: `ensureDefaultProfile()` post-login pass — default "Personal" profile + `profileId` backfill, idempotent | ✅ Done — TDD, 5 tests (`profileMigration.test.ts`) |
+| 3 | `IProfileRepository` + `ProfileRepositoryImpl`: CRUD, default/active profile | ✅ Done — TDD, 9 tests (`ProfileRepositoryImpl.test.ts`) |
+| 4 | `profileStore.ts` (Zustand): active profile state | ✅ Done — TDD, 8 tests (`profileStore.test.ts`) |
+| 5 | Item Query Refactor: optional `profileId` param on `ICredentialRepository` read/create methods | ✅ Done — TDD, 6 tests (`credentialProfileScoping.test.ts`) |
+| 6 | `ProfileSwitcher` (app bar) + `Settings → Vault Profiles` CRUD screen + `loadProfilesIntoStore` wired into `App.tsx` (loads on unlock, clears on lock) + Dashboard/Favorites/AddCredential wired to `activeProfileId` | ✅ Done — TDD for `loadProfiles.ts` (3 tests); UI components reviewed, not unit-tested (matches existing page-test convention) |
+| 7 | Lock/Unlock Integration check | ✅ Done — `profileLockUnlock.test.ts`: full login→load→lock→clear→unlock→reload cycle, confirms no duplicate default profile |
+| 8 | Visual Polish: profile color accents, icons | ⏸️ Deferred — `accentColor`/`icon` fields exist on the entity/schema but no picker UI yet; not required for core multi-vault functionality |
+| 9 | Docs: README, ROADMAP, CLAUDE.md | ✅ This update (ROADMAP); README/CLAUDE.md follow-up if scope grows |
 
-**Total:** ~27.5 hours
+Favorites/Export/Import/SecurityAudit/CredentialDetail pages still call the unscoped
+(all-profiles) repository methods — they work correctly today (profiles are a logical
+filter, not a security boundary) but aren't yet profile-aware in their UI. Low-risk
+follow-up, not blocking.
 
 ### 7.5 Success Criteria
 
 - ✅ Create/edit/delete profiles without losing items in other profiles
 - ✅ Switch profiles without re-authentication
-- ✅ No items leak between profiles (query isolation)
+- ✅ No items leak between profiles (query isolation) — `credentialProfileScoping.test.ts`
 - ✅ Migration transparent to users; existing single-vault data mapped to default profile
-- ✅ Profile metadata (name, color, icon) encrypted at rest or stored non-sensitive
-- ✅ Lock/unlock remains single-action (all profiles locked together)
-- ✅ Unit + integration tests for profile CRUD and migration
+- ✅ Profile metadata (name) encrypted at rest (`encryptedName`); `type`/`accentColor`/`icon`/`isDefault` plaintext (non-identifying)
+- ✅ Lock/unlock remains single-action (all profiles locked together) — `profileLockUnlock.test.ts`
+- ✅ Unit + integration tests for profile CRUD and migration (31 new tests total across Tasks 2–7)
 - ✅ Zero-knowledge guarantee maintained (profiles do not reveal usage patterns)
 
 ### 7.6 Full Specification
@@ -2535,6 +2554,7 @@ When Phase 7 starts:
 
 | Date | Version | Changes |
 |------|---------|---------|
+| 2026-06-18 | 1.2 | Implemented Phase 7 Tasks 0–7 (Task 8 polish deferred): Dexie v10 schema, `ensureDefaultProfile` post-login migration, `ProfileRepositoryImpl`, `profileStore`, optional `profileId` credential scoping, `ProfileSwitcher` + Settings CRUD UI, lock/unlock lifecycle test. 31 new tests, full suite green, 0 new lint/type errors. |
 | 2026-06-18 | 1.1 | Added Phase 7: Multi-Vault Profiles (next minor release) spec + memory link |
 | 2025-10-22 | 1.0 | Initial roadmap created |
 

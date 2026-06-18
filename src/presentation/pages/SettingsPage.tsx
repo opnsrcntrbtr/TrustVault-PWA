@@ -29,6 +29,7 @@ import ExportDialog from '../components/ExportDialog';
 import ImportDialog from '../components/ImportDialog';
 import BiometricSetupDialog from '../components/BiometricSetupDialog';
 import ThemeToggle from '../components/ThemeToggle';
+import ProfilesSettings from '../components/ProfilesSettings';
 import { useServiceWorkerUpdate } from '../hooks/useServiceWorkerUpdate';
 
 export default function SettingsPage() {
@@ -200,6 +201,8 @@ export default function SettingsPage() {
           clipboardClearSeconds={clipboardClearSeconds}
           onSave={(seconds) => { setClipboardClearSeconds(seconds); }}
         />
+
+        <ProfilesSettings />
 
         {/* Biometric Authentication */}
         <Paper sx={{ p: 3, mb: 3 }}>

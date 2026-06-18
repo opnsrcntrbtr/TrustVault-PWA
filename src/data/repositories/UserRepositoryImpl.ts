@@ -11,6 +11,7 @@ import type { User, AuthSession, SecuritySettings } from '@/domain/entities/User
 import type { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { checkRateLimit, recordFailedAttempt, clearAttempts } from '@/core/auth/rateLimiter';
 import { sealLegacyMetadata } from '@/data/repositories/metadataSealing';
+import { ensureDefaultProfile } from '@/data/repositories/profileMigration';
 import { stripLegacyBiometric } from '@/core/auth/biometricMigration';
 import { usernameKey } from '@/core/auth/usernameValidation';
 
@@ -175,6 +176,14 @@ export class UserRepositoryImpl implements IUserRepository {
       // Non-fatal: user is already authenticated; sealing will retry next login.
     }
 
+    // Phase 7: ensure the user's default "Personal" profile exists and
+    // backfill profileId on any pre-v10 credentials.
+    try {
+      await ensureDefaultProfile(resolvedVaultKey, storedUser.id);
+    } catch {
+      // Non-fatal: will retry next login.
+    }
+
     // S1: enforce the PRF-only invariant by removing any legacy (insecure)
     // biometric credentials that slipped past the v6 migration. Non-fatal.
     try {
@@ -264,6 +273,12 @@ export class UserRepositoryImpl implements IUserRepository {
       await sealLegacyMetadata(vaultKey, userId);
     } catch {
       // Non-fatal: user is already authenticated; sealing will retry next login.
+    }
+
+    try {
+      await ensureDefaultProfile(vaultKey, userId);
+    } catch {
+      // Non-fatal: will retry next login.
     }
 
     return {

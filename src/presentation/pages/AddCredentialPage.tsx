@@ -29,6 +29,7 @@ import {
 } from '@mui/icons-material';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { useAuthStore } from '@/presentation/store/authStore';
+import { useProfileStore } from '@/presentation/store/profileStore';
 import PasswordStrengthIndicator from '@/presentation/components/PasswordStrengthIndicator';
 import PasswordGeneratorDialog from '@/presentation/components/PasswordGeneratorDialog';
 import TotpDisplay from '@/presentation/components/TotpDisplay';
@@ -60,6 +61,7 @@ const CATEGORIES: { value: CredentialCategory; label: string }[] = [
 export default function AddCredentialPage() {
   const navigate = useNavigate();
   const { vaultKey, user } = useAuthStore();
+  const activeProfileId = useProfileStore((s) => s.activeProfileId);
 
   // Form state
   const [title, setTitle] = useState('');
@@ -237,7 +239,12 @@ export default function AddCredentialPage() {
         }
       }
 
-      const credential = await credentialRepository.create(inputData, vaultKey, user.id);
+      const credential = await credentialRepository.create(
+        inputData,
+        vaultKey,
+        user.id,
+        activeProfileId ?? undefined
+      );
 
       // Update favorite status after creation if needed
       if (isFavorite) {

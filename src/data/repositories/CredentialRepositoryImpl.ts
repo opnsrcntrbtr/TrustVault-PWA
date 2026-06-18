@@ -110,7 +110,8 @@ export class CredentialRepository implements ICredentialRepository {
     id: string,
     input: CredentialInput,
     encryptionKey: CryptoKey,
-    userId: string
+    userId: string,
+    profileId?: string
   ): Promise<Credential> {
     const encryptedPassword       = await this.encryptField(input.password, encryptionKey);
     const encryptedTitle          = await this.encryptField(input.title, encryptionKey);
@@ -140,6 +141,7 @@ export class CredentialRepository implements ICredentialRepository {
     const stored: StoredCredential = {
       id,
       userId,
+      profileId,
       encryptedPassword,
       encryptedTitle, encryptedUsername, encryptedUrl, encryptedTags,
       encryptedNotes, encryptedTotpSecret, encryptedCardNumber, encryptedCvv,
@@ -165,9 +167,10 @@ export class CredentialRepository implements ICredentialRepository {
   async create(
     input: CredentialInput,
     encryptionKey: CryptoKey,
-    userId: string
+    userId: string,
+    profileId?: string
   ): Promise<Credential> {
-    return this.createWithId(crypto.randomUUID(), input, encryptionKey, userId);
+    return this.createWithId(crypto.randomUUID(), input, encryptionKey, userId, profileId);
   }
 
   async findById(
@@ -188,8 +191,15 @@ export class CredentialRepository implements ICredentialRepository {
     return this.decryptCredential(stored, decryptionKey);
   }
 
-  async findAll(decryptionKey: CryptoKey, userId: string): Promise<Credential[]> {
-    const rows = await this.getOwnedAndClaimable(userId, decryptionKey);
+  async findAll(
+    decryptionKey: CryptoKey,
+    userId: string,
+    profileId?: string
+  ): Promise<Credential[]> {
+    let rows = await this.getOwnedAndClaimable(userId, decryptionKey);
+    if (profileId !== undefined) {
+      rows = rows.filter((c) => c.profileId === profileId);
+    }
     return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
@@ -312,8 +322,13 @@ export class CredentialRepository implements ICredentialRepository {
     await deleteBreachPrefix(id);
   }
 
-  async search(query: string, decryptionKey: CryptoKey, userId: string): Promise<Credential[]> {
-    const all = await this.findAll(decryptionKey, userId);
+  async search(
+    query: string,
+    decryptionKey: CryptoKey,
+    userId: string,
+    profileId?: string
+  ): Promise<Credential[]> {
+    const all = await this.findAll(decryptionKey, userId, profileId);
     const lq = query.toLowerCase();
     return all.filter(
       (c) =>
@@ -327,7 +342,8 @@ export class CredentialRepository implements ICredentialRepository {
   async findByCategory(
     category: string,
     decryptionKey: CryptoKey,
-    userId: string
+    userId: string,
+    profileId?: string
   ): Promise<Credential[]> {
     const owned = await db.credentials
       .where('[userId+category]')
@@ -337,20 +353,26 @@ export class CredentialRepository implements ICredentialRepository {
       .filter((c) => c.userId === undefined && c.category === category)
       .toArray();
     const claimed = await this.claimDecryptable(unowned, userId, decryptionKey);
-    return Promise.all(
-      [...owned, ...claimed].map((c) => this.decryptCredential(c, decryptionKey))
-    );
+    let rows = [...owned, ...claimed];
+    if (profileId !== undefined) {
+      rows = rows.filter((c) => c.profileId === profileId);
+    }
+    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
-  async findFavorites(decryptionKey: CryptoKey, userId: string): Promise<Credential[]> {
+  async findFavorites(
+    decryptionKey: CryptoKey,
+    userId: string,
+    profileId?: string
+  ): Promise<Credential[]> {
     // Booleans are not valid IndexedDB keys, so isFavorite is filtered in
     // memory over the user's (already scoped) rows.
-    const rows = await this.getOwnedAndClaimable(userId, decryptionKey);
-    return Promise.all(
-      rows
-        .filter((c) => c.isFavorite)
-        .map((c) => this.decryptCredential(c, decryptionKey))
-    );
+    let rows = await this.getOwnedAndClaimable(userId, decryptionKey);
+    rows = rows.filter((c) => c.isFavorite);
+    if (profileId !== undefined) {
+      rows = rows.filter((c) => c.profileId === profileId);
+    }
+    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
   }
 
   async exportAll(decryptionKey: CryptoKey, userId: string): Promise<string> {

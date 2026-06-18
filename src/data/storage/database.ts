@@ -27,6 +27,13 @@ export interface StoredCredential {
    */
   userId?: string | undefined;
 
+  /**
+   * Owning vault profile (v10+, Phase 7 — multi-vault profiles). Optional
+   * only for pre-v10 rows; the v10 migration backfills every existing
+   * credential to its owner's default "Personal" profile.
+   */
+  profileId?: string | undefined;
+
   // ── Non-sensitive index fields (not user-identifying) ──────────────────────
   category: CredentialCategory; // kept for findByCategory() index
   isFavorite: boolean;          // kept for findFavorites() index
@@ -145,6 +152,26 @@ export interface StoredBreachPrefix {
   updatedAt: number;
 }
 
+/**
+ * Vault Profile (v10+, Phase 7 — multi-vault profiles).
+ * `encryptedName` follows the same AES-256-GCM pattern as
+ * `StoredCredential.encryptedTitle` (S5 consistency, ROADMAP.md Phase 7 §7.3
+ * decision: encrypt profile name). `type`/`accentColor`/`icon`/`isDefault`
+ * are non-identifying index/display fields and remain plaintext.
+ */
+export interface StoredVaultProfile {
+  id: string;
+  userId: string;
+  encryptedName: string;
+  type: import('@/domain/entities/VaultProfile').VaultProfileType;
+  accentColor?: string | undefined;
+  icon?: string | undefined;
+  isDefault: boolean;
+  createdAt: number;
+  updatedAt: number;
+  lastUsedAt?: number | undefined;
+}
+
 export interface StoredLoginAttempt {
   email: string;        // primary key
   attempts: number;
@@ -164,6 +191,7 @@ export class TrustVaultDB extends Dexie {
   breachResults!: Table<StoredBreachResult, string>;
   loginAttempts!: Table<StoredLoginAttempt, string>;
   breachPrefixes!: Table<StoredBreachPrefix, string>;
+  vaultProfiles!: Table<StoredVaultProfile, string>;
 
   constructor() {
     super('TrustVaultDB');
@@ -355,6 +383,29 @@ export class TrustVaultDB extends Dexie {
           if (p.userId === undefined) p.userId = owner;
         });
       });
+
+    // Version 10 — Multi-vault profiles (Phase 7, 2026-06-18)
+    // Adds the vaultProfiles table and a profileId index on credentials.
+    // Like v5 (S5 metadata encryption), this migration cannot create the
+    // default "Personal" profile row here: its name must be encrypted with
+    // the vault key, which is unavailable during a schema upgrade. Row
+    // creation + profileId backfill happens post-login via
+    // ensureDefaultProfile() (src/data/repositories/profileMigration.ts),
+    // mirroring sealLegacyMetadata()'s post-login pass.
+    this.version(10).stores({
+      credentials:
+        'id, userId, profileId, [userId+profileId], [userId+category], [userId+isFavorite], category, isFavorite, createdAt, updatedAt',
+      users: userStoreSchemaV7,
+      sessions: sessionStoreSchema,
+      settings: 'id',
+      breachResults:
+        'id, userId, credentialId, checkType, breached, severity, checkedAt, expiresAt',
+      loginAttempts: 'email, lockedUntil',
+      breachPrefixes: 'credentialId, userId, sha1Prefix, updatedAt',
+      // isDefault is a boolean — not a valid IndexedDB key (same constraint as
+      // credentials.isFavorite) — so it's filtered in memory, not indexed.
+      vaultProfiles: 'id, userId, createdAt',
+    });
   }
 
   /**

@@ -9,6 +9,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { createAppTheme } from './theme/theme';
 import { useAuthStore } from './store/authStore';
 import { useThemeStore } from './store/themeStore';
+import { useProfileStore } from './store/profileStore';
+import { loadProfilesIntoStore } from './store/loadProfiles';
 import { useEffect, useState, useMemo, lazy, Suspense } from 'react';
 import { initializeDatabase } from '@/data/storage/database';
 import { userRepository } from '@/data/repositories/UserRepositoryImpl';
@@ -79,6 +81,19 @@ function AppRoutes() {
 
   // Consider vault locked if no vault key is available (even if isLocked is false)
   const effectivelyLocked = isLocked || (isAuthenticated && !vaultKey);
+
+  // Phase 7: load vault profiles whenever the vault unlocks; clear them when
+  // it locks (mirrors the vaultKey lifecycle — profiles are never persisted
+  // outside the encrypted DB, so the in-memory list must be cleared too).
+  useEffect(() => {
+    if (user?.id && vaultKey && !effectivelyLocked) {
+      loadProfilesIntoStore(vaultKey, user.id).catch(() => {
+        // Non-fatal: profile-aware features degrade to "no profiles loaded".
+      });
+    } else {
+      useProfileStore.getState().clearProfiles();
+    }
+  }, [user?.id, vaultKey, effectivelyLocked]);
 
   return (
     <>
