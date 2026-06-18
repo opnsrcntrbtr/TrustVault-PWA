@@ -1,27 +1,29 @@
-/**
- * TrustVault OCR Module - Public API
- */
+// Public API — Safe for external use
+export {
+  isCameraSupported,
+  captureFrame,
+  clearImageData,
+} from './cameraCapture';
 
 export {
+  initializeWorker,
+  getWorker,
   recognizeText,
   terminateWorker,
-  isOCRSupported,
-  prefetchTesseractAssets,
-  type OCRProgress,
 } from './tesseractService';
 
 export {
   parseCredentialText,
-  sanitizeValue,
-  type ParsedCredential,
+  mergeExtractedFields,
 } from './credentialParser';
 
-export {
-  isCameraSupported,
-  requestCameraAccess,
-  captureFrame,
-  clearImageData,
-  assessImageQuality,
-  type CaptureResult,
-  type CameraStream,
-} from './cameraCapture';
+// Types — Safe for external use
+export type {
+  CameraStream,
+  CaptureResult,
+  CameraScanDialogProps,
+  ScanState,
+  ParsedCredential,
+  RecognizeResult,
+  WorkerOptions,
+} from './types';
