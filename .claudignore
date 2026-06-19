@@ -1,0 +1,4 @@
+# Graphify — protect prompt cache from volatile output artifacts.
+# Claude queries the graph via  graphify query "..."  (CLI subprocess)
+# or the MCP server — it never needs to read these files directly.
+graphify-out/
