@@ -15,7 +15,7 @@ import { useAuthStore } from '../store/authStore';
 export default function MobileNavigation() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isLocked } = useAuthStore();
 
   // Determine active tab based on current route
   const getActiveTab = () => {
@@ -41,7 +41,7 @@ export default function MobileNavigation() {
     }
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || isLocked) {
     return null;
   }
 
