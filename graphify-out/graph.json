@@ -542,14 +542,64 @@
   },
   "nodes": [
     {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "ocr_index",
+      "community": 12,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "ImportDialog.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "components_importdialog",
+      "community": 36,
+      "norm_label": "importdialog.tsx"
+    },
+    {
+      "label": "ImportDialogProps",
+      "file_type": "code",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "components_importdialog_importdialogprops",
+      "community": 36,
+      "norm_label": "importdialogprops"
+    },
+    {
+      "label": "ImportMode",
+      "file_type": "code",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "components_importdialog_importmode",
+      "community": 36,
+      "norm_label": "importmode"
+    },
+    {
+      "label": "ImportDialog()",
+      "file_type": "code",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "components_importdialog_importdialog",
+      "community": 3,
+      "norm_label": "importdialog()"
+    },
+    {
       "label": "DEVELOPMENT.md",
       "file_type": "document",
       "source_file": "DEVELOPMENT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "development",
       "community": 63,
-      "norm_label": "development.md"
+      "norm_label": "development.md",
+      "id": "development"
     },
     {
       "label": "TrustVault PWA \u2014 Development Guide",
@@ -557,9 +607,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "development_trustvault_pwa_development_guide",
       "community": 63,
-      "norm_label": "trustvault pwa \u2014 development guide"
+      "norm_label": "trustvault pwa \u2014 development guide",
+      "id": "development_trustvault_pwa_development_guide"
     },
     {
       "label": "Before You Start",
@@ -567,9 +617,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "development_before_you_start",
       "community": 63,
-      "norm_label": "before you start"
+      "norm_label": "before you start",
+      "id": "development_before_you_start"
     },
     {
       "label": "Workflow: Adding a Feature",
@@ -577,9 +627,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "development_workflow_adding_a_feature",
       "community": 63,
-      "norm_label": "workflow: adding a feature"
+      "norm_label": "workflow: adding a feature",
+      "id": "development_workflow_adding_a_feature"
     },
     {
       "label": "1. Design the API",
@@ -587,9 +637,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L30",
       "_origin": "ast",
-      "id": "development_1_design_the_api",
       "community": 63,
-      "norm_label": "1. design the api"
+      "norm_label": "1. design the api",
+      "id": "development_1_design_the_api"
     },
     {
       "label": "2. Write Tests First (TDD)",
@@ -597,9 +647,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L49",
       "_origin": "ast",
-      "id": "development_2_write_tests_first_tdd",
       "community": 63,
-      "norm_label": "2. write tests first (tdd)"
+      "norm_label": "2. write tests first (tdd)",
+      "id": "development_2_write_tests_first_tdd"
     },
     {
       "label": "3. Implement Minimal Code",
@@ -607,9 +657,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L78",
       "_origin": "ast",
-      "id": "development_3_implement_minimal_code",
       "community": 63,
-      "norm_label": "3. implement minimal code"
+      "norm_label": "3. implement minimal code",
+      "id": "development_3_implement_minimal_code"
     },
     {
       "label": "4. Run Tests & Type-Check",
@@ -617,9 +667,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L92",
       "_origin": "ast",
-      "id": "development_4_run_tests_type_check",
       "community": 63,
-      "norm_label": "4. run tests & type-check"
+      "norm_label": "4. run tests & type-check",
+      "id": "development_4_run_tests_type_check"
     },
     {
       "label": "5. Commit Frequently",
@@ -627,9 +677,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L105",
       "_origin": "ast",
-      "id": "development_5_commit_frequently",
       "community": 63,
-      "norm_label": "5. commit frequently"
+      "norm_label": "5. commit frequently",
+      "id": "development_5_commit_frequently"
     },
     {
       "label": "Code Standards",
@@ -637,9 +687,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L114",
       "_origin": "ast",
-      "id": "development_code_standards",
       "community": 63,
-      "norm_label": "code standards"
+      "norm_label": "code standards",
+      "id": "development_code_standards"
     },
     {
       "label": "Debugging",
@@ -647,9 +697,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L125",
       "_origin": "ast",
-      "id": "development_debugging",
       "community": 63,
-      "norm_label": "debugging"
+      "norm_label": "debugging",
+      "id": "development_debugging"
     },
     {
       "label": "Security Reminders",
@@ -657,9 +707,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L149",
       "_origin": "ast",
-      "id": "development_security_reminders",
       "community": 63,
-      "norm_label": "security reminders"
+      "norm_label": "security reminders",
+      "id": "development_security_reminders"
     },
     {
       "label": "Documentation",
@@ -667,9 +717,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L159",
       "_origin": "ast",
-      "id": "development_documentation",
       "community": 63,
-      "norm_label": "documentation"
+      "norm_label": "documentation",
+      "id": "development_documentation"
     },
     {
       "label": "Quick Reference",
@@ -677,9 +727,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L169",
       "_origin": "ast",
-      "id": "development_quick_reference",
       "community": 63,
-      "norm_label": "quick reference"
+      "norm_label": "quick reference",
+      "id": "development_quick_reference"
     },
     {
       "label": "Before You Push",
@@ -687,9 +737,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L183",
       "_origin": "ast",
-      "id": "development_before_you_push",
       "community": 63,
-      "norm_label": "before you push"
+      "norm_label": "before you push",
+      "id": "development_before_you_push"
     },
     {
       "label": "TESTING_PATTERNS.md",
@@ -697,9 +747,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "testing_patterns",
       "community": 41,
-      "norm_label": "testing_patterns.md"
+      "norm_label": "testing_patterns.md",
+      "id": "testing_patterns"
     },
     {
       "label": "Testing Patterns \u2014 TrustVault PWA",
@@ -707,9 +757,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "testing_patterns_testing_patterns_trustvault_pwa",
       "community": 41,
-      "norm_label": "testing patterns \u2014 trustvault pwa"
+      "norm_label": "testing patterns \u2014 trustvault pwa",
+      "id": "testing_patterns_testing_patterns_trustvault_pwa"
     },
     {
       "label": "Test Organization",
@@ -717,9 +767,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "testing_patterns_test_organization",
       "community": 41,
-      "norm_label": "test organization"
+      "norm_label": "test organization",
+      "id": "testing_patterns_test_organization"
     },
     {
       "label": "Unit Tests",
@@ -727,9 +777,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L30",
       "_origin": "ast",
-      "id": "testing_patterns_unit_tests",
       "community": 41,
-      "norm_label": "unit tests"
+      "norm_label": "unit tests",
+      "id": "testing_patterns_unit_tests"
     },
     {
       "label": "Core Crypto Functions",
@@ -737,9 +787,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "testing_patterns_core_crypto_functions",
       "community": 41,
-      "norm_label": "core crypto functions"
+      "norm_label": "core crypto functions",
+      "id": "testing_patterns_core_crypto_functions"
     },
     {
       "label": "Repository Methods",
@@ -747,9 +797,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L69",
       "_origin": "ast",
-      "id": "testing_patterns_repository_methods",
       "community": 41,
-      "norm_label": "repository methods"
+      "norm_label": "repository methods",
+      "id": "testing_patterns_repository_methods"
     },
     {
       "label": "React Components",
@@ -757,9 +807,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L115",
       "_origin": "ast",
-      "id": "testing_patterns_react_components",
       "community": 41,
-      "norm_label": "react components"
+      "norm_label": "react components",
+      "id": "testing_patterns_react_components"
     },
     {
       "label": "React Hooks",
@@ -767,9 +817,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L155",
       "_origin": "ast",
-      "id": "testing_patterns_react_hooks",
       "community": 41,
-      "norm_label": "react hooks"
+      "norm_label": "react hooks",
+      "id": "testing_patterns_react_hooks"
     },
     {
       "label": "Integration Tests",
@@ -777,9 +827,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L183",
       "_origin": "ast",
-      "id": "testing_patterns_integration_tests",
       "community": 41,
-      "norm_label": "integration tests"
+      "norm_label": "integration tests",
+      "id": "testing_patterns_integration_tests"
     },
     {
       "label": "Using Test Fixtures",
@@ -787,9 +837,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L222",
       "_origin": "ast",
-      "id": "testing_patterns_using_test_fixtures",
       "community": 41,
-      "norm_label": "using test fixtures"
+      "norm_label": "using test fixtures",
+      "id": "testing_patterns_using_test_fixtures"
     },
     {
       "label": "Running Tests",
@@ -797,9 +847,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L240",
       "_origin": "ast",
-      "id": "testing_patterns_running_tests",
       "community": 41,
-      "norm_label": "running tests"
+      "norm_label": "running tests",
+      "id": "testing_patterns_running_tests"
     },
     {
       "label": "Coverage Targets",
@@ -807,9 +857,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L261",
       "_origin": "ast",
-      "id": "testing_patterns_coverage_targets",
       "community": 41,
-      "norm_label": "coverage targets"
+      "norm_label": "coverage targets",
+      "id": "testing_patterns_coverage_targets"
     },
     {
       "label": "Test Checklist",
@@ -817,9 +867,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L275",
       "_origin": "ast",
-      "id": "testing_patterns_test_checklist",
       "community": 41,
-      "norm_label": "test checklist"
+      "norm_label": "test checklist",
+      "id": "testing_patterns_test_checklist"
     },
     {
       "label": "Common Patterns",
@@ -827,9 +877,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L292",
       "_origin": "ast",
-      "id": "testing_patterns_common_patterns",
       "community": 41,
-      "norm_label": "common patterns"
+      "norm_label": "common patterns",
+      "id": "testing_patterns_common_patterns"
     },
     {
       "label": "Async Operations in Tests",
@@ -837,9 +887,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L294",
       "_origin": "ast",
-      "id": "testing_patterns_async_operations_in_tests",
       "community": 41,
-      "norm_label": "async operations in tests"
+      "norm_label": "async operations in tests",
+      "id": "testing_patterns_async_operations_in_tests"
     },
     {
       "label": "Database Cleanup",
@@ -847,9 +897,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L303",
       "_origin": "ast",
-      "id": "testing_patterns_database_cleanup",
       "community": 41,
-      "norm_label": "database cleanup"
+      "norm_label": "database cleanup",
+      "id": "testing_patterns_database_cleanup"
     },
     {
       "label": "Mocking Functions",
@@ -857,9 +907,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L312",
       "_origin": "ast",
-      "id": "testing_patterns_mocking_functions",
       "community": 41,
-      "norm_label": "mocking functions"
+      "norm_label": "mocking functions",
+      "id": "testing_patterns_mocking_functions"
     },
     {
       "label": "React Component Mocking",
@@ -867,9 +917,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L323",
       "_origin": "ast",
-      "id": "testing_patterns_react_component_mocking",
       "community": 41,
-      "norm_label": "react component mocking"
+      "norm_label": "react component mocking",
+      "id": "testing_patterns_react_component_mocking"
     },
     {
       "label": "Before You Push",
@@ -877,9 +927,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L336",
       "_origin": "ast",
-      "id": "testing_patterns_before_you_push",
       "community": 41,
-      "norm_label": "before you push"
+      "norm_label": "before you push",
+      "id": "testing_patterns_before_you_push"
     },
     {
       "label": "MODULE_CONTRACTS.md",
@@ -887,9 +937,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_module_contracts",
       "community": 35,
-      "norm_label": "module_contracts.md"
+      "norm_label": "module_contracts.md",
+      "id": "src_module_contracts"
     },
     {
       "label": "Module Contracts \u2014 TrustVault PWA",
@@ -897,9 +947,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_module_contracts_module_contracts_trustvault_pwa",
       "community": 35,
-      "norm_label": "module contracts \u2014 trustvault pwa"
+      "norm_label": "module contracts \u2014 trustvault pwa",
+      "id": "src_module_contracts_module_contracts_trustvault_pwa"
     },
     {
       "label": "Core Layer (`src/core/`)",
@@ -907,9 +957,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "src_module_contracts_core_layer_src_core",
       "community": 35,
-      "norm_label": "core layer (`src/core/`)"
+      "norm_label": "core layer (`src/core/`)",
+      "id": "src_module_contracts_core_layer_src_core"
     },
     {
       "label": "Authentication (`src/core/auth/`)",
@@ -917,9 +967,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "src_module_contracts_authentication_src_core_auth",
       "community": 35,
-      "norm_label": "authentication (`src/core/auth/`)"
+      "norm_label": "authentication (`src/core/auth/`)",
+      "id": "src_module_contracts_authentication_src_core_auth"
     },
     {
       "label": "Breach Detection (`src/core/breach/`)",
@@ -927,9 +977,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "src_module_contracts_breach_detection_src_core_breach",
       "community": 35,
-      "norm_label": "breach detection (`src/core/breach/`)"
+      "norm_label": "breach detection (`src/core/breach/`)",
+      "id": "src_module_contracts_breach_detection_src_core_breach"
     },
     {
       "label": "Cryptography (`src/core/crypto/`)",
@@ -937,9 +987,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L37",
       "_origin": "ast",
-      "id": "src_module_contracts_cryptography_src_core_crypto",
       "community": 35,
-      "norm_label": "cryptography (`src/core/crypto/`)"
+      "norm_label": "cryptography (`src/core/crypto/`)",
+      "id": "src_module_contracts_cryptography_src_core_crypto"
     },
     {
       "label": "OCR (`src/core/ocr/`)",
@@ -947,9 +997,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L48",
       "_origin": "ast",
-      "id": "src_module_contracts_ocr_src_core_ocr",
       "community": 35,
-      "norm_label": "ocr (`src/core/ocr/`)"
+      "norm_label": "ocr (`src/core/ocr/`)",
+      "id": "src_module_contracts_ocr_src_core_ocr"
     },
     {
       "label": "Autofill (`src/core/autofill/`)",
@@ -957,9 +1007,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L59",
       "_origin": "ast",
-      "id": "src_module_contracts_autofill_src_core_autofill",
       "community": 35,
-      "norm_label": "autofill (`src/core/autofill/`)"
+      "norm_label": "autofill (`src/core/autofill/`)",
+      "id": "src_module_contracts_autofill_src_core_autofill"
     },
     {
       "label": "Utilities (`src/core/utils/`)",
@@ -967,9 +1017,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L70",
       "_origin": "ast",
-      "id": "src_module_contracts_utilities_src_core_utils",
       "community": 35,
-      "norm_label": "utilities (`src/core/utils/`)"
+      "norm_label": "utilities (`src/core/utils/`)",
+      "id": "src_module_contracts_utilities_src_core_utils"
     },
     {
       "label": "Domain Layer (`src/domain/`)",
@@ -977,9 +1027,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L79",
       "_origin": "ast",
-      "id": "src_module_contracts_domain_layer_src_domain",
       "community": 35,
-      "norm_label": "domain layer (`src/domain/`)"
+      "norm_label": "domain layer (`src/domain/`)",
+      "id": "src_module_contracts_domain_layer_src_domain"
     },
     {
       "label": "Entities (`src/domain/entities/`)",
@@ -987,9 +1037,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L81",
       "_origin": "ast",
-      "id": "src_module_contracts_entities_src_domain_entities",
       "community": 35,
-      "norm_label": "entities (`src/domain/entities/`)"
+      "norm_label": "entities (`src/domain/entities/`)",
+      "id": "src_module_contracts_entities_src_domain_entities"
     },
     {
       "label": "Repositories (`src/domain/repositories/`)",
@@ -997,9 +1047,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L88",
       "_origin": "ast",
-      "id": "src_module_contracts_repositories_src_domain_repositories",
       "community": 35,
-      "norm_label": "repositories (`src/domain/repositories/`)"
+      "norm_label": "repositories (`src/domain/repositories/`)",
+      "id": "src_module_contracts_repositories_src_domain_repositories"
     },
     {
       "label": "Data Layer (`src/data/`)",
@@ -1007,9 +1057,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L97",
       "_origin": "ast",
-      "id": "src_module_contracts_data_layer_src_data",
       "community": 35,
-      "norm_label": "data layer (`src/data/`)"
+      "norm_label": "data layer (`src/data/`)",
+      "id": "src_module_contracts_data_layer_src_data"
     },
     {
       "label": "Repositories (`src/data/repositories/`)",
@@ -1017,9 +1067,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L99",
       "_origin": "ast",
-      "id": "src_module_contracts_repositories_src_data_repositories",
       "community": 35,
-      "norm_label": "repositories (`src/data/repositories/`)"
+      "norm_label": "repositories (`src/data/repositories/`)",
+      "id": "src_module_contracts_repositories_src_data_repositories"
     },
     {
       "label": "Storage (`src/data/storage/`)",
@@ -1027,9 +1077,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L110",
       "_origin": "ast",
-      "id": "src_module_contracts_storage_src_data_storage",
       "community": 35,
-      "norm_label": "storage (`src/data/storage/`)"
+      "norm_label": "storage (`src/data/storage/`)",
+      "id": "src_module_contracts_storage_src_data_storage"
     },
     {
       "label": "Presentation Layer (`src/presentation/`)",
@@ -1037,9 +1087,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L118",
       "_origin": "ast",
-      "id": "src_module_contracts_presentation_layer_src_presentation",
       "community": 35,
-      "norm_label": "presentation layer (`src/presentation/`)"
+      "norm_label": "presentation layer (`src/presentation/`)",
+      "id": "src_module_contracts_presentation_layer_src_presentation"
     },
     {
       "label": "Pages (`src/presentation/pages/`)",
@@ -1047,9 +1097,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L120",
       "_origin": "ast",
-      "id": "src_module_contracts_pages_src_presentation_pages",
       "community": 35,
-      "norm_label": "pages (`src/presentation/pages/`)"
+      "norm_label": "pages (`src/presentation/pages/`)",
+      "id": "src_module_contracts_pages_src_presentation_pages"
     },
     {
       "label": "Store (`src/presentation/store/`)",
@@ -1057,9 +1107,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L130",
       "_origin": "ast",
-      "id": "src_module_contracts_store_src_presentation_store",
       "community": 35,
-      "norm_label": "store (`src/presentation/store/`)"
+      "norm_label": "store (`src/presentation/store/`)",
+      "id": "src_module_contracts_store_src_presentation_store"
     },
     {
       "label": "Components (`src/presentation/components/`)",
@@ -1067,9 +1117,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L138",
       "_origin": "ast",
-      "id": "src_module_contracts_components_src_presentation_components",
       "community": 35,
-      "norm_label": "components (`src/presentation/components/`)"
+      "norm_label": "components (`src/presentation/components/`)",
+      "id": "src_module_contracts_components_src_presentation_components"
     },
     {
       "label": "Hooks (`src/presentation/` \u2014 various locations)",
@@ -1077,9 +1127,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L146",
       "_origin": "ast",
-      "id": "src_module_contracts_hooks_src_presentation_various_locations",
       "community": 35,
-      "norm_label": "hooks (`src/presentation/` \u2014 various locations)"
+      "norm_label": "hooks (`src/presentation/` \u2014 various locations)",
+      "id": "src_module_contracts_hooks_src_presentation_various_locations"
     },
     {
       "label": "Test Fixtures (`src/__tests__/fixtures/`)",
@@ -1087,9 +1137,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L155",
       "_origin": "ast",
-      "id": "src_module_contracts_test_fixtures_src_tests_fixtures",
       "community": 35,
-      "norm_label": "test fixtures (`src/__tests__/fixtures/`)"
+      "norm_label": "test fixtures (`src/__tests__/fixtures/`)",
+      "id": "src_module_contracts_test_fixtures_src_tests_fixtures"
     },
     {
       "label": "Import Direction (Enforced)",
@@ -1097,9 +1147,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L164",
       "_origin": "ast",
-      "id": "src_module_contracts_import_direction_enforced",
       "community": 35,
-      "norm_label": "import direction (enforced)"
+      "norm_label": "import direction (enforced)",
+      "id": "src_module_contracts_import_direction_enforced"
     },
     {
       "label": "Development Workflow",
@@ -1107,9 +1157,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L184",
       "_origin": "ast",
-      "id": "src_module_contracts_development_workflow",
       "community": 35,
-      "norm_label": "development workflow"
+      "norm_label": "development workflow",
+      "id": "src_module_contracts_development_workflow"
     },
     {
       "label": "Rationale",
@@ -1117,9 +1167,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L195",
       "_origin": "ast",
-      "id": "src_module_contracts_rationale",
       "community": 35,
-      "norm_label": "rationale"
+      "norm_label": "rationale",
+      "id": "src_module_contracts_rationale"
     },
     {
       "label": ".codeium.json",
@@ -3352,46 +3402,6 @@
       "id": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials"
     },
     {
-      "label": "ImportDialog.tsx",
-      "file_type": "code",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "importdialog.tsx",
-      "id": "components_importdialog"
-    },
-    {
-      "label": "ImportDialogProps",
-      "file_type": "code",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L33",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "importdialogprops",
-      "id": "components_importdialog_importdialogprops"
-    },
-    {
-      "label": "ImportMode",
-      "file_type": "code",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L39",
-      "_origin": "ast",
-      "community": 36,
-      "norm_label": "importmode",
-      "id": "components_importdialog_importmode"
-    },
-    {
-      "label": "ImportDialog()",
-      "file_type": "code",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L41",
-      "_origin": "ast",
-      "community": 3,
-      "norm_label": "importdialog()",
-      "id": "components_importdialog_importdialog"
-    },
-    {
       "label": "CLAUDE.md",
       "file_type": "document",
       "source_file": "CLAUDE.md",
@@ -5207,7 +5217,7 @@
       "source_file": "src/__tests__/integration/auth-flow.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 3,
       "norm_label": "auth-flow.test.tsx",
       "id": "integration_auth_flow_test"
     },
@@ -5467,7 +5477,7 @@
       "source_file": "src/presentation/App.tsx",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 32,
+      "community": 133,
       "norm_label": "approutes()",
       "id": "presentation_app_approutes"
     },
@@ -5577,7 +5587,7 @@
       "source_file": "src/presentation/components/__tests__/ErrorBoundary.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "errorboundary.test.tsx",
       "id": "tests_errorboundary_test"
     },
@@ -5587,7 +5597,7 @@
       "source_file": "src/presentation/components/__tests__/ErrorBoundary.test.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "boom()",
       "id": "tests_errorboundary_test_boom"
     },
@@ -5597,7 +5607,7 @@
       "source_file": "src/presentation/components/__tests__/ErrorBoundary.test.tsx",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "harness()",
       "id": "tests_errorboundary_test_harness"
     },
@@ -5607,7 +5617,7 @@
       "source_file": "src/presentation/components/__tests__/ErrorBoundary.test.tsx",
       "source_location": "L105",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "locationdisplay()",
       "id": "tests_errorboundary_test_locationdisplay"
     },
@@ -5617,7 +5627,7 @@
       "source_file": "src/presentation/components/__tests__/ErrorBoundary.test.tsx",
       "source_location": "L164",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "pathawarechild()",
       "id": "tests_errorboundary_test_pathawarechild"
     },
@@ -5627,7 +5637,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 3,
       "norm_label": "credentialdetailpage.tsx",
       "id": "pages_credentialdetailpage"
     },
@@ -5637,7 +5647,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 149,
+      "community": 3,
       "norm_label": "credentialdetailpage()",
       "id": "pages_credentialdetailpage_credentialdetailpage"
     },
@@ -5747,7 +5757,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L167",
       "_origin": "ast",
-      "community": 8,
+      "community": 109,
       "norm_label": ".create()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_create"
     },
@@ -5837,7 +5847,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L408",
       "_origin": "ast",
-      "community": 8,
+      "community": 109,
       "norm_label": ".importfromjson()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_importfromjson"
     },
@@ -5997,7 +6007,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 269,
       "norm_label": "userrepositoryimpl.ts",
       "id": "repositories_userrepositoryimpl"
     },
@@ -6277,7 +6287,7 @@
       "source_file": "src/data/repositories/__tests__/profileLockUnlock.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 148,
       "norm_label": "profilelockunlock.test.ts",
       "id": "tests_profilelockunlock_test"
     },
@@ -6287,7 +6297,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 269,
       "norm_label": "profilemigration.test.ts",
       "id": "tests_profilemigration_test"
     },
@@ -6297,7 +6307,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 14,
+      "community": 269,
       "norm_label": "makevaultkey()",
       "id": "tests_profilemigration_test_makevaultkey"
     },
@@ -6307,7 +6317,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 14,
+      "community": 269,
       "norm_label": "logininput()",
       "id": "tests_profilemigration_test_logininput"
     },
@@ -6317,7 +6327,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 269,
       "norm_label": "profilemigration.ts",
       "id": "repositories_profilemigration"
     },
@@ -6327,7 +6337,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 14,
+      "community": 269,
       "norm_label": "todomain()",
       "id": "repositories_profilemigration_todomain"
     },
@@ -6337,7 +6347,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 14,
+      "community": 269,
       "norm_label": "ensuredefaultprofile()",
       "id": "repositories_profilemigration_ensuredefaultprofile"
     },
@@ -6367,7 +6377,7 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L92",
       "_origin": "ast",
-      "community": 13,
+      "community": 269,
       "norm_label": "storeduser",
       "id": "storage_database_storeduser"
     },
@@ -6397,7 +6407,7 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "storedbreachprefix",
       "id": "storage_database_storedbreachprefix"
     },
@@ -6677,7 +6687,7 @@
       "source_file": "src/presentation/pages/AddCredentialPage.tsx",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 148,
+      "community": 149,
       "norm_label": "addcredentialpage()",
       "id": "pages_addcredentialpage_addcredentialpage"
     },
@@ -6697,7 +6707,7 @@
       "source_file": "src/presentation/pages/DashboardPage.tsx",
       "source_location": "L66",
       "_origin": "ast",
-      "community": 148,
+      "community": 149,
       "norm_label": "dashboardpage()",
       "id": "pages_dashboardpage_dashboardpage"
     },
@@ -6747,7 +6757,7 @@
       "source_file": "src/presentation/store/__tests__/loadProfiles.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 148,
       "norm_label": "loadprofiles.test.ts",
       "id": "tests_loadprofiles_test"
     },
@@ -6757,7 +6767,7 @@
       "source_file": "src/presentation/store/__tests__/loadProfiles.test.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 14,
+      "community": 148,
       "norm_label": "makekey()",
       "id": "tests_loadprofiles_test_makekey"
     },
@@ -6787,7 +6797,7 @@
       "source_file": "src/presentation/store/loadProfiles.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 148,
       "norm_label": "loadprofiles.ts",
       "id": "store_loadprofiles"
     },
@@ -6797,7 +6807,7 @@
       "source_file": "src/presentation/store/loadProfiles.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 14,
+      "community": 148,
       "norm_label": "loadprofilesintostore()",
       "id": "store_loadprofiles_loadprofilesintostore"
     },
@@ -6857,7 +6867,7 @@
       "source_file": "src/presentation/pages/EditCredentialPage.tsx",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 149,
+      "community": 3,
       "norm_label": "editcredentialpage()",
       "id": "pages_editcredentialpage_editcredentialpage"
     },
@@ -9739,7 +9749,7 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 32,
       "norm_label": "dashboard-sort.test.tsx",
       "id": "integration_dashboard_sort_test"
     },
@@ -9749,7 +9759,7 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 14,
+      "community": 32,
       "norm_label": "setupauthenticateduser()",
       "id": "integration_dashboard_sort_test_setupauthenticateduser"
     },
@@ -9759,7 +9769,7 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 14,
+      "community": 32,
       "norm_label": "createcredential()",
       "id": "integration_dashboard_sort_test_createcredential"
     },
@@ -9769,7 +9779,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 3,
       "norm_label": "master-password-change.test.tsx",
       "id": "integration_master_password_change_test"
     },
@@ -9779,7 +9789,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 14,
+      "community": 3,
       "norm_label": "setupauthenticateduserwithcredentials()",
       "id": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
     },
@@ -9919,7 +9929,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "biometricmigration.test.ts",
       "id": "tests_biometricmigration_test"
     },
@@ -9929,7 +9939,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "legacy",
       "id": "tests_biometricmigration_test_legacy"
     },
@@ -9939,7 +9949,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "prf",
       "id": "tests_biometricmigration_test_prf"
     },
@@ -9949,7 +9959,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "biometricvaultkey.test.ts",
       "id": "tests_biometricvaultkey_test"
     },
@@ -9959,7 +9969,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "fixedprfoutput()",
       "id": "tests_biometricvaultkey_test_fixedprfoutput"
     },
@@ -9969,7 +9979,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "fixedvaultkeyraw()",
       "id": "tests_biometricvaultkey_test_fixedvaultkeyraw"
     },
@@ -9979,7 +9989,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "importraw()",
       "id": "tests_biometricvaultkey_test_importraw"
     },
@@ -9989,7 +9999,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 271,
+      "community": 291,
       "norm_label": "expectsamekey()",
       "id": "tests_biometricvaultkey_test_expectsamekey"
     },
@@ -10169,7 +10179,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "biometricmigration.ts",
       "id": "auth_biometricmigration"
     },
@@ -10179,7 +10189,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "isprfcredential()",
       "id": "auth_biometricmigration_isprfcredential"
     },
@@ -10189,7 +10199,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "stripresult",
       "id": "auth_biometricmigration_stripresult"
     },
@@ -10199,7 +10209,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "striplegacybiometric()",
       "id": "auth_biometricmigration_striplegacybiometric"
     },
@@ -10209,7 +10219,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "biometricvaultkey.ts",
       "id": "auth_biometricvaultkey"
     },
@@ -10219,7 +10229,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "generateprfsalt()",
       "id": "auth_biometricvaultkey_generateprfsalt"
     },
@@ -10229,7 +10239,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "derivewrapkeyfromprf()",
       "id": "auth_biometricvaultkey_derivewrapkeyfromprf"
     },
@@ -10239,7 +10249,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "wrapvaultkeywithprf()",
       "id": "auth_biometricvaultkey_wrapvaultkeywithprf"
     },
@@ -10249,7 +10259,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "unwrapvaultkeywithprf()",
       "id": "auth_biometricvaultkey_unwrapvaultkeywithprf"
     },
@@ -11099,7 +11109,7 @@
       "source_file": "src/core/breach/__tests__/breachPrefixStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "breachprefixstore.test.ts",
       "id": "tests_breachprefixstore_test"
     },
@@ -11139,7 +11149,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "breachprefixstore.ts",
       "id": "breach_breachprefixstore"
     },
@@ -11149,7 +11159,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "computesha1prefix()",
       "id": "breach_breachprefixstore_computesha1prefix"
     },
@@ -11159,7 +11169,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "savebreachprefix()",
       "id": "breach_breachprefixstore_savebreachprefix"
     },
@@ -11169,7 +11179,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L54",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "deletebreachprefix()",
       "id": "breach_breachprefixstore_deletebreachprefix"
     },
@@ -11179,7 +11189,7 @@
       "source_file": "src/core/breach/breachPrefixStore.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 268,
+      "community": 14,
       "norm_label": "getallbreachprefixes()",
       "id": "breach_breachprefixstore_getallbreachprefixes"
     },
@@ -11649,7 +11659,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 292,
+      "community": 4,
       "norm_label": "encrypteddata",
       "id": "crypto_encryption_encrypteddata"
     },
@@ -11709,7 +11719,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 271,
+      "community": 291,
       "norm_label": "encrypt()",
       "id": "crypto_encryption_encrypt"
     },
@@ -12359,7 +12369,7 @@
       "source_file": "src/data/repositories/__tests__/userIsolation.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 291,
+      "community": 14,
       "norm_label": "userisolation.test.ts",
       "id": "tests_userisolation_test"
     },
@@ -12369,7 +12379,7 @@
       "source_file": "src/data/repositories/__tests__/userIsolation.test.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 291,
+      "community": 14,
       "norm_label": "makevaultkey()",
       "id": "tests_userisolation_test_makevaultkey"
     },
@@ -12379,7 +12389,7 @@
       "source_file": "src/data/repositories/__tests__/userIsolation.test.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 291,
+      "community": 14,
       "norm_label": "logininput()",
       "id": "tests_userisolation_test_logininput"
     },
@@ -12589,7 +12599,7 @@
       "source_file": "src/domain/entities/User.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 140,
+      "community": 19,
       "norm_label": "webauthncredential",
       "id": "entities_user_webauthncredential"
     },
@@ -12639,7 +12649,7 @@
       "source_file": "src/features/vault/generator/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "index.ts",
       "id": "generator_index"
     },
@@ -12759,7 +12769,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "passwordgenerator.ts",
       "id": "generator_passwordgenerator"
     },
@@ -12789,7 +12799,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "getrandombytes()",
       "id": "generator_passwordgenerator_getrandombytes"
     },
@@ -12799,7 +12809,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "getrandomint()",
       "id": "generator_passwordgenerator_getrandomint"
     },
@@ -12809,7 +12819,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "buildcharset()",
       "id": "generator_passwordgenerator_buildcharset"
     },
@@ -12819,7 +12829,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "calculateentropy()",
       "id": "generator_passwordgenerator_calculateentropy"
     },
@@ -12829,7 +12839,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L109",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "determinestrength()",
       "id": "generator_passwordgenerator_determinestrength"
     },
@@ -12839,7 +12849,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L124",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "validateoptions()",
       "id": "generator_passwordgenerator_validateoptions"
     },
@@ -12849,7 +12859,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "ensurecharacterdiversity()",
       "id": "generator_passwordgenerator_ensurecharacterdiversity"
     },
@@ -12859,7 +12869,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L165",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "generatepassword()",
       "id": "generator_passwordgenerator_generatepassword"
     },
@@ -12869,7 +12879,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L206",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "generatepasswords()",
       "id": "generator_passwordgenerator_generatepasswords"
     },
@@ -12879,7 +12889,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L224",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "getdefaultoptions()",
       "id": "generator_passwordgenerator_getdefaultoptions"
     },
@@ -12889,7 +12899,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L239",
       "_origin": "ast",
-      "community": 294,
+      "community": 264,
       "norm_label": "generatepronounceablepassword()",
       "id": "generator_passwordgenerator_generatepronounceablepassword"
     },
@@ -12899,7 +12909,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "strengthanalyzer.ts",
       "id": "generator_strengthanalyzer"
     },
@@ -12909,7 +12919,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "passwordstrengthresult",
       "id": "generator_strengthanalyzer_passwordstrengthresult"
     },
@@ -12919,7 +12929,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "common_patterns",
       "id": "generator_strengthanalyzer_common_patterns"
     },
@@ -12929,7 +12939,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "detectcommonpatterns()",
       "id": "generator_strengthanalyzer_detectcommonpatterns"
     },
@@ -12939,7 +12949,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "calculateactualentropy()",
       "id": "generator_strengthanalyzer_calculateactualentropy"
     },
@@ -12949,7 +12959,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L102",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "formatcracktime()",
       "id": "generator_strengthanalyzer_formatcracktime"
     },
@@ -12959,7 +12969,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L131",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "convertzxcvbnscore()",
       "id": "generator_strengthanalyzer_convertzxcvbnscore"
     },
@@ -12969,7 +12979,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L146",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "determinestrength()",
       "id": "generator_strengthanalyzer_determinestrength"
     },
@@ -12979,7 +12989,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L161",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "analyzepasswordstrength()",
       "id": "generator_strengthanalyzer_analyzepasswordstrength"
     },
@@ -12989,7 +12999,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L246",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "quickstrengthcheck()",
       "id": "generator_strengthanalyzer_quickstrengthcheck"
     },
@@ -12999,7 +13009,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L286",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "meetsminimumrequirements()",
       "id": "generator_strengthanalyzer_meetsminimumrequirements"
     },
@@ -13359,7 +13369,7 @@
       "source_file": "src/presentation/components/ChangeMasterPasswordDialog.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "changemasterpassworddialog()",
       "id": "components_changemasterpassworddialog_changemasterpassworddialog"
     },
@@ -13389,7 +13399,7 @@
       "source_file": "src/presentation/components/ClipboardNotification.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 267,
+      "community": 133,
       "norm_label": "clipboardnotification()",
       "id": "components_clipboardnotification_clipboardnotification"
     },
@@ -13399,7 +13409,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 133,
       "norm_label": "clipboardsettings.tsx",
       "id": "components_clipboardsettings"
     },
@@ -13409,7 +13419,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 267,
+      "community": 133,
       "norm_label": "clipboardsettingsprops",
       "id": "components_clipboardsettings_clipboardsettingsprops"
     },
@@ -13419,7 +13429,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 267,
+      "community": 133,
       "norm_label": "timeout_options",
       "id": "components_clipboardsettings_timeout_options"
     },
@@ -13429,7 +13439,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 267,
+      "community": 133,
       "norm_label": "clipboardsettings()",
       "id": "components_clipboardsettings_clipboardsettings"
     },
@@ -13529,7 +13539,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 287,
       "norm_label": "deleteconfirmdialog.tsx",
       "id": "components_deleteconfirmdialog"
     },
@@ -13539,7 +13549,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 149,
+      "community": 287,
       "norm_label": "deleteconfirmdialogprops",
       "id": "components_deleteconfirmdialog_deleteconfirmdialogprops"
     },
@@ -13549,7 +13559,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 149,
+      "community": 287,
       "norm_label": "deleteconfirmdialog()",
       "id": "components_deleteconfirmdialog_deleteconfirmdialog"
     },
@@ -13559,7 +13569,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "errorboundary.tsx",
       "id": "components_errorboundary"
     },
@@ -13569,7 +13579,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "errorboundaryprops",
       "id": "components_errorboundary_errorboundaryprops"
     },
@@ -13579,7 +13589,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "errorboundarystate",
       "id": "components_errorboundary_errorboundarystate"
     },
@@ -13589,7 +13599,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "errorboundary",
       "id": "components_errorboundary_errorboundary"
     },
@@ -13599,7 +13609,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": ".getderivedstatefromerror()",
       "id": "components_errorboundary_errorboundary_getderivedstatefromerror"
     },
@@ -13609,7 +13619,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": ".componentdidcatch()",
       "id": "components_errorboundary_errorboundary_componentdidcatch"
     },
@@ -13619,7 +13629,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": ".componentdidupdate()",
       "id": "components_errorboundary_errorboundary_componentdidupdate"
     },
@@ -13629,7 +13639,7 @@
       "source_file": "src/presentation/components/ErrorBoundary.tsx",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": ".render()",
       "id": "components_errorboundary_errorboundary_render"
     },
@@ -13769,7 +13779,7 @@
       "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "passwordgeneratordialog.tsx",
       "id": "components_passwordgeneratordialog"
     },
@@ -13779,7 +13789,7 @@
       "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "passwordgeneratordialogprops",
       "id": "components_passwordgeneratordialog_passwordgeneratordialogprops"
     },
@@ -13789,7 +13799,7 @@
       "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "passwordgeneratordialog()",
       "id": "components_passwordgeneratordialog_passwordgeneratordialog"
     },
@@ -13799,7 +13809,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "passwordstrengthindicator.tsx",
       "id": "components_passwordstrengthindicator"
     },
@@ -13809,7 +13819,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 286,
+      "community": 264,
       "norm_label": "passwordstrengthindicatorprops",
       "id": "components_passwordstrengthindicator_passwordstrengthindicatorprops"
     },
@@ -13819,7 +13829,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "passwordstrengthindicator()",
       "id": "components_passwordstrengthindicator_passwordstrengthindicator"
     },
@@ -13859,7 +13869,7 @@
       "source_file": "src/presentation/components/RouteErrorBoundary.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "routeerrorboundary.tsx",
       "id": "components_routeerrorboundary"
     },
@@ -13869,7 +13879,7 @@
       "source_file": "src/presentation/components/RouteErrorBoundary.tsx",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "routeerrorfallback()",
       "id": "components_routeerrorboundary_routeerrorfallback"
     },
@@ -13879,7 +13889,7 @@
       "source_file": "src/presentation/components/RouteErrorBoundary.tsx",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 92,
+      "community": 81,
       "norm_label": "routeerrorboundary()",
       "id": "components_routeerrorboundary_routeerrorboundary"
     },
@@ -14189,7 +14199,7 @@
       "source_file": "src/presentation/hooks/__tests__/usePasswordGenerator.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "usepasswordgenerator.test.ts",
       "id": "tests_usepasswordgenerator_test"
     },
@@ -14329,7 +14339,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "community": 32,
+      "community": 133,
       "norm_label": "getdefaultautolockconfig()",
       "id": "hooks_useautolock_getdefaultautolockconfig"
     },
@@ -14339,7 +14349,7 @@
       "source_file": "src/presentation/hooks/usePasswordGenerator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "usepasswordgenerator.ts",
       "id": "hooks_usepasswordgenerator"
     },
@@ -14349,7 +14359,7 @@
       "source_file": "src/presentation/hooks/usePasswordGenerator.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "passwordgeneratoroptions",
       "id": "hooks_usepasswordgenerator_passwordgeneratoroptions"
     },
@@ -14359,7 +14369,7 @@
       "source_file": "src/presentation/hooks/usePasswordGenerator.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "default_options",
       "id": "hooks_usepasswordgenerator_default_options"
     },
@@ -14369,7 +14379,7 @@
       "source_file": "src/presentation/hooks/usePasswordGenerator.ts",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "usepasswordgenerator()",
       "id": "hooks_usepasswordgenerator_usepasswordgenerator"
     },
@@ -14639,7 +14649,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 293,
+      "community": 109,
       "norm_label": "authstore.test.ts",
       "id": "tests_authstore_test"
     },
@@ -14649,7 +14659,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 293,
+      "community": 109,
       "norm_label": "user",
       "id": "tests_authstore_test_user"
     },
@@ -14659,7 +14669,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 293,
+      "community": 109,
       "norm_label": "authsession",
       "id": "tests_authstore_test_authsession"
     },
@@ -14669,7 +14679,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 293,
+      "community": 109,
       "norm_label": "authstate",
       "id": "tests_authstore_test_authstate"
     },
@@ -14679,7 +14689,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 8,
+      "community": 109,
       "norm_label": "createauthstore()",
       "id": "tests_authstore_test_createauthstore"
     },
@@ -14769,7 +14779,7 @@
       "source_file": "src/presentation/store/authStore.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "persistedauthshell",
       "id": "store_authstore_persistedauthshell"
     },
@@ -15099,7 +15109,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 229,
+      "community": 264,
       "norm_label": "copypassword()",
       "id": "utils_clipboard_copypassword"
     },
@@ -16889,7 +16899,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "agents.md",
       "id": "agents"
     },
@@ -16899,7 +16909,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "trustvault pwa - agentic coding guide",
       "id": "agents_trustvault_pwa_agentic_coding_guide"
     },
@@ -16909,7 +16919,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "mission snapshot",
       "id": "agents_mission_snapshot"
     },
@@ -16919,7 +16929,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "agent operating rules",
       "id": "agents_agent_operating_rules"
     },
@@ -16929,7 +16939,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "claude.md reference",
       "id": "agents_claude_md_reference"
     },
@@ -16939,7 +16949,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "responsibility lenses",
       "id": "agents_responsibility_lenses"
     },
@@ -16949,7 +16959,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "verification expectations",
       "id": "agents_verification_expectations"
     },
@@ -16959,7 +16969,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "documentation & handoff",
       "id": "agents_documentation_handoff"
     },
@@ -16969,7 +16979,7 @@
       "source_file": "AGENTS.md",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 282,
+      "community": 53,
       "norm_label": "graphify",
       "id": "agents_graphify"
     },
@@ -22279,7 +22289,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 122,
+      "community": 282,
       "norm_label": "deployment checklist",
       "id": "deployment_guide_deployment_checklist"
     },
@@ -22289,7 +22299,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 122,
+      "community": 282,
       "norm_label": "pre-deployment verification",
       "id": "deployment_guide_pre_deployment_verification"
     },
@@ -22299,7 +22309,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 122,
+      "community": 282,
       "norm_label": "deployment environment",
       "id": "deployment_guide_deployment_environment"
     },
@@ -22309,7 +22319,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 122,
+      "community": 281,
       "norm_label": "deployment options",
       "id": "deployment_guide_deployment_options"
     },
@@ -22319,7 +22329,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 122,
+      "community": 281,
       "norm_label": "option 1: vercel (recommended)",
       "id": "deployment_guide_option_1_vercel_recommended"
     },
@@ -22329,7 +22339,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 122,
+      "community": 281,
       "norm_label": "option 2: github pages",
       "id": "deployment_guide_option_2_github_pages"
     },
@@ -22339,7 +22349,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 122,
+      "community": 281,
       "norm_label": "option 3: self-hosted (aws, gcp, azure)",
       "id": "deployment_guide_option_3_self_hosted_aws_gcp_azure"
     },
@@ -22349,7 +22359,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L100",
       "_origin": "ast",
-      "community": 122,
+      "community": 92,
       "norm_label": "post-deployment steps",
       "id": "deployment_guide_post_deployment_steps"
     },
@@ -22359,7 +22369,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L102",
       "_origin": "ast",
-      "community": 122,
+      "community": 92,
       "norm_label": "1. verify deployment",
       "id": "deployment_guide_1_verify_deployment"
     },
@@ -22369,7 +22379,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L115",
       "_origin": "ast",
-      "community": 122,
+      "community": 92,
       "norm_label": "2. security headers",
       "id": "deployment_guide_2_security_headers"
     },
@@ -22379,7 +22389,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L128",
       "_origin": "ast",
-      "community": 122,
+      "community": 92,
       "norm_label": "3. pwa validation",
       "id": "deployment_guide_3_pwa_validation"
     },
@@ -22389,7 +22399,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L150",
       "_origin": "ast",
-      "community": 122,
+      "community": 92,
       "norm_label": "4. performance check",
       "id": "deployment_guide_4_performance_check"
     },
@@ -22399,7 +22409,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L163",
       "_origin": "ast",
-      "community": 122,
+      "community": 92,
       "norm_label": "5. functionality test",
       "id": "deployment_guide_5_functionality_test"
     },
@@ -22469,7 +22479,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L260",
       "_origin": "ast",
-      "community": 122,
+      "community": 140,
       "norm_label": "monitoring & maintenance",
       "id": "deployment_guide_monitoring_maintenance"
     },
@@ -22479,7 +22489,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L262",
       "_origin": "ast",
-      "community": 122,
+      "community": 140,
       "norm_label": "daily",
       "id": "deployment_guide_daily"
     },
@@ -22489,7 +22499,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L267",
       "_origin": "ast",
-      "community": 122,
+      "community": 140,
       "norm_label": "weekly",
       "id": "deployment_guide_weekly"
     },
@@ -22499,7 +22509,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L272",
       "_origin": "ast",
-      "community": 122,
+      "community": 140,
       "norm_label": "monthly",
       "id": "deployment_guide_monthly"
     },
@@ -22509,7 +22519,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L277",
       "_origin": "ast",
-      "community": 122,
+      "community": 140,
       "norm_label": "quarterly",
       "id": "deployment_guide_quarterly"
     },
@@ -22519,7 +22529,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L284",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "troubleshooting",
       "id": "deployment_guide_troubleshooting"
     },
@@ -22529,7 +22539,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L286",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: \"npm install\" fails on vercel",
       "id": "deployment_guide_issue_npm_install_fails_on_vercel"
     },
@@ -22539,7 +22549,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L296",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: service worker not updating",
       "id": "deployment_guide_issue_service_worker_not_updating"
     },
@@ -22549,7 +22559,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L306",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: cors errors in production",
       "id": "deployment_guide_issue_cors_errors_in_production"
     },
@@ -22559,7 +22569,7 @@
       "source_file": "DEPLOYMENT_GUIDE.md",
       "source_location": "L315",
       "_origin": "ast",
-      "community": 122,
+      "community": 229,
       "norm_label": "issue: large bundle size",
       "id": "deployment_guide_issue_large_bundle_size"
     },
@@ -26059,7 +26069,7 @@
       "source_file": "SECURITY_AUDIT_REPORT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 5,
+      "community": 53,
       "norm_label": "security_audit_report.md",
       "id": "security_audit_report"
     },
@@ -27299,7 +27309,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 5,
+      "community": 53,
       "norm_label": "security_pwa_enhancement_plan.md",
       "id": "security_pwa_enhancement_plan"
     },
@@ -27339,7 +27349,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L72",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "2. security findings (detailed)",
       "id": "security_pwa_enhancement_plan_2_security_findings_detailed"
     },
@@ -27349,7 +27359,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L74",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s1 \u2014 \ud83d\udd34 critical: biometric unlock provides no cryptographic protection",
       "id": "security_pwa_enhancement_plan_s1_critical_biometric_unlock_provides_no_cryptographic_protection"
     },
@@ -27359,7 +27369,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s2 \u2014 \ud83d\udfe0 high: deployed csp allows `'unsafe-inline'` and `'unsafe-eval'`",
       "id": "security_pwa_enhancement_plan_s2_high_deployed_csp_allows_unsafe_inline_and_unsafe_eval"
     },
@@ -27369,7 +27379,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L124",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s3 \u2014 \ud83d\udfe0 high: csp `connect-src` blocks hibp; \"no network\" claim is stale",
       "id": "security_pwa_enhancement_plan_s3_high_csp_connect_src_blocks_hibp_no_network_claim_is_stale"
     },
@@ -27379,7 +27389,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L139",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s4 \u2014 \ud83d\udfe1 medium: scrypt cost below current owasp minimum",
       "id": "security_pwa_enhancement_plan_s4_medium_scrypt_cost_below_current_owasp_minimum"
     },
@@ -27389,7 +27399,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L153",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s5 \u2014 \ud83d\udfe1 medium: plaintext sensitive metadata at rest",
       "id": "security_pwa_enhancement_plan_s5_medium_plaintext_sensitive_metadata_at_rest"
     },
@@ -27399,7 +27409,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L165",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s6 \u2014 \ud83d\udfe1 medium: missing transport/isolation headers; no sri",
       "id": "security_pwa_enhancement_plan_s6_medium_missing_transport_isolation_headers_no_sri"
     },
@@ -27409,7 +27419,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L180",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s7 \u2014 \ud83d\udfe1 medium: extractable vault keys & key hygiene",
       "id": "security_pwa_enhancement_plan_s7_medium_extractable_vault_keys_key_hygiene"
     },
@@ -27419,7 +27429,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L190",
       "_origin": "ast",
-      "community": 281,
+      "community": 53,
       "norm_label": "s8 \u2014 \ud83d\udd35 low: hardening cleanups",
       "id": "security_pwa_enhancement_plan_s8_low_hardening_cleanups"
     },
@@ -27489,7 +27499,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L222",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "4. phased enhancement roadmap",
       "id": "security_pwa_enhancement_plan_4_phased_enhancement_roadmap"
     },
@@ -27499,7 +27509,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L226",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "phase 0 \u2014 correctness & disclosure (this week, ~0.5 day)",
       "id": "security_pwa_enhancement_plan_phase_0_correctness_disclosure_this_week_0_5_day"
     },
@@ -27509,7 +27519,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L232",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "phase 1 \u2014 transport & storage hardening (week 1, ~2 days)",
       "id": "security_pwa_enhancement_plan_phase_1_transport_storage_hardening_week_1_2_days"
     },
@@ -27519,7 +27529,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L240",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "phase 2 \u2014 strict csp (week 2, ~2 days)",
       "id": "security_pwa_enhancement_plan_phase_2_strict_csp_week_2_2_days"
     },
@@ -27529,7 +27539,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L244",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "phase 3 \u2014 pwa offline & supply chain (week 3, ~2\u20133 days)",
       "id": "security_pwa_enhancement_plan_phase_3_pwa_offline_supply_chain_week_3_2_3_days"
     },
@@ -27539,7 +27549,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L250",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "phase 4 \u2014 passwordless done right (week 4\u20135, ~4\u20135 days)",
       "id": "security_pwa_enhancement_plan_phase_4_passwordless_done_right_week_4_5_4_5_days"
     },
@@ -27549,7 +27559,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L255",
       "_origin": "ast",
-      "community": 285,
+      "community": 53,
       "norm_label": "phase 5 \u2014 verification (ongoing)",
       "id": "security_pwa_enhancement_plan_phase_5_verification_ongoing"
     },
@@ -30685,7 +30695,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 19,
       "norm_label": "biometricmigration tests",
       "id": "test_biometricmigration"
     },
@@ -30802,7 +30812,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 19,
       "norm_label": "isprfcredential",
       "id": "auth_biometricmigration_isprf_credential"
     },
@@ -30815,7 +30825,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 19,
       "norm_label": "prf vault key scheme (prf-v1)",
       "id": "concept_prf_vault_key_scheme"
     },
@@ -30828,7 +30838,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 140,
+      "community": 19,
       "norm_label": "db v6 biometric migration",
       "id": "concept_db_v6_migration"
     },
@@ -30842,7 +30852,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Vault key is wrapped with HKDF-SHA256-derived key from WebAuthn PRF output. PRF output never stored \u2014 XSS or full IndexedDB dump cannot re-derive wrapping key. Previous device-key scheme was insecure because inputs (credentialId, userId, salt) were all stored and recomputable.",
-      "community": 292,
+      "community": 4,
       "norm_label": "prf-v1 vault key wrapping scheme",
       "id": "auth_biometricvaultkey_prf_v1_scheme"
     },
@@ -30856,7 +30866,7 @@
       "author": null,
       "contributor": null,
       "rationale": "unwrapVaultKeyWithPRF takes raw vault key bytes (not a CryptoKey) so the session CryptoKey can stay non-extractable; transient raw bytes zeroized in finally block after import",
-      "community": 292,
+      "community": 4,
       "norm_label": "s7 non-extractable session key",
       "id": "auth_biometricvaultkey_s7_non_extractable"
     },
@@ -31130,7 +31140,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 229,
+      "community": 264,
       "norm_label": "strengthanalyzer (vault/generator)",
       "id": "features_vault_generator_strengthanalyzer"
     },
@@ -31223,7 +31233,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 229,
+      "community": 264,
       "norm_label": "usepasswordgenerator tests",
       "id": "hooks_tests_usepasswordgenerator_test"
     },
@@ -31236,7 +31246,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 229,
+      "community": 264,
       "norm_label": "passwordgeneratoroptions interface",
       "id": "hooks_usepasswordgenerator_passwordgeneratoroptionsinterface"
     },
@@ -31327,7 +31337,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 229,
+      "community": 264,
       "norm_label": "clipboard utils",
       "id": "presentation_utils_clipboard"
     },
@@ -32404,7 +32414,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 282,
+      "community": 53,
       "norm_label": "copilot ai agent instructions",
       "id": "copilot_instructions_agent_guide"
     },
@@ -32430,7 +32440,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 282,
+      "community": 53,
       "norm_label": "agents.md agentic coding guide",
       "id": "agents_agentic_coding_guide"
     },
@@ -32547,7 +32557,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 53,
       "norm_label": "metadata-at-rest encryption (s5)",
       "id": "concept_metadata_encryption"
     },
@@ -32560,7 +32570,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 53,
       "norm_label": "zod vault import validation (s8)",
       "id": "concept_zod_import_validation"
     },
@@ -33425,14 +33435,338 @@
   ],
   "links": [
     {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_assessimagequality",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_camerastream",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_captureframe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_captureresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_clearimagedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_iscamerasupported",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_cameracapture_requestcameraaccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_credentialparser_parsecredentialtext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_credentialparser_parsedcredential",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_credentialparser_sanitizevalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_tesseractservice_ocrprogress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_tesseractservice_prefetchtesseractassets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_tesseractservice_recognizetext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "ocr_index",
+      "target": "ocr_tesseractservice_terminateworker",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "components_importdialog_importdialog"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "components_importdialog_importdialogprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "components_importdialog_importmode"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "crypto_exportencryption"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "crypto_exportencryption_decryptimport"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "crypto_exportencryption_readimportfile"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "repositories_credentialrepositoryimpl"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "repositories_credentialrepositoryimpl_credentialrepository"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "store_authstore_useauthstore"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_importdialog",
+      "target": "store_profilestore_useprofilestore"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/pages/SettingsPage.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "pages_settingspage",
+      "target": "components_importdialog"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "src/presentation/components/ExportDialog.tsx",
+      "source_location": null,
+      "weight": 0.95,
+      "source": "components_exportdialog_exportdialog",
+      "target": "components_importdialog_importdialog"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "line 27",
+      "weight": 1.0,
+      "source": "components_importdialog_importdialog",
+      "target": "core_crypto_exportencryption"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "line 29",
+      "weight": 1.0,
+      "source": "components_importdialog_importdialog",
+      "target": "store_authstore"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/presentation/components/ImportDialog.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "components_importdialog_importdialog",
+      "target": "store_authstore_useauthstore"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "DEVELOPMENT.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development",
-      "target": "development_trustvault_pwa_development_guide",
-      "confidence_score": 1.0
+      "target": "development_trustvault_pwa_development_guide"
     },
     {
       "relation": "contains",
@@ -33440,9 +33774,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L183",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_before_you_push",
-      "confidence_score": 1.0
+      "target": "development_before_you_push"
     },
     {
       "relation": "contains",
@@ -33450,9 +33784,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_before_you_start",
-      "confidence_score": 1.0
+      "target": "development_before_you_start"
     },
     {
       "relation": "contains",
@@ -33460,9 +33794,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_code_standards",
-      "confidence_score": 1.0
+      "target": "development_code_standards"
     },
     {
       "relation": "contains",
@@ -33470,9 +33804,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L125",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_debugging",
-      "confidence_score": 1.0
+      "target": "development_debugging"
     },
     {
       "relation": "contains",
@@ -33480,9 +33814,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L159",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_documentation",
-      "confidence_score": 1.0
+      "target": "development_documentation"
     },
     {
       "relation": "contains",
@@ -33490,9 +33824,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_quick_reference",
-      "confidence_score": 1.0
+      "target": "development_quick_reference"
     },
     {
       "relation": "contains",
@@ -33500,9 +33834,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_security_reminders",
-      "confidence_score": 1.0
+      "target": "development_security_reminders"
     },
     {
       "relation": "contains",
@@ -33510,9 +33844,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_trustvault_pwa_development_guide",
-      "target": "development_workflow_adding_a_feature",
-      "confidence_score": 1.0
+      "target": "development_workflow_adding_a_feature"
     },
     {
       "relation": "contains",
@@ -33520,9 +33854,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_workflow_adding_a_feature",
-      "target": "development_1_design_the_api",
-      "confidence_score": 1.0
+      "target": "development_1_design_the_api"
     },
     {
       "relation": "contains",
@@ -33530,9 +33864,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L49",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_workflow_adding_a_feature",
-      "target": "development_2_write_tests_first_tdd",
-      "confidence_score": 1.0
+      "target": "development_2_write_tests_first_tdd"
     },
     {
       "relation": "contains",
@@ -33540,9 +33874,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_workflow_adding_a_feature",
-      "target": "development_3_implement_minimal_code",
-      "confidence_score": 1.0
+      "target": "development_3_implement_minimal_code"
     },
     {
       "relation": "contains",
@@ -33550,9 +33884,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_workflow_adding_a_feature",
-      "target": "development_4_run_tests_type_check",
-      "confidence_score": 1.0
+      "target": "development_4_run_tests_type_check"
     },
     {
       "relation": "contains",
@@ -33560,9 +33894,9 @@
       "source_file": "DEVELOPMENT.md",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "development_workflow_adding_a_feature",
-      "target": "development_5_commit_frequently",
-      "confidence_score": 1.0
+      "target": "development_5_commit_frequently"
     },
     {
       "relation": "contains",
@@ -33570,9 +33904,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns",
-      "target": "testing_patterns_testing_patterns_trustvault_pwa",
-      "confidence_score": 1.0
+      "target": "testing_patterns_testing_patterns_trustvault_pwa"
     },
     {
       "relation": "contains",
@@ -33580,9 +33914,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L336",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_before_you_push",
-      "confidence_score": 1.0
+      "target": "testing_patterns_before_you_push"
     },
     {
       "relation": "contains",
@@ -33590,9 +33924,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L292",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_common_patterns",
-      "confidence_score": 1.0
+      "target": "testing_patterns_common_patterns"
     },
     {
       "relation": "contains",
@@ -33600,9 +33934,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L261",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_coverage_targets",
-      "confidence_score": 1.0
+      "target": "testing_patterns_coverage_targets"
     },
     {
       "relation": "contains",
@@ -33610,9 +33944,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L183",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_integration_tests",
-      "confidence_score": 1.0
+      "target": "testing_patterns_integration_tests"
     },
     {
       "relation": "contains",
@@ -33620,9 +33954,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L240",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_running_tests",
-      "confidence_score": 1.0
+      "target": "testing_patterns_running_tests"
     },
     {
       "relation": "contains",
@@ -33630,9 +33964,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L275",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_test_checklist",
-      "confidence_score": 1.0
+      "target": "testing_patterns_test_checklist"
     },
     {
       "relation": "contains",
@@ -33640,9 +33974,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_test_organization",
-      "confidence_score": 1.0
+      "target": "testing_patterns_test_organization"
     },
     {
       "relation": "contains",
@@ -33650,9 +33984,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_unit_tests",
-      "confidence_score": 1.0
+      "target": "testing_patterns_unit_tests"
     },
     {
       "relation": "contains",
@@ -33660,9 +33994,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L222",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_testing_patterns_trustvault_pwa",
-      "target": "testing_patterns_using_test_fixtures",
-      "confidence_score": 1.0
+      "target": "testing_patterns_using_test_fixtures"
     },
     {
       "relation": "contains",
@@ -33670,9 +34004,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_unit_tests",
-      "target": "testing_patterns_core_crypto_functions",
-      "confidence_score": 1.0
+      "target": "testing_patterns_core_crypto_functions"
     },
     {
       "relation": "contains",
@@ -33680,9 +34014,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_unit_tests",
-      "target": "testing_patterns_react_components",
-      "confidence_score": 1.0
+      "target": "testing_patterns_react_components"
     },
     {
       "relation": "contains",
@@ -33690,9 +34024,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_unit_tests",
-      "target": "testing_patterns_react_hooks",
-      "confidence_score": 1.0
+      "target": "testing_patterns_react_hooks"
     },
     {
       "relation": "contains",
@@ -33700,9 +34034,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_unit_tests",
-      "target": "testing_patterns_repository_methods",
-      "confidence_score": 1.0
+      "target": "testing_patterns_repository_methods"
     },
     {
       "relation": "contains",
@@ -33710,9 +34044,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L294",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_common_patterns",
-      "target": "testing_patterns_async_operations_in_tests",
-      "confidence_score": 1.0
+      "target": "testing_patterns_async_operations_in_tests"
     },
     {
       "relation": "contains",
@@ -33720,9 +34054,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L303",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_common_patterns",
-      "target": "testing_patterns_database_cleanup",
-      "confidence_score": 1.0
+      "target": "testing_patterns_database_cleanup"
     },
     {
       "relation": "contains",
@@ -33730,9 +34064,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L312",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_common_patterns",
-      "target": "testing_patterns_mocking_functions",
-      "confidence_score": 1.0
+      "target": "testing_patterns_mocking_functions"
     },
     {
       "relation": "contains",
@@ -33740,9 +34074,9 @@
       "source_file": "TESTING_PATTERNS.md",
       "source_location": "L323",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "testing_patterns_common_patterns",
-      "target": "testing_patterns_react_component_mocking",
-      "confidence_score": 1.0
+      "target": "testing_patterns_react_component_mocking"
     },
     {
       "relation": "contains",
@@ -33750,9 +34084,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts",
-      "target": "src_module_contracts_module_contracts_trustvault_pwa",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_module_contracts_trustvault_pwa"
     },
     {
       "relation": "contains",
@@ -33760,9 +34094,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_core_layer_src_core",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_core_layer_src_core"
     },
     {
       "relation": "contains",
@@ -33770,9 +34104,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_data_layer_src_data",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_data_layer_src_data"
     },
     {
       "relation": "contains",
@@ -33780,9 +34114,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L184",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_development_workflow",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_development_workflow"
     },
     {
       "relation": "contains",
@@ -33790,9 +34124,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_domain_layer_src_domain",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_domain_layer_src_domain"
     },
     {
       "relation": "contains",
@@ -33800,9 +34134,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L164",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_import_direction_enforced",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_import_direction_enforced"
     },
     {
       "relation": "contains",
@@ -33810,9 +34144,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_presentation_layer_src_presentation",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_presentation_layer_src_presentation"
     },
     {
       "relation": "contains",
@@ -33820,9 +34154,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L195",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_rationale",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_rationale"
     },
     {
       "relation": "contains",
@@ -33830,9 +34164,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_module_contracts_trustvault_pwa",
-      "target": "src_module_contracts_test_fixtures_src_tests_fixtures",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_test_fixtures_src_tests_fixtures"
     },
     {
       "relation": "contains",
@@ -33840,9 +34174,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_core_layer_src_core",
-      "target": "src_module_contracts_authentication_src_core_auth",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_authentication_src_core_auth"
     },
     {
       "relation": "contains",
@@ -33850,9 +34184,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_core_layer_src_core",
-      "target": "src_module_contracts_autofill_src_core_autofill",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_autofill_src_core_autofill"
     },
     {
       "relation": "contains",
@@ -33860,9 +34194,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_core_layer_src_core",
-      "target": "src_module_contracts_breach_detection_src_core_breach",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_breach_detection_src_core_breach"
     },
     {
       "relation": "contains",
@@ -33870,9 +34204,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_core_layer_src_core",
-      "target": "src_module_contracts_cryptography_src_core_crypto",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_cryptography_src_core_crypto"
     },
     {
       "relation": "contains",
@@ -33880,9 +34214,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_core_layer_src_core",
-      "target": "src_module_contracts_ocr_src_core_ocr",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_ocr_src_core_ocr"
     },
     {
       "relation": "contains",
@@ -33890,9 +34224,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_core_layer_src_core",
-      "target": "src_module_contracts_utilities_src_core_utils",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_utilities_src_core_utils"
     },
     {
       "relation": "contains",
@@ -33900,9 +34234,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L81",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_domain_layer_src_domain",
-      "target": "src_module_contracts_entities_src_domain_entities",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_entities_src_domain_entities"
     },
     {
       "relation": "contains",
@@ -33910,9 +34244,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L88",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_domain_layer_src_domain",
-      "target": "src_module_contracts_repositories_src_domain_repositories",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_repositories_src_domain_repositories"
     },
     {
       "relation": "contains",
@@ -33920,9 +34254,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_data_layer_src_data",
-      "target": "src_module_contracts_repositories_src_data_repositories",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_repositories_src_data_repositories"
     },
     {
       "relation": "contains",
@@ -33930,9 +34264,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_data_layer_src_data",
-      "target": "src_module_contracts_storage_src_data_storage",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_storage_src_data_storage"
     },
     {
       "relation": "contains",
@@ -33940,9 +34274,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L138",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_presentation_layer_src_presentation",
-      "target": "src_module_contracts_components_src_presentation_components",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_components_src_presentation_components"
     },
     {
       "relation": "contains",
@@ -33950,9 +34284,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L146",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_presentation_layer_src_presentation",
-      "target": "src_module_contracts_hooks_src_presentation_various_locations",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_hooks_src_presentation_various_locations"
     },
     {
       "relation": "contains",
@@ -33960,9 +34294,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L120",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_presentation_layer_src_presentation",
-      "target": "src_module_contracts_pages_src_presentation_pages",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_pages_src_presentation_pages"
     },
     {
       "relation": "contains",
@@ -33970,9 +34304,9 @@
       "source_file": "src/MODULE_CONTRACTS.md",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_module_contracts_presentation_layer_src_presentation",
-      "target": "src_module_contracts_store_src_presentation_store",
-      "confidence_score": 1.0
+      "target": "src_module_contracts_store_src_presentation_store"
     },
     {
       "relation": "contains",
@@ -36252,176 +36586,6 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "integration_import_export_test",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L40",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "components_importdialog_importdialog"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "components_importdialog_importdialogprops"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "components_importdialog_importmode"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "crypto_exportencryption"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "crypto_exportencryption_decryptimport"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L27",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "crypto_exportencryption_readimportfile"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "repositories_credentialrepositoryimpl"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L28",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "repositories_credentialrepositoryimpl_credentialrepository"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "store_authstore_useauthstore"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "components_importdialog",
-      "target": "store_profilestore_useprofilestore"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/presentation/pages/SettingsPage.tsx",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "pages_settingspage",
-      "target": "components_importdialog"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/presentation/components/ExportDialog.tsx",
-      "source_location": null,
-      "weight": 0.95,
-      "source": "components_exportdialog_exportdialog",
-      "target": "components_importdialog_importdialog"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "line 27",
-      "weight": 1.0,
-      "source": "components_importdialog_importdialog",
-      "target": "core_crypto_exportencryption"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "line 29",
-      "weight": 1.0,
-      "source": "components_importdialog_importdialog",
-      "target": "store_authstore"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/presentation/components/ImportDialog.tsx",
-      "source_location": "L41",
-      "weight": 1.0,
-      "source": "components_importdialog_importdialog",
       "target": "store_authstore_useauthstore"
     },
     {
@@ -78538,5 +78702,5 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts"
     }
   ],
-  "built_at_commit": "1adfc36ceb53ef9e8ae82895e66e064cd8641375"
+  "built_at_commit": "930a84f558dac873aaec081b47f515b40854a52e"
 }
