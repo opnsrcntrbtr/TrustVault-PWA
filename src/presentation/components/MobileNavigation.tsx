@@ -21,7 +21,7 @@ export default function MobileNavigation() {
   const getActiveTab = () => {
     const path = location.pathname;
     if (path === '/dashboard') return 0;
-    if (path === '/generator') return 1;
+    if (path === '/password-generator') return 1;
     if (path === '/settings') return 2;
     return 0;
   };
@@ -32,8 +32,7 @@ export default function MobileNavigation() {
         navigate('/dashboard');
         break;
       case 1:
-        // Navigate to standalone generator page (create if needed) or open dialog
-        navigate('/dashboard'); // For now, stay on dashboard
+        navigate('/password-generator');
         break;
       case 2:
         navigate('/settings');
