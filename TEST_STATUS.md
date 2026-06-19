@@ -6,6 +6,25 @@
 
 ---
 
+## On-Device AI "Explain Password Strength" Validation — June 19, 2026
+
+**Change**: Added coverage for the on-device AI password-strength explanation flow, plus a shared test-environment `localStorage` shim so storage-backed tests run reliably under Vitest.
+
+**New tests:**
+- [x] `src/core/ai/__tests__/aiSettings.test.ts` — 5/5 passing
+- [x] `src/core/ai/__tests__/aiAvailability.test.ts` — 4/4 passing
+- [x] `src/core/ai/__tests__/promptApi.test.ts` — 3/3 passing
+- [x] `src/core/ai/__tests__/strengthExplain.test.ts` — 4/4 passing
+- [x] `src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts` — 5/5 passing
+- [x] `src/presentation/pages/__tests__/PasswordGeneratorPage.test.tsx` — 5/5 passing
+
+**Verification:**
+- [x] `npm run type-check`: 0 errors
+- [x] `npm test -- --run src/core/ai/__tests__/aiSettings.test.ts src/core/ai/__tests__/aiAvailability.test.ts src/core/ai/__tests__/promptApi.test.ts src/core/ai/__tests__/strengthExplain.test.ts src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts src/presentation/pages/__tests__/PasswordGeneratorPage.test.tsx`: 24/24 passing
+- [x] `graphify update .`: repo graph refreshed after the test and setup changes
+
+---
+
 ## Extension Autofill Bridge — June 16, 2026
 
 **Gap resolved:** ROADMAP.md #3 "Extension autofill matcher not wired to fill path"
