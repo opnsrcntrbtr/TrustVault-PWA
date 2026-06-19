@@ -1,5 +1,5 @@
 /**
- * On-device AI settings (opt-in, off by default).
+ * On-device AI settings (enabled by default).
  * localStorage module — mirrors autofillSettings.ts. No Zustand.
  */
 
@@ -13,8 +13,8 @@ export interface AiSettings {
 const STORAGE_KEY = 'trustvault_ai_settings';
 
 export const DEFAULT_AI_SETTINGS: AiSettings = {
-  enableOnDeviceAI: false,
-  allowStrengthExplanation: false,
+  enableOnDeviceAI: true,
+  allowStrengthExplanation: true,
 };
 
 export function loadAiSettings(): AiSettings {

@@ -11,10 +11,10 @@ const STORAGE_KEY = 'trustvault_ai_settings';
 describe('aiSettings', () => {
   beforeEach(() => { localStorage.clear(); });
 
-  it('defaults both toggles to false', () => {
+  it('defaults both toggles to true', () => {
     expect(DEFAULT_AI_SETTINGS).toEqual({
-      enableOnDeviceAI: false,
-      allowStrengthExplanation: false,
+      enableOnDeviceAI: true,
+      allowStrengthExplanation: true,
     });
   });
 
@@ -23,10 +23,10 @@ describe('aiSettings', () => {
   });
 
   it('merges stored partial over defaults', () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ enableOnDeviceAI: true }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ enableOnDeviceAI: false }));
     expect(loadAiSettings()).toEqual({
-      enableOnDeviceAI: true,
-      allowStrengthExplanation: false,
+      enableOnDeviceAI: false,
+      allowStrengthExplanation: true,
     });
   });
 
