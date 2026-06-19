@@ -30,6 +30,7 @@ import ImportDialog from '../components/ImportDialog';
 import BiometricSetupDialog from '../components/BiometricSetupDialog';
 import ThemeToggle from '../components/ThemeToggle';
 import ProfilesSettings from '../components/ProfilesSettings';
+import AiAssistanceSettings from '../components/AiAssistanceSettings';
 import { useServiceWorkerUpdate } from '../hooks/useServiceWorkerUpdate';
 
 export default function SettingsPage() {
@@ -203,6 +204,8 @@ export default function SettingsPage() {
         />
 
         <ProfilesSettings />
+
+        <AiAssistanceSettings />
 
         {/* Biometric Authentication */}
         <Paper sx={{ p: 3, mb: 3 }}>
