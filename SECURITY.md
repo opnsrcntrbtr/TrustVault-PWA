@@ -249,7 +249,7 @@ The scan UI displays: "🔒 Images are processed locally and never uploaded"
 
 ## 🤖 On-Device AI Boundary
 
-The optional **"Explain with AI"** feature on the password generator is **opt-in and
+The optional **"Explain with AI"** feature on the password generator and eligible credential surfaces is **opt-in and
 off by default** (two toggles in Settings → *AI Assistance (Experimental)*:
 `enableOnDeviceAI` and `allowStrengthExplanation`, both default `false`).
 

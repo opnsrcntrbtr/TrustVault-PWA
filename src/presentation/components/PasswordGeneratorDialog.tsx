@@ -149,7 +149,7 @@ export default function PasswordGeneratorDialog({
           {/* Password Strength Indicator */}
           {strength && (
             <Box>
-              <PasswordStrengthIndicator password={password} showFeedback={false} />
+              <PasswordStrengthIndicator password={password} showFeedback={false} allowAiExplanation={true} />
             </Box>
           )}
 

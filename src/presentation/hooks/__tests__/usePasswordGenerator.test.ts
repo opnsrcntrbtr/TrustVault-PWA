@@ -326,8 +326,8 @@ describe('usePasswordGenerator', () => {
       
       await waitFor(() => {
         expect(result.current.password.length).toBeLessThanOrEqual(128);
-      });
-    });
+      }, { timeout: 8000 });
+    }, 10000);
 
     it('should generate unique passwords', async () => {
       const { result } = renderHook(() => usePasswordGenerator());

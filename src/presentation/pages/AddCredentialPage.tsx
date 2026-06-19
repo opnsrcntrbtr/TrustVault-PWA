@@ -522,7 +522,7 @@ export default function AddCredentialPage() {
               />
 
               {/* Password Strength Indicator */}
-              <PasswordStrengthIndicator password={password} showFeedback />
+              <PasswordStrengthIndicator password={password} showFeedback allowAiExplanation={true} />
 
               {/* TOTP Secret (2FA) */}
               <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start', mt: 2 }}>

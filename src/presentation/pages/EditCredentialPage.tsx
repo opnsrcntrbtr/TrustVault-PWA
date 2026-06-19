@@ -638,7 +638,7 @@ export default function EditCredentialPage() {
               />
 
               {/* Password Strength Indicator */}
-              <PasswordStrengthIndicator password={password} showFeedback />
+              <PasswordStrengthIndicator password={password} showFeedback allowAiExplanation={true} />
 
               {/* TOTP Secret (2FA) */}
               <TextField

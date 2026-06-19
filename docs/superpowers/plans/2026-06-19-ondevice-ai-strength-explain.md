@@ -36,8 +36,13 @@
 | `src/presentation/components/AiAssistanceSettings.tsx` | Create. Settings section component. |
 | `src/presentation/pages/SettingsPage.tsx` | Modify. Render `<AiAssistanceSettings />`. |
 | `src/presentation/pages/PasswordGeneratorPage.tsx` | Modify. Add gated "Explain with AI" button + explanation panel. |
+| `src/presentation/components/PasswordStrengthIndicator.tsx` | Modify. Add AI Explanation UI (gated by `allowAiExplanation` prop). |
+| `src/presentation/components/PasswordGeneratorDialog.tsx` | Modify. Pass `allowAiExplanation={true}` to `PasswordStrengthIndicator`. |
+| `src/presentation/pages/AddCredentialPage.tsx` | Modify. Pass `allowAiExplanation={true}` to `PasswordStrengthIndicator`. |
+| `src/presentation/pages/EditCredentialPage.tsx` | Modify. Pass `allowAiExplanation={true}` to `PasswordStrengthIndicator`. |
 | `src/core/ai/__tests__/*.test.ts` | Tests for the four core modules. |
 | `src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts` | Hook tests. |
+| `src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx` | UI Tests. |
 
 ---
 
@@ -999,7 +1004,122 @@ git commit -m "feat(ai): add Explain with AI button to password generator"
 
 ---
 
-## Task 8: Security docs + final gate
+## Task 8: Shared AI Explanation in PasswordStrengthIndicator
+
+**Files:**
+- Modify: `src/presentation/components/PasswordStrengthIndicator.tsx`
+- Modify/Create: `src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx`
+
+**Interfaces:**
+- Consumes: `useAiStrengthExplain` hook.
+- Produces: Updates `PasswordStrengthIndicatorProps` to accept `allowAiExplanation?: boolean`.
+
+**Behavior:**
+When `allowAiExplanation` is true and AI is enabled, show the "Explain with AI" button and explanation text underneath the feedback. Uses the `analysis.strength` and `analysis.score` (as entropy approximation) to feed the AI prompt.
+
+- [ ] **Step 1: Write the failing test**
+
+Create/modify `src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx`:
+```tsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import PasswordStrengthIndicator from '@/presentation/components/PasswordStrengthIndicator';
+
+const explainMock = vi.fn();
+vi.mock('@/presentation/hooks/useAiStrengthExplain', () => ({
+  useAiStrengthExplain: () => ({
+    enabled: true,
+    loading: false,
+    explanation: null,
+    error: false,
+    explain: explainMock,
+    reset: vi.fn(),
+  }),
+}));
+
+describe('PasswordStrengthIndicator AI Explanation', () => {
+  it('does not render AI button if allowAiExplanation is false or missing', () => {
+    render(<PasswordStrengthIndicator password="Password123!" />);
+    expect(screen.queryByText('Explain with AI')).not.toBeInTheDocument();
+  });
+
+  it('renders AI button and triggers explain when clicked', async () => {
+    render(<PasswordStrengthIndicator password="Password123!" allowAiExplanation={true} />);
+    const btn = screen.getByText('Explain with AI');
+    expect(btn).toBeInTheDocument();
+    fireEvent.click(btn);
+    await waitFor(() => expect(explainMock).toHaveBeenCalled());
+  });
+});
+```
+
+- [ ] **Step 2: Implement the feature**
+
+In `src/presentation/components/PasswordStrengthIndicator.tsx`:
+1. Add `allowAiExplanation?: boolean;` to `PasswordStrengthIndicatorProps`.
+2. Import `useAiStrengthExplain` and add `const ai = useAiStrengthExplain();`
+3. Map `analysisResult.strength` to the required format if needed, and `analysisResult.score` to entropy. The `analyzePasswordStrength` function provides `strength` (weak, medium, strong, very-strong) and `score`.
+4. Render the same AI button UI block used in `PasswordGeneratorPage` at the bottom of the component, gated by `allowAiExplanation && ai.enabled`.
+
+- [ ] **Step 3: Run tests + type-check**
+
+Run: `npm run test -- src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx`
+Expected: PASS.
+Run: `npm run type-check`
+Expected: 0 errors.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/presentation/components/PasswordStrengthIndicator.tsx src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx
+git commit -m "feat(ai): add shared AI Explanation to PasswordStrengthIndicator"
+```
+
+---
+
+## Task 9: Wire AI Explanation to Eligible Surfaces
+
+**Files:**
+- Modify: `src/presentation/components/PasswordGeneratorDialog.tsx`
+- Modify: `src/presentation/pages/AddCredentialPage.tsx`
+- Modify: `src/presentation/pages/EditCredentialPage.tsx`
+
+**Interfaces:**
+- Consumes: Updated `PasswordStrengthIndicator` component.
+
+**Behavior:**
+Pass `allowAiExplanation={true}` to `PasswordStrengthIndicator` in the embedded generator dialog and add/edit credential pages.
+
+- [ ] **Step 1: Update PasswordGeneratorDialog**
+
+In `src/presentation/components/PasswordGeneratorDialog.tsx`:
+Locate `<PasswordStrengthIndicator password={generatedPassword} ... />` and add `allowAiExplanation={true}`.
+
+- [ ] **Step 2: Update AddCredentialPage**
+
+In `src/presentation/pages/AddCredentialPage.tsx`:
+Locate `<PasswordStrengthIndicator password={password} ... />` and add `allowAiExplanation={true}`.
+
+- [ ] **Step 3: Update EditCredentialPage**
+
+In `src/presentation/pages/EditCredentialPage.tsx`:
+Locate `<PasswordStrengthIndicator password={password} ... />` and add `allowAiExplanation={true}`.
+
+- [ ] **Step 4: Run tests + type-check**
+
+Run: `npm run type-check`
+Expected: 0 errors.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/presentation/components/PasswordGeneratorDialog.tsx src/presentation/pages/AddCredentialPage.tsx src/presentation/pages/EditCredentialPage.tsx
+git commit -m "feat(ai): wire AI Explanation to generator dialog and credential pages"
+```
+
+---
+
+## Task 10: Security docs + final gate
 
 **Files:**
 - Modify: `SECURITY.md` (add "On-device AI boundary" subsection)
@@ -1040,13 +1160,13 @@ git commit -m "docs(ai): document on-device AI security boundary"
 - §4 module layout → Tasks 1-5 create exactly the files listed (dropped layers stay dropped). ✔
 - §5 settings → Task 1 (module) + Task 6 (UI). ✔
 - §6 never-download gate → Task 2 (`isFeatureUsable` = available only) + Task 3 (caller-guards). ✔
-- §7 data flow / ZK boundary → Task 4 (secret-free prompt + leak test) + Task 7 (wiring). ✔
+- §7 data flow / ZK boundary → Task 4 (secret-free prompt + leak test) + Task 7-9 (wiring out-of-scope eligible surfaces). ✔
 - §8 error handling/no logging → Task 5 (degrade path) + Task 3 (`finally destroy`). ✔
-- §9 testing/DoD → tests in every task + Task 8 final gate. ✔
+- §9 testing/DoD → tests in every task + Task 10 final gate. ✔
 - §10 corrections (global `LanguageModel`, localStorage settings, streaming) → Tasks 2/3/1. ✔
 
 **Placeholder scan:** No TBD/TODO; every code step has full code. ✔
 
 **Type consistency:** `AiAvailability`, `StrengthExplainInput`, `AiSettings`, `runPrompt`, `explainStrength`, `getAiAvailability`/`isFeatureUsable`, `useAiStrengthExplain` return shape — names match across producing/consuming tasks. ✔
 
-**Note for implementer:** The generator page (`PasswordGeneratorPage.tsx`) uses its own inline strength UI, not the `PasswordStrengthIndicator` component — the button is wired there (it already holds `strength` + `entropy` state). The spec's mention of `PasswordStrengthIndicator` is superseded by this plan.
+**Note for implementer:** The generator page (`PasswordGeneratorPage.tsx`) uses its own inline strength UI, not the `PasswordStrengthIndicator` component — the button is wired there (it already holds `strength` + `entropy` state). The `PasswordStrengthIndicator` is updated in Task 8 to support AI explanations for other eligible surfaces.
