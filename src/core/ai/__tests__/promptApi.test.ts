@@ -6,7 +6,7 @@ function setLanguageModel(value: unknown) {
 }
 
 function streamOf(chunks: string[]) {
-  return (async function* () {
+  return (function* () {
     for (const c of chunks) yield c;
   })();
 }

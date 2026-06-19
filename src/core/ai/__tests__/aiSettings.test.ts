@@ -9,7 +9,7 @@ import {
 const STORAGE_KEY = 'trustvault_ai_settings';
 
 describe('aiSettings', () => {
-  beforeEach(() => localStorage.clear());
+  beforeEach(() => { localStorage.clear(); });
 
   it('defaults both toggles to false', () => {
     expect(DEFAULT_AI_SETTINGS).toEqual({

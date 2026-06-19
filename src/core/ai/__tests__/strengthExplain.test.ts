@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const runPrompt = vi.fn();
-vi.mock('@/core/ai/promptApi', () => ({ runPrompt: (...a: unknown[]) => runPrompt(...a) }));
+vi.mock('@/core/ai/promptApi', () => ({
+  runPrompt: (...a: unknown[]): unknown => runPrompt(...a),
+}));
 
 import {
   buildStrengthPrompt,

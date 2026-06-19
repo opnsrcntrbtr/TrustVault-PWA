@@ -5,13 +5,15 @@ const loadAiSettings = vi.fn();
 const getAiAvailability = vi.fn();
 const explainStrength = vi.fn();
 
-vi.mock('@/core/ai/aiSettings', () => ({ loadAiSettings: () => loadAiSettings() }));
+vi.mock('@/core/ai/aiSettings', () => ({
+  loadAiSettings: (): unknown => loadAiSettings(),
+}));
 vi.mock('@/core/ai/aiAvailability', () => ({
-  getAiAvailability: () => getAiAvailability(),
-  isFeatureUsable: (a: string) => a === 'available',
+  getAiAvailability: (): unknown => getAiAvailability(),
+  isFeatureUsable: (a: string): boolean => a === 'available',
 }));
 vi.mock('@/core/ai/strengthExplain', () => ({
-  explainStrength: (...a: unknown[]) => explainStrength(...a),
+  explainStrength: (...a: unknown[]): unknown => explainStrength(...a),
 }));
 
 import { useAiStrengthExplain } from '@/presentation/hooks/useAiStrengthExplain';
@@ -26,20 +28,22 @@ describe('useAiStrengthExplain', () => {
     getAiAvailability.mockReset();
     explainStrength.mockReset();
   });
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   it('enabled=false when settings are off', async () => {
     loadAiSettings.mockReturnValue({ enableOnDeviceAI: false, allowStrengthExplanation: false });
     getAiAvailability.mockResolvedValue('available');
     const { result } = renderHook(() => useAiStrengthExplain());
-    await waitFor(() => expect(result.current.enabled).toBe(false));
+    await waitFor(() => { expect(result.current.enabled).toBe(false); });
   });
 
   it('enabled=false when availability not usable even if settings on', async () => {
     bothOn();
     getAiAvailability.mockResolvedValue('downloadable');
     const { result } = renderHook(() => useAiStrengthExplain());
-    await waitFor(() => expect(getAiAvailability).toHaveBeenCalled());
+    await waitFor(() => { expect(getAiAvailability).toHaveBeenCalled(); });
     expect(result.current.enabled).toBe(false);
   });
 
@@ -47,7 +51,7 @@ describe('useAiStrengthExplain', () => {
     bothOn();
     getAiAvailability.mockResolvedValue('available');
     const { result } = renderHook(() => useAiStrengthExplain());
-    await waitFor(() => expect(result.current.enabled).toBe(true));
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
   });
 
   it('explain sets explanation on success', async () => {
@@ -55,7 +59,7 @@ describe('useAiStrengthExplain', () => {
     getAiAvailability.mockResolvedValue('available');
     explainStrength.mockResolvedValue('Strong because long.');
     const { result } = renderHook(() => useAiStrengthExplain());
-    await waitFor(() => expect(result.current.enabled).toBe(true));
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
     await act(async () => {
       await result.current.explain({ strength: 'strong', entropyBits: 80 });
     });
@@ -68,7 +72,7 @@ describe('useAiStrengthExplain', () => {
     getAiAvailability.mockResolvedValue('available');
     explainStrength.mockRejectedValue(new Error('boom'));
     const { result } = renderHook(() => useAiStrengthExplain());
-    await waitFor(() => expect(result.current.enabled).toBe(true));
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
     await act(async () => {
       await result.current.explain({ strength: 'weak', entropyBits: 10 });
     });

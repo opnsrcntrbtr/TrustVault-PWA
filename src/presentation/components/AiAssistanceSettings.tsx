@@ -45,13 +45,13 @@ export default function AiAssistanceSettings() {
           control={
             <Switch
               checked={settings.enableOnDeviceAI}
-              onChange={(e) =>
+              onChange={(e) => {
                 update(
                   e.target.checked
                     ? { enableOnDeviceAI: true }
                     : { enableOnDeviceAI: false, allowStrengthExplanation: false },
-                )
-              }
+                );
+              }}
             />
           }
           label="Enable on-device AI (Chrome built-in, where available)"
@@ -65,7 +65,7 @@ export default function AiAssistanceSettings() {
             <Switch
               checked={settings.allowStrengthExplanation}
               disabled={!settings.enableOnDeviceAI}
-              onChange={(e) => update({ allowStrengthExplanation: e.target.checked })}
+              onChange={(e) => { update({ allowStrengthExplanation: e.target.checked }); }}
             />
           }
           label="Allow AI to explain password strength"

@@ -30,10 +30,10 @@ describe('AiAssistanceSettings', () => {
     render(<AiAssistanceSettings />);
     const master = screen.getByLabelText(/Enable on-device AI/i);
     fireEvent.click(master);
-    await waitFor(() =>
+    await waitFor(() => {
       expect(saveAiSettings).toHaveBeenCalledWith(
         expect.objectContaining({ enableOnDeviceAI: true }),
-      ),
-    );
+      );
+    });
   });
 });

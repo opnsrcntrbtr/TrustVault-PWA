@@ -13,7 +13,7 @@ export const STRENGTH_SYSTEM_PROMPT =
 export function buildStrengthPrompt(input: StrengthExplainInput): string {
   const entropy = Math.round(input.entropyBits);
   return (
-    `The password strength is "${input.strength}" with an estimated entropy of ${entropy} bits. ` +
+    `The password strength is "${input.strength}" with an estimated entropy of ${String(entropy)} bits. ` +
     'Explain why this rating is appropriate and give one tip, ' +
     'without guessing or revealing any password.'
   );
