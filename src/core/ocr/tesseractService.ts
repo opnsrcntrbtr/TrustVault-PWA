@@ -52,6 +52,14 @@ async function getWorker(
 
     const worker = await Tesseract.createWorker('eng', 1, options);
 
+    // Tune segmentation for credential forms: a single column of label/value
+    // rows of varying size (PSM 4). Default PSM 3 (full auto) mis-segments the
+    // stacked label-above-value layout and fragments tokens (e.g. emails),
+    // which downstream parsing then has to repair.
+    await worker.setParameters({
+      tessedit_pageseg_mode: Tesseract.PSM.SINGLE_COLUMN,
+    });
+
     tesseractWorker = worker;
     return worker;
   })();

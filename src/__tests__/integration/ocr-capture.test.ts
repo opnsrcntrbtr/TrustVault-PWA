@@ -3,7 +3,11 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { parseCredentialText, sanitizeValue } from '@/core/ocr/credentialParser';
+import {
+  parseCredentialText,
+  sanitizeValue,
+  normalizeOcrEmail,
+} from '@/core/ocr/credentialParser';
 
 describe('Credential Parser', () => {
   describe('parseCredentialText', () => {
@@ -103,6 +107,100 @@ describe('Credential Parser', () => {
       const result = parseCredentialText(text);
 
       expect(result.password).toBe('Admin@123');
+    });
+  });
+
+  describe('OCR garble — username regression (RC1/RC2)', () => {
+    it('must NOT return a single garbage token "i" when email value fails to match', () => {
+      // OCR split "ianpinto1980@gmail.com" → "i anpinto1980@gmailcom" (dropped dot)
+      const text = 'Username/Email\ni anpinto1980@gmailcom';
+      const result = parseCredentialText(text);
+
+      expect(result.username).not.toBe('i');
+    });
+
+    it('repairs space + missing-dot OCR artifacts into a valid email', () => {
+      const text = 'Username/Email\ni anpinto1980@gmailcom';
+      const result = parseCredentialText(text);
+
+      expect(result.username).toBe('ianpinto1980@gmail.com');
+    });
+
+    it('repairs intra-email spaces around the dot', () => {
+      const text = 'Username/Email\nianpinto1980@gmail. com';
+      const result = parseCredentialText(text);
+
+      expect(result.username).toBe('ianpinto1980@gmail.com');
+    });
+
+    it('repairs a space before the local part', () => {
+      const text = 'Username/Email\ni anpinto1980@gmail.com';
+      const result = parseCredentialText(text);
+
+      expect(result.username).toBe('ianpinto1980@gmail.com');
+    });
+
+    it('returns no username (not garbage) when value is unrecoverable', () => {
+      const text = 'Username/Email\nxx yy zz';
+      const result = parseCredentialText(text);
+
+      expect(result.username).toBeUndefined();
+    });
+
+    it('still parses a clean labeled email exactly', () => {
+      const text = 'Username/Email\nianpinto1980@gmail.com';
+      const result = parseCredentialText(text);
+
+      expect(result.username).toBe('ianpinto1980@gmail.com');
+      expect(result.confidence.username).toBeGreaterThanOrEqual(0.7);
+    });
+  });
+
+  describe('OCR garble — full TrustVault form fixture', () => {
+    it('extracts all fields from a realistic scanned-form OCR dump', () => {
+      const text = [
+        'Title',
+        'test account',
+        'Category',
+        'Login',
+        'Username/Email',
+        'i anpinto1980@gmailcom',
+        'Password',
+        'password123',
+      ].join('\n');
+      const result = parseCredentialText(text);
+
+      expect(result.username).toBe('ianpinto1980@gmail.com');
+      expect(result.password).toBe('password123');
+    });
+  });
+
+  describe('normalizeOcrEmail', () => {
+    it('strips spaces around @ and dots', () => {
+      expect(normalizeOcrEmail('i anpinto1980@gmail.com')).toBe(
+        'ianpinto1980@gmail.com'
+      );
+      expect(normalizeOcrEmail('ianpinto1980@gmail. com')).toBe(
+        'ianpinto1980@gmail.com'
+      );
+    });
+
+    it('repairs a missing dot before known TLDs', () => {
+      expect(normalizeOcrEmail('ianpinto1980@gmailcom')).toBe(
+        'ianpinto1980@gmail.com'
+      );
+    });
+
+    it('repairs common OCR TLD misreads (.con → .com)', () => {
+      expect(normalizeOcrEmail('user@example.con')).toBe('user@example.com');
+    });
+
+    it('leaves an already-clean email unchanged', () => {
+      expect(normalizeOcrEmail('user@example.com')).toBe('user@example.com');
+    });
+
+    it('returns null when no email-like token is present', () => {
+      expect(normalizeOcrEmail('xx yy zz')).toBeNull();
     });
   });
 

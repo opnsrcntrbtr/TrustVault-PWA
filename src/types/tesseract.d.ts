@@ -25,8 +25,21 @@ declare module 'tesseract.js' {
     corePath?: string;
   }
 
+  // Page segmentation modes (subset used by this app).
+  export enum PSM {
+    AUTO = '3',
+    SINGLE_COLUMN = '4',
+    SINGLE_BLOCK = '6',
+  }
+
+  export interface WorkerParams {
+    tessedit_pageseg_mode: PSM;
+    tessedit_char_whitelist: string;
+  }
+
   export interface Worker {
     recognize(image: Blob | string | HTMLImageElement | HTMLCanvasElement): Promise<RecognizeResult>;
+    setParameters(params: Partial<WorkerParams>): Promise<unknown>;
     terminate(): Promise<void>;
   }
 
@@ -38,6 +51,7 @@ declare module 'tesseract.js' {
 
   const Tesseract: {
     createWorker: typeof createWorker;
+    PSM: typeof PSM;
   };
 
   export default Tesseract;

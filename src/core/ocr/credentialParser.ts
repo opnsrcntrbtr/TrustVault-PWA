@@ -31,51 +31,123 @@ const PATTERNS = {
 };
 
 /**
+ * Common top-level domains used to repair OCR-mangled email domains
+ * (e.g. a dropped dot: "gmailcom" → "gmail.com").
+ */
+const KNOWN_TLDS = [
+  'com',
+  'net',
+  'org',
+  'edu',
+  'gov',
+  'info',
+  'io',
+  'co',
+  'us',
+  'uk',
+  'in',
+];
+
+/**
+ * Repair an OCR-mangled email into a valid address, or return null.
+ *
+ * OCR of low-contrast / italic form text routinely (a) inserts spurious
+ * spaces inside the address, (b) drops the dot before the TLD, and
+ * (c) misreads ".com" as ".con"/".corn". This normalizes those artifacts
+ * BEFORE the strict email regex runs, so a genuine address isn't discarded
+ * (and replaced by a single garbage token — the "i" bug).
+ */
+export function normalizeOcrEmail(text: string): string | null {
+  if (!text.includes('@')) return null;
+
+  // OCR sprays spurious whitespace through the token; an email never
+  // legitimately contains spaces, so strip them all.
+  let s = text.replace(/\s+/g, '');
+
+  // Common TLD misreads.
+  s = s.replace(/\.con\b/gi, '.com').replace(/\.corn\b/gi, '.com');
+
+  // Repair a missing dot before a known TLD: "gmailcom" → "gmail.com".
+  const atIdx = s.indexOf('@');
+  const local = s.slice(0, atIdx);
+  let domain = s.slice(atIdx + 1);
+  if (!domain.includes('.')) {
+    const lower = domain.toLowerCase();
+    for (const tld of KNOWN_TLDS) {
+      if (lower.endsWith(tld) && domain.length > tld.length) {
+        domain = `${domain.slice(0, -tld.length)}.${domain.slice(-tld.length)}`;
+        break;
+      }
+    }
+  }
+  s = `${local}@${domain}`;
+
+  const match = s.match(/[\w.+-]+@[\w.-]+\.\w{2,}/);
+  return match ? match[0] : null;
+}
+
+/**
  * Extract value following a label pattern on the same or next line.
+ *
+ * When `valuePattern` is supplied, the value MUST satisfy it (optionally after
+ * `normalize` repair). If it cannot, we return nothing rather than emitting the
+ * first whitespace token — a bare token like "i" is worse than no detection.
  */
 function extractLabeledValue(
   lines: string[],
   labelPattern: RegExp,
-  valuePattern?: RegExp
+  valuePattern?: RegExp,
+  normalize?: (s: string) => string | null
 ): { value: string; confidence: number } | null {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (!line) continue;
 
+    labelPattern.lastIndex = 0;
     const labelMatch = labelPattern.exec(line);
 
     if (labelMatch) {
-      // Try same line after label
-      const afterLabel = line.slice(labelMatch.index + labelMatch[0].length).trim();
+      const afterLabel = line
+        .slice(labelMatch.index + labelMatch[0].length)
+        .trim();
+      const nextLine = lines[i + 1]?.trim() ?? '';
 
-      if (afterLabel.length > 0) {
-        // If a specific value pattern is provided, validate against it
-        if (valuePattern) {
-          const valueMatch = afterLabel.match(valuePattern);
-          if (valueMatch) {
-            return { value: valueMatch[0], confidence: 0.9 };
-          }
-        } else if (afterLabel.length >= 3) {
-          const firstWord = afterLabel.split(/\s+/)[0];
-          return { value: firstWord ?? afterLabel, confidence: 0.85 };
-        }
-      }
+      // Same line gets higher confidence than the next line.
+      const candidates: { text: string; matched: number; firstWord: number }[] =
+        [
+          { text: afterLabel, matched: 0.9, firstWord: 0.85 },
+          { text: nextLine, matched: 0.75, firstWord: 0.7 },
+        ];
 
-      // Try next line
-      const nextLine = lines[i + 1]?.trim();
-      if (nextLine && nextLine.length >= 3) {
+      for (const c of candidates) {
+        if (c.text.length === 0) continue;
+
         if (valuePattern) {
-          const valueMatch = nextLine.match(valuePattern);
-          if (valueMatch) {
-            return { value: valueMatch[0], confidence: 0.75 };
+          // Normalize first: a raw regex match can latch onto a substring
+          // (e.g. "i anpinto…@…" → "anpinto…@…", dropping the leading char).
+          if (normalize) {
+            const repaired = normalize(c.text);
+            const repairedMatch = repaired?.match(valuePattern);
+            if (repaired && repairedMatch) {
+              return { value: repairedMatch[0], confidence: c.matched - 0.05 };
+            }
           }
+          const direct = c.text.match(valuePattern);
+          if (direct) {
+            return { value: direct[0], confidence: c.matched };
+          }
+          // Required pattern unmet — do NOT emit a garbage token.
+          continue;
         }
-        const firstWordNext = nextLine.split(/\s+/)[0];
-        return { value: firstWordNext ?? nextLine, confidence: 0.7 };
+
+        // No value pattern (free-form fields): take the first token.
+        if (c.text.length >= 3) {
+          const firstWord = c.text.split(/\s+/)[0];
+          return { value: firstWord ?? c.text, confidence: c.firstWord };
+        }
       }
     }
 
-    // Reset regex lastIndex for next iteration
     labelPattern.lastIndex = 0;
   }
 
@@ -148,7 +220,8 @@ export function parseCredentialText(text: string): ParsedCredential {
   const usernameResult = extractLabeledValue(
     lines,
     new RegExp(PATTERNS.usernameLabel.source, 'gi'),
-    PATTERNS.email
+    PATTERNS.email,
+    normalizeOcrEmail
   );
   if (usernameResult) {
     result.username = usernameResult.value;
