@@ -247,6 +247,39 @@ The scan UI displays: "🔒 Images are processed locally and never uploaded"
 
 ---
 
+## 🤖 On-Device AI Boundary
+
+The optional **"Explain with AI"** feature on the password generator is **opt-in and
+off by default** (two toggles in Settings → *AI Assistance (Experimental)*:
+`enableOnDeviceAI` and `allowStrengthExplanation`, both default `false`).
+
+### Provider
+- **Chrome built-in on-device AI only** — the global `LanguageModel` (Gemini Nano).
+  No remote AI, no Window AI / browser-extension provider, no bundled or app-downloaded models.
+- All `LanguageModel` access is isolated in `src/core/ai/promptApi.ts`.
+
+### Never-download policy
+- The feature is usable only when `LanguageModel.availability() === 'available'`.
+- The app **never** calls `create()` in a `downloadable`/`downloading` state, so TrustVault
+  never initiates a multi-GB model download. Offline-first posture is preserved.
+
+### Data boundary (treated as outside the zero-knowledge boundary)
+- **Sent to AI:** only the strength label (`weak|medium|strong|very-strong`) and the rounded
+  entropy integer — the same two values the strength meter already shows the user.
+- **NEVER sent:** password characters, master key, vault keys, TOTP/recovery codes, secret
+  notes/documents, username, site origin, or credential title.
+- Even though inference runs on-device, AI is treated as **outside** the zero-knowledge
+  boundary. No prompt or response is logged remotely or persisted; the session is destroyed
+  after each call.
+- Prompt construction is centralized and secret-free in `src/core/ai/strengthExplain.ts`
+  (covered by a leak test asserting no secret-shaped data in the prompt).
+
+### Failure mode
+- Any error (API absent, availability not `available`, inference failure) degrades silently:
+  the button is hidden or returns no explanation. Core generator behavior is never blocked.
+
+---
+
 ## 📱 PWA Security Features
 
 ### Service Worker
