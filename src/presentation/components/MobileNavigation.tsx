@@ -10,10 +10,12 @@ import {
   VpnKey as VpnKeyIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
+import { useAuthStore } from '../store/authStore';
 
 export default function MobileNavigation() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
 
   // Determine active tab based on current route
   const getActiveTab = () => {
@@ -38,6 +40,10 @@ export default function MobileNavigation() {
         break;
     }
   };
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <Paper
