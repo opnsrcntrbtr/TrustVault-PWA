@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { getAiAvailability, isFeatureUsable } from '@/core/ai/aiAvailability';
-import { explainStrength } from '@/core/ai/strengthExplain';
+import { explainStrength, STRENGTH_SYSTEM_PROMPT } from '@/core/ai/strengthExplain';
+import { warmUpAi } from '@/core/ai/promptApi';
 import type { StrengthExplainInput } from '@/core/ai/aiTypes';
 
 interface UseAiStrengthExplain {
@@ -27,8 +28,13 @@ export function useAiStrengthExplain(): UseAiStrengthExplain {
       return () => { mounted = false; };
     }
     getAiAvailability()
-      .then((a) => { if (mounted) setEnabled(isFeatureUsable(a)); })
-      .catch(() => { if (mounted) setEnabled(false); });
+      .then((a) => { 
+        if (mounted && isFeatureUsable(a)) {
+          setEnabled(true);
+          warmUpAi(STRENGTH_SYSTEM_PROMPT).catch(console.error);
+        }
+      })
+      .catch((e: unknown) => { console.error('catch block err', e); if (mounted) setEnabled(false); });
     return () => { mounted = false; };
   }, []);
 

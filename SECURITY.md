@@ -288,8 +288,9 @@ so the inputs are deliberately minimized per feature:
   the prompt.
 
 ### Failure mode
-- Any error (API absent, availability not `available`, inference failure) degrades silently:
-  the button is hidden or returns no explanation. Core generator behavior is never blocked.
+- Any error (API absent, availability not `available`, inference failure) is handled gracefully:
+  - **Strength explanation:** the button is hidden or returns no explanation. Core generator behavior is never blocked.
+  - **Breach impact analysis:** shows an error Alert with a Retry button, allowing the user to try again. The modal's core breach details remain visible and usable.
 
 ---
 

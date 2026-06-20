@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
+import { warmUpAi } from '@/core/ai/promptApi';
 
 const loadAiSettings = vi.fn();
 const getAiAvailability = vi.fn();
@@ -14,6 +15,10 @@ vi.mock('@/core/ai/aiAvailability', () => ({
 }));
 vi.mock('@/core/ai/strengthExplain', () => ({
   explainStrength: (...a: unknown[]): unknown => explainStrength(...a),
+  STRENGTH_SYSTEM_PROMPT: 'mock-system-prompt'
+}));
+vi.mock('@/core/ai/promptApi', () => ({
+  warmUpAi: vi.fn(() => Promise.resolve())
 }));
 
 import { useAiStrengthExplain } from '@/presentation/hooks/useAiStrengthExplain';
@@ -27,6 +32,7 @@ describe('useAiStrengthExplain', () => {
     loadAiSettings.mockReset();
     getAiAvailability.mockReset();
     explainStrength.mockReset();
+    vi.mocked(warmUpAi).mockReset();
   });
   afterEach(() => {
     vi.restoreAllMocks();
@@ -52,6 +58,7 @@ describe('useAiStrengthExplain', () => {
     getAiAvailability.mockResolvedValue('available');
     const { result } = renderHook(() => useAiStrengthExplain());
     await waitFor(() => { expect(result.current.enabled).toBe(true); });
+    expect(warmUpAi).toHaveBeenCalled();
   });
 
   it('explain sets explanation on success', async () => {

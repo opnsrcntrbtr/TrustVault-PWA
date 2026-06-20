@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { getAiAvailability, isFeatureUsable } from '@/core/ai/aiAvailability';
-import { explainBreachImpact, type BreachImpactExplainInput } from '@/core/ai/breachImpactExplain';
+import { explainBreachImpact, type BreachImpactExplainInput, BREACH_SYSTEM_PROMPT } from '@/core/ai/breachImpactExplain';
+import { warmUpAi } from '@/core/ai/promptApi';
 
 interface UseAiBreachImpactExplain {
   enabled: boolean;
@@ -29,7 +30,12 @@ export function useAiBreachImpactExplain(): UseAiBreachImpactExplain {
       return () => { mounted = false; };
     }
     getAiAvailability()
-      .then((a) => { if (mounted) setEnabled(isFeatureUsable(a)); })
+      .then((a) => { 
+        if (mounted && isFeatureUsable(a)) {
+          setEnabled(true);
+          warmUpAi(BREACH_SYSTEM_PROMPT).catch(console.error);
+        }
+      })
       .catch(() => { if (mounted) setEnabled(false); });
     return () => { mounted = false; };
   }, []);

@@ -271,3 +271,20 @@ User:   The password strength is "<strength>" with an estimated entropy of <entr
 - Note-rewriting for explicitly-flagged non-secret notes — only after a separate security review.
 - Re-evaluate Window AI / remote providers only if a future requirement justifies relaxing the on-device
   guarantee (currently: no).
+
+---
+
+## 12. Performance Optimization: Session Warm-up & Cloning
+
+Based on best practices for the Chrome Prompt API (Gemini Nano), the implementation in `promptApi.ts` has been optimized to eliminate multi-second "cold start" delays while preserving zero-knowledge isolation between queries.
+
+### Session Warm-up
+Instead of creating a session from scratch upon user click, the feature hooks (`useAiStrengthExplain` and `useAiBreachImpactExplain`) trigger a background initialization as soon as they mount and detect that the feature is enabled and the API is available.
+- `warmUpAi(systemPrompt)` is called asynchronously.
+- The `promptApi.ts` module maintains a cache of base sessions (`Map<string, AiSession>`) keyed by the system prompt.
+
+### Session Cloning
+The Prompt API is conversational, meaning a single session remembers past inputs. To keep explanations completely independent (and to prevent leaking context between different passwords or breaches), we use the `session.clone()` method.
+- When an explanation is requested, we run `await baseSession.clone()` to create a lightweight, independent fork.
+- The prompt is streamed using `clonedSession.promptStreaming()`.
+- Finally, the cloned session is immediately destroyed (`clonedSession.destroy()`) to free memory, while the base session remains warm for future queries.
