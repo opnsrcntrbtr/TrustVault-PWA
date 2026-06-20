@@ -3,11 +3,15 @@
  * Chrome built-in on-device AI only — desktop Chrome only, not supported on Android/iOS.
  * Master toggle is disabled (and stays off) when availability === 'unavailable'.
  */
-import { useEffect, useState } from 'react';
-import { Box, Typography, FormControlLabel, Switch, Paper } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { Box, Typography, FormControlLabel, Switch, Paper, TextField, Button, LinearProgress } from '@mui/material';
 import { loadAiSettings, saveAiSettings, type AiSettings } from '@/core/ai/aiSettings';
 import { getAiAvailability } from '@/core/ai/aiAvailability';
 import type { AiAvailability } from '@/core/ai/aiTypes';
+import { getActiveProvider } from '@/core/ai/providers/registry';
+import { webllmProvider, removeWebllmModel } from '@/core/ai/providers/webllmProvider';
+import { isMobileAiSurfaceEnabled } from '@/core/ai/providers/capabilities';
+import { WEBLLM_MODELS, getModelById } from '@/core/ai/webllmModels';
 
 const AVAILABILITY_TEXT: Record<AiAvailability, string> = {
   available: 'On-device AI: available',
@@ -19,13 +23,20 @@ const AVAILABILITY_TEXT: Record<AiAvailability, string> = {
 export default function AiAssistanceSettings() {
   const [settings, setSettings] = useState<AiSettings>(() => loadAiSettings());
   const [availability, setAvailability] = useState<AiAvailability>('unavailable');
+  const [activeProviderId, setActiveProviderId] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     let mounted = true;
     getAiAvailability()
       .then((a) => { if (mounted) setAvailability(a); })
       .catch(() => { if (mounted) setAvailability('unavailable'); });
-    return () => { mounted = false; };
+    getActiveProvider()
+      .then((p) => { if (mounted) setActiveProviderId(p?.id ?? null); })
+      .catch(() => { if (mounted) setActiveProviderId(null); });
+    return () => { mounted = false; mountedRef.current = false; };
   }, []);
 
   const update = (patch: Partial<AiSettings>) => {
@@ -33,6 +44,25 @@ export default function AiAssistanceSettings() {
     setSettings(next);
     saveAiSettings(next);
   };
+
+  const handleDownload = () => {
+    setDownloading(true);
+    setDownloadProgress(0);
+    webllmProvider
+      .ensureReady((p) => { if (mountedRef.current) setDownloadProgress(p.progress); })
+      .then(() => { update({ mobileAiModelReady: true }); })
+      .catch(() => { /* leave mobileAiModelReady false; user can retry */ })
+      .finally(() => { if (mountedRef.current) setDownloading(false); });
+  };
+
+  const handleRemove = () => {
+    removeWebllmModel()
+      .then(() => { update({ mobileAiModelReady: false }); })
+      .catch(() => { /* best-effort */ });
+  };
+
+  const showWebllmBlock = isMobileAiSurfaceEnabled() && activeProviderId === 'webllm';
+  const selectedModel = getModelById(settings.webLlmModelId);
 
   return (
     <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
@@ -90,6 +120,48 @@ export default function AiAssistanceSettings() {
           AI receives only public breach data and credential metadata (like username and category) — never your password or notes.
         </Typography>
       </Box>
+
+      {showWebllmBlock && (
+        <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
+          <Typography variant="subtitle2" gutterBottom>On-device AI model (Android)</Typography>
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+            Downloads once from a third-party AI CDN. After that, all analysis runs locally on your device — your data never leaves it.
+          </Typography>
+
+          <TextField
+            select
+            slotProps={{ select: { native: true } }}
+            label="On-device model"
+            value={settings.webLlmModelId}
+            onChange={(e) => { update({ webLlmModelId: e.target.value }); }}
+            size="small"
+            sx={{ mb: 1, minWidth: 240, display: 'block' }}
+          >
+            {WEBLLM_MODELS.map((m) => (
+              <option key={m.id} value={m.id}>{m.label}</option>
+            ))}
+          </TextField>
+
+          {downloading && (
+            <LinearProgress
+              variant="determinate"
+              value={downloadProgress * 100}
+              sx={{ mb: 1 }}
+            />
+          )}
+
+          {!settings.mobileAiModelReady && (
+            <Button variant="outlined" size="small" disabled={downloading} onClick={handleDownload}>
+              Download model (~{selectedModel?.approxMB ?? 0} MB)
+            </Button>
+          )}
+          {settings.mobileAiModelReady && (
+            <Button variant="outlined" size="small" color="error" onClick={handleRemove}>
+              Remove model
+            </Button>
+          )}
+        </Box>
+      )}
     </Paper>
   );
 }

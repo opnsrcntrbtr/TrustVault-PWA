@@ -26,6 +26,12 @@ export function __resetWebllmEngineForTesting(): void {
   engine = null; engineModelId = null; initPromise = null;
 }
 
+/** Unloads the engine (frees GPU/WASM memory) so a different model can be picked. */
+export async function removeWebllmModel(): Promise<void> {
+  if (engine) await engine.unload();
+  engine = null; engineModelId = null; initPromise = null;
+}
+
 async function createEngine(
   modelId: string,
   onProgress?: (p: AiDownloadProgress) => void,
