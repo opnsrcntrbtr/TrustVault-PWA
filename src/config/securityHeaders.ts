@@ -16,6 +16,18 @@ export const HIBP_ORIGINS = [
   'https://haveibeenpwned.com',
 ] as const;
 
+/**
+ * Origins WebLLM fetches model weights/config from (Android on-device AI).
+ * Weight download ONLY — no user data leaves the device. Confirm the exact
+ * host set via the Network tab during on-device verification; keep minimal.
+ */
+export const WEBLLM_MODEL_ORIGINS = [
+  'https://huggingface.co',
+  'https://cdn-lfs.huggingface.co',
+  'https://cdn-lfs-us-1.huggingface.co',
+  'https://raw.githubusercontent.com',
+] as const;
+
 // P2 (done): Tesseract OCR assets are self-hosted under public/ocr/ —
 // the former cdn.jsdelivr.net allowance has been removed from the CSP.
 
@@ -49,7 +61,7 @@ export function buildContentSecurityPolicy(): string {
     'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
     'font-src': ["'self'", 'https://fonts.gstatic.com'],
     'img-src': ["'self'", 'data:', 'blob:'],
-    'connect-src': ["'self'", ...HIBP_ORIGINS],
+    'connect-src': ["'self'", ...HIBP_ORIGINS, ...WEBLLM_MODEL_ORIGINS],
     'worker-src': ["'self'", 'blob:'],
     'object-src': ["'none'"],
     'base-uri': ["'self'"],
