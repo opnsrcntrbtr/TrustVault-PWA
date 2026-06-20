@@ -41,3 +41,21 @@ export async function runPrompt(args: {
     session.destroy();
   }
 }
+export async function* runPromptStreaming(args: {
+  systemPrompt: string;
+  userPrompt: string;
+  signal?: AbortSignal;
+}): AsyncIterableIterator<string> {
+  const lm = getLanguageModel();
+  const session = await lm.create({
+    initialPrompts: [{ role: 'system', content: args.systemPrompt }],
+  });
+  try {
+    const opts = args.signal ? { signal: args.signal } : undefined;
+    for await (const chunk of session.promptStreaming(args.userPrompt, opts)) {
+      yield chunk;
+    }
+  } finally {
+    session.destroy();
+  }
+}

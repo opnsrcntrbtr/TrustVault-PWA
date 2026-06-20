@@ -650,3 +650,9 @@ Per `SECURITY_HARDENING_PLAN_2026-06.md`; status in `SECURITY_PWA_ENHANCEMENT_PL
 ## Patch Notes — 2026-06-12 (Finding 7: re-unlock session loss)
 
 - **F7 (Export/Import silently no-op after re-unlock):** `UnlockPage`'s `handleUnlock` & `handleBiometricUnlock` called `unlockVault(session.vaultKey)` but never `setSession(session)`. Since `session` intentionally excluded from persisted auth shell (F2) & `unlockVault`'s reducer only refreshes *existing* `session` (`state.session ? {...} : null`), `session` stayed `null` rest of page lifetime post-reload → re-unlock, or auto-lock → re-unlock. `ExportDialog` & `ImportDialog` both guard entire flow on `session?.vaultKey`/`session.userId`, so clicking "Export Vault"/"Import Vault" post-re-unlock did nothing — no error, no file, no console output. Fixed by calling `setSession(session)` alongside `unlockVault(session.vaultKey)` on both unlock paths, mirroring `setUser`/`setSession`/`setVaultKey` pattern already used by `SigninPage`/`SignupPage`/`LoginPage`. Pinned by `UnlockPage.test.tsx` (2 tests: master-password & biometric re-unlock both restore `session`).
+
+## Patch Notes — 2026-06-20 (On-Device AI Breach Impact Analysis)
+
+- **AI1 (Breach Impact Analysis):** Added experimental On-Device AI support to the Breach Details Modal. Users can request an impact analysis and remediation advice for compromised credentials.
+- **Data Hygiene Boundary:** The AI prompt only receives the credential's metadata (e.g. title, category, username format, age) and public breach data. Passwords, secret notes, and other sensitive information are explicitly stripped out before calling the LanguageModel API to maintain the zero-knowledge guarantee.
+- **Provider Policy:** Operates exclusively via Chrome's built-in `LanguageModel` under the strict never-download policy. It degrades gracefully into standard static text if the model is unavailable or off.

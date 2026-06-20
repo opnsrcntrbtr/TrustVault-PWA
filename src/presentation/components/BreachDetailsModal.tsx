@@ -20,6 +20,10 @@ import {
   IconButton,
   Alert,
   Link,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  CircularProgress,
 } from '@mui/material';
 import {
   Close,
@@ -30,9 +34,12 @@ import {
   OpenInNew,
   Security,
   Error,
+  AutoAwesome,
+  ExpandMore,
 } from '@mui/icons-material';
 import DOMPurify from 'dompurify';
 import type { BreachData, BreachSeverity } from '@/core/breach/breachTypes';
+import { useAiBreachImpactExplain } from '@/presentation/hooks/useAiBreachImpactExplain';
 
 interface BreachDetailsModalProps {
   open: boolean;
@@ -40,8 +47,11 @@ interface BreachDetailsModalProps {
   breaches: BreachData[];
   credentialTitle: string;
   severity: BreachSeverity;
-  breachCount?: number;
-  onChangePassword?: () => void;
+  breachCount?: number | undefined;
+  onChangePassword?: (() => void) | undefined;
+  credentialUsername?: string | undefined;
+  credentialCategory?: string | undefined;
+  credentialAgeDays?: number | undefined;
 }
 
 export default function BreachDetailsModal({
@@ -52,7 +62,12 @@ export default function BreachDetailsModal({
   severity,
   breachCount,
   onChangePassword,
+  credentialUsername,
+  credentialCategory,
+  credentialAgeDays,
 }: BreachDetailsModalProps) {
+  const ai = useAiBreachImpactExplain();
+
   const getSeverityColor = (sev: BreachSeverity): 'error' | 'warning' | 'info' | 'success' => {
     switch (sev) {
       case 'critical':
@@ -190,6 +205,83 @@ export default function BreachDetailsModal({
             </ListItem>
           </List>
         </Box>
+
+        {/* AI Analysis Section */}
+        {ai.enabled && (
+          <Accordion
+            sx={{ mb: 3, border: 1, borderColor: 'divider', boxShadow: 'none', '&:before': { display: 'none' } }}
+            onChange={(_, expanded) => {
+              if (expanded && ai.explanation === null && !ai.loading && !ai.error) {
+                void ai.analyze({
+                  breaches,
+                  credentialTitle,
+                  credentialUsername,
+                  credentialCategory,
+                  credentialAgeDays,
+                });
+              }
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              sx={{ backgroundColor: 'action.hover' }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AutoAwesome color="primary" fontSize="small" />
+                <Typography variant="subtitle2" fontWeight="600">
+                  AI Impact Analysis
+                </Typography>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails sx={{ pt: 2, pb: 2 }}>
+              {ai.loading && !ai.explanation ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 2 }}>
+                  <CircularProgress size={20} />
+                  <Typography variant="body2" color="text.secondary">
+                    Analyzing breach impact...
+                  </Typography>
+                </Box>
+              ) : ai.error ? (
+                <Alert
+                  severity="error"
+                  sx={{ mb: 1 }}
+                  action={
+                    <Button
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        void ai.analyze({
+                          breaches,
+                          credentialTitle,
+                          credentialUsername,
+                          credentialCategory,
+                          credentialAgeDays,
+                        });
+                      }}
+                    >
+                      Retry
+                    </Button>
+                  }
+                >
+                  Failed to generate AI analysis.
+                </Alert>
+              ) : ai.explanation ? (
+                <Box>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    sx={{ whiteSpace: 'pre-line' }}
+                  >
+                    {ai.explanation}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2, fontStyle: 'italic' }}>
+                    Generated securely on-device by Chrome built-in AI.
+                  </Typography>
+                </Box>
+              ) : null}
+            </AccordionDetails>
+          </Accordion>
+        )}
 
         {/* Breach Details */}
         {breaches.length > 0 && (

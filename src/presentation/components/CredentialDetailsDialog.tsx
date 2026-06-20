@@ -610,6 +610,9 @@ export default function CredentialDetailsDialog({
           onEdit();
           onClose();
         }}
+        credentialUsername={credential.username}
+        credentialCategory={credential.category as string}
+        credentialAgeDays={credential.updatedAt ? Math.floor((Date.now() - new Date(credential.updatedAt).getTime()) / (1000 * 60 * 60 * 24)) : undefined}
       />
     )}
 

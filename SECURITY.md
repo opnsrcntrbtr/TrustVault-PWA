@@ -249,12 +249,17 @@ The scan UI displays: "🔒 Images are processed locally and never uploaded"
 
 ## 🤖 On-Device AI Boundary
 
-The optional **"Explain with AI"** feature on the password generator and eligible credential surfaces is **opt-in and
-off by default** (two toggles in Settings → *AI Assistance (Experimental)*:
-`enableOnDeviceAI` and `allowStrengthExplanation`, both default `false`).
+The optional **"Explain with AI"** features (password-strength explanation on the generator/credential
+forms, and **breach impact analysis** on the Breach Details modal) are controlled by toggles in
+Settings → *AI Assistance (Experimental)*: `enableOnDeviceAI` (master), `allowStrengthExplanation`,
+and `allowBreachImpactAnalysis`. **All default `true`** (`src/core/ai/aiSettings.ts`), but **no data
+ever leaves the device** — inference runs entirely locally (see Provider). A user-initiated action is
+still required to invoke the model (clicking "Explain", expanding the AI accordion); the model is
+never called automatically on page load. Disabling the master toggle forces all sub-features off.
 
-### Provider
-- **Chrome built-in on-device AI only** — the global `LanguageModel` (Gemini Nano).
+### Provider — fully local, no network egress
+- **Chrome built-in on-device AI only** — the global `LanguageModel` (Gemini Nano), which performs
+  inference **locally on the user's device**. No prompt or completion is transmitted off-device.
   No remote AI, no Window AI / browser-extension provider, no bundled or app-downloaded models.
 - All `LanguageModel` access is isolated in `src/core/ai/promptApi.ts`.
 
@@ -264,15 +269,23 @@ off by default** (two toggles in Settings → *AI Assistance (Experimental)*:
   never initiates a multi-GB model download. Offline-first posture is preserved.
 
 ### Data boundary (treated as outside the zero-knowledge boundary)
-- **Sent to AI:** only the strength label (`weak|medium|strong|very-strong`) and the rounded
-  entropy integer — the same two values the strength meter already shows the user.
-- **NEVER sent:** password characters, master key, vault keys, TOTP/recovery codes, secret
-  notes/documents, username, site origin, or credential title.
-- Even though inference runs on-device, AI is treated as **outside** the zero-knowledge
-  boundary. No prompt or response is logged remotely or persisted; the session is destroyed
-  after each call.
-- Prompt construction is centralized and secret-free in `src/core/ai/strengthExplain.ts`
-  (covered by a leak test asserting no secret-shaped data in the prompt).
+Because inference is local, nothing below is transmitted off-device. The data is still treated as
+crossing the **app's** zero-knowledge boundary (decrypted plaintext handed to the browser runtime),
+so the inputs are deliberately minimized per feature:
+
+- **Strength explanation — sent to AI:** only the strength label (`weak|medium|strong|very-strong`)
+  and the rounded entropy integer — the same two values the strength meter already shows the user.
+  Prompt is built in `src/core/ai/strengthExplain.ts`.
+- **Breach impact analysis — sent to AI:** public breach metadata (breach name, date, compromised
+  data classes) plus non-secret credential metadata (title, username, category, password age in
+  days). Prompt is built in `src/core/ai/breachImpactExplain.ts`, which includes a defense-in-depth
+  invariant that throws if a `password:`/`notes:` field shape is ever detected.
+- **NEVER sent (any feature):** password characters, master key, vault keys, TOTP/recovery codes,
+  or secret notes/documents.
+- No prompt or response is logged or persisted; the `LanguageModel` session is destroyed after each
+  call (`finally { session.destroy() }`).
+- Both prompt builders are secret-free and covered by unit tests asserting no secret-shaped data in
+  the prompt.
 
 ### Failure mode
 - Any error (API absent, availability not `available`, inference failure) degrades silently:

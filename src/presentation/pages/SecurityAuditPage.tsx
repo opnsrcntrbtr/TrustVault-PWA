@@ -82,6 +82,9 @@ export default function SecurityAuditPage() {
   const [selectedBreach, setSelectedBreach] = useState<{
     breaches: BreachCheckResult;
     title: string;
+    username?: string | undefined;
+    category?: string | undefined;
+    ageDays?: number | undefined;
   } | null>(null);
   // P4: timestamp of the last full HIBP re-check (manual scan or on-unlock refresh)
   const [lastFullCheckAt, setLastFullCheckAt] = useState<number | null>(() => getLastFullCheckAt());
@@ -362,9 +365,17 @@ export default function SecurityAuditPage() {
 
   const handleViewBreachDetails = (issue: SecurityIssue) => {
     if (issue.breachData) {
+      const cred = credentials.find(c => c.id === issue.credentialId);
+      const ageDays = cred?.updatedAt 
+        ? Math.floor((Date.now() - new Date(cred.updatedAt).getTime()) / (1000 * 60 * 60 * 24))
+        : undefined;
+
       setSelectedBreach({
         breaches: issue.breachData,
         title: issue.credentialTitle,
+        username: cred?.username || undefined,
+        category: (cred?.category as string) || undefined,
+        ageDays,
       });
     }
   };
@@ -689,6 +700,9 @@ export default function SecurityAuditPage() {
           credentialTitle={selectedBreach.title}
           severity={selectedBreach.breaches.severity}
           breachCount={selectedBreach.breaches.breachCount ?? 0}
+          credentialUsername={selectedBreach.username}
+          credentialCategory={selectedBreach.category}
+          credentialAgeDays={selectedBreach.ageDays}
         />
       )}
     </Box>

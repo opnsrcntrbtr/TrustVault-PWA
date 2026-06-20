@@ -49,7 +49,7 @@ export default function AiAssistanceSettings() {
                 update(
                   e.target.checked
                     ? { enableOnDeviceAI: true }
-                    : { enableOnDeviceAI: false, allowStrengthExplanation: false },
+                    : { enableOnDeviceAI: false, allowStrengthExplanation: false, allowBreachImpactAnalysis: false },
                 );
               }}
             />
@@ -70,8 +70,22 @@ export default function AiAssistanceSettings() {
           }
           label="Allow AI to explain password strength"
         />
-        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4 }}>
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4, mb: 1 }}>
           AI receives only the strength rating and entropy estimate — never your password.
+        </Typography>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={settings.allowBreachImpactAnalysis}
+              disabled={!settings.enableOnDeviceAI}
+              onChange={(e) => { update({ allowBreachImpactAnalysis: e.target.checked }); }}
+            />
+          }
+          label="Allow AI to explain breach impact and remediation"
+        />
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4 }}>
+          AI receives only public breach data and credential metadata (like username and category) — never your password or notes.
         </Typography>
       </Box>
     </Paper>

@@ -8,6 +8,8 @@ export interface AiSettings {
   enableOnDeviceAI: boolean;
   /** Feature toggle for the strength-explanation feature. */
   allowStrengthExplanation: boolean;
+  /** Feature toggle for breach impact analysis feature. */
+  allowBreachImpactAnalysis: boolean;
 }
 
 const STORAGE_KEY = 'trustvault_ai_settings';
@@ -15,6 +17,7 @@ const STORAGE_KEY = 'trustvault_ai_settings';
 export const DEFAULT_AI_SETTINGS: AiSettings = {
   enableOnDeviceAI: true,
   allowStrengthExplanation: true,
+  allowBreachImpactAnalysis: true,
 };
 
 export function loadAiSettings(): AiSettings {

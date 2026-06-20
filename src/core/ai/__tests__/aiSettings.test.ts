@@ -15,6 +15,7 @@ describe('aiSettings', () => {
     expect(DEFAULT_AI_SETTINGS).toEqual({
       enableOnDeviceAI: true,
       allowStrengthExplanation: true,
+      allowBreachImpactAnalysis: true,
     });
   });
 
@@ -27,11 +28,12 @@ describe('aiSettings', () => {
     expect(loadAiSettings()).toEqual({
       enableOnDeviceAI: false,
       allowStrengthExplanation: true,
+      allowBreachImpactAnalysis: true,
     });
   });
 
   it('round-trips saved settings', () => {
-    const s: AiSettings = { enableOnDeviceAI: true, allowStrengthExplanation: true };
+    const s: AiSettings = { enableOnDeviceAI: true, allowStrengthExplanation: false, allowBreachImpactAnalysis: false };
     saveAiSettings(s);
     expect(loadAiSettings()).toEqual(s);
   });
