@@ -257,26 +257,55 @@ ever leaves the device** — inference runs entirely locally (see Provider). A u
 still required to invoke the model (clicking "Explain", expanding the AI accordion); the model is
 never called automatically on page load. Disabling the master toggle forces all sub-features off.
 
-### Platform support (desktop Chrome only)
+### Platform support — desktop Chrome (Gemini Nano) + Android (WebLLM)
 Chrome's built-in `LanguageModel` global is **not exposed on Android or iOS Chrome** as of this
 writing — confirmed via remote DevTools (`typeof LanguageModel === 'undefined'` on Android Chrome,
 even with settings toggles enabled). Gemini Nano requires local model storage/compute that mobile
-Chrome does not provision. `AiAssistanceSettings.tsx` reflects this: the master "Enable on-device AI"
-switch (and both sub-toggles) is **disabled** whenever `getAiAvailability()` resolves to
-`'unavailable'`, so unsupported platforms can't enable a feature that will never activate. On the
-Breach Details modal and credential forms, an unsupported/unavailable platform simply omits the AI
-panel — no error, no blocked core functionality.
+Chrome does not provision. To close this platform gap, a second, fully-local inference backend
+(**WebLLM**, WebGPU-based) is wired in behind a provider abstraction (`src/core/ai/providers/`,
+`AiProvider` interface) and is selected automatically — via `getActiveProvider()`
+(`src/core/ai/providers/registry.ts`) — only when: (1) Chrome built-in AI is `'unavailable'`, (2) a
+real WebGPU adapter can be acquired (`navigator.gpu.requestAdapter()` resolves non-null —
+capability detection is platform-honest, never UA-sniffed alone), and (3) the v1 UI surface flag
+(`isMobileAiSurfaceEnabled()`, currently Android-only) is enabled. Desktop Chrome's behavior,
+prompts, and data boundary are **completely unchanged** — `aiAvailability.ts` checks the
+chrome-builtin provider first and only falls through to the registry when chrome itself reports
+`'unavailable'`, so the existing availability states/UI copy on desktop are byte-for-byte preserved.
+`AiAssistanceSettings.tsx` disables the master "Enable on-device AI" switch (and both sub-toggles)
+whenever `getAiAvailability()` resolves to `'unavailable'` on either backend, so unsupported
+platforms can't enable a feature that will never activate. On the Breach Details modal and
+credential forms, an unsupported/unavailable platform simply omits the AI panel — no error, no
+blocked core functionality. iOS remains unsupported (no WebGPU/WebLLM path is offered).
 
-### Provider — fully local, no network egress
-- **Chrome built-in on-device AI only** — the global `LanguageModel` (Gemini Nano), which performs
-  inference **locally on the user's device**. No prompt or completion is transmitted off-device.
-  No remote AI, no Window AI / browser-extension provider, no bundled or app-downloaded models.
-- All `LanguageModel` access is isolated in `src/core/ai/promptApi.ts`.
+### Provider — fully local, no network egress (for prompts/inference)
+- **Desktop Chrome:** the global `LanguageModel` (Gemini Nano), performing inference **locally on
+  the user's device**. Isolated in `src/core/ai/providers/chromeBuiltinProvider.ts`.
+- **Android (WebGPU):** `@mlc-ai/web-llm`, also performing inference **locally on-device** via
+  WebGPU compute — no prompt or completion is transmitted off-device on either backend. Isolated in
+  `src/core/ai/providers/webllmProvider.ts`; the heavy WASM/JS library is lazy-imported only inside
+  `createEngine()` (`await import('@mlc-ai/web-llm')`), never top-level, and is excluded from Vite's
+  `optimizeDeps` and the service worker's precache manifest (`vite.config.ts` `globIgnores`) — so it
+  is never fetched, bundled, or precached on desktop.
+- No remote AI, no Window AI / browser-extension provider in either backend.
 
-### Never-download policy
-- The feature is usable only when `LanguageModel.availability() === 'available'`.
-- The app **never** calls `create()` in a `downloadable`/`downloading` state, so TrustVault
-  never initiates a multi-GB model download. Offline-first posture is preserved.
+### Never-download policy (Chrome built-in) / opt-in one-time download (WebLLM)
+- **Chrome built-in:** the feature is usable only when `LanguageModel.availability() === 'available'`.
+  The app **never** calls `create()` in a `downloadable`/`downloading` state, so TrustVault never
+  initiates a multi-GB model download on desktop. Offline-first posture is preserved.
+- **WebLLM (Android):** this backend's model weights (one of three prebuilt sizes, 720MB–1.9GB,
+  catalog in `src/core/ai/webllmModels.ts`) are **not** bundled with the app and must be downloaded
+  once, **only after explicit user opt-in** — tapping "Download model" in Settings → AI Assistance
+  (Experimental) → "On-device AI model (Android)" block, shown only when this backend is active.
+  This is the **single new network egress** introduced by the Android backend: a one-time fetch of
+  model weights/config from the MLC/Hugging Face CDN. **No user data is part of this request** — it
+  is a static asset download, not a prompt/inference call. The allowed origins are an explicit CSP
+  `connect-src` exception (`WEBLLM_MODEL_ORIGINS`, `src/config/securityHeaders.ts`, mirrored in
+  `vercel.json` under the existing drift-guard parity test). Once downloaded, WebLLM's own cache
+  (IndexedDB/Cache Storage, persisted via `navigator.storage.persist()`) is reused — inference is
+  then fully offline, same as Chrome built-in. A "Remove model" action evicts the cached engine and
+  resets the ready flag, requiring a fresh opt-in download to re-enable. Each `runStreaming()` call
+  starts from `engine.resetChat()` (clean context per call, no cross-conversation leakage); an
+  in-flight generation can be cancelled via `AbortSignal` → `engine.interruptGenerate()`.
 
 ### Data boundary (treated as outside the zero-knowledge boundary)
 Because inference is local, nothing below is transmitted off-device. The data is still treated as
