@@ -162,7 +162,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     }
   },
-  
+
+  optimizeDeps: {
+    exclude: ['@mlc-ai/web-llm'],
+  },
+
   build: {
     target: 'esnext',
     outDir: 'dist',
