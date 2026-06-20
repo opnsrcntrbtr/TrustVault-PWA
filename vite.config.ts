@@ -104,8 +104,10 @@ export default defineConfig({
         // in generateSW mode, so custom listeners come from an imported script.
         importScripts: ['sw-periodic-sync.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm}'],
-        // OCR assets (~16MB total) are runtime-cached on first use, not precached
-        globIgnores: ['**/ocr/**'],
+        // OCR assets (~16MB total) are runtime-cached on first use, not precached.
+        // WebLLM (~6MB, Android-only, lazy-loaded) exceeds the 2MB precache
+        // limit and is never needed on desktop — also excluded.
+        globIgnores: ['**/ocr/**', '**/webllm-vendor-*.js'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -187,6 +189,11 @@ export default defineConfig({
           if (/[\\/]node_modules[\\/]@mui[\\/]/.test(id)) return 'mui-vendor';
           if (/[\\/]node_modules[\\/]dexie[\\/]/.test(id)) return 'storage-vendor';
           if (/[\\/]node_modules[\\/]@noble[\\/]hashes[\\/]/.test(id)) return 'security-vendor';
+          // Lazy-loaded only on Android/WebGPU (Task 9): isolate into a stable,
+          // named chunk so it can be excluded from SW precaching below — it's
+          // ~6MB, well over Workbox's default 2MB precache limit, and is never
+          // needed on desktop.
+          if (/[\\/]node_modules[\\/]@mlc-ai[\\/]web-llm[\\/]/.test(id)) return 'webllm-vendor';
           return undefined;
         }
       }
