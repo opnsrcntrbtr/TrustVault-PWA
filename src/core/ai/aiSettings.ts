@@ -2,6 +2,7 @@
  * On-device AI settings (enabled by default).
  * localStorage module — mirrors autofillSettings.ts. No Zustand.
  */
+import { DEFAULT_WEBLLM_MODEL_ID } from '@/core/ai/webllmModels';
 
 export interface AiSettings {
   /** Master toggle for Chrome built-in AI. */
@@ -10,6 +11,10 @@ export interface AiSettings {
   allowStrengthExplanation: boolean;
   /** Feature toggle for breach impact analysis feature. */
   allowBreachImpactAnalysis: boolean;
+  /** Selected WebLLM model id (Android on-device backend). */
+  webLlmModelId: string;
+  /** Cached flag: WebLLM weights downloaded & usable. Verified against cache on load. */
+  mobileAiModelReady: boolean;
 }
 
 const STORAGE_KEY = 'trustvault_ai_settings';
@@ -18,6 +23,8 @@ export const DEFAULT_AI_SETTINGS: AiSettings = {
   enableOnDeviceAI: true,
   allowStrengthExplanation: true,
   allowBreachImpactAnalysis: true,
+  webLlmModelId: DEFAULT_WEBLLM_MODEL_ID,
+  mobileAiModelReady: false,
 };
 
 export function loadAiSettings(): AiSettings {

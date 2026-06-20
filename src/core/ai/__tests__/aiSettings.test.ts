@@ -16,6 +16,8 @@ describe('aiSettings', () => {
       enableOnDeviceAI: true,
       allowStrengthExplanation: true,
       allowBreachImpactAnalysis: true,
+      webLlmModelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
+      mobileAiModelReady: false,
     });
   });
 
@@ -29,11 +31,19 @@ describe('aiSettings', () => {
       enableOnDeviceAI: false,
       allowStrengthExplanation: true,
       allowBreachImpactAnalysis: true,
+      webLlmModelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
+      mobileAiModelReady: false,
     });
   });
 
   it('round-trips saved settings', () => {
-    const s: AiSettings = { enableOnDeviceAI: true, allowStrengthExplanation: false, allowBreachImpactAnalysis: false };
+    const s: AiSettings = {
+      enableOnDeviceAI: true,
+      allowStrengthExplanation: false,
+      allowBreachImpactAnalysis: false,
+      webLlmModelId: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',
+      mobileAiModelReady: true,
+    };
     saveAiSettings(s);
     expect(loadAiSettings()).toEqual(s);
   });
