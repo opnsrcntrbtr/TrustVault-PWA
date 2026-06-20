@@ -1,10 +1,10 @@
 /**
  * Active-provider selection. Prefers Chrome built-in when available; otherwise
  * falls back to WebLLM when WebGPU is present and the mobile surface is enabled.
- * (WebLLM branch wired in Task 6.)
  */
 import type { AiProvider } from '@/core/ai/providers/types';
 import { chromeBuiltinProvider } from '@/core/ai/providers/chromeBuiltinProvider';
+import { webllmProvider } from '@/core/ai/providers/webllmProvider';
 import { hasWebGpu, isMobileAiSurfaceEnabled } from '@/core/ai/providers/capabilities';
 
 let cached: AiProvider | null | undefined;
@@ -20,10 +20,8 @@ export async function getActiveProvider(): Promise<AiProvider | null> {
   const chromeAvail = await chromeBuiltinProvider.getAvailability();
   if (chromeAvail === 'available') { cached = chromeBuiltinProvider; return cached; }
 
-  // WebLLM fallback (wired in Task 6). Until then, only enable when WebGPU +
-  // mobile surface are present so selection logic is testable.
   if (isMobileAiSurfaceEnabled() && (await hasWebGpu())) {
-    cached = null; // placeholder until webllmProvider is registered
+    cached = webllmProvider;
     return cached;
   }
   cached = null;

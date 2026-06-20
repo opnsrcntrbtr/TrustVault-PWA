@@ -17,4 +17,12 @@ describe('registry.getActiveProvider', () => {
     const p = await getActiveProvider();
     expect(p).toBeNull();
   });
+
+  it('selects webllm when chrome is unavailable, WebGPU present, mobile surface enabled', async () => {
+    vi.spyOn(chromeBuiltinProvider, 'getAvailability').mockResolvedValue('unavailable');
+    Object.defineProperty(globalThis.navigator, 'gpu', { value: { requestAdapter: vi.fn().mockResolvedValue({}) }, configurable: true });
+    Object.defineProperty(globalThis.navigator, 'userAgent', { value: 'Mozilla/5.0 (Linux; Android 14)', configurable: true });
+    const p = await getActiveProvider();
+    expect(p?.id).toBe('webllm');
+  });
 });
