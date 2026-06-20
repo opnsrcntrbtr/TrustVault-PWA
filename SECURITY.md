@@ -257,6 +257,16 @@ ever leaves the device** — inference runs entirely locally (see Provider). A u
 still required to invoke the model (clicking "Explain", expanding the AI accordion); the model is
 never called automatically on page load. Disabling the master toggle forces all sub-features off.
 
+### Platform support (desktop Chrome only)
+Chrome's built-in `LanguageModel` global is **not exposed on Android or iOS Chrome** as of this
+writing — confirmed via remote DevTools (`typeof LanguageModel === 'undefined'` on Android Chrome,
+even with settings toggles enabled). Gemini Nano requires local model storage/compute that mobile
+Chrome does not provision. `AiAssistanceSettings.tsx` reflects this: the master "Enable on-device AI"
+switch (and both sub-toggles) is **disabled** whenever `getAiAvailability()` resolves to
+`'unavailable'`, so unsupported platforms can't enable a feature that will never activate. On the
+Breach Details modal and credential forms, an unsupported/unavailable platform simply omits the AI
+panel — no error, no blocked core functionality.
+
 ### Provider — fully local, no network egress
 - **Chrome built-in on-device AI only** — the global `LanguageModel` (Gemini Nano), which performs
   inference **locally on the user's device**. No prompt or completion is transmitted off-device.

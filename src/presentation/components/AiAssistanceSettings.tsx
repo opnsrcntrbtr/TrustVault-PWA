@@ -1,6 +1,7 @@
 /**
  * AI Assistance (Experimental) settings section.
- * Chrome built-in on-device AI only. Both toggles off by default.
+ * Chrome built-in on-device AI only — desktop Chrome only, not supported on Android/iOS.
+ * Master toggle is disabled (and stays off) when availability === 'unavailable'.
  */
 import { useEffect, useState } from 'react';
 import { Box, Typography, FormControlLabel, Switch, Paper } from '@mui/material';
@@ -45,6 +46,7 @@ export default function AiAssistanceSettings() {
           control={
             <Switch
               checked={settings.enableOnDeviceAI}
+              disabled={availability === 'unavailable'}
               onChange={(e) => {
                 update(
                   e.target.checked
@@ -54,7 +56,7 @@ export default function AiAssistanceSettings() {
               }}
             />
           }
-          label="Enable on-device AI (Chrome built-in, where available)"
+          label="Enable on-device AI (Requires Chrome built-in, currently supported only on a Desktop and not mobile devices)"
         />
         <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4, mb: 1 }}>
           Uses your browser's on-device model. TrustVault never sends your passwords or secrets, and never downloads a model for you.
@@ -64,7 +66,7 @@ export default function AiAssistanceSettings() {
           control={
             <Switch
               checked={settings.allowStrengthExplanation}
-              disabled={!settings.enableOnDeviceAI}
+              disabled={!settings.enableOnDeviceAI || availability === 'unavailable'}
               onChange={(e) => { update({ allowStrengthExplanation: e.target.checked }); }}
             />
           }
@@ -78,7 +80,7 @@ export default function AiAssistanceSettings() {
           control={
             <Switch
               checked={settings.allowBreachImpactAnalysis}
-              disabled={!settings.enableOnDeviceAI}
+              disabled={!settings.enableOnDeviceAI || availability === 'unavailable'}
               onChange={(e) => { update({ allowBreachImpactAnalysis: e.target.checked }); }}
             />
           }
