@@ -1,122 +1,35 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { runPrompt, warmUpAi, __clearSessionCacheForTesting } from '@/core/ai/promptApi';
+import { runPrompt, runPromptStreaming } from '@/core/ai/promptApi';
+import { __setActiveProviderForTesting, __resetRegistryForTesting } from '@/core/ai/providers/registry';
+import type { AiProvider } from '@/core/ai/providers/types';
 
-function setLanguageModel(value: unknown) {
-  (globalThis as Record<string, unknown>).LanguageModel = value;
+function fakeProvider(chunks: string[]): AiProvider {
+  return {
+    id: 'chrome-builtin',
+    getAvailability: vi.fn().mockResolvedValue('available'),
+    ensureReady: vi.fn().mockResolvedValue(undefined),
+    warmUp: vi.fn().mockResolvedValue(undefined),
+    // eslint-disable-next-line @typescript-eslint/require-await -- async generator stub, no await needed
+    runStreaming: async function* () { for (const c of chunks) yield c; },
+  };
 }
 
-function streamOf(chunks: string[]) {
-  return (function* () {
-    for (const c of chunks) yield c;
-  })();
-}
+describe('promptApi delegation', () => {
+  afterEach(() => { __resetRegistryForTesting(); vi.restoreAllMocks(); });
 
-describe('promptApi.runPrompt', () => {
-  afterEach(() => {
-    delete (globalThis as Record<string, unknown>).LanguageModel;
-    vi.restoreAllMocks();
-    __clearSessionCacheForTesting();
+  it('runPrompt concatenates streamed chunks from the active provider', async () => {
+    __setActiveProviderForTesting(fakeProvider(['Hello ', 'world']));
+    expect(await runPrompt({ systemPrompt: 's', userPrompt: 'u' })).toBe('Hello world');
   });
 
-  it('concatenates streamed chunks and destroys the session', async () => {
-    const destroy = vi.fn();
-    const promptStreaming = vi.fn().mockReturnValue(streamOf(['Hello ', 'world']));
-    const clone = vi.fn().mockResolvedValue({ promptStreaming, destroy });
-    const create = vi.fn().mockResolvedValue({ clone, destroy });
-    setLanguageModel({ create });
-
-    const text = await runPrompt({ systemPrompt: 'sys', userPrompt: 'user' });
-
-    expect(text).toBe('Hello world');
-    expect(create).toHaveBeenCalledWith({ initialPrompts: [{ role: 'system', content: 'sys' }] });
-    expect(destroy).toHaveBeenCalledOnce();
+  it('runPromptStreaming yields chunks from the active provider', async () => {
+    __setActiveProviderForTesting(fakeProvider(['a', 'b']));
+    let out = ''; for await (const c of runPromptStreaming({ systemPrompt: 's', userPrompt: 'u' })) out += c;
+    expect(out).toBe('ab');
   });
 
-  it('destroys the session even if streaming throws', async () => {
-    const destroy = vi.fn();
-    const promptStreaming = vi.fn(() => { throw new Error('stream fail'); });
-    const clone = vi.fn().mockResolvedValue({ promptStreaming, destroy });
-    const create = vi.fn().mockResolvedValue({ clone, destroy });
-    setLanguageModel({ create });
-
-    await expect(runPrompt({ systemPrompt: 's', userPrompt: 'u' })).rejects.toThrow('stream fail');
-    expect(destroy).toHaveBeenCalledOnce();
-  });
-
-  it('throws when LanguageModel is absent', async () => {
-    delete (globalThis as Record<string, unknown>).LanguageModel;
-    await expect(runPrompt({ systemPrompt: 's', userPrompt: 'u' })).rejects.toThrow();
-  });
-
-  it('falls back to create() when the session lacks clone()', async () => {
-    const destroy = vi.fn();
-    const promptStreaming = vi.fn().mockReturnValue(streamOf(['ok']));
-    // Sessions returned by create() have NO clone method.
-    const create = vi.fn().mockResolvedValue({ promptStreaming, destroy });
-    setLanguageModel({ create });
-
-    const text = await runPrompt({ systemPrompt: 'sys', userPrompt: 'user' });
-
-    expect(text).toBe('ok');
-    // One create() warms the base session, a second create() is the fallback clone.
-    expect(create).toHaveBeenCalledTimes(2);
-    expect(destroy).toHaveBeenCalledOnce(); // only the per-call session is destroyed
-  });
-});
-
-describe('promptApi.warmUpAi (session caching)', () => {
-  afterEach(() => {
-    delete (globalThis as Record<string, unknown>).LanguageModel;
-    vi.restoreAllMocks();
-    __clearSessionCacheForTesting();
-  });
-
-  it('creates the base session only once for repeated warm-ups of the same prompt', async () => {
-    const clone = vi.fn();
-    const create = vi.fn().mockResolvedValue({ clone, destroy: vi.fn() });
-    setLanguageModel({ create });
-
-    await warmUpAi('sys');
-    await warmUpAi('sys');
-    await warmUpAi('sys');
-
-    expect(create).toHaveBeenCalledOnce();
-  });
-
-  it('shares the in-flight init promise across concurrent warm-ups', async () => {
-    let resolveCreate!: (s: unknown) => void;
-    const create = vi.fn().mockReturnValue(
-      new Promise((resolve) => { resolveCreate = resolve; }),
-    );
-    setLanguageModel({ create });
-
-    const a = warmUpAi('sys');
-    const b = warmUpAi('sys');
-    resolveCreate({ clone: vi.fn(), destroy: vi.fn() });
-    await Promise.all([a, b]);
-
-    expect(create).toHaveBeenCalledOnce();
-  });
-
-  it('keeps separate base sessions per system prompt', async () => {
-    const create = vi.fn().mockResolvedValue({ clone: vi.fn(), destroy: vi.fn() });
-    setLanguageModel({ create });
-
-    await warmUpAi('sys-a');
-    await warmUpAi('sys-b');
-
-    expect(create).toHaveBeenCalledTimes(2);
-  });
-
-  it('retries creation after a failed warm-up', async () => {
-    const create = vi
-      .fn()
-      .mockRejectedValueOnce(new Error('init fail'))
-      .mockResolvedValue({ clone: vi.fn(), destroy: vi.fn() });
-    setLanguageModel({ create });
-
-    await expect(warmUpAi('sys')).rejects.toThrow('init fail');
-    await expect(warmUpAi('sys')).resolves.toBeUndefined();
-    expect(create).toHaveBeenCalledTimes(2);
+  it('throws when no provider is active', async () => {
+    __setActiveProviderForTesting(null);
+    await expect(runPrompt({ systemPrompt: 's', userPrompt: 'u' })).rejects.toThrow(/no on-device ai provider/i);
   });
 });

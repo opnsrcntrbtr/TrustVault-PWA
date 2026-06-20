@@ -1,32 +1,24 @@
 /**
- * Chrome built-in AI availability detection.
- * NEVER calls create(); only reads the static availability() state.
+ * Availability facade. Reports the chrome-builtin provider's raw state when it
+ * has anything to say (preserves the 'downloadable'/'downloading' nuance Settings
+ * displays); otherwise falls back to whichever provider the registry selects
+ * (e.g. WebLLM on Android), so hooks and Settings keep their current
+ * `getAiAvailability()` / `isFeatureUsable()` API.
  */
-import type { AiAvailability } from './aiTypes';
-
-interface LanguageModelStatic {
-  availability(): Promise<AiAvailability>;
-}
-
-function getLanguageModel(): LanguageModelStatic | undefined {
-  const lm = (globalThis as Record<string, unknown>).LanguageModel;
-  if (lm && typeof (lm as LanguageModelStatic).availability === 'function') {
-    return lm as LanguageModelStatic;
-  }
-  return undefined;
-}
+import type { AiAvailability } from '@/core/ai/aiTypes';
+import { getActiveProvider } from '@/core/ai/providers/registry';
+import { chromeBuiltinProvider } from '@/core/ai/providers/chromeBuiltinProvider';
 
 export async function getAiAvailability(): Promise<AiAvailability> {
-  const lm = getLanguageModel();
-  if (!lm) return 'unavailable';
-  try {
-    return await lm.availability();
-  } catch {
-    return 'unavailable';
-  }
+  const chromeAvail = await chromeBuiltinProvider.getAvailability();
+  if (chromeAvail !== 'unavailable') return chromeAvail;
+
+  const provider = await getActiveProvider();
+  if (!provider) return 'unavailable';
+  return provider.getAvailability();
 }
 
-/** Feature may run only when the model is already present — never triggers a download. */
+/** Feature may run only when the active provider is fully ready. */
 export function isFeatureUsable(availability: AiAvailability): boolean {
   return availability === 'available';
 }
