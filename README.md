@@ -1,15 +1,16 @@
 # TrustVault PWA
 
-Zero-knowledge credential vault engineered for high-assurance teams. Offline-first React 19 PWA with encrypted storage, biometric unlock roadmap, and UX parity with the native Android client.
+Zero-knowledge credential vault engineered for high-assurance teams. Offline-first React 19 PWA with encrypted storage, biometric unlock, and local on-device AI assistance.
 
-> **Status (June 2026):** Beta — 92% complete. Phase 1 shipped (2026-05-30). Security hardening A–E complete (2026-06-10): strict hash-based CSP, non-extractable session vault keys, zero CDN egress for OCR, Zod-validated imports. Active focus: test coverage >85%, final production hardening.
+> **Status (June 2026):** Production-Ready. All 7 development phases complete. Security hardening A–E complete. On-device AI assistance integrated (Gemini Nano, WebLLM, LiteRT-LM). Ready for production deployment.
 
 ---
 
 ## Why TrustVault
 - **Security-first**: Scrypt master hashing, PBKDF2 vault derivation, AES-256-GCM encryption, strict hash-based CSP (no `unsafe-inline`/`unsafe-eval`), non-extractable session vault keys with key-material zeroization, HSTS/COOP/CORP headers, and Web Crypto–only randomness.
-- **Offline & cross-platform**: IndexedDB (Dexie) persistence, service worker caching, installable on desktop/mobile, responsive layout roadmap.
-- **Enterprise UX**: Credential cards, password generator, clipboard hygiene, TOTP, biometric unlock, breach telemetry, and encrypted import/export. All enhancement work ships with matching UX polish and instrumentation.
+- **Offline & cross-platform**: IndexedDB (Dexie) persistence, service worker caching, installable on desktop/mobile, responsive layout.
+- **Enterprise UX**: Credential cards, password generator, clipboard hygiene, TOTP, biometric unlock, breach telemetry, and encrypted import/export.
+- **Local Intelligence**: On-device AI for password strength explanation and breach impact analysis — zero data egress, fully local inference.
 
 ---
 
@@ -19,6 +20,7 @@ Zero-knowledge credential vault engineered for high-assurance teams. Offline-fir
 | **0–3** | Core & Security | ✅ Complete | 2026-06-01 | CRUD, auth, password generator, import/export, biometric enrollment |
 | **4–5** | Polish & Testing | ✅ Complete | 2026-06-12 | Responsive UI, 1098/1099 tests passing (99.9%), OWASP compliance verified |
 | **6–7** | Production Hardening & Multi-Vault | ✅ Complete | 2026-06-18 | Lighthouse >90, HIBP breach detection, multi-vault profiles (personal/work/shared) |
+| **Extra** | On-Device AI | ✅ Complete | 2026-06-21 | Local inference (Gemini Nano, WebLLM, LiteRT-LM), strength/breach AI explains |
 
 **All phases delivered.** Ready for production deployment. See `PROJECT_STATUS.md` for comprehensive health check.
 
@@ -30,6 +32,7 @@ Zero-knowledge credential vault engineered for high-assurance teams. Offline-fir
 - **State**: Zustand stores with persistence partialization (never persist vault keys). Auto-lock and biometric layers extend stores via hooks.
 - **Storage**: Dexie-backed IndexedDB schemas for credentials, sessions, settings. All sensitive fields encrypted before persistence.
 - **Security**: Strict hash-based CSP (`script-src 'self' 'sha256-…' 'wasm-unsafe-eval'`) enforced via Vite middleware + `vercel.json` (parity test-enforced). Non-extractable session vault keys, key-material zeroization. Self-hosted Tesseract OCR assets (no CDN egress). HIBP breach detection with k-anonymity. WebAuthn PRF biometric enrollment now confirms master password before key recovery.
+- **AI Boundary**: Fully local inference using a provider abstraction. Prefers Chrome built-in (Gemini Nano) on desktop, and fallbacks to WebLLM or LiteRT-LM on Android (WebGPU). No prompt/response data ever leaves the device.
 
 **Zero-Knowledge Architecture:** Vault unlock is demonstrably zero-knowledge via WebAuthn PRF. See [SECURITY.md § Biometric Authentication (WebAuthn PRF — S1)](./SECURITY.md#biometric-authentication-webauthn-prf--s1) for the cryptographic proof that stored data alone cannot unlock the vault.
 
@@ -57,7 +60,7 @@ npm run test         # Vitest unit/integration suites
 | --- | --- | --- |
 | Type safety | `npm run type-check` | Zero errors/warnings |
 | Linting | `npm run lint` | 0 warnings, security lint rules on |
-| Unit tests | `npm run test` | >85% coverage once Phase 5 lands |
+| Unit tests | `npm run test` | >85% coverage |
 | Integration smoke | `npm run test:run` | Auth + CRUD + generator + import/export |
 | Lighthouse | `npm run lighthouse` | >90 (Perf/Acc/BP/SEO) + 100 PWA |
 | Security | `npm run lighthouse`, `npm run security:audit` | No critical/high vulns, CSP passes |
@@ -69,7 +72,7 @@ Document manual verifications (biometrics, auto-lock, breach triage) in `TEST_ST
 ## Documentation Map
 **Quick Start:**
 - **`PROJECT_STATUS.md`** – Single source of truth: project health, all 7 phases, deployment checklist
-- **`ROADMAP.md`** – Full phased backlog with completion timeline (all phases 0–7 documented)
+- **`ROADMAP.md`** – Full phased backlog with completion timeline (all phases 0-7 documented)
 
 **Detailed Guides:**
 - `CLAUDE.md` / `.github/copilot-instructions.md` – Coding guardrails, tech stack, critical rules
