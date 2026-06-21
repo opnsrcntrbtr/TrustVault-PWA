@@ -19,7 +19,6 @@ import {
 
 describe('TOTP Edge Cases', () => {
   const testSecret = 'JBSWY3DPEHPK3PXP'; // Base32 encoded "Hello!"
-  const currentTime = Date.now();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -74,7 +73,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should handle time in the past', () => {
-      const pastTime = currentTime - 100000;
+      const pastTime = Date.now() - 100000;
       const code = generateTOTP(testSecret, 30, 6, pastTime);
 
       expect(code).toBeDefined();
@@ -83,7 +82,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should handle time in the future', () => {
-      const futureTime = currentTime + 100000;
+      const futureTime = Date.now() + 100000;
       const code = generateTOTP(testSecret, 30, 6, futureTime);
 
       expect(code).toBeDefined();
@@ -92,7 +91,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should verify code with time window', () => {
-      const time = currentTime;
+      const time = Date.now();
       const code = generateTOTP(testSecret, 30, 6, time);
 
       // Verify within same time window
@@ -101,7 +100,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should verify code with time window ±1 step', () => {
-      const time = currentTime;
+      const time = Date.now();
       const code = generateTOTP(testSecret, 30, 6, time);
 
       // Verify 30 seconds earlier (within window)
@@ -114,7 +113,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should reject code outside time window', () => {
-      const time = currentTime;
+      const time = Date.now();
       const code = generateTOTP(testSecret, 30, 6, time);
 
       // 60 seconds earlier (outside window of ±1)
@@ -127,7 +126,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should handle larger time window (±3 steps)', () => {
-      const time = currentTime;
+      const time = Date.now();
       const code = generateTOTP(testSecret, 30, 6, time);
 
       // Within ±3 steps (90 seconds)
@@ -165,7 +164,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should handle millisecond precision', () => {
-      const time = currentTime;
+      const time = Date.now();
       const code1 = generateTOTP(testSecret, 30, 6, time);
       const code2 = generateTOTP(testSecret, 30, 6, time + 1); // 1ms later
 
@@ -197,7 +196,7 @@ describe('TOTP Edge Cases', () => {
     });
 
     it('should generate same code within large time step', () => {
-      const time = currentTime;
+      const time = Date.now();
       const code1 = generateTOTP(testSecret, 300, 6, time);
       const code2 = generateTOTP(testSecret, 300, 6, time + 60000); // 1 min later
 
@@ -258,9 +257,10 @@ describe('TOTP Edge Cases', () => {
     it('should preserve leading zeros in codes', () => {
       // Generate many codes to find one with leading zero
       let foundLeadingZero = false;
+      const baseTime = Date.now();
 
       for (let i = 0; i < 100; i++) {
-        const code = generateTOTP(testSecret, 30, 6, currentTime + i * 30000);
+        const code = generateTOTP(testSecret, 30, 6, baseTime + i * 30000);
         if (code.startsWith('0')) {
           foundLeadingZero = true;
           expect(code.length).toBe(6);
@@ -275,8 +275,9 @@ describe('TOTP Edge Cases', () => {
 
   describe('Concurrent Code Generation', () => {
     it('should handle concurrent code generation with same secret', async () => {
+      const baseTime = Date.now();
       const promises = Array.from({ length: 100 }, (_, i) =>
-        Promise.resolve(generateTOTP(testSecret, 30, 6, currentTime + i))
+        Promise.resolve(generateTOTP(testSecret, 30, 6, baseTime + i))
       );
 
       const codes = await Promise.all(promises);
