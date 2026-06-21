@@ -131,13 +131,13 @@ async function* runStreaming(args: {
     const stream = conversation.sendMessageStreaming(args.userPrompt);
     const reader = stream.getReader();
     try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const items = Array.isArray(value.content) ? value.content : [];
+      let result = await reader.read();
+      while (!result.done) {
+        const items = Array.isArray(result.value.content) ? result.value.content : [];
         for (const item of items) {
           if (item.type === 'text' && item.text) yield item.text;
         }
+        result = await reader.read();
       }
     } finally {
       reader.releaseLock();

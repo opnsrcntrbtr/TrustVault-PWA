@@ -11,13 +11,16 @@ const STORAGE_KEY = 'trustvault_ai_settings';
 describe('aiSettings', () => {
   beforeEach(() => { localStorage.clear(); });
 
-  it('defaults both toggles to true', () => {
+  it('defaults both toggles to true, and prefers litert-lm as the mobile engine', () => {
     expect(DEFAULT_AI_SETTINGS).toEqual({
       enableOnDeviceAI: true,
       allowStrengthExplanation: true,
       allowBreachImpactAnalysis: true,
       webLlmModelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
       mobileAiModelReady: false,
+      mobileInferenceEngine: 'litert-lm',
+      litertModelId: 'gemma-3n-E2B-it',
+      litertModelReady: false,
     });
   });
 
@@ -33,16 +36,22 @@ describe('aiSettings', () => {
       allowBreachImpactAnalysis: true,
       webLlmModelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
       mobileAiModelReady: false,
+      mobileInferenceEngine: 'litert-lm',
+      litertModelId: 'gemma-3n-E2B-it',
+      litertModelReady: false,
     });
   });
 
-  it('round-trips saved settings', () => {
+  it('round-trips saved settings, including the chosen mobile engine', () => {
     const s: AiSettings = {
       enableOnDeviceAI: true,
       allowStrengthExplanation: false,
       allowBreachImpactAnalysis: false,
       webLlmModelId: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',
       mobileAiModelReady: true,
+      mobileInferenceEngine: 'webllm',
+      litertModelId: 'gemma-3n-E4B-it',
+      litertModelReady: true,
     };
     saveAiSettings(s);
     expect(loadAiSettings()).toEqual(s);

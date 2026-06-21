@@ -3,6 +3,7 @@
  * localStorage module — mirrors autofillSettings.ts. No Zustand.
  */
 import { DEFAULT_WEBLLM_MODEL_ID } from '@/core/ai/webllmModels';
+import { DEFAULT_LITERT_MODEL_ID } from '@/core/ai/litertModels';
 
 export interface AiSettings {
   /** Master toggle for Chrome built-in AI. */
@@ -15,6 +16,12 @@ export interface AiSettings {
   webLlmModelId: string;
   /** Cached flag: WebLLM weights downloaded & usable. Verified against cache on load. */
   mobileAiModelReady: boolean;
+  /** Which Android on-device engine to prefer (A/B vs. WebLLM's Adreno failure). */
+  mobileInferenceEngine: 'litert-lm' | 'webllm';
+  /** Selected LiteRT-LM model id (Android on-device backend). */
+  litertModelId: string;
+  /** Cached flag: LiteRT-LM weights downloaded & usable. Verified against cache on load. */
+  litertModelReady: boolean;
 }
 
 const STORAGE_KEY = 'trustvault_ai_settings';
@@ -25,6 +32,9 @@ export const DEFAULT_AI_SETTINGS: AiSettings = {
   allowBreachImpactAnalysis: true,
   webLlmModelId: DEFAULT_WEBLLM_MODEL_ID,
   mobileAiModelReady: false,
+  mobileInferenceEngine: 'litert-lm',
+  litertModelId: DEFAULT_LITERT_MODEL_ID,
+  litertModelReady: false,
 };
 
 export function loadAiSettings(): AiSettings {

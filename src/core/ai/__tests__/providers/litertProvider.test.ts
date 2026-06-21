@@ -44,8 +44,6 @@ vi.mock('@/core/ai/litertModels', () => ({
   getLitertModelById: () => ({ id: 'gemma-3n-E2B-it', url: 'https://huggingface.co/x/y/resolve/main/m-Web.litertlm', approxMB: 1500, tier: 'tiny', label: 'Tiny' }),
 }));
 
-const originalFetch = global.fetch;
-
 import { litertProvider, __resetLitertEngineForTesting } from '@/core/ai/providers/litertProvider';
 
 describe('litertProvider', () => {
@@ -56,16 +54,16 @@ describe('litertProvider', () => {
       { role: 'assistant', content: [{ type: 'text', text: 'Hel' }] },
       { role: 'assistant', content: [{ type: 'text', text: 'lo' }] },
     ]));
-    global.fetch = vi.fn().mockImplementation(() => Promise.resolve({
+    vi.stubGlobal('fetch', vi.fn().mockImplementation(() => Promise.resolve({
       ok: true,
       headers: new Headers({ 'content-length': '10' }),
       body: makeReadableStream([]).pipeThrough(new TransformStream()) as unknown as ReadableStream<Uint8Array>,
-    }));
+    })));
   });
   afterEach(() => {
     __resetLitertEngineForTesting();
     vi.clearAllMocks();
-    global.fetch = originalFetch;
+    vi.unstubAllGlobals();
   });
 
   it('id is litert-lm', () => {
