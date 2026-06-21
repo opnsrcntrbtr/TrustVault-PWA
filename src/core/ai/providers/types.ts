@@ -14,6 +14,13 @@ export interface AiDownloadProgress {
   text?: string;
 }
 
+export interface ChatSession {
+  /** Stream the assistant's reply to one user turn. */
+  send(userText: string, signal?: AbortSignal): AsyncIterableIterator<string>;
+  /** Free native resources / clear transcript. Idempotent. */
+  destroy(): void;
+}
+
 export interface AiProvider {
   readonly id: AiProviderId;
   /** Cheap, read-only capability probe. MUST NOT trigger a download. */
@@ -28,4 +35,6 @@ export interface AiProvider {
     userPrompt: string;
     signal?: AbortSignal;
   }): AsyncIterableIterator<string>;
+  /** Create a multi-turn session primed with a (pre-inspected) system prompt. */
+  createChatSession(systemPrompt: string): Promise<ChatSession>;
 }
