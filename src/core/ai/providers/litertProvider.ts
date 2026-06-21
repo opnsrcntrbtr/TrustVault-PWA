@@ -7,7 +7,7 @@
  * Model weights download once from HuggingFace (gated by Settings opt-in).
  */
 import type { AiAvailability } from '@/core/ai/aiTypes';
-import type { AiProvider, AiDownloadProgress } from '@/core/ai/providers/types';
+import type { AiProvider, AiDownloadProgress, ChatSession } from '@/core/ai/providers/types';
 import { hasWebGpu } from '@/core/ai/providers/capabilities';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { getLitertModelById } from '@/core/ai/litertModels';
@@ -151,6 +151,48 @@ async function* runStreaming(args: {
   }
 }
 
+async function createChatSession(systemPrompt: string): Promise<ChatSession> {
+  await ensureReady();
+  if (!engine) throw new Error('LiteRT-LM engine not ready');
+  const conversation = await engine.createConversation({
+    preface: { messages: [{ role: 'system', content: systemPrompt }] },
+  });
+  let destroyed = false;
+  return {
+    async *send(userText: string, signal?: AbortSignal): AsyncIterableIterator<string> {
+      if (destroyed) throw new Error('Chat session destroyed');
+      const onAbort = () => { conversation.cancel(); };
+      signal?.addEventListener('abort', onAbort, { once: true });
+      try {
+        const stream = conversation.sendMessageStreaming(userText);
+        const reader = stream.getReader();
+        try {
+          let result = await reader.read();
+          while (!result.done) {
+            const items = Array.isArray(result.value.content) ? result.value.content : [];
+            for (const item of items) {
+              if (item.type === 'text' && item.text) yield item.text;
+            }
+            result = await reader.read();
+          }
+        } finally {
+          reader.releaseLock();
+        }
+      } catch (err: unknown) {
+        if (isDeviceLostError(err)) { resetEngineState(); throw new Error(DEVICE_UNAVAILABLE_MESSAGE); }
+        throw err;
+      } finally {
+        signal?.removeEventListener('abort', onAbort);
+      }
+    },
+    destroy(): void {
+      if (destroyed) return;
+      destroyed = true;
+      void conversation.delete();
+    },
+  };
+}
+
 export const litertProvider: AiProvider = {
   id: 'litert-lm',
   async getAvailability(): Promise<AiAvailability> {
@@ -160,4 +202,5 @@ export const litertProvider: AiProvider = {
   ensureReady,
   warmUp(): Promise<void> { return ensureReady(); },
   runStreaming,
+  createChatSession,
 };

@@ -111,4 +111,36 @@ describe('litertProvider', () => {
   it('getAvailability reflects readiness from settings', async () => {
     expect(await litertProvider.getAvailability()).toBe('available');
   });
+
+  it('createChatSession sends multiple turns on one native conversation, deletes on destroy()', async () => {
+    conversation.sendMessageStreaming
+      .mockReturnValueOnce(makeReadableStream([{ role: 'assistant', content: [{ type: 'text', text: 'A1' }] }]))
+      .mockReturnValueOnce(makeReadableStream([{ role: 'assistant', content: [{ type: 'text', text: 'A2' }] }]));
+
+    const chat = await litertProvider.createChatSession('sys');
+
+    let out1 = '';
+    for await (const c of chat.send('q1')) out1 += c;
+    expect(out1).toBe('A1');
+
+    let out2 = '';
+    for await (const c of chat.send('q2')) out2 += c;
+    expect(out2).toBe('A2');
+
+    expect(engine.createConversation).toHaveBeenCalledTimes(1); // one native conversation reused
+    expect(conversation.sendMessageStreaming).toHaveBeenCalledTimes(2);
+
+    chat.destroy();
+    chat.destroy(); // idempotent
+    expect(conversationDelete).toHaveBeenCalledOnce();
+  });
+
+  it('createChatSession.send rejects after destroy()', async () => {
+    conversation.sendMessageStreaming.mockReturnValueOnce(makeReadableStream([{ role: 'assistant', content: [{ type: 'text', text: 'A1' }] }]));
+    const chat = await litertProvider.createChatSession('sys');
+    chat.destroy();
+    await expect((async () => {
+      for await (const _c of chat.send('q')) { /* drain */ }
+    })()).rejects.toThrow('destroyed');
+  });
 });
