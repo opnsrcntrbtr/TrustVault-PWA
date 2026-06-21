@@ -1,0 +1,8 @@
+CLAUDE.md
+SECURITY_AUDIT_REPORT.md
+TEST_STATUS.md
+src/config/securityHeaders.ts
+src/core/ai/__tests__/providers/webllmProvider.test.ts
+src/core/ai/providers/webllmProvider.ts
+src/core/ai/webllmModels.ts
+vercel.json
