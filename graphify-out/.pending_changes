@@ -1,6 +1,0 @@
-CLAUDE.md
-SECURITY_AUDIT_REPORT.md
-TEST_STATUS.md
-src/core/ai/__tests__/providers/capabilities.test.ts
-src/core/ai/__tests__/providers/registry.test.ts
-src/core/ai/providers/capabilities.ts
