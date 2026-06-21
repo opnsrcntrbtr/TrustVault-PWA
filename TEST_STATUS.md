@@ -6,6 +6,35 @@
 
 ---
 
+## LiteRT-LM Android — A/B added against the WebLLM Adreno failure — June 21, 2026
+
+**Decision: `LITERT_ANDROID_ENABLED = true`** (new kill-switch, `capabilities.ts`) — a third
+`AiProvider`, `litert-lm`, was added to test whether Google's LiteRT-LM runtime (the
+actively-supported successor to MediaPipe LLM Inference) survives the same Qualcomm Adreno
+`VK_ERROR_DEVICE_LOST` failure that forced WebLLM's Android surface off (see the section below).
+LiteRT-LM's web target shares the WebGPU/Dawn stack implicated in that failure, so this is
+explicitly an open question, not a presumed fix.
+
+**Still required — on-device verification (not yet run):**
+- [ ] Device 1 (Adreno 6xx / Android 10): download a LiteRT-LM model, trigger "Explain with AI",
+  record whether `Engine.create()` / first generation survives or reproduces device-loss.
+- [ ] Device 2 (Adreno 810 / SD 7s Gen 3 / Android 16): same test.
+- [ ] Direct comparison: flip `mobileInferenceEngine` to `'webllm'` on the same device/model tier
+  and confirm the existing WebLLM failure still reproduces (control for the A/B).
+- [ ] Record outcome here and update `LITERT_ANDROID_ENABLED` / `WEBLLM_ANDROID_ENABLED` based on
+  the result.
+
+**Implementation notes:**
+- WASM runtime self-hosted under `public/litert/` (`scripts/copy-litert-assets.js`) — the
+  `@litert-lm/core` package defaults to fetching ~37MB from `cdn.jsdelivr.net`, which this
+  project does not allowlist (CSP/no-CDN-egress convention, same as Tesseract OCR).
+- Model weights resolve from the same HuggingFace origins already allowlisted for WebLLM — no
+  new CSP `connect-src` exception.
+- Settings → AI Assistance gains a LiteRT-LM/WebLLM picker, shown only when both engines' flags
+  are enabled (currently only LiteRT-LM is on, so the picker is hidden in the shipped state).
+
+---
+
 ## WebLLM Android — DISABLED after 2nd-device verification — June 21, 2026
 
 **Decision: the Android WebLLM surface is gated OFF** (`WEBLLM_ANDROID_ENABLED = false`

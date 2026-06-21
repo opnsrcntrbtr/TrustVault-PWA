@@ -17,8 +17,9 @@ export const HIBP_ORIGINS = [
 ] as const;
 
 /**
- * Origins WebLLM fetches model weights/config from (Android on-device AI).
- * Weight download ONLY — no user data leaves the device.
+ * Origins on-device AI fetches model weights/config from (Android: WebLLM and
+ * LiteRT-LM both use these — see capabilities.ts for the per-engine
+ * kill-switches). Weight download ONLY — no user data leaves the device.
  *
  * Confirmed via on-device Network-tab capture (2026-06-21, Llama-3.2-1B):
  *   - huggingface.co .............. mlc-chat-config.json, tokenizer, resolve URLs
@@ -29,6 +30,13 @@ export const HIBP_ORIGINS = [
  *       pinning region-specific hosts that would break downloads elsewhere.
  *       These replaced the legacy cdn-lfs*.huggingface.co LFS hosts (never hit).
  *   - raw.githubusercontent.com ... model_lib .wasm (mlc-ai/binary-mlc-llm-libs)
+ *
+ * LiteRT-LM's .litertlm weights resolve from the same huggingface.co/Xet hosts
+ * (litert-community / google orgs on HF) — no additional origin was needed.
+ * LiteRT-LM's own WASM *runtime* (as opposed to model weights) is NOT fetched
+ * from any of these — it is self-hosted same-origin under public/litert/ (see
+ * scripts/copy-litert-assets.js) specifically to avoid adding the package's
+ * default https://cdn.jsdelivr.net dependency to this allowlist.
  */
 export const WEBLLM_MODEL_ORIGINS = [
   'https://huggingface.co',

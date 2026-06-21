@@ -288,6 +288,19 @@ blocked core functionality. iOS remains unsupported (no WebGPU/WebLLM path is of
   is never fetched, bundled, or precached on desktop.
 - No remote AI, no Window AI / browser-extension provider in either backend.
 
+**LiteRT-LM (2026-06-21):** A third provider, `litert-lm`, was added behind its
+own kill-switch (`LITERT_ANDROID_ENABLED` in `capabilities.ts`) to A/B test
+whether Google's actively-supported LiteRT-LM runtime survives the Qualcomm
+Adreno `VK_ERROR_DEVICE_LOST` failure that disabled WebLLM's Android surface
+(see TEST_STATUS.md). It shares the same WebGPU/Dawn stack implicated in that
+failure, so survival on Adreno is unverified, not assumed. Same security
+boundary as WebLLM: fully local inference, weights download only from the
+already-allowlisted HuggingFace origins, no new `connect-src` exception. Its
+WASM *runtime* (distinct from model weights) is self-hosted under
+`public/litert/` rather than the package's default `cdn.jsdelivr.net` fetch —
+this project does not add CDN egress for runtime assets (same rule already
+applied to Tesseract OCR).
+
 ### Never-download policy (Chrome built-in) / opt-in one-time download (WebLLM)
 - **Chrome built-in:** the feature is usable only when `LanguageModel.availability() === 'available'`.
   The app **never** calls `create()` in a `downloadable`/`downloading` state, so TrustVault never
