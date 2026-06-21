@@ -1,16 +1,16 @@
 # Graph Report - trustvault-pwa  (2026-06-21)
 
 ## Corpus Check
-- 320 files · ~343,425 words
+- 327 files · ~290,872 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4036 nodes · 5989 edges · 347 communities (291 shown, 56 thin omitted)
+- 4035 nodes · 5989 edges · 346 communities (291 shown, 55 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cb932445`
+- Built from commit: `8daa44b1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -97,7 +97,6 @@
 - [[_COMMUNITY_Community 80|Community 80]]
 - [[_COMMUNITY_Community 81|Community 81]]
 - [[_COMMUNITY_Community 82|Community 82]]
-- [[_COMMUNITY_Community 83|Community 83]]
 - [[_COMMUNITY_Community 84|Community 84]]
 - [[_COMMUNITY_Community 85|Community 85]]
 - [[_COMMUNITY_Community 87|Community 87]]
@@ -421,7 +420,7 @@
 - **P4 background breach re-check flow** — breach_breachprefixstore_savebreachprefix, breach_rangecache_checkpasswordwithcache, breach_unlockbreachrefresh_rununlockbreachrefresh, public_sw_periodic_sync, storage_database_storedbreachprefix [INFERRED 0.85]
 - **Credential CRUD keeps HIBP prefix store in sync** — repositories_credentialrepositoryimpl_createwithid, repositories_credentialrepositoryimpl_update, repositories_credentialrepositoryimpl_delete, breach_breachprefixstore_savebreachprefix, breach_breachprefixstore_deletebreachprefix [INFERRED 0.85]
 
-## Communities (347 total, 56 thin omitted)
+## Communities (346 total, 55 thin omitted)
 
 ### Community 0 - "TOTP / 2FA Core"
 Cohesion: 0.04
@@ -1556,9 +1555,9 @@ Cohesion: 0.67
 Nodes (3): Input Validation ✅, Input Validation & Output Encoding, Output Encoding ✅
 
 ## Knowledge Gaps
-- **1912 isolated node(s):** `manifest_version`, `name`, `version`, `description`, `permissions` (+1907 more)
+- **1911 isolated node(s):** `manifest_version`, `name`, `version`, `description`, `permissions` (+1906 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **56 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **55 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -1570,7 +1569,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `fsync()` connect `Community 45` to `Community 92`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `manifest_version`, `name`, `version` to the rest of the system?**
-  _1923 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1922 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `TOTP / 2FA Core` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
 - **Should `Biometric Vault Key (PRF)` be split into smaller, more focused modules?**
