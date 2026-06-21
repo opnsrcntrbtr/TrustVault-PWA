@@ -37,10 +37,25 @@ export function isAndroid(): boolean {
 const WEBLLM_ANDROID_ENABLED: boolean = false;
 
 /**
- * Feature flag: the WebLLM download UI / provider fallback is surfaced only on
- * Android, and only while the kill-switch above is enabled. Capability detection
- * (hasWebGpu) stays platform-honest; this only gates the UI + provider selection.
+ * Kill-switch for the LiteRT-LM (Android) on-device AI surface.
+ *
+ * ENABLED 2026-06-21 to A/B test whether LiteRT-LM's WebGPU kernels survive
+ * the same Qualcomm Adreno devices that crash WebLLM with VK_ERROR_DEVICE_LOST
+ * (see TEST_STATUS.md). LiteRT-LM's web target shares the WebGPU/Dawn stack
+ * implicated in that failure, so survival is unverified, not assumed — this
+ * flag exists to find out on real hardware, independent of WebLLM's flag.
+ */
+const LITERT_ANDROID_ENABLED: boolean = true;
+
+export function isWebllmEnabled(): boolean { return WEBLLM_ANDROID_ENABLED; }
+export function isLitertEnabled(): boolean { return LITERT_ANDROID_ENABLED; }
+
+/**
+ * Feature flag: the on-device AI download UI / provider fallback is surfaced
+ * only on Android, and only while at least one mobile engine's kill-switch
+ * above is enabled. Capability detection (hasWebGpu) stays platform-honest;
+ * this only gates the UI + provider selection.
  */
 export function isMobileAiSurfaceEnabled(): boolean {
-  return WEBLLM_ANDROID_ENABLED && isAndroid();
+  return (WEBLLM_ANDROID_ENABLED || LITERT_ANDROID_ENABLED) && isAndroid();
 }

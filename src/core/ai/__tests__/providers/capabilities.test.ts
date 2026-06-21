@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { hasWebGpu, isAndroid, isMobileAiSurfaceEnabled } from '@/core/ai/providers/capabilities';
+import { hasWebGpu, isAndroid, isMobileAiSurfaceEnabled, isLitertEnabled, isWebllmEnabled } from '@/core/ai/providers/capabilities';
 
 const setNav = (patch: Record<string, unknown>) => {
   Object.entries(patch).forEach(([k, v]) => {
@@ -32,11 +32,16 @@ describe('capabilities', () => {
     expect(isAndroid()).toBe(false);
   });
 
-  it('isMobileAiSurfaceEnabled() is disabled (kill-switch off post-Task-11) even on Android', () => {
-    // WebLLM surface gated off after on-device verification found a systemic
-    // Adreno VK_ERROR_DEVICE_LOST at warm-up (see capabilities.ts). Even on an
-    // Android UA the surface must stay off until the kill-switch is flipped back.
+  it('isLitertEnabled() reflects the LiteRT-LM kill-switch (on by default for the A/B)', () => {
+    expect(isLitertEnabled()).toBe(true);
+  });
+
+  it('isWebllmEnabled() reflects the WebLLM kill-switch (off, unchanged post-Task-11)', () => {
+    expect(isWebllmEnabled()).toBe(false);
+  });
+
+  it('isMobileAiSurfaceEnabled() is true on Android because LiteRT is enabled, even though WebLLM stays off', () => {
     setNav({ userAgent: 'Mozilla/5.0 (Linux; Android 14)' });
-    expect(isMobileAiSurfaceEnabled()).toBe(false);
+    expect(isMobileAiSurfaceEnabled()).toBe(true);
   });
 });

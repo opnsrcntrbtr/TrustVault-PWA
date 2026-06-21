@@ -5,7 +5,7 @@
  */
 import type { AiAvailability } from '@/core/ai/aiTypes';
 
-export type AiProviderId = 'chrome-builtin' | 'webllm';
+export type AiProviderId = 'chrome-builtin' | 'webllm' | 'litert-lm';
 
 export interface AiDownloadProgress {
   /** Normalized 0..1 download/initialization progress. */
