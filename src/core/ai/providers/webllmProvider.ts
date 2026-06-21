@@ -4,10 +4,11 @@
  * Weights download once from the MLC/HF CDN (gated by Settings opt-in).
  */
 import type { AiAvailability } from '@/core/ai/aiTypes';
-import type { AiProvider, AiDownloadProgress } from '@/core/ai/providers/types';
+import type { AiProvider, AiDownloadProgress, ChatSession } from '@/core/ai/providers/types';
 import { hasWebGpu } from '@/core/ai/providers/capabilities';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { isDeviceLostError, DEVICE_UNAVAILABLE_MESSAGE } from '@/core/ai/providers/gpuErrors';
+import { trimChatMessages, MAX_CHAT_TURNS } from '@/core/ai/chat/chatTrim';
 
 interface MlcEngine {
   chat: { completions: { create(opts: {
@@ -105,6 +106,43 @@ async function* runStreaming(args: {
   }
 }
 
+type ChatRoleMsg = { role: 'system' | 'user' | 'assistant'; content: string };
+
+async function createChatSession(systemPrompt: string): Promise<ChatSession> {
+  const messages: ChatRoleMsg[] = [{ role: 'system', content: systemPrompt }];
+  let destroyed = false;
+  return {
+    async *send(userText: string, signal?: AbortSignal): AsyncIterableIterator<string> {
+      if (destroyed) throw new Error('Chat session destroyed');
+      await ensureReady();
+      if (!engine) throw new Error('WebLLM engine not ready');
+      messages.push({ role: 'user', content: userText });
+      trimChatMessages(messages, MAX_CHAT_TURNS);
+      const onAbort = () => { engine?.interruptGenerate(); };
+      signal?.addEventListener('abort', onAbort, { once: true });
+      let assistant = '';
+      try {
+        const stream = await engine.chat.completions.create({ stream: true, messages: [...messages] });
+        for await (const chunk of stream) {
+          const piece = chunk.choices[0]?.delta.content;
+          if (piece) { assistant += piece; yield piece; }
+        }
+        messages.push({ role: 'assistant', content: assistant });
+      } catch (err: unknown) {
+        if (isDeviceLostError(err)) { resetEngineState(); throw new Error(DEVICE_UNAVAILABLE_MESSAGE); }
+        throw err;
+      } finally {
+        signal?.removeEventListener('abort', onAbort);
+      }
+    },
+    destroy(): void {
+      if (destroyed) return;
+      destroyed = true;
+      messages.length = 0;
+    },
+  };
+}
+
 export const webllmProvider: AiProvider = {
   id: 'webllm',
   async getAvailability(): Promise<AiAvailability> {
@@ -114,4 +152,5 @@ export const webllmProvider: AiProvider = {
   ensureReady,
   warmUp(): Promise<void> { return ensureReady(); },
   runStreaming,
+  createChatSession,
 };

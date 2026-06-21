@@ -102,4 +102,38 @@ describe('webllmProvider', () => {
     for await (const c of webllmProvider.runStreaming({ systemPrompt: 's', userPrompt: 'u', signal: controller.signal })) drained.push(c);
     expect(engine.interruptGenerate).toHaveBeenCalled();
   });
+
+  it('createChatSession accumulates a multi-turn transcript and trims to budget', async () => {
+    engine.chat.completions.create
+      .mockResolvedValueOnce(deltaStream(['A1']))
+      .mockResolvedValueOnce(deltaStream(['A2']));
+
+    const chat = await webllmProvider.createChatSession('sys');
+
+    let out1 = '';
+    for await (const c of chat.send('q1')) out1 += c;
+    expect(out1).toBe('A1');
+
+    let out2 = '';
+    for await (const c of chat.send('q2')) out2 += c;
+    expect(out2).toBe('A2');
+
+    const secondCallArgs = engine.chat.completions.create.mock.calls[1]?.[0] as {
+      messages: Array<{ role: string; content: string }>;
+    };
+    expect(secondCallArgs.messages.map((m) => m.role)).toEqual(['system', 'user', 'assistant', 'user']);
+    expect(secondCallArgs.messages.at(-1)?.content).toBe('q2');
+
+    chat.destroy();
+    chat.destroy(); // idempotent — must not throw
+  });
+
+  it('createChatSession.send rejects after destroy()', async () => {
+    engine.chat.completions.create.mockResolvedValueOnce(deltaStream(['A1']));
+    const chat = await webllmProvider.createChatSession('sys');
+    chat.destroy();
+    await expect((async () => {
+      for await (const _c of chat.send('q')) { /* drain */ }
+    })()).rejects.toThrow('destroyed');
+  });
 });
