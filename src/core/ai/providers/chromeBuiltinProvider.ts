@@ -4,7 +4,7 @@
  * Desktop-only; never downloads a model (ensureReady is a no-op).
  */
 import type { AiAvailability } from '@/core/ai/aiTypes';
-import type { AiProvider } from '@/core/ai/providers/types';
+import type { AiProvider, ChatSession } from '@/core/ai/providers/types';
 
 interface AiSession {
   promptStreaming(input: string, opts?: { signal?: AbortSignal }): AsyncIterable<string>;
@@ -66,6 +66,23 @@ async function* runStreaming(args: {
   }
 }
 
+async function createChatSession(systemPrompt: string): Promise<ChatSession> {
+  const session = await getClonedSession(systemPrompt); // persistent for the whole conversation
+  let destroyed = false;
+  return {
+    async *send(userText: string, signal?: AbortSignal): AsyncIterableIterator<string> {
+      if (destroyed) throw new Error('Chat session destroyed');
+      const opts = signal ? { signal } : undefined;
+      for await (const chunk of session.promptStreaming(userText, opts)) yield chunk;
+    },
+    destroy(): void {
+      if (destroyed) return;
+      destroyed = true;
+      session.destroy();
+    },
+  };
+}
+
 export const chromeBuiltinProvider: AiProvider = {
   id: 'chrome-builtin',
   async getAvailability(): Promise<AiAvailability> {
@@ -76,4 +93,5 @@ export const chromeBuiltinProvider: AiProvider = {
   ensureReady(): Promise<void> { return Promise.resolve(); },
   warmUp,
   runStreaming,
+  createChatSession,
 };

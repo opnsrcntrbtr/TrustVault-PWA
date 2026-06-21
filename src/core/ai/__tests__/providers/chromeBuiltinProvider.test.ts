@@ -71,4 +71,33 @@ describe('chromeBuiltinProvider', () => {
     await expect(chromeBuiltinProvider.ensureReady()).resolves.toBeUndefined();
     expect(create).not.toHaveBeenCalled();
   });
+
+  it('createChatSession reuses ONE cloned session across turns and destroys on destroy()', async () => {
+    const destroy = vi.fn();
+    const promptStreaming = vi.fn()
+      .mockReturnValueOnce(streamOf(['A1']))
+      .mockReturnValueOnce(streamOf(['A2']));
+    const clone = vi.fn().mockResolvedValue({ promptStreaming, destroy });
+    const create = vi.fn().mockResolvedValue({ clone, destroy });
+    setLanguageModel({ create, availability: vi.fn().mockResolvedValue('available') });
+
+    const chat = await chromeBuiltinProvider.createChatSession('sys');
+    expect(await collect(chat.send('q1'))).toBe('A1');
+    expect(await collect(chat.send('q2'))).toBe('A2');
+
+    expect(clone).toHaveBeenCalledOnce();        // session reused, not re-cloned
+    expect(promptStreaming).toHaveBeenCalledTimes(2);
+    chat.destroy();
+    chat.destroy();                               // idempotent
+    expect(destroy).toHaveBeenCalledOnce();
+  });
+
+  it('createChatSession.send rejects after destroy()', async () => {
+    const clone = vi.fn().mockResolvedValue({ promptStreaming: vi.fn(), destroy: vi.fn() });
+    const create = vi.fn().mockResolvedValue({ clone, destroy: vi.fn() });
+    setLanguageModel({ create, availability: vi.fn().mockResolvedValue('available') });
+    const chat = await chromeBuiltinProvider.createChatSession('sys');
+    chat.destroy();
+    await expect(collect(chat.send('q'))).rejects.toThrow('destroyed');
+  });
 });
