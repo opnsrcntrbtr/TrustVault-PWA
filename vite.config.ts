@@ -107,7 +107,7 @@ export default defineConfig({
         // OCR assets (~16MB total) are runtime-cached on first use, not precached.
         // WebLLM (~6MB, Android-only, lazy-loaded) exceeds the 2MB precache
         // limit and is never needed on desktop — also excluded.
-        globIgnores: ['**/ocr/**', '**/webllm-vendor-*.js'],
+        globIgnores: ['**/ocr/**', '**/webllm-vendor-*.js', '**/litert/**', '**/litert-vendor-*.js'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -131,6 +131,23 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'tesseract-assets-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          // Self-hosted LiteRT-LM WASM runtime (~37MB) — served from
+          // public/litert/ (no CDN egress, see copy-litert-assets.js).
+          // Runtime-cached on first on-device-AI use instead of precached.
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/litert/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'litert-assets-cache',
               expiration: {
                 maxEntries: 10,
                 maxAgeSeconds: 60 * 60 * 24 * 90 // 90 days
@@ -166,7 +183,7 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    exclude: ['@mlc-ai/web-llm'],
+    exclude: ['@mlc-ai/web-llm', '@litert-lm/core'],
   },
 
   build: {
@@ -194,6 +211,9 @@ export default defineConfig({
           // ~6MB, well over Workbox's default 2MB precache limit, and is never
           // needed on desktop.
           if (/[\\/]node_modules[\\/]@mlc-ai[\\/]web-llm[\\/]/.test(id)) return 'webllm-vendor';
+          // Same rationale as webllm-vendor above: lazy-loaded only on
+          // Android/WebGPU (LiteRT-LM A/B), excluded from SW precache below.
+          if (/[\\/]node_modules[\\/]@litert-lm[\\/]core[\\/]/.test(id)) return 'litert-vendor';
           return undefined;
         }
       }

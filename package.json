@@ -31,14 +31,16 @@
     "lighthouse": "lighthouse http://localhost:4173 --view",
     "analyze:bundle": "vite build && du -sh dist/assets/js/*.js | sort -h",
     "ocr:assets": "node scripts/copy-ocr-assets.js",
-    "predev": "node scripts/copy-ocr-assets.js",
-    "prebuild": "node scripts/copy-ocr-assets.js",
-    "prebuild:deploy": "node scripts/copy-ocr-assets.js",
-    "prepreview": "node scripts/copy-ocr-assets.js"
+    "litert:assets": "node scripts/copy-litert-assets.js",
+    "predev": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js",
+    "prebuild": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js",
+    "prebuild:deploy": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js",
+    "prepreview": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@litert-lm/core": "^0.13.1",
     "@mlc-ai/web-llm": "^0.2.84",
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
