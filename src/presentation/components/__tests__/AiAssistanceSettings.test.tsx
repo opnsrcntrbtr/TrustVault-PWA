@@ -3,24 +3,34 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import { getAiAvailability } from '@/core/ai/aiAvailability';
 import { getActiveProvider } from '@/core/ai/providers/registry';
-import { isMobileAiSurfaceEnabled } from '@/core/ai/providers/capabilities';
+import { isMobileAiSurfaceEnabled, isLitertEnabled, isWebllmEnabled } from '@/core/ai/providers/capabilities';
 
-const { DEFAULTS, saveAiSettings, ensureReadySpy, removeWebllmModelSpy } = vi.hoisted(() => ({
+const { DEFAULTS, saveAiSettings, webllmEnsureReadySpy, removeWebllmModelSpy, litertEnsureReadySpy, removeLitertModelSpy } = vi.hoisted(() => ({
   DEFAULTS: {
     enableOnDeviceAI: true,
     allowStrengthExplanation: true,
     allowBreachImpactAnalysis: true,
     webLlmModelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
     mobileAiModelReady: false,
+    mobileInferenceEngine: 'litert-lm' as 'litert-lm' | 'webllm',
+    litertModelId: 'gemma-3n-E2B-it',
+    litertModelReady: false,
   },
   saveAiSettings: vi.fn(),
-  ensureReadySpy: vi.fn().mockImplementation(
+  webllmEnsureReadySpy: vi.fn().mockImplementation(
     (onProgress?: (p: { progress: number; text?: string }) => void) => {
       onProgress?.({ progress: 1, text: 'done' });
       return Promise.resolve();
     },
   ),
   removeWebllmModelSpy: vi.fn().mockResolvedValue(undefined),
+  litertEnsureReadySpy: vi.fn().mockImplementation(
+    (onProgress?: (p: { progress: number; text?: string }) => void) => {
+      onProgress?.({ progress: 1, text: 'done' });
+      return Promise.resolve();
+    },
+  ),
+  removeLitertModelSpy: vi.fn().mockResolvedValue(undefined),
 }));
 
 let current = { ...DEFAULTS };
@@ -36,29 +46,33 @@ vi.mock('@/core/ai/providers/registry', () => ({
   getActiveProvider: vi.fn().mockResolvedValue(null),
 }));
 vi.mock('@/core/ai/providers/webllmProvider', () => ({
-  webllmProvider: { id: 'webllm', getAvailability: vi.fn(), ensureReady: ensureReadySpy, warmUp: vi.fn(), runStreaming: vi.fn() },
+  webllmProvider: { id: 'webllm', getAvailability: vi.fn(), ensureReady: webllmEnsureReadySpy, warmUp: vi.fn(), runStreaming: vi.fn() },
   removeWebllmModel: removeWebllmModelSpy,
+}));
+vi.mock('@/core/ai/providers/litertProvider', () => ({
+  litertProvider: { id: 'litert-lm', getAvailability: vi.fn(), ensureReady: litertEnsureReadySpy, warmUp: vi.fn(), runStreaming: vi.fn() },
+  removeLitertModel: removeLitertModelSpy,
 }));
 vi.mock('@/core/ai/providers/capabilities', () => ({
   isMobileAiSurfaceEnabled: vi.fn().mockReturnValue(false),
+  isLitertEnabled: vi.fn().mockReturnValue(true),
+  isWebllmEnabled: vi.fn().mockReturnValue(false),
 }));
 
 import AiAssistanceSettings from '@/presentation/components/AiAssistanceSettings';
 
 describe('AiAssistanceSettings', () => {
   beforeEach(() => {
-    current = {
-      enableOnDeviceAI: true,
-      allowStrengthExplanation: true,
-      allowBreachImpactAnalysis: true,
-      webLlmModelId: 'Llama-3.2-1B-Instruct-q4f16_1-MLC',
-      mobileAiModelReady: false,
-    };
+    current = { ...DEFAULTS };
     saveAiSettings.mockReset();
-    ensureReadySpy.mockClear();
+    webllmEnsureReadySpy.mockClear();
     removeWebllmModelSpy.mockClear();
+    litertEnsureReadySpy.mockClear();
+    removeLitertModelSpy.mockClear();
     vi.mocked(getAiAvailability).mockResolvedValue('available');
     vi.mocked(getActiveProvider).mockResolvedValue(null);
+    vi.mocked(isLitertEnabled).mockReturnValue(true);
+    vi.mocked(isWebllmEnabled).mockReturnValue(false);
   });
   afterEach(() => vi.restoreAllMocks());
 
@@ -90,58 +104,84 @@ describe('AiAssistanceSettings', () => {
     expect(screen.getByLabelText(/Allow AI to explain breach impact/i)).toBeDisabled();
   });
 
-  it('shows the model download block and triggers ensureReady on Android/webllm', async () => {
+  it('shows the model download block and triggers litertProvider.ensureReady by default (litert-lm engine)', async () => {
     vi.mocked(getAiAvailability).mockResolvedValue('downloadable');
-    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'webllm' } as never);
+    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'litert-lm' } as never);
     vi.mocked(isMobileAiSurfaceEnabled).mockReturnValue(true);
 
     render(<AiAssistanceSettings />);
     const btn = await screen.findByRole('button', { name: /download model/i });
     fireEvent.click(btn);
-    await waitFor(() => { expect(ensureReadySpy).toHaveBeenCalled(); });
+    await waitFor(() => { expect(litertEnsureReadySpy).toHaveBeenCalled(); });
     await waitFor(() => {
       expect(saveAiSettings).toHaveBeenCalledWith(
-        expect.objectContaining({ mobileAiModelReady: true }),
+        expect.objectContaining({ litertModelReady: true }),
       );
     });
   });
 
-  it('persists model selection when the picker changes', async () => {
+  it('persists LiteRT model selection when the picker changes', async () => {
     vi.mocked(getAiAvailability).mockResolvedValue('downloadable');
-    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'webllm' } as never);
+    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'litert-lm' } as never);
     vi.mocked(isMobileAiSurfaceEnabled).mockReturnValue(true);
 
     render(<AiAssistanceSettings />);
     const select = await screen.findByLabelText(/on-device model/i);
-    fireEvent.change(select, { target: { value: 'gemma-2-2b-it-q4f16_1-MLC' } });
+    fireEvent.change(select, { target: { value: 'gemma-3n-E4B-it' } });
     await waitFor(() => {
       expect(saveAiSettings).toHaveBeenCalledWith(
-        expect.objectContaining({ webLlmModelId: 'gemma-2-2b-it-q4f16_1-MLC' }),
+        expect.objectContaining({ litertModelId: 'gemma-3n-E4B-it' }),
       );
     });
   });
 
-  it('shows the remove-model button and calls removeWebllmModel when the model is ready', async () => {
-    current = { ...current, mobileAiModelReady: true };
+  it('shows the remove-model button and calls removeLitertModel when the LiteRT model is ready', async () => {
+    current = { ...current, litertModelReady: true };
     vi.mocked(getAiAvailability).mockResolvedValue('available');
-    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'webllm' } as never);
+    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'litert-lm' } as never);
     vi.mocked(isMobileAiSurfaceEnabled).mockReturnValue(true);
 
     render(<AiAssistanceSettings />);
     const btn = await screen.findByRole('button', { name: /remove model/i });
     fireEvent.click(btn);
-    await waitFor(() => { expect(removeWebllmModelSpy).toHaveBeenCalled(); });
+    await waitFor(() => { expect(removeLitertModelSpy).toHaveBeenCalled(); });
     await waitFor(() => {
       expect(saveAiSettings).toHaveBeenCalledWith(
-        expect.objectContaining({ mobileAiModelReady: false }),
+        expect.objectContaining({ litertModelReady: false }),
       );
     });
   });
 
-  it('hides the model download block when not on Android/webllm', async () => {
+  it('hides the model download block when not on Android/a mobile engine', async () => {
     vi.mocked(isMobileAiSurfaceEnabled).mockReturnValue(false);
     render(<AiAssistanceSettings />);
     await screen.findByText(/AI Assistance/i);
     expect(screen.queryByRole('button', { name: /download model/i })).not.toBeInTheDocument();
+  });
+
+  it('hides the engine picker when only one mobile engine is enabled (shipped state)', async () => {
+    vi.mocked(getAiAvailability).mockResolvedValue('downloadable');
+    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'litert-lm' } as never);
+    vi.mocked(isMobileAiSurfaceEnabled).mockReturnValue(true);
+
+    render(<AiAssistanceSettings />);
+    await screen.findByRole('button', { name: /download model/i });
+    expect(screen.queryByLabelText(/inference engine/i)).not.toBeInTheDocument();
+  });
+
+  it('shows the engine picker and switches to webllm controls when both engines are enabled', async () => {
+    vi.mocked(isWebllmEnabled).mockReturnValue(true);
+    vi.mocked(getAiAvailability).mockResolvedValue('downloadable');
+    vi.mocked(getActiveProvider).mockResolvedValue({ id: 'litert-lm' } as never);
+    vi.mocked(isMobileAiSurfaceEnabled).mockReturnValue(true);
+
+    render(<AiAssistanceSettings />);
+    const picker = await screen.findByLabelText(/inference engine/i);
+    fireEvent.change(picker, { target: { value: 'webllm' } });
+    await waitFor(() => {
+      expect(saveAiSettings).toHaveBeenCalledWith(
+        expect.objectContaining({ mobileInferenceEngine: 'webllm' }),
+      );
+    });
   });
 });

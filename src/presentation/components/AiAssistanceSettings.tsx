@@ -1,7 +1,8 @@
 /**
  * AI Assistance (Experimental) settings section.
- * Chrome built-in on-device AI only — desktop Chrome only, not supported on Android/iOS.
- * Master toggle is disabled (and stays off) when availability === 'unavailable'.
+ * Chrome built-in on-device AI (desktop) plus an Android on-device A/B
+ * between LiteRT-LM and WebLLM. Master toggle is disabled (and stays off)
+ * when availability === 'unavailable'.
  */
 import { useEffect, useRef, useState } from 'react';
 import { Box, Typography, FormControlLabel, Switch, Paper, TextField, Button, LinearProgress } from '@mui/material';
@@ -10,8 +11,10 @@ import { getAiAvailability } from '@/core/ai/aiAvailability';
 import type { AiAvailability } from '@/core/ai/aiTypes';
 import { getActiveProvider } from '@/core/ai/providers/registry';
 import { webllmProvider, removeWebllmModel } from '@/core/ai/providers/webllmProvider';
-import { isMobileAiSurfaceEnabled } from '@/core/ai/providers/capabilities';
+import { litertProvider, removeLitertModel } from '@/core/ai/providers/litertProvider';
+import { isMobileAiSurfaceEnabled, isLitertEnabled, isWebllmEnabled } from '@/core/ai/providers/capabilities';
 import { WEBLLM_MODELS, getModelById } from '@/core/ai/webllmModels';
+import { LITERT_MODELS, getLitertModelById } from '@/core/ai/litertModels';
 
 const AVAILABILITY_TEXT: Record<AiAvailability, string> = {
   available: 'On-device AI: available',
@@ -48,21 +51,29 @@ export default function AiAssistanceSettings() {
   const handleDownload = () => {
     setDownloading(true);
     setDownloadProgress(0);
-    webllmProvider
-      .ensureReady((p) => { if (mountedRef.current) setDownloadProgress(p.progress); })
-      .then(() => { update({ mobileAiModelReady: true }); })
-      .catch(() => { /* leave mobileAiModelReady false; user can retry */ })
+    const onProgress = (p: { progress: number }) => { if (mountedRef.current) setDownloadProgress(p.progress); };
+    const ready = settings.mobileInferenceEngine === 'litert-lm'
+      ? litertProvider.ensureReady(onProgress).then(() => { update({ litertModelReady: true }); })
+      : webllmProvider.ensureReady(onProgress).then(() => { update({ mobileAiModelReady: true }); });
+    ready
+      .catch(() => { /* leave the ready flag false; user can retry */ })
       .finally(() => { if (mountedRef.current) setDownloading(false); });
   };
 
   const handleRemove = () => {
-    removeWebllmModel()
-      .then(() => { update({ mobileAiModelReady: false }); })
-      .catch(() => { /* best-effort */ });
+    const removed = settings.mobileInferenceEngine === 'litert-lm'
+      ? removeLitertModel().then(() => { update({ litertModelReady: false }); })
+      : removeWebllmModel().then(() => { update({ mobileAiModelReady: false }); });
+    removed.catch(() => { /* best-effort */ });
   };
 
-  const showWebllmBlock = isMobileAiSurfaceEnabled() && activeProviderId === 'webllm';
-  const selectedModel = getModelById(settings.webLlmModelId);
+  const bothEnginesEnabled = isLitertEnabled() && isWebllmEnabled();
+  const showMobileBlock = isMobileAiSurfaceEnabled() && (activeProviderId === 'webllm' || activeProviderId === 'litert-lm');
+  const isLitertEngine = settings.mobileInferenceEngine === 'litert-lm';
+  const selectedWebllmModel = getModelById(settings.webLlmModelId);
+  const selectedLitertModel = getLitertModelById(settings.litertModelId);
+  const modelReady = isLitertEngine ? settings.litertModelReady : settings.mobileAiModelReady;
+  const approxMB = isLitertEngine ? selectedLitertModel?.approxMB : selectedWebllmModel?.approxMB;
 
   return (
     <Paper elevation={1} sx={{ p: 2, mb: 2 }}>
@@ -121,26 +132,57 @@ export default function AiAssistanceSettings() {
         </Typography>
       </Box>
 
-      {showWebllmBlock && (
+      {showMobileBlock && (
         <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
           <Typography variant="subtitle2" gutterBottom>On-device AI model (Android)</Typography>
           <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
             Downloads once from a third-party AI CDN. After that, all analysis runs locally on your device — your data never leaves it.
           </Typography>
 
-          <TextField
-            select
-            slotProps={{ select: { native: true } }}
-            label="On-device model"
-            value={settings.webLlmModelId}
-            onChange={(e) => { update({ webLlmModelId: e.target.value }); }}
-            size="small"
-            sx={{ mb: 1, minWidth: 240, display: 'block' }}
-          >
-            {WEBLLM_MODELS.map((m) => (
-              <option key={m.id} value={m.id}>{m.label}</option>
-            ))}
-          </TextField>
+          {bothEnginesEnabled && (
+            <TextField
+              select
+              slotProps={{ select: { native: true } }}
+              label="Inference engine"
+              value={settings.mobileInferenceEngine}
+              onChange={(e) => { update({ mobileInferenceEngine: e.target.value as AiSettings['mobileInferenceEngine'] }); }}
+              size="small"
+              sx={{ mb: 1, minWidth: 240, display: 'block' }}
+            >
+              <option value="litert-lm">LiteRT-LM (recommended)</option>
+              <option value="webllm">WebLLM</option>
+            </TextField>
+          )}
+
+          {isLitertEngine ? (
+            <TextField
+              select
+              slotProps={{ select: { native: true } }}
+              label="On-device model"
+              value={settings.litertModelId}
+              onChange={(e) => { update({ litertModelId: e.target.value }); }}
+              size="small"
+              sx={{ mb: 1, minWidth: 240, display: 'block' }}
+            >
+              {LITERT_MODELS.map((m) => (
+                <option key={m.id} value={m.id}>{m.label}</option>
+              ))}
+            </TextField>
+          ) : (
+            <TextField
+              select
+              slotProps={{ select: { native: true } }}
+              label="On-device model"
+              value={settings.webLlmModelId}
+              onChange={(e) => { update({ webLlmModelId: e.target.value }); }}
+              size="small"
+              sx={{ mb: 1, minWidth: 240, display: 'block' }}
+            >
+              {WEBLLM_MODELS.map((m) => (
+                <option key={m.id} value={m.id}>{m.label}</option>
+              ))}
+            </TextField>
+          )}
 
           {downloading && (
             <LinearProgress
@@ -150,12 +192,12 @@ export default function AiAssistanceSettings() {
             />
           )}
 
-          {!settings.mobileAiModelReady && (
+          {!modelReady && (
             <Button variant="outlined" size="small" disabled={downloading} onClick={handleDownload}>
-              Download model (~{selectedModel?.approxMB ?? 0} MB)
+              Download model (~{approxMB ?? 0} MB)
             </Button>
           )}
-          {settings.mobileAiModelReady && (
+          {modelReady && (
             <Button variant="outlined" size="small" color="error" onClick={handleRemove}>
               Remove model
             </Button>
