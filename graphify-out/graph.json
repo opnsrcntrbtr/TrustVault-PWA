@@ -542,6 +542,476 @@
   },
   "nodes": [
     {
+      "label": "claude-mem-context.md",
+      "file_type": "document",
+      "source_file": ".agents/rules/claude-mem-context.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "rules_claude_mem_context",
+      "community": 149,
+      "norm_label": "claude-mem-context.md"
+    },
+    {
+      "label": "claude-mem: Cross-Session Memory",
+      "file_type": "document",
+      "source_file": ".agents/rules/claude-mem-context.md",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "rules_claude_mem_context_claude_mem_cross_session_memory",
+      "community": 149,
+      "norm_label": "claude-mem: cross-session memory"
+    },
+    {
+      "label": "copilot-instructions.md",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "github_copilot_instructions",
+      "community": 29,
+      "norm_label": "copilot-instructions.md"
+    },
+    {
+      "label": "TrustVault PWA - AI Agent Instructions",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "community": 29,
+      "norm_label": "trustvault pwa - ai agent instructions"
+    },
+    {
+      "label": "Current Objectives (Nov 2025)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_current_objectives_nov_2025",
+      "community": 29,
+      "norm_label": "current objectives (nov 2025)"
+    },
+    {
+      "label": "Architecture Overview",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_architecture_overview",
+      "community": 29,
+      "norm_label": "architecture overview"
+    },
+    {
+      "label": "Path Aliases",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_path_aliases",
+      "community": 29,
+      "norm_label": "path aliases"
+    },
+    {
+      "label": "Security & Cryptography",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_security_cryptography",
+      "community": 29,
+      "norm_label": "security & cryptography"
+    },
+    {
+      "label": "\ud83d\udd10 Password Hashing (Login Flow)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_password_hashing_login_flow",
+      "community": 29,
+      "norm_label": "\ud83d\udd10 password hashing (login flow)"
+    },
+    {
+      "label": "\ud83d\udd11 Key Derivation (Vault Encryption)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_key_derivation_vault_encryption",
+      "community": 29,
+      "norm_label": "\ud83d\udd11 key derivation (vault encryption)"
+    },
+    {
+      "label": "\ud83d\udd12 Data Encryption",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_data_encryption",
+      "community": 29,
+      "norm_label": "\ud83d\udd12 data encryption"
+    },
+    {
+      "label": "Critical Module Loading Pattern",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L81",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_critical_module_loading_pattern",
+      "community": 29,
+      "norm_label": "critical module loading pattern"
+    },
+    {
+      "label": "\u26a0\ufe0f WASM/UMD Modules",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L83",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_wasm_umd_modules",
+      "community": 29,
+      "norm_label": "\u26a0\ufe0f wasm/umd modules"
+    },
+    {
+      "label": "State Management (Zustand)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L114",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_state_management_zustand",
+      "community": 29,
+      "norm_label": "state management (zustand)"
+    },
+    {
+      "label": "Auth Store Pattern",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_auth_store_pattern",
+      "community": 29,
+      "norm_label": "auth store pattern"
+    },
+    {
+      "label": "React 19 & StrictMode Patterns",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L146",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_react_19_strictmode_patterns",
+      "community": 29,
+      "norm_label": "react 19 & strictmode patterns"
+    },
+    {
+      "label": "Effect Cleanup (Double Render in Dev)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L148",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_effect_cleanup_double_render_in_dev",
+      "community": 29,
+      "norm_label": "effect cleanup (double render in dev)"
+    },
+    {
+      "label": "Database (IndexedDB via Dexie)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L181",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_database_indexeddb_via_dexie",
+      "community": 29,
+      "norm_label": "database (indexeddb via dexie)"
+    },
+    {
+      "label": "Schema",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L183",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_schema",
+      "community": 29,
+      "norm_label": "schema"
+    },
+    {
+      "label": "Offline-First Pattern",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L194",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_offline_first_pattern",
+      "community": 29,
+      "norm_label": "offline-first pattern"
+    },
+    {
+      "label": "Encrypted Fields",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L208",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_encrypted_fields",
+      "community": 29,
+      "norm_label": "encrypted fields"
+    },
+    {
+      "label": "TypeScript Strict Mode",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L220",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_typescript_strict_mode",
+      "community": 29,
+      "norm_label": "typescript strict mode"
+    },
+    {
+      "label": "Critical Flags Enforced",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L222",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_critical_flags_enforced",
+      "community": 29,
+      "norm_label": "critical flags enforced"
+    },
+    {
+      "label": "Common Fixes",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L232",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_common_fixes",
+      "community": 29,
+      "norm_label": "common fixes"
+    },
+    {
+      "label": "PWA & Service Worker",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L254",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_pwa_service_worker",
+      "community": 29,
+      "norm_label": "pwa & service worker"
+    },
+    {
+      "label": "Configuration (vite.config.ts)",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L256",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_configuration_vite_config_ts",
+      "community": 29,
+      "norm_label": "configuration (vite.config.ts)"
+    },
+    {
+      "label": "Security Headers",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L269",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_security_headers",
+      "community": 29,
+      "norm_label": "security headers"
+    },
+    {
+      "label": "PWA Icons Requirement",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L281",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_pwa_icons_requirement",
+      "community": 29,
+      "norm_label": "pwa icons requirement"
+    },
+    {
+      "label": "Development Workflow",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L289",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_development_workflow",
+      "community": 29,
+      "norm_label": "development workflow"
+    },
+    {
+      "label": "Commands",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L291",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_commands",
+      "community": 29,
+      "norm_label": "commands"
+    },
+    {
+      "label": "Pre-Commit Checklist",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L302",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_pre_commit_checklist",
+      "community": 29,
+      "norm_label": "pre-commit checklist"
+    },
+    {
+      "label": "Build Optimization",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L309",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_build_optimization",
+      "community": 29,
+      "norm_label": "build optimization"
+    },
+    {
+      "label": "Common Patterns",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L322",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_common_patterns",
+      "community": 29,
+      "norm_label": "common patterns"
+    },
+    {
+      "label": "Auto-Lock Implementation",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L324",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_auto_lock_implementation",
+      "community": 29,
+      "norm_label": "auto-lock implementation"
+    },
+    {
+      "label": "Clipboard with Auto-Clear",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L346",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_clipboard_with_auto_clear",
+      "community": 29,
+      "norm_label": "clipboard with auto-clear"
+    },
+    {
+      "label": "Testing Patterns",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L363",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_testing_patterns",
+      "community": 29,
+      "norm_label": "testing patterns"
+    },
+    {
+      "label": "Crypto Function Tests",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L365",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_crypto_function_tests",
+      "community": 29,
+      "norm_label": "crypto function tests"
+    },
+    {
+      "label": "Security Guidelines",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L383",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_security_guidelines",
+      "community": 29,
+      "norm_label": "security guidelines"
+    },
+    {
+      "label": "Never Do This",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L385",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_never_do_this",
+      "community": 29,
+      "norm_label": "never do this"
+    },
+    {
+      "label": "Always Do This",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L392",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_always_do_this",
+      "community": 29,
+      "norm_label": "always do this"
+    },
+    {
+      "label": "Troubleshooting",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L401",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_troubleshooting",
+      "community": 29,
+      "norm_label": "troubleshooting"
+    },
+    {
+      "label": "\"Loading spinner stuck\"",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L403",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_loading_spinner_stuck",
+      "community": 29,
+      "norm_label": "\"loading spinner stuck\""
+    },
+    {
+      "label": "\"Invalid hash format\" on login",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L407",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_invalid_hash_format_on_login",
+      "community": 29,
+      "norm_label": "\"invalid hash format\" on login"
+    },
+    {
+      "label": "TypeScript errors on build",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L411",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_typescript_errors_on_build",
+      "community": 29,
+      "norm_label": "typescript errors on build"
+    },
+    {
+      "label": "Key Files Reference",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L417",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_key_files_reference",
+      "community": 29,
+      "norm_label": "key files reference"
+    },
+    {
+      "label": "External Documentation",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L432",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_external_documentation",
+      "community": 29,
+      "norm_label": "external documentation"
+    },
+    {
+      "label": "claude-mem: Cross-Session Memory",
+      "file_type": "document",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L445",
+      "_origin": "ast",
+      "id": "github_copilot_instructions_claude_mem_cross_session_memory",
+      "community": 29,
+      "norm_label": "claude-mem: cross-session memory"
+    },
+    {
       "label": "manifest.json",
       "file_type": "code",
       "source_file": "chrome-extension/manifest.json",
@@ -2735,7 +3205,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L1341",
       "_origin": "ast",
-      "community": 45,
+      "community": 316,
       "norm_label": "fsync()",
       "id": "litert_litertlm_wasm_compat_internal_fsync"
     },
@@ -2985,7 +3455,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L1749",
       "_origin": "ast",
-      "community": 318,
+      "community": 192,
       "norm_label": "msync()",
       "id": "litert_litertlm_wasm_compat_internal_msync"
     },
@@ -3745,7 +4215,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L3153",
       "_origin": "ast",
-      "community": 92,
+      "community": 192,
       "norm_label": "findobject()",
       "id": "litert_litertlm_wasm_compat_internal_findobject"
     },
@@ -3755,7 +4225,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L3160",
       "_origin": "ast",
-      "community": 92,
+      "community": 192,
       "norm_label": "analyzepath()",
       "id": "litert_litertlm_wasm_compat_internal_analyzepath"
     },
@@ -3855,7 +4325,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L3550",
       "_origin": "ast",
-      "community": 318,
+      "community": 192,
       "norm_label": "domsync()",
       "id": "litert_litertlm_wasm_compat_internal_domsync"
     },
@@ -3895,7 +4365,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L3582",
       "_origin": "ast",
-      "community": 315,
+      "community": 192,
       "norm_label": "___syscall_faccessat()",
       "id": "litert_litertlm_wasm_compat_internal_syscall_faccessat"
     },
@@ -3975,7 +4445,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L3913",
       "_origin": "ast",
-      "community": 315,
+      "community": 323,
       "norm_label": "___syscall_mkdirat()",
       "id": "litert_litertlm_wasm_compat_internal_syscall_mkdirat"
     },
@@ -4035,7 +4505,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L4007",
       "_origin": "ast",
-      "community": 315,
+      "community": 192,
       "norm_label": "___syscall_unlinkat()",
       "id": "litert_litertlm_wasm_compat_internal_syscall_unlinkat"
     },
@@ -4615,7 +5085,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6173",
       "_origin": "ast",
-      "community": 318,
+      "community": 192,
       "norm_label": "__munmap_js()",
       "id": "litert_litertlm_wasm_compat_internal_munmap_js"
     },
@@ -4665,7 +5135,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6313",
       "_origin": "ast",
-      "community": 45,
+      "community": 316,
       "norm_label": "_emscripten_outn()",
       "id": "litert_litertlm_wasm_compat_internal_emscripten_outn"
     },
@@ -4725,7 +5195,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6753",
       "_origin": "ast",
-      "community": 92,
+      "community": 83,
       "norm_label": "makeblendcomponent()",
       "id": "litert_litertlm_wasm_compat_internal_makeblendcomponent"
     },
@@ -4735,7 +5205,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6761",
       "_origin": "ast",
-      "community": 92,
+      "community": 83,
       "norm_label": "makeblendstate()",
       "id": "litert_litertlm_wasm_compat_internal_makeblendstate"
     },
@@ -4745,7 +5215,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6768",
       "_origin": "ast",
-      "community": 92,
+      "community": 83,
       "norm_label": "makecolorstate()",
       "id": "litert_litertlm_wasm_compat_internal_makecolorstate"
     },
@@ -4755,7 +5225,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6776",
       "_origin": "ast",
-      "community": 92,
+      "community": 83,
       "norm_label": "makecolorstates()",
       "id": "litert_litertlm_wasm_compat_internal_makecolorstates"
     },
@@ -4785,7 +5255,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6806",
       "_origin": "ast",
-      "community": 338,
+      "community": 92,
       "norm_label": "makevertexattribute()",
       "id": "litert_litertlm_wasm_compat_internal_makevertexattribute"
     },
@@ -4795,7 +5265,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6813",
       "_origin": "ast",
-      "community": 338,
+      "community": 92,
       "norm_label": "makevertexattributes()",
       "id": "litert_litertlm_wasm_compat_internal_makevertexattributes"
     },
@@ -4805,7 +5275,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6820",
       "_origin": "ast",
-      "community": 338,
+      "community": 92,
       "norm_label": "makevertexbuffer()",
       "id": "litert_litertlm_wasm_compat_internal_makevertexbuffer"
     },
@@ -4815,7 +5285,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6833",
       "_origin": "ast",
-      "community": 338,
+      "community": 92,
       "norm_label": "makevertexbuffers()",
       "id": "litert_litertlm_wasm_compat_internal_makevertexbuffers"
     },
@@ -4825,7 +5295,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6841",
       "_origin": "ast",
-      "community": 338,
+      "community": 92,
       "norm_label": "makevertexstate()",
       "id": "litert_litertlm_wasm_compat_internal_makevertexstate"
     },
@@ -4845,7 +5315,7 @@
       "source_file": "public/litert/litertlm_wasm_compat_internal.js",
       "source_location": "L6859",
       "_origin": "ast",
-      "community": 92,
+      "community": 83,
       "norm_label": "makefragmentstate()",
       "id": "litert_litertlm_wasm_compat_internal_makefragmentstate"
     },
@@ -5495,7 +5965,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L184",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "assert()",
       "id": "litert_litertlm_wasm_internal_assert"
     },
@@ -5565,7 +6035,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L268",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "abort()",
       "id": "litert_litertlm_wasm_internal_abort"
     },
@@ -5675,7 +6145,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L504",
       "_origin": "ast",
-      "community": 322,
+      "community": 207,
       "norm_label": "init()",
       "id": "litert_litertlm_wasm_internal_init"
     },
@@ -5765,7 +6235,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L752",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "getmousewheeldelta()",
       "id": "litert_litertlm_wasm_internal_getmousewheeldelta"
     },
@@ -5985,7 +6455,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L1033",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "___cxa_throw()",
       "id": "litert_litertlm_wasm_internal_cxa_throw"
     },
@@ -5995,7 +6465,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L1044",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "__unwind_raiseexception()",
       "id": "litert_litertlm_wasm_internal_unwind_raiseexception"
     },
@@ -6055,7 +6525,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L1341",
       "_origin": "ast",
-      "community": 45,
+      "community": 316,
       "norm_label": "fsync()",
       "id": "litert_litertlm_wasm_internal_fsync"
     },
@@ -6135,7 +6605,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L1452",
       "_origin": "ast",
-      "community": 207,
+      "community": 322,
       "norm_label": "mount()",
       "id": "litert_litertlm_wasm_internal_mount"
     },
@@ -6765,7 +7235,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L2442",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "create()",
       "id": "litert_litertlm_wasm_internal_create"
     },
@@ -7035,7 +7505,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L3097",
       "_origin": "ast",
-      "community": 322,
+      "community": 207,
       "norm_label": "createstandardstreams()",
       "id": "litert_litertlm_wasm_internal_createstandardstreams"
     },
@@ -7095,7 +7565,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L3216",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "createfile()",
       "id": "litert_litertlm_wasm_internal_createfile"
     },
@@ -7125,7 +7595,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L3293",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "forceloadfile()",
       "id": "litert_litertlm_wasm_internal_forceloadfile"
     },
@@ -7135,7 +7605,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L3306",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "createlazyfile()",
       "id": "litert_litertlm_wasm_internal_createlazyfile"
     },
@@ -7295,7 +7765,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L3913",
       "_origin": "ast",
-      "community": 312,
+      "community": 322,
       "norm_label": "___syscall_mkdirat()",
       "id": "litert_litertlm_wasm_internal_syscall_mkdirat"
     },
@@ -7355,7 +7825,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L4007",
       "_origin": "ast",
-      "community": 312,
+      "community": 207,
       "norm_label": "___syscall_unlinkat()",
       "id": "litert_litertlm_wasm_internal_syscall_unlinkat"
     },
@@ -7445,7 +7915,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L4416",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "\"clone\"()",
       "id": "litert_litertlm_wasm_internal_clone"
     },
@@ -7695,7 +8165,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L5419",
       "_origin": "ast",
-      "community": 264,
+      "community": 332,
       "norm_label": "__embind_register_enum_value()",
       "id": "litert_litertlm_wasm_internal_embind_register_enum_value"
     },
@@ -7985,7 +8455,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6313",
       "_origin": "ast",
-      "community": 45,
+      "community": 316,
       "norm_label": "_emscripten_outn()",
       "id": "litert_litertlm_wasm_internal_emscripten_outn"
     },
@@ -8045,7 +8515,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6753",
       "_origin": "ast",
-      "community": 7,
+      "community": 91,
       "norm_label": "makeblendcomponent()",
       "id": "litert_litertlm_wasm_internal_makeblendcomponent"
     },
@@ -8055,7 +8525,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6761",
       "_origin": "ast",
-      "community": 7,
+      "community": 91,
       "norm_label": "makeblendstate()",
       "id": "litert_litertlm_wasm_internal_makeblendstate"
     },
@@ -8065,7 +8535,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6768",
       "_origin": "ast",
-      "community": 7,
+      "community": 91,
       "norm_label": "makecolorstate()",
       "id": "litert_litertlm_wasm_internal_makecolorstate"
     },
@@ -8075,7 +8545,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6776",
       "_origin": "ast",
-      "community": 7,
+      "community": 91,
       "norm_label": "makecolorstates()",
       "id": "litert_litertlm_wasm_internal_makecolorstates"
     },
@@ -8105,7 +8575,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6806",
       "_origin": "ast",
-      "community": 340,
+      "community": 7,
       "norm_label": "makevertexattribute()",
       "id": "litert_litertlm_wasm_internal_makevertexattribute"
     },
@@ -8115,7 +8585,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6813",
       "_origin": "ast",
-      "community": 340,
+      "community": 7,
       "norm_label": "makevertexattributes()",
       "id": "litert_litertlm_wasm_internal_makevertexattributes"
     },
@@ -8125,7 +8595,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6820",
       "_origin": "ast",
-      "community": 340,
+      "community": 7,
       "norm_label": "makevertexbuffer()",
       "id": "litert_litertlm_wasm_internal_makevertexbuffer"
     },
@@ -8135,7 +8605,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6833",
       "_origin": "ast",
-      "community": 340,
+      "community": 7,
       "norm_label": "makevertexbuffers()",
       "id": "litert_litertlm_wasm_internal_makevertexbuffers"
     },
@@ -8145,7 +8615,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6841",
       "_origin": "ast",
-      "community": 340,
+      "community": 7,
       "norm_label": "makevertexstate()",
       "id": "litert_litertlm_wasm_internal_makevertexstate"
     },
@@ -8165,7 +8635,7 @@
       "source_file": "public/litert/litertlm_wasm_internal.js",
       "source_location": "L6859",
       "_origin": "ast",
-      "community": 7,
+      "community": 91,
       "norm_label": "makefragmentstate()",
       "id": "litert_litertlm_wasm_internal_makefragmentstate"
     },
@@ -8845,7 +9315,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 8,
       "norm_label": "copy-ocr-assets.js",
       "id": "scripts_copy_ocr_assets"
     },
@@ -8855,7 +9325,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 45,
+      "community": 8,
       "norm_label": "__filename",
       "id": "scripts_copy_ocr_assets_filename"
     },
@@ -8865,7 +9335,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 45,
+      "community": 8,
       "norm_label": "__dirname",
       "id": "scripts_copy_ocr_assets_dirname"
     },
@@ -8875,7 +9345,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 45,
+      "community": 8,
       "norm_label": "root",
       "id": "scripts_copy_ocr_assets_root"
     },
@@ -8885,7 +9355,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 45,
+      "community": 8,
       "norm_label": "nm",
       "id": "scripts_copy_ocr_assets_nm"
     },
@@ -8895,7 +9365,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 45,
+      "community": 316,
       "norm_label": "out",
       "id": "scripts_copy_ocr_assets_out"
     },
@@ -8905,7 +9375,7 @@
       "source_file": "scripts/copy-ocr-assets.js",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 45,
+      "community": 8,
       "norm_label": "assets",
       "id": "scripts_copy_ocr_assets_assets"
     },
@@ -9289,7 +9759,7 @@
       "source_file": "src/__tests__/hooks/useAutoLock.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "useautolock.test.tsx",
       "id": "hooks_useautolock_test"
     },
@@ -9299,7 +9769,7 @@
       "source_file": "src/__tests__/hooks/useAutoLock.test.tsx",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "mocknavigate",
       "id": "hooks_useautolock_test_mocknavigate"
     },
@@ -9369,7 +9839,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 234,
+      "community": 3,
       "norm_label": "master-password-change.test.tsx",
       "id": "integration_master_password_change_test"
     },
@@ -9379,7 +9849,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 234,
+      "community": 3,
       "norm_label": "setupauthenticateduserwithcredentials()",
       "id": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
     },
@@ -9559,7 +10029,7 @@
       "source_file": "src/core/ai/__tests__/aiAvailability.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "aiavailability.test.ts",
       "id": "tests_aiavailability_test"
     },
@@ -9569,7 +10039,7 @@
       "source_file": "src/core/ai/__tests__/aiAvailability.test.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "setlanguagemodel()",
       "id": "tests_aiavailability_test_setlanguagemodel"
     },
@@ -9579,7 +10049,7 @@
       "source_file": "src/core/ai/__tests__/aiSettings.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "aisettings.test.ts",
       "id": "tests_aisettings_test"
     },
@@ -9589,7 +10059,7 @@
       "source_file": "src/core/ai/__tests__/breachImpactExplain.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "breachimpactexplain.test.ts",
       "id": "tests_breachimpactexplain_test"
     },
@@ -9619,7 +10089,7 @@
       "source_file": "src/core/ai/__tests__/providers/capabilities.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "capabilities.test.ts",
       "id": "providers_capabilities_test"
     },
@@ -9629,7 +10099,7 @@
       "source_file": "src/core/ai/__tests__/providers/capabilities.test.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "setnav()",
       "id": "providers_capabilities_test_setnav"
     },
@@ -9639,7 +10109,7 @@
       "source_file": "src/core/ai/__tests__/providers/chromeBuiltinProvider.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "chromebuiltinprovider.test.ts",
       "id": "providers_chromebuiltinprovider_test"
     },
@@ -9649,7 +10119,7 @@
       "source_file": "src/core/ai/__tests__/providers/chromeBuiltinProvider.test.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "setlanguagemodel()",
       "id": "providers_chromebuiltinprovider_test_setlanguagemodel"
     },
@@ -9659,7 +10129,7 @@
       "source_file": "src/core/ai/__tests__/providers/chromeBuiltinProvider.test.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "streamof()",
       "id": "providers_chromebuiltinprovider_test_streamof"
     },
@@ -9669,7 +10139,7 @@
       "source_file": "src/core/ai/__tests__/providers/chromeBuiltinProvider.test.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "collect()",
       "id": "providers_chromebuiltinprovider_test_collect"
     },
@@ -9679,7 +10149,7 @@
       "source_file": "src/core/ai/__tests__/providers/registry.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "registry.test.ts",
       "id": "providers_registry_test"
     },
@@ -9689,7 +10159,7 @@
       "source_file": "src/core/ai/__tests__/providers/webllmProvider.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "webllmprovider.test.ts",
       "id": "providers_webllmprovider_test"
     },
@@ -9699,7 +10169,7 @@
       "source_file": "src/core/ai/__tests__/providers/webllmProvider.test.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "create",
       "id": "providers_webllmprovider_test_create"
     },
@@ -9709,7 +10179,7 @@
       "source_file": "src/core/ai/__tests__/providers/webllmProvider.test.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "engine",
       "id": "providers_webllmprovider_test_engine"
     },
@@ -9719,7 +10189,7 @@
       "source_file": "src/core/ai/__tests__/providers/webllmProvider.test.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "deltastream()",
       "id": "providers_webllmprovider_test_deltastream"
     },
@@ -9749,7 +10219,7 @@
       "source_file": "src/core/ai/__tests__/webllmModels.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "webllmmodels.test.ts",
       "id": "tests_webllmmodels_test"
     },
@@ -9759,7 +10229,7 @@
       "source_file": "src/core/ai/aiAvailability.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "aiavailability.ts",
       "id": "ai_aiavailability"
     },
@@ -9769,7 +10239,7 @@
       "source_file": "src/core/ai/aiAvailability.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "getaiavailability()",
       "id": "ai_aiavailability_getaiavailability"
     },
@@ -9779,7 +10249,7 @@
       "source_file": "src/core/ai/aiAvailability.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "isfeatureusable()",
       "id": "ai_aiavailability_isfeatureusable"
     },
@@ -9789,7 +10259,7 @@
       "source_file": "src/core/ai/aiSettings.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "aisettings.ts",
       "id": "ai_aisettings"
     },
@@ -9799,7 +10269,7 @@
       "source_file": "src/core/ai/aiSettings.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "aisettings",
       "id": "ai_aisettings_aisettings"
     },
@@ -9809,7 +10279,7 @@
       "source_file": "src/core/ai/aiSettings.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "default_ai_settings",
       "id": "ai_aisettings_default_ai_settings"
     },
@@ -9819,7 +10289,7 @@
       "source_file": "src/core/ai/aiSettings.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "loadaisettings()",
       "id": "ai_aisettings_loadaisettings"
     },
@@ -9829,7 +10299,7 @@
       "source_file": "src/core/ai/aiSettings.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "saveaisettings()",
       "id": "ai_aisettings_saveaisettings"
     },
@@ -9839,7 +10309,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "aitypes.ts",
       "id": "ai_aitypes"
     },
@@ -9849,7 +10319,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L2",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "aiavailability",
       "id": "ai_aitypes_aiavailability"
     },
@@ -9859,7 +10329,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "strengthlabel",
       "id": "ai_aitypes_strengthlabel"
     },
@@ -9879,7 +10349,7 @@
       "source_file": "src/core/ai/breachImpactExplain.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "breachimpactexplain.ts",
       "id": "ai_breachimpactexplain"
     },
@@ -9889,7 +10359,7 @@
       "source_file": "src/core/ai/breachImpactExplain.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "breachimpactexplaininput",
       "id": "ai_breachimpactexplain_breachimpactexplaininput"
     },
@@ -9899,7 +10369,7 @@
       "source_file": "src/core/ai/breachImpactExplain.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "buildbreachprompt()",
       "id": "ai_breachimpactexplain_buildbreachprompt"
     },
@@ -9909,7 +10379,7 @@
       "source_file": "src/core/ai/breachImpactExplain.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "explainbreachimpact()",
       "id": "ai_breachimpactexplain_explainbreachimpact"
     },
@@ -9959,7 +10429,7 @@
       "source_file": "src/core/ai/providers/capabilities.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "capabilities.ts",
       "id": "providers_capabilities"
     },
@@ -9969,7 +10439,7 @@
       "source_file": "src/core/ai/providers/capabilities.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "haswebgpu()",
       "id": "providers_capabilities_haswebgpu"
     },
@@ -9979,7 +10449,7 @@
       "source_file": "src/core/ai/providers/capabilities.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "isandroid()",
       "id": "providers_capabilities_isandroid"
     },
@@ -9989,7 +10459,7 @@
       "source_file": "src/core/ai/providers/capabilities.ts",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "ismobileaisurfaceenabled()",
       "id": "providers_capabilities_ismobileaisurfaceenabled"
     },
@@ -9999,7 +10469,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "chromebuiltinprovider.ts",
       "id": "providers_chromebuiltinprovider"
     },
@@ -10009,7 +10479,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "aisession",
       "id": "providers_chromebuiltinprovider_aisession"
     },
@@ -10019,7 +10489,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "languagemodelstatic",
       "id": "providers_chromebuiltinprovider_languagemodelstatic"
     },
@@ -10029,7 +10499,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "getlanguagemodel()",
       "id": "providers_chromebuiltinprovider_getlanguagemodel"
     },
@@ -10039,7 +10509,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "basesessions",
       "id": "providers_chromebuiltinprovider_basesessions"
     },
@@ -10049,7 +10519,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "initializingsessions",
       "id": "providers_chromebuiltinprovider_initializingsessions"
     },
@@ -10069,7 +10539,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "warmup()",
       "id": "providers_chromebuiltinprovider_warmup"
     },
@@ -10079,7 +10549,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L46",
       "_origin": "ast",
-      "community": 326,
+      "community": 282,
       "norm_label": "getclonedsession()",
       "id": "providers_chromebuiltinprovider_getclonedsession"
     },
@@ -10089,7 +10559,7 @@
       "source_file": "src/core/ai/providers/chromeBuiltinProvider.ts",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "chromebuiltinprovider",
       "id": "providers_chromebuiltinprovider_chromebuiltinprovider"
     },
@@ -10099,7 +10569,7 @@
       "source_file": "src/core/ai/providers/registry.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "registry.ts",
       "id": "providers_registry"
     },
@@ -10119,7 +10589,7 @@
       "source_file": "src/core/ai/providers/registry.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "__resetregistryfortesting()",
       "id": "providers_registry_resetregistryfortesting"
     },
@@ -10129,7 +10599,7 @@
       "source_file": "src/core/ai/providers/registry.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "getactiveprovider()",
       "id": "providers_registry_getactiveprovider"
     },
@@ -10139,7 +10609,7 @@
       "source_file": "src/core/ai/providers/types.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "types.ts",
       "id": "providers_types"
     },
@@ -10149,7 +10619,7 @@
       "source_file": "src/core/ai/providers/types.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "aiproviderid",
       "id": "providers_types_aiproviderid"
     },
@@ -10159,7 +10629,7 @@
       "source_file": "src/core/ai/providers/types.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "aidownloadprogress",
       "id": "providers_types_aidownloadprogress"
     },
@@ -10169,7 +10639,7 @@
       "source_file": "src/core/ai/providers/types.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "aiprovider",
       "id": "providers_types_aiprovider"
     },
@@ -10179,7 +10649,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "webllmprovider.ts",
       "id": "providers_webllmprovider"
     },
@@ -10189,7 +10659,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "mlcengine",
       "id": "providers_webllmprovider_mlcengine"
     },
@@ -10199,7 +10669,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "__resetwebllmenginefortesting()",
       "id": "providers_webllmprovider_resetwebllmenginefortesting"
     },
@@ -10209,7 +10679,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "isdevicelosterror()",
       "id": "providers_webllmprovider_isdevicelosterror"
     },
@@ -10219,7 +10689,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "resetenginestate()",
       "id": "providers_webllmprovider_resetenginestate"
     },
@@ -10229,7 +10699,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "removewebllmmodel()",
       "id": "providers_webllmprovider_removewebllmmodel"
     },
@@ -10239,7 +10709,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "createengine()",
       "id": "providers_webllmprovider_createengine"
     },
@@ -10249,7 +10719,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L80",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "ensureready()",
       "id": "providers_webllmprovider_ensureready"
     },
@@ -10259,7 +10729,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L125",
       "_origin": "ast",
-      "community": 206,
+      "community": 282,
       "norm_label": "webllmprovider",
       "id": "providers_webllmprovider_webllmprovider"
     },
@@ -10299,7 +10769,7 @@
       "source_file": "src/core/ai/webllmModels.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "webllmmodels.ts",
       "id": "ai_webllmmodels"
     },
@@ -10309,7 +10779,7 @@
       "source_file": "src/core/ai/webllmModels.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "webllmmodel",
       "id": "ai_webllmmodels_webllmmodel"
     },
@@ -10319,7 +10789,7 @@
       "source_file": "src/core/ai/webllmModels.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "webllm_models",
       "id": "ai_webllmmodels_webllm_models"
     },
@@ -10329,7 +10799,7 @@
       "source_file": "src/core/ai/webllmModels.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "getmodelbyid()",
       "id": "ai_webllmmodels_getmodelbyid"
     },
@@ -10349,7 +10819,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "biometricmigration.test.ts",
       "id": "tests_biometricmigration_test"
     },
@@ -10359,7 +10829,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "legacy",
       "id": "tests_biometricmigration_test_legacy"
     },
@@ -10369,7 +10839,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "prf",
       "id": "tests_biometricmigration_test_prf"
     },
@@ -10429,7 +10899,7 @@
       "source_file": "src/core/auth/__tests__/rateLimiter.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "ratelimiter.test.ts",
       "id": "tests_ratelimiter_test"
     },
@@ -10679,7 +11149,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "biometricmigration.ts",
       "id": "auth_biometricmigration"
     },
@@ -10689,7 +11159,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "isprfcredential()",
       "id": "auth_biometricmigration_isprfcredential"
     },
@@ -10699,7 +11169,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "stripresult",
       "id": "auth_biometricmigration_stripresult"
     },
@@ -10709,7 +11179,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "striplegacybiometric()",
       "id": "auth_biometricmigration_striplegacybiometric"
     },
@@ -10769,7 +11239,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "ratelimiter.ts",
       "id": "auth_ratelimiter"
     },
@@ -10779,7 +11249,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "thresholds",
       "id": "auth_ratelimiter_thresholds"
     },
@@ -10789,7 +11259,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "lockoutms()",
       "id": "auth_ratelimiter_lockoutms"
     },
@@ -10799,7 +11269,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "formatremaining()",
       "id": "auth_ratelimiter_formatremaining"
     },
@@ -10809,7 +11279,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "checkratelimit()",
       "id": "auth_ratelimiter_checkratelimit"
     },
@@ -10819,7 +11289,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "recordfailedattempt()",
       "id": "auth_ratelimiter_recordfailedattempt"
     },
@@ -10829,7 +11299,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 293,
+      "community": 13,
       "norm_label": "clearattempts()",
       "id": "auth_ratelimiter_clearattempts"
     },
@@ -11729,7 +12199,7 @@
       "source_file": "src/core/breach/__tests__/unlockBreachRefresh.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "unlockbreachrefresh.test.ts",
       "id": "tests_unlockbreachrefresh_test"
     },
@@ -11789,7 +12259,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachtypes.ts",
       "id": "breach_breachtypes"
     },
@@ -11799,7 +12269,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachdata",
       "id": "breach_breachtypes_breachdata"
     },
@@ -11809,7 +12279,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachseverity",
       "id": "breach_breachtypes_breachseverity"
     },
@@ -11829,7 +12299,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L66",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "storedbreachresult",
       "id": "breach_breachtypes_storedbreachresult"
     },
@@ -11839,7 +12309,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L92",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachcheckoptions",
       "id": "breach_breachtypes_breachcheckoptions"
     },
@@ -11849,7 +12319,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L104",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "hibperror",
       "id": "breach_breachtypes_hibperror"
     },
@@ -11859,7 +12329,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L112",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "ratelimitstate",
       "id": "breach_breachtypes_ratelimitstate"
     },
@@ -11989,7 +12459,7 @@
       "source_file": "src/core/breach/hibpService.ts",
       "source_location": "L447",
       "_origin": "ast",
-      "community": 91,
+      "community": 299,
       "norm_label": "ishibpenabled()",
       "id": "breach_hibpservice_ishibpenabled"
     },
@@ -12069,7 +12539,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "unlockbreachrefresh.ts",
       "id": "breach_unlockbreachrefresh"
     },
@@ -12079,7 +12549,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "isbreachcheckstale()",
       "id": "breach_unlockbreachrefresh_isbreachcheckstale"
     },
@@ -12089,7 +12559,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "markbreachcheckcomplete()",
       "id": "breach_unlockbreachrefresh_markbreachcheckcomplete"
     },
@@ -12099,7 +12569,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "getlastfullcheckat()",
       "id": "breach_unlockbreachrefresh_getlastfullcheckat"
     },
@@ -12109,7 +12579,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "registerhibpperiodicsync()",
       "id": "breach_unlockbreachrefresh_registerhibpperiodicsync"
     },
@@ -12119,7 +12589,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L93",
       "_origin": "ast",
-      "community": 91,
+      "community": 31,
       "norm_label": "rununlockbreachrefresh()",
       "id": "breach_unlockbreachrefresh_rununlockbreachrefresh"
     },
@@ -12249,7 +12719,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 4,
+      "community": 36,
       "norm_label": "encrypteddata",
       "id": "crypto_encryption_encrypteddata"
     },
@@ -12939,7 +13409,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L167",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": ".create()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_create"
     },
@@ -13029,7 +13499,7 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts",
       "source_location": "L408",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": ".importfromjson()",
       "id": "repositories_credentialrepositoryimpl_credentialrepository_importfromjson"
     },
@@ -13189,7 +13659,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 234,
+      "community": 13,
       "norm_label": "userrepositoryimpl.ts",
       "id": "repositories_userrepositoryimpl"
     },
@@ -13219,7 +13689,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 293,
+      "community": 36,
       "norm_label": ".authenticatewithpassword()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_authenticatewithpassword"
     },
@@ -13509,7 +13979,7 @@
       "source_file": "src/data/repositories/__tests__/copilotReviewFixes.test.ts",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 36,
+      "community": 234,
       "norm_label": "insertlegacyrow()",
       "id": "tests_copilotreviewfixes_test_insertlegacyrow"
     },
@@ -13609,7 +14079,7 @@
       "source_file": "src/data/repositories/__tests__/metadataEncryption.test.ts",
       "source_location": "L293",
       "_origin": "ast",
-      "community": 36,
+      "community": 234,
       "norm_label": "insertlegacyrecord()",
       "id": "tests_metadataencryption_test_insertlegacyrecord"
     },
@@ -13629,7 +14099,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 286,
+      "community": 36,
       "norm_label": "profilemigration.test.ts",
       "id": "tests_profilemigration_test"
     },
@@ -13639,7 +14109,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 286,
+      "community": 36,
       "norm_label": "makevaultkey()",
       "id": "tests_profilemigration_test_makevaultkey"
     },
@@ -13649,7 +14119,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 286,
+      "community": 36,
       "norm_label": "logininput()",
       "id": "tests_profilemigration_test_logininput"
     },
@@ -13929,7 +14399,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 286,
+      "community": 36,
       "norm_label": "profilemigration.ts",
       "id": "repositories_profilemigration"
     },
@@ -13939,7 +14409,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 286,
+      "community": 36,
       "norm_label": "todomain()",
       "id": "repositories_profilemigration_todomain"
     },
@@ -13949,7 +14419,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 286,
+      "community": 36,
       "norm_label": "ensuredefaultprofile()",
       "id": "repositories_profilemigration_ensuredefaultprofile"
     },
@@ -13979,7 +14449,7 @@
       "source_file": "src/data/storage/database.ts",
       "source_location": "L92",
       "_origin": "ast",
-      "community": 234,
+      "community": 13,
       "norm_label": "storeduser",
       "id": "storage_database_storeduser"
     },
@@ -14199,7 +14669,7 @@
       "source_file": "src/domain/entities/User.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 13,
+      "community": 4,
       "norm_label": "webauthncredential",
       "id": "entities_user_webauthncredential"
     },
@@ -14269,7 +14739,7 @@
       "source_file": "src/domain/repositories/ICredentialRepository.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 234,
       "norm_label": "icredentialrepository.ts",
       "id": "repositories_icredentialrepository"
     },
@@ -14279,7 +14749,7 @@
       "source_file": "src/domain/repositories/ICredentialRepository.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 2,
+      "community": 234,
       "norm_label": "icredentialrepository",
       "id": "repositories_icredentialrepository_icredentialrepository"
     },
@@ -14329,7 +14799,7 @@
       "source_file": "src/features/vault/generator/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 246,
+      "community": 229,
       "norm_label": "index.ts",
       "id": "generator_index"
     },
@@ -14929,7 +15399,7 @@
       "source_file": "src/presentation/App.tsx",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 277,
+      "community": 32,
       "norm_label": "approutes()",
       "id": "presentation_app_approutes"
     },
@@ -14969,7 +15439,7 @@
       "source_file": "src/presentation/components/AiAssistanceSettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "aiassistancesettings.tsx",
       "id": "components_aiassistancesettings"
     },
@@ -14979,7 +15449,7 @@
       "source_file": "src/presentation/components/AiAssistanceSettings.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "availability_text",
       "id": "components_aiassistancesettings_availability_text"
     },
@@ -14989,7 +15459,7 @@
       "source_file": "src/presentation/components/AiAssistanceSettings.tsx",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 232,
+      "community": 282,
       "norm_label": "aiassistancesettings()",
       "id": "components_aiassistancesettings_aiassistancesettings"
     },
@@ -14999,7 +15469,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 313,
+      "community": 32,
       "norm_label": "autolocksettings.tsx",
       "id": "components_autolocksettings"
     },
@@ -15009,7 +15479,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 313,
+      "community": 32,
       "norm_label": "autolocksettingsprops",
       "id": "components_autolocksettings_autolocksettingsprops"
     },
@@ -15019,7 +15489,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 313,
+      "community": 32,
       "norm_label": "timeout_options",
       "id": "components_autolocksettings_timeout_options"
     },
@@ -15029,7 +15499,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 313,
+      "community": 32,
       "norm_label": "autolocksettings()",
       "id": "components_autolocksettings_autolocksettings"
     },
@@ -15129,7 +15599,7 @@
       "source_file": "src/presentation/components/BreachAlertBanner.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 3,
       "norm_label": "breachalertbanner.tsx",
       "id": "components_breachalertbanner"
     },
@@ -15139,7 +15609,7 @@
       "source_file": "src/presentation/components/BreachAlertBanner.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 31,
+      "community": 3,
       "norm_label": "breachalertbannerprops",
       "id": "components_breachalertbanner_breachalertbannerprops"
     },
@@ -15149,7 +15619,7 @@
       "source_file": "src/presentation/components/BreachAlertBanner.tsx",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 31,
+      "community": 3,
       "norm_label": "breachalertbanner()",
       "id": "components_breachalertbanner_breachalertbanner"
     },
@@ -15159,7 +15629,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachdetailsmodal.tsx",
       "id": "components_breachdetailsmodal"
     },
@@ -15169,7 +15639,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachdetailsmodalprops",
       "id": "components_breachdetailsmodal_breachdetailsmodalprops"
     },
@@ -15179,7 +15649,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 31,
+      "community": 261,
       "norm_label": "breachdetailsmodal()",
       "id": "components_breachdetailsmodal_breachdetailsmodal"
     },
@@ -15419,7 +15889,7 @@
       "source_file": "src/presentation/components/CredentialDetailsDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 299,
       "norm_label": "credentialdetailsdialog.tsx",
       "id": "components_credentialdetailsdialog"
     },
@@ -15429,7 +15899,7 @@
       "source_file": "src/presentation/components/CredentialDetailsDialog.tsx",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 31,
+      "community": 299,
       "norm_label": "credentialdetailsdialogprops",
       "id": "components_credentialdetailsdialog_credentialdetailsdialogprops"
     },
@@ -15439,7 +15909,7 @@
       "source_file": "src/presentation/components/CredentialDetailsDialog.tsx",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 31,
+      "community": 299,
       "norm_label": "transition",
       "id": "components_credentialdetailsdialog_transition"
     },
@@ -15449,7 +15919,7 @@
       "source_file": "src/presentation/components/CredentialDetailsDialog.tsx",
       "source_location": "L88",
       "_origin": "ast",
-      "community": 2,
+      "community": 299,
       "norm_label": "credentialdetailsdialog()",
       "id": "components_credentialdetailsdialog_credentialdetailsdialog"
     },
@@ -15519,7 +15989,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 214,
+      "community": 2,
       "norm_label": "deleteconfirmdialog.tsx",
       "id": "components_deleteconfirmdialog"
     },
@@ -15529,7 +15999,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 214,
+      "community": 2,
       "norm_label": "deleteconfirmdialogprops",
       "id": "components_deleteconfirmdialog_deleteconfirmdialogprops"
     },
@@ -15539,7 +16009,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 214,
+      "community": 2,
       "norm_label": "deleteconfirmdialog()",
       "id": "components_deleteconfirmdialog_deleteconfirmdialog"
     },
@@ -15709,7 +16179,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 250,
+      "community": 3,
       "norm_label": "importdialog.tsx",
       "id": "components_importdialog"
     },
@@ -15719,7 +16189,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 250,
+      "community": 3,
       "norm_label": "importdialogprops",
       "id": "components_importdialog_importdialogprops"
     },
@@ -15729,7 +16199,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 250,
+      "community": 3,
       "norm_label": "importmode",
       "id": "components_importdialog_importmode"
     },
@@ -15879,7 +16349,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 282,
+      "community": 246,
       "norm_label": "passwordstrengthindicator.tsx",
       "id": "components_passwordstrengthindicator"
     },
@@ -15889,7 +16359,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 282,
+      "community": 246,
       "norm_label": "passwordstrengthindicatorprops",
       "id": "components_passwordstrengthindicator_passwordstrengthindicatorprops"
     },
@@ -16149,7 +16619,7 @@
       "source_file": "src/presentation/components/ThemeToggle.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "themetoggle.tsx",
       "id": "components_themetoggle"
     },
@@ -16159,7 +16629,7 @@
       "source_file": "src/presentation/components/ThemeToggle.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "themetoggle()",
       "id": "components_themetoggle_themetoggle"
     },
@@ -16279,7 +16749,7 @@
       "source_file": "src/presentation/components/__tests__/AiAssistanceSettings.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "aiassistancesettings.test.tsx",
       "id": "tests_aiassistancesettings_test"
     },
@@ -16289,7 +16759,7 @@
       "source_file": "src/presentation/components/__tests__/AiAssistanceSettings.test.tsx",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "{ defaults, saveaisettings, ensurereadyspy, removewebllmmodelspy }",
       "id": "tests_aiassistancesettings_test_defaults_saveaisettings_ensurereadyspy_removewebllmmodelspy"
     },
@@ -16299,7 +16769,7 @@
       "source_file": "src/presentation/components/__tests__/AiAssistanceSettings.test.tsx",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 149,
+      "community": 282,
       "norm_label": "current",
       "id": "tests_aiassistancesettings_test_current"
     },
@@ -16379,7 +16849,7 @@
       "source_file": "src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 282,
+      "community": 246,
       "norm_label": "passwordstrengthindicator.test.tsx",
       "id": "tests_passwordstrengthindicator_test"
     },
@@ -16389,7 +16859,7 @@
       "source_file": "src/presentation/components/__tests__/PasswordStrengthIndicator.test.tsx",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 282,
+      "community": 246,
       "norm_label": "explainmock",
       "id": "tests_passwordstrengthindicator_test_explainmock"
     },
@@ -16599,7 +17069,7 @@
       "source_file": "src/presentation/hooks/useAiBreachImpactExplain.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "useaibreachimpactexplain.ts",
       "id": "hooks_useaibreachimpactexplain"
     },
@@ -16609,7 +17079,7 @@
       "source_file": "src/presentation/hooks/useAiBreachImpactExplain.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 265,
+      "community": 282,
       "norm_label": "useaibreachimpactexplain",
       "id": "hooks_useaibreachimpactexplain_useaibreachimpactexplain"
     },
@@ -16639,7 +17109,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "useautolock.ts",
       "id": "hooks_useautolock"
     },
@@ -16649,7 +17119,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "autolockconfig",
       "id": "hooks_useautolock_autolockconfig"
     },
@@ -16659,7 +17129,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "useautolock()",
       "id": "hooks_useautolock_useautolock"
     },
@@ -16669,7 +17139,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "getdefaultautolockconfig()",
       "id": "hooks_useautolock_getdefaultautolockconfig"
     },
@@ -16819,7 +17289,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 214,
+      "community": 3,
       "norm_label": "credentialdetailpage.tsx",
       "id": "pages_credentialdetailpage"
     },
@@ -16829,7 +17299,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 51,
+      "community": 3,
       "norm_label": "credentialdetailpage()",
       "id": "pages_credentialdetailpage_credentialdetailpage"
     },
@@ -16839,7 +17309,7 @@
       "source_file": "src/presentation/pages/DashboardPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 285,
+      "community": 148,
       "norm_label": "dashboardpage.tsx",
       "id": "pages_dashboardpage"
     },
@@ -16879,7 +17349,7 @@
       "source_file": "src/presentation/pages/EditCredentialPage.tsx",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 51,
+      "community": 317,
       "norm_label": "editcredentialpage()",
       "id": "pages_editcredentialpage_editcredentialpage"
     },
@@ -16989,7 +17459,7 @@
       "source_file": "src/presentation/pages/SecurityAuditPage.tsx",
       "source_location": "L68",
       "_origin": "ast",
-      "community": 91,
+      "community": 3,
       "norm_label": "securityauditpage()",
       "id": "pages_securityauditpage_securityauditpage"
     },
@@ -17009,7 +17479,7 @@
       "source_file": "src/presentation/pages/SettingsPage.tsx",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "settingspage()",
       "id": "pages_settingspage_settingspage"
     },
@@ -17039,7 +17509,7 @@
       "source_file": "src/presentation/pages/SignupPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 19,
+      "community": 3,
       "norm_label": "signuppage.tsx",
       "id": "pages_signuppage"
     },
@@ -17159,7 +17629,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "unlockpage.test.tsx",
       "id": "tests_unlockpage_test"
     },
@@ -17169,7 +17639,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "mockvaultkey",
       "id": "tests_unlockpage_test_mockvaultkey"
     },
@@ -17179,7 +17649,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "fulluser",
       "id": "tests_unlockpage_test_fulluser"
     },
@@ -17189,7 +17659,7 @@
       "source_file": "src/presentation/pages/__tests__/UnlockPage.test.tsx",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 3,
+      "community": 13,
       "norm_label": "mocksession",
       "id": "tests_unlockpage_test_mocksession"
     },
@@ -17199,7 +17669,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": "authstore.test.ts",
       "id": "tests_authstore_test"
     },
@@ -17209,7 +17679,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": "user",
       "id": "tests_authstore_test_user"
     },
@@ -17219,7 +17689,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": "authsession",
       "id": "tests_authstore_test_authsession"
     },
@@ -17229,7 +17699,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": "authstate",
       "id": "tests_authstore_test_authstate"
     },
@@ -17239,7 +17709,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 14,
+      "community": 109,
       "norm_label": "createauthstore()",
       "id": "tests_authstore_test_createauthstore"
     },
@@ -17279,7 +17749,7 @@
       "source_file": "src/presentation/store/__tests__/credentialStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "credentialstore.test.ts",
       "id": "tests_credentialstore_test"
     },
@@ -17289,7 +17759,7 @@
       "source_file": "src/presentation/store/__tests__/credentialStore.test.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "makecredential()",
       "id": "tests_credentialstore_test_makecredential"
     },
@@ -17339,7 +17809,7 @@
       "source_file": "src/presentation/store/__tests__/themeStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "themestore.test.ts",
       "id": "tests_themestore_test"
     },
@@ -17409,7 +17879,7 @@
       "source_file": "src/presentation/store/credentialStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "credentialstore.ts",
       "id": "store_credentialstore"
     },
@@ -17419,7 +17889,7 @@
       "source_file": "src/presentation/store/credentialStore.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "credentialstate",
       "id": "store_credentialstore_credentialstate"
     },
@@ -17429,7 +17899,7 @@
       "source_file": "src/presentation/store/credentialStore.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 277,
+      "community": 3,
       "norm_label": "usecredentialstore",
       "id": "store_credentialstore_usecredentialstore"
     },
@@ -17489,7 +17959,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "themestore.ts",
       "id": "store_themestore"
     },
@@ -17499,7 +17969,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "thememode",
       "id": "store_themestore_thememode"
     },
@@ -17509,7 +17979,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "themestate",
       "id": "store_themestore_themestate"
     },
@@ -17519,7 +17989,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "usethemestore",
       "id": "store_themestore_usethemestore"
     },
@@ -17529,7 +17999,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "theme.ts",
       "id": "theme_theme"
     },
@@ -17539,7 +18009,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "getthemeoptions()",
       "id": "theme_theme_getthemeoptions"
     },
@@ -17549,7 +18019,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "createapptheme()",
       "id": "theme_theme_createapptheme"
     },
@@ -17559,7 +18029,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L179",
       "_origin": "ast",
-      "community": 8,
+      "community": 32,
       "norm_label": "theme",
       "id": "theme_theme_theme"
     },
@@ -17749,7 +18219,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 214,
+      "community": 271,
       "norm_label": "copypassword()",
       "id": "utils_clipboard_copypassword"
     },
@@ -17889,7 +18359,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L307",
       "_origin": "ast",
-      "community": 214,
+      "community": 3,
       "norm_label": "clipboardmanager",
       "id": "utils_clipboard_clipboardmanager"
     },
@@ -19102,446 +19572,6 @@
       "community": 121,
       "norm_label": "vitest.config.ts",
       "id": "vitest_config"
-    },
-    {
-      "label": "copilot-instructions.md",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "copilot-instructions.md",
-      "id": "github_copilot_instructions"
-    },
-    {
-      "label": "TrustVault PWA - AI Agent Instructions",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "trustvault pwa - ai agent instructions",
-      "id": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions"
-    },
-    {
-      "label": "Current Objectives (Nov 2025)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L7",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "current objectives (nov 2025)",
-      "id": "github_copilot_instructions_current_objectives_nov_2025"
-    },
-    {
-      "label": "Architecture Overview",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L20",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "architecture overview",
-      "id": "github_copilot_instructions_architecture_overview"
-    },
-    {
-      "label": "Path Aliases",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L34",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "path aliases",
-      "id": "github_copilot_instructions_path_aliases"
-    },
-    {
-      "label": "Security & Cryptography",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L45",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "security & cryptography",
-      "id": "github_copilot_instructions_security_cryptography"
-    },
-    {
-      "label": "\ud83d\udd10 Password Hashing (Login Flow)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L47",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "\ud83d\udd10 password hashing (login flow)",
-      "id": "github_copilot_instructions_password_hashing_login_flow"
-    },
-    {
-      "label": "\ud83d\udd11 Key Derivation (Vault Encryption)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L60",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "\ud83d\udd11 key derivation (vault encryption)",
-      "id": "github_copilot_instructions_key_derivation_vault_encryption"
-    },
-    {
-      "label": "\ud83d\udd12 Data Encryption",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L67",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "\ud83d\udd12 data encryption",
-      "id": "github_copilot_instructions_data_encryption"
-    },
-    {
-      "label": "Critical Module Loading Pattern",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L81",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "critical module loading pattern",
-      "id": "github_copilot_instructions_critical_module_loading_pattern"
-    },
-    {
-      "label": "\u26a0\ufe0f WASM/UMD Modules",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L83",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "\u26a0\ufe0f wasm/umd modules",
-      "id": "github_copilot_instructions_wasm_umd_modules"
-    },
-    {
-      "label": "State Management (Zustand)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L114",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "state management (zustand)",
-      "id": "github_copilot_instructions_state_management_zustand"
-    },
-    {
-      "label": "Auth Store Pattern",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L116",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "auth store pattern",
-      "id": "github_copilot_instructions_auth_store_pattern"
-    },
-    {
-      "label": "React 19 & StrictMode Patterns",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L146",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "react 19 & strictmode patterns",
-      "id": "github_copilot_instructions_react_19_strictmode_patterns"
-    },
-    {
-      "label": "Effect Cleanup (Double Render in Dev)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L148",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "effect cleanup (double render in dev)",
-      "id": "github_copilot_instructions_effect_cleanup_double_render_in_dev"
-    },
-    {
-      "label": "Database (IndexedDB via Dexie)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L181",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "database (indexeddb via dexie)",
-      "id": "github_copilot_instructions_database_indexeddb_via_dexie"
-    },
-    {
-      "label": "Schema",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L183",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "schema",
-      "id": "github_copilot_instructions_schema"
-    },
-    {
-      "label": "Offline-First Pattern",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L194",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "offline-first pattern",
-      "id": "github_copilot_instructions_offline_first_pattern"
-    },
-    {
-      "label": "Encrypted Fields",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L208",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "encrypted fields",
-      "id": "github_copilot_instructions_encrypted_fields"
-    },
-    {
-      "label": "TypeScript Strict Mode",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L220",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "typescript strict mode",
-      "id": "github_copilot_instructions_typescript_strict_mode"
-    },
-    {
-      "label": "Critical Flags Enforced",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L222",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "critical flags enforced",
-      "id": "github_copilot_instructions_critical_flags_enforced"
-    },
-    {
-      "label": "Common Fixes",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L232",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "common fixes",
-      "id": "github_copilot_instructions_common_fixes"
-    },
-    {
-      "label": "PWA & Service Worker",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L254",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "pwa & service worker",
-      "id": "github_copilot_instructions_pwa_service_worker"
-    },
-    {
-      "label": "Configuration (vite.config.ts)",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L256",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "configuration (vite.config.ts)",
-      "id": "github_copilot_instructions_configuration_vite_config_ts"
-    },
-    {
-      "label": "Security Headers",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L269",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "security headers",
-      "id": "github_copilot_instructions_security_headers"
-    },
-    {
-      "label": "PWA Icons Requirement",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L281",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "pwa icons requirement",
-      "id": "github_copilot_instructions_pwa_icons_requirement"
-    },
-    {
-      "label": "Development Workflow",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L289",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "development workflow",
-      "id": "github_copilot_instructions_development_workflow"
-    },
-    {
-      "label": "Commands",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L291",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "commands",
-      "id": "github_copilot_instructions_commands"
-    },
-    {
-      "label": "Pre-Commit Checklist",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L302",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "pre-commit checklist",
-      "id": "github_copilot_instructions_pre_commit_checklist"
-    },
-    {
-      "label": "Build Optimization",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L309",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "build optimization",
-      "id": "github_copilot_instructions_build_optimization"
-    },
-    {
-      "label": "Common Patterns",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L322",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "common patterns",
-      "id": "github_copilot_instructions_common_patterns"
-    },
-    {
-      "label": "Auto-Lock Implementation",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L324",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "auto-lock implementation",
-      "id": "github_copilot_instructions_auto_lock_implementation"
-    },
-    {
-      "label": "Clipboard with Auto-Clear",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L346",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "clipboard with auto-clear",
-      "id": "github_copilot_instructions_clipboard_with_auto_clear"
-    },
-    {
-      "label": "Testing Patterns",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L363",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "testing patterns",
-      "id": "github_copilot_instructions_testing_patterns"
-    },
-    {
-      "label": "Crypto Function Tests",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L365",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "crypto function tests",
-      "id": "github_copilot_instructions_crypto_function_tests"
-    },
-    {
-      "label": "Security Guidelines",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L383",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "security guidelines",
-      "id": "github_copilot_instructions_security_guidelines"
-    },
-    {
-      "label": "Never Do This",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L385",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "never do this",
-      "id": "github_copilot_instructions_never_do_this"
-    },
-    {
-      "label": "Always Do This",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L392",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "always do this",
-      "id": "github_copilot_instructions_always_do_this"
-    },
-    {
-      "label": "Troubleshooting",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L401",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "troubleshooting",
-      "id": "github_copilot_instructions_troubleshooting"
-    },
-    {
-      "label": "\"Loading spinner stuck\"",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L403",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "\"loading spinner stuck\"",
-      "id": "github_copilot_instructions_loading_spinner_stuck"
-    },
-    {
-      "label": "\"Invalid hash format\" on login",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L407",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "\"invalid hash format\" on login",
-      "id": "github_copilot_instructions_invalid_hash_format_on_login"
-    },
-    {
-      "label": "TypeScript errors on build",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L411",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "typescript errors on build",
-      "id": "github_copilot_instructions_typescript_errors_on_build"
-    },
-    {
-      "label": "Key Files Reference",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L417",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "key files reference",
-      "id": "github_copilot_instructions_key_files_reference"
-    },
-    {
-      "label": "External Documentation",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L432",
-      "_origin": "ast",
-      "community": 29,
-      "norm_label": "external documentation",
-      "id": "github_copilot_instructions_external_documentation"
     },
     {
       "label": "sentinel.md",
@@ -30579,7 +30609,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L271",
       "_origin": "ast",
-      "community": 235,
+      "community": 165,
       "norm_label": "session & memory security",
       "id": "security_audit_checklist_session_memory_security"
     },
@@ -30589,7 +30619,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L273",
       "_origin": "ast",
-      "community": 235,
+      "community": 165,
       "norm_label": "session management \u2705",
       "id": "security_audit_checklist_session_management"
     },
@@ -30599,7 +30629,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L282",
       "_origin": "ast",
-      "community": 235,
+      "community": 165,
       "norm_label": "memory protection \u2705",
       "id": "security_audit_checklist_memory_protection"
     },
@@ -30609,7 +30639,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L291",
       "_origin": "ast",
-      "community": 235,
+      "community": 165,
       "norm_label": "browser storage analysis \u2705",
       "id": "security_audit_checklist_browser_storage_analysis"
     },
@@ -30619,7 +30649,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L317",
       "_origin": "ast",
-      "community": 344,
+      "community": 165,
       "norm_label": "input validation & output encoding",
       "id": "security_audit_checklist_input_validation_output_encoding"
     },
@@ -30629,7 +30659,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L319",
       "_origin": "ast",
-      "community": 344,
+      "community": 165,
       "norm_label": "input validation \u2705",
       "id": "security_audit_checklist_input_validation"
     },
@@ -30639,7 +30669,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L331",
       "_origin": "ast",
-      "community": 344,
+      "community": 165,
       "norm_label": "output encoding \u2705",
       "id": "security_audit_checklist_output_encoding"
     },
@@ -30869,7 +30899,7 @@
       "source_file": "SECURITY_AUDIT_REPORT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 5,
+      "community": 327,
       "norm_label": "security_audit_report.md",
       "id": "security_audit_report"
     },
@@ -32139,7 +32169,7 @@
       "source_file": "SECURITY_PWA_ENHANCEMENT_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 5,
+      "community": 327,
       "norm_label": "security_pwa_enhancement_plan.md",
       "id": "security_pwa_enhancement_plan"
     },
@@ -33339,7 +33369,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 304,
+      "community": 131,
       "norm_label": "test suite overview",
       "id": "test_validation_plan_test_suite_overview"
     },
@@ -33349,7 +33379,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 304,
+      "community": 131,
       "norm_label": "test files inventory",
       "id": "test_validation_plan_test_files_inventory"
     },
@@ -33359,7 +33389,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 304,
+      "community": 131,
       "norm_label": "unit tests",
       "id": "test_validation_plan_unit_tests"
     },
@@ -33369,7 +33399,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 304,
+      "community": 131,
       "norm_label": "integration tests",
       "id": "test_validation_plan_integration_tests"
     },
@@ -33379,7 +33409,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 304,
+      "community": 131,
       "norm_label": "security tests",
       "id": "test_validation_plan_security_tests"
     },
@@ -33429,7 +33459,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L142",
       "_origin": "ast",
-      "community": 303,
+      "community": 131,
       "norm_label": "test coverage matrix",
       "id": "test_validation_plan_test_coverage_matrix"
     },
@@ -33439,7 +33469,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L144",
       "_origin": "ast",
-      "community": 303,
+      "community": 131,
       "norm_label": "phase 0: bug fixes",
       "id": "test_validation_plan_phase_0_bug_fixes"
     },
@@ -33449,7 +33479,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L151",
       "_origin": "ast",
-      "community": 303,
+      "community": 131,
       "norm_label": "phase 1: credential management",
       "id": "test_validation_plan_phase_1_credential_management"
     },
@@ -33459,7 +33489,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L160",
       "_origin": "ast",
-      "community": 303,
+      "community": 131,
       "norm_label": "phase 2: security features",
       "id": "test_validation_plan_phase_2_security_features"
     },
@@ -33469,7 +33499,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L168",
       "_origin": "ast",
-      "community": 303,
+      "community": 131,
       "norm_label": "phase 3: settings & ux",
       "id": "test_validation_plan_phase_3_settings_ux"
     },
@@ -33479,7 +33509,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L175",
       "_origin": "ast",
-      "community": 303,
+      "community": 131,
       "norm_label": "phase 4: advanced features",
       "id": "test_validation_plan_phase_4_advanced_features"
     },
@@ -33489,7 +33519,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L184",
       "_origin": "ast",
-      "community": 307,
+      "community": 131,
       "norm_label": "validation criteria",
       "id": "test_validation_plan_validation_criteria"
     },
@@ -33499,7 +33529,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L186",
       "_origin": "ast",
-      "community": 307,
+      "community": 131,
       "norm_label": "unit tests",
       "id": "test_validation_plan_unit_tests_186"
     },
@@ -33509,7 +33539,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L193",
       "_origin": "ast",
-      "community": 307,
+      "community": 131,
       "norm_label": "integration tests",
       "id": "test_validation_plan_integration_tests_193"
     },
@@ -33519,7 +33549,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L200",
       "_origin": "ast",
-      "community": 307,
+      "community": 131,
       "norm_label": "security tests",
       "id": "test_validation_plan_security_tests_200"
     },
@@ -33529,7 +33559,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L207",
       "_origin": "ast",
-      "community": 307,
+      "community": 131,
       "norm_label": "performance tests (manual)",
       "id": "test_validation_plan_performance_tests_manual"
     },
@@ -33539,7 +33569,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L219",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "manual test checklist",
       "id": "test_validation_plan_manual_test_checklist"
     },
@@ -33549,7 +33579,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L221",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "authentication flow",
       "id": "test_validation_plan_authentication_flow"
     },
@@ -33559,7 +33589,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L231",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "credential management",
       "id": "test_validation_plan_credential_management"
     },
@@ -33569,7 +33599,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L241",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "security features",
       "id": "test_validation_plan_security_features"
     },
@@ -33579,7 +33609,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L251",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "search & filter",
       "id": "test_validation_plan_search_filter"
     },
@@ -33589,7 +33619,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L261",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "settings",
       "id": "test_validation_plan_settings"
     },
@@ -33599,7 +33629,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L272",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "offline functionality",
       "id": "test_validation_plan_offline_functionality"
     },
@@ -33609,7 +33639,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L280",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "mobile (devtools responsive mode)",
       "id": "test_validation_plan_mobile_devtools_responsive_mode"
     },
@@ -33619,7 +33649,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L293",
       "_origin": "ast",
-      "community": 283,
+      "community": 131,
       "norm_label": "browser compatibility",
       "id": "test_validation_plan_browser_compatibility"
     },
@@ -38952,7 +38982,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 13,
+      "community": 4,
       "norm_label": "biometricmigration tests",
       "id": "test_biometricmigration"
     },
@@ -38965,7 +38995,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 13,
       "norm_label": "ratelimiter tests",
       "id": "test_ratelimiter"
     },
@@ -39069,7 +39099,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 13,
+      "community": 4,
       "norm_label": "isprfcredential",
       "id": "auth_biometricmigration_isprf_credential"
     },
@@ -39082,7 +39112,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 13,
+      "community": 4,
       "norm_label": "prf vault key scheme (prf-v1)",
       "id": "concept_prf_vault_key_scheme"
     },
@@ -39095,7 +39125,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 13,
+      "community": 4,
       "norm_label": "db v6 biometric migration",
       "id": "concept_db_v6_migration"
     },
@@ -39384,7 +39414,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 246,
+      "community": 229,
       "norm_label": "generator feature index",
       "id": "generator_index_generatorindex"
     },
@@ -39503,7 +39533,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 277,
+      "community": 3,
       "norm_label": "credentialstate interface",
       "id": "store_credentialstore_credentialstateinterface"
     },
@@ -39516,7 +39546,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 8,
+      "community": 32,
       "norm_label": "thememode type reference",
       "id": "theme_theme_thememoderef"
     },
@@ -40624,19 +40654,6 @@
       "id": "funding_github_sponsors"
     },
     {
-      "label": "Copilot AI Agent Instructions",
-      "file_type": "document",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 327,
-      "norm_label": "copilot ai agent instructions",
-      "id": "copilot_instructions_agent_guide"
-    },
-    {
       "label": "00_START_HERE (Deprecated Pointer)",
       "file_type": "document",
       "source_file": "00_START_HERE.txt",
@@ -40775,7 +40792,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 327,
       "norm_label": "metadata-at-rest encryption (s5)",
       "id": "concept_metadata_encryption"
     },
@@ -40788,7 +40805,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
+      "community": 327,
       "norm_label": "zod vault import validation (s8)",
       "id": "concept_zod_import_validation"
     },
@@ -41626,6 +41643,456 @@
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/rules/claude-mem-context.md",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "rules_claude_mem_context",
+      "target": "rules_claude_mem_context_claude_mem_cross_session_memory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L445",
+      "weight": 1.0,
+      "source": "github_copilot_instructions",
+      "target": "github_copilot_instructions_claude_mem_cross_session_memory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions",
+      "target": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_architecture_overview"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L322",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_common_patterns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L81",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_critical_module_loading_pattern"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_current_objectives_nov_2025"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L181",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_database_indexeddb_via_dexie"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L289",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_development_workflow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L432",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_external_documentation"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L417",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_key_files_reference"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L254",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_pwa_service_worker"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L146",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_react_19_strictmode_patterns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_security_cryptography"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L383",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_security_guidelines"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L114",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_state_management_zustand"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L363",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_testing_patterns"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L401",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_troubleshooting"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L220",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
+      "target": "github_copilot_instructions_typescript_strict_mode"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_architecture_overview",
+      "target": "github_copilot_instructions_path_aliases"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_security_cryptography",
+      "target": "github_copilot_instructions_data_encryption"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L60",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_security_cryptography",
+      "target": "github_copilot_instructions_key_derivation_vault_encryption"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_security_cryptography",
+      "target": "github_copilot_instructions_password_hashing_login_flow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L83",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_critical_module_loading_pattern",
+      "target": "github_copilot_instructions_wasm_umd_modules"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L116",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_state_management_zustand",
+      "target": "github_copilot_instructions_auth_store_pattern"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L148",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_react_19_strictmode_patterns",
+      "target": "github_copilot_instructions_effect_cleanup_double_render_in_dev"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L208",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_database_indexeddb_via_dexie",
+      "target": "github_copilot_instructions_encrypted_fields"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L194",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_database_indexeddb_via_dexie",
+      "target": "github_copilot_instructions_offline_first_pattern"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L183",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_database_indexeddb_via_dexie",
+      "target": "github_copilot_instructions_schema"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L232",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_typescript_strict_mode",
+      "target": "github_copilot_instructions_common_fixes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L222",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_typescript_strict_mode",
+      "target": "github_copilot_instructions_critical_flags_enforced"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L256",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_pwa_service_worker",
+      "target": "github_copilot_instructions_configuration_vite_config_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L281",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_pwa_service_worker",
+      "target": "github_copilot_instructions_pwa_icons_requirement"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L269",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_pwa_service_worker",
+      "target": "github_copilot_instructions_security_headers"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L309",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_development_workflow",
+      "target": "github_copilot_instructions_build_optimization"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L291",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_development_workflow",
+      "target": "github_copilot_instructions_commands"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L302",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_development_workflow",
+      "target": "github_copilot_instructions_pre_commit_checklist"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L324",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_common_patterns",
+      "target": "github_copilot_instructions_auto_lock_implementation"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L346",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_common_patterns",
+      "target": "github_copilot_instructions_clipboard_with_auto_clear"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L365",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_testing_patterns",
+      "target": "github_copilot_instructions_crypto_function_tests"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L392",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_security_guidelines",
+      "target": "github_copilot_instructions_always_do_this"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L385",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_security_guidelines",
+      "target": "github_copilot_instructions_never_do_this"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L407",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_troubleshooting",
+      "target": "github_copilot_instructions_invalid_hash_format_on_login"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L403",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_troubleshooting",
+      "target": "github_copilot_instructions_loading_spinner_stuck"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/copilot-instructions.md",
+      "source_location": "L411",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "github_copilot_instructions_troubleshooting",
+      "target": "github_copilot_instructions_typescript_errors_on_build"
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -83188,436 +83655,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions",
-      "target": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_architecture_overview"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L322",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_common_patterns"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L81",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_critical_module_loading_pattern"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_current_objectives_nov_2025"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L181",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_database_indexeddb_via_dexie"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L289",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_development_workflow"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L432",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_external_documentation"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L417",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_key_files_reference"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L254",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_pwa_service_worker"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L146",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_react_19_strictmode_patterns"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L45",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_security_cryptography"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L383",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_security_guidelines"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L114",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_state_management_zustand"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L363",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_testing_patterns"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L401",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_troubleshooting"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L220",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_trustvault_pwa_ai_agent_instructions",
-      "target": "github_copilot_instructions_typescript_strict_mode"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L34",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_architecture_overview",
-      "target": "github_copilot_instructions_path_aliases"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L67",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_security_cryptography",
-      "target": "github_copilot_instructions_data_encryption"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L60",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_security_cryptography",
-      "target": "github_copilot_instructions_key_derivation_vault_encryption"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_security_cryptography",
-      "target": "github_copilot_instructions_password_hashing_login_flow"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L83",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_critical_module_loading_pattern",
-      "target": "github_copilot_instructions_wasm_umd_modules"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L116",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_state_management_zustand",
-      "target": "github_copilot_instructions_auth_store_pattern"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L148",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_react_19_strictmode_patterns",
-      "target": "github_copilot_instructions_effect_cleanup_double_render_in_dev"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L208",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_database_indexeddb_via_dexie",
-      "target": "github_copilot_instructions_encrypted_fields"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L194",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_database_indexeddb_via_dexie",
-      "target": "github_copilot_instructions_offline_first_pattern"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L183",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_database_indexeddb_via_dexie",
-      "target": "github_copilot_instructions_schema"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L232",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_typescript_strict_mode",
-      "target": "github_copilot_instructions_common_fixes"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L222",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_typescript_strict_mode",
-      "target": "github_copilot_instructions_critical_flags_enforced"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L256",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_pwa_service_worker",
-      "target": "github_copilot_instructions_configuration_vite_config_ts"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L281",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_pwa_service_worker",
-      "target": "github_copilot_instructions_pwa_icons_requirement"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L269",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_pwa_service_worker",
-      "target": "github_copilot_instructions_security_headers"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L309",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_development_workflow",
-      "target": "github_copilot_instructions_build_optimization"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L291",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_development_workflow",
-      "target": "github_copilot_instructions_commands"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L302",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_development_workflow",
-      "target": "github_copilot_instructions_pre_commit_checklist"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L324",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_common_patterns",
-      "target": "github_copilot_instructions_auto_lock_implementation"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L346",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_common_patterns",
-      "target": "github_copilot_instructions_clipboard_with_auto_clear"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L365",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_testing_patterns",
-      "target": "github_copilot_instructions_crypto_function_tests"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L392",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_security_guidelines",
-      "target": "github_copilot_instructions_always_do_this"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L385",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_security_guidelines",
-      "target": "github_copilot_instructions_never_do_this"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L407",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_troubleshooting",
-      "target": "github_copilot_instructions_invalid_hash_format_on_login"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L403",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_troubleshooting",
-      "target": "github_copilot_instructions_loading_spinner_stuck"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".github/copilot-instructions.md",
-      "source_location": "L411",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "github_copilot_instructions_troubleshooting",
-      "target": "github_copilot_instructions_typescript_errors_on_build"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": ".jules/sentinel.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -102996,16 +103033,6 @@
       "target": "public_pwa_maskable_512x512_icon"
     },
     {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "AGENTS.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "agents_agentic_coding_guide",
-      "target": "copilot_instructions_agent_guide"
-    },
-    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -104193,5 +104220,5 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts"
     }
   ],
-  "built_at_commit": "8daa44b158a35b47c83b46bb4e6de0e5faa88069"
+  "built_at_commit": "4d1dafc6658cf0db7887b2fb5e9a81c45c7ab19d"
 }
