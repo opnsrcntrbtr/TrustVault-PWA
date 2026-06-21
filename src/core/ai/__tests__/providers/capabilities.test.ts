@@ -32,8 +32,11 @@ describe('capabilities', () => {
     expect(isAndroid()).toBe(false);
   });
 
-  it('isMobileAiSurfaceEnabled() mirrors isAndroid() in v1', () => {
+  it('isMobileAiSurfaceEnabled() is disabled (kill-switch off post-Task-11) even on Android', () => {
+    // WebLLM surface gated off after on-device verification found a systemic
+    // Adreno VK_ERROR_DEVICE_LOST at warm-up (see capabilities.ts). Even on an
+    // Android UA the surface must stay off until the kill-switch is flipped back.
     setNav({ userAgent: 'Mozilla/5.0 (Linux; Android 14)' });
-    expect(isMobileAiSurfaceEnabled()).toBe(true);
+    expect(isMobileAiSurfaceEnabled()).toBe(false);
   });
 });

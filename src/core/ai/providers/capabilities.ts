@@ -20,9 +20,27 @@ export function isAndroid(): boolean {
 }
 
 /**
- * v1 feature flag: the WebLLM download UI is surfaced only on Android.
- * Capability detection (hasWebGpu) stays platform-honest; this only gates UI.
+ * Master kill-switch for the WebLLM (Android) on-device AI surface.
+ *
+ * DISABLED 2026-06-21 after on-device verification (Task 11). WebLLM inference
+ * reliably crashes the Qualcomm Adreno Vulkan driver with VK_ERROR_DEVICE_LOST
+ * during engine warm-up — reproduced on two Adreno generations (Adreno 6xx /
+ * Android 10 and Adreno 810 / SD 7s Gen 3 / Android 16), both q4f16 AND q4f32,
+ * both 0.5B and 1B, with reduced context, on the latest @mlc-ai/web-llm. Plain
+ * WebGPU compute works on the same devices, so it is WebLLM's heavy kernels vs.
+ * the Adreno driver — not an app bug and not fixable at the app layer. Adreno is
+ * the dominant Android GPU and no working Android GPU case is known, so the
+ * surface is gated off rather than shipping a multi-hundred-MB download that
+ * can't run. Re-enable (flip to `true`) once WebLLM/Dawn/Qualcomm resolve this
+ * upstream and inference is re-verified on-device. See TEST_STATUS.md.
+ */
+const WEBLLM_ANDROID_ENABLED: boolean = false;
+
+/**
+ * Feature flag: the WebLLM download UI / provider fallback is surfaced only on
+ * Android, and only while the kill-switch above is enabled. Capability detection
+ * (hasWebGpu) stays platform-honest; this only gates the UI + provider selection.
  */
 export function isMobileAiSurfaceEnabled(): boolean {
-  return isAndroid();
+  return WEBLLM_ANDROID_ENABLED && isAndroid();
 }

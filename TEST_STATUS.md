@@ -6,6 +6,39 @@
 
 ---
 
+## WebLLM Android — DISABLED after 2nd-device verification — June 21, 2026
+
+**Decision: the Android WebLLM surface is gated OFF** (`WEBLLM_ANDROID_ENABLED = false`
+in `src/core/ai/providers/capabilities.ts`; `isMobileAiSurfaceEnabled()` now returns
+`false`). Desktop Chrome (Gemini Nano) is unaffected. Trivially re-enabled when fixed upstream.
+
+**Why:** a second, newer device confirmed the warm-up GPU device-loss is **systemic to
+Qualcomm Adreno**, not a low-end fluke:
+
+| | Device 1 | Device 2 |
+|---|---|---|
+| Model / Android | I2019 / Android 10 | **A059 / Android 16** |
+| SoC / GPU | Adreno 6xx | **SM7635 (Snapdragon 7s Gen 3) / Adreno 810** |
+| RAM | 4–6 GB | ~8 GB |
+| Result | `Device was lost` at warm-up | **`vkQueueSubmit … VK_ERROR_DEVICE_LOST`** at warm-up |
+
+Variables ruled out (all reproduce the device-loss): **precision** (q4f16 *and* q4f32),
+**model size** (0.5B *and* 1B), **context** (default *and* capped 2048), **library**
+(latest `@mlc-ai/web-llm` 0.2.84). Meanwhile a **plain WebGPU f32 compute job runs
+correctly** on device 2 (`[0,2,4,6,8]`), proving WebGPU/compute itself is healthy — it is
+WebLLM's large fused kernels vs. the Adreno Vulkan driver, with **no app-level lever** and
+**no known working Android GPU**. Adreno is the dominant Android GPU, so shipping a
+multi-hundred-MB download that can't run is worse than not offering it.
+
+What still holds from the first pass: WebGPU detection, the (now-gated) download UI, full
+weight download, and the reconciled CSP allowlist (zero violations) were all verified
+working; the graceful device-loss handling added in `webllmProvider.ts` remains in place as
+defense-in-depth if the switch is ever re-enabled. **Test note:** `capabilities.test.ts` and
+`registry.test.ts` updated — surface asserts disabled in the shipped state, with the WebLLM
+selection wiring still covered (via a flag override) so re-enabling stays safe.
+
+---
+
 ## WebLLM Android Provider — On-Device Verification (Task 11) — June 21, 2026
 
 **Device:** Android 10, Qualcomm **Adreno 6xx** (WebGPU), `deviceMemory` 8 GB, Chrome stable 149.
