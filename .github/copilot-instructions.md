@@ -440,3 +440,11 @@ describe('Encryption', () => {
 
 **Last Updated**: October 23, 2025  
 **Node**: >=20.0.0 | **npm**: >=10.0.0 | **TypeScript**: 5.7.2 | **React**: 19.0.0
+
+<claude-mem-context>
+# claude-mem: Cross-Session Memory
+
+*No context yet. Complete your first session and context will appear here.*
+
+Use claude-mem's MCP search tools for manual memory queries.
+</claude-mem-context>
