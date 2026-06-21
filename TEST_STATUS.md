@@ -6,6 +6,68 @@
 
 ---
 
+## WebLLM Android Provider — On-Device Verification (Task 11) — June 21, 2026
+
+**Device:** Android 10, Qualcomm **Adreno 6xx** (WebGPU), `deviceMemory` 8 GB, Chrome stable 149.
+**Harness:** production `npm run build` + `npm run preview` (strict CSP), phone connected via
+`adb reverse tcp:4173 tcp:4173` (localhost = secure context → WebGPU + SW enabled).
+
+### ✅ Verified working on real hardware
+| Check | Result |
+|---|---|
+| WebGPU present | ✅ `requestAdapter()` → vendor `qualcomm`, arch `adreno-6xx`; `shader-f16` supported; limits `maxBufferSize` 1024 MB / `maxStorageBufferBindingSize` 512 MB |
+| Android gating (`isMobileAiSurfaceEnabled`) | ✅ Settings "On-device AI model (Android)" block shows only on Android+WebGPU |
+| Model weight download | ✅ reaches 100% (tested Llama-3.2-1B and Qwen2.5-0.5B) |
+| **CSP allowlist (`WEBLLM_MODEL_ORIGINS`)** | ✅ **zero CSP `connect-src` blocks after reconciliation** |
+
+### 🔎 CSP reconciliation (the headline goal of Task 11)
+The provisional allowlist was **wrong**. Network-tab capture showed HF migrated weights to its
+**Xet** storage backend, load-balanced across regional CDN hosts. Confirmed observed origins:
+
+| Origin | Serves | Status |
+|---|---|---|
+| `https://huggingface.co` | `mlc-chat-config.json`, tokenizer, resolve URLs | confirmed hit |
+| `https://*.xethub.hf.co` | weight shards (`params_shard_*.bin`) — e.g. `cas-bridge.xethub.hf.co` | confirmed hit |
+| `https://*.aws.cdn.hf.co` | weight shards (regional) — e.g. `us.aws.cdn.hf.co` | confirmed hit |
+| `https://raw.githubusercontent.com` | model `.wasm` lib (`mlc-ai/binary-mlc-llm-libs`) | confirmed hit |
+
+Removed (never hit): `cdn-lfs.huggingface.co`, `cdn-lfs-us-1.huggingface.co` (legacy LFS, superseded by Xet).
+Wildcards used for the two Xet CDN domains because shards are region-load-balanced; pinning single
+hosts would break downloads for users in other regions. Updated in `src/config/securityHeaders.ts`
++ `vercel.json` (parity test green).
+
+### ❌ Inference — hard device limitation on this unit (NOT a code defect)
+WebLLM **loses the WebGPU device during engine init/warm-up**, *before any tokens*:
+> `Device was lost. This can happen due to insufficient memory or other GPU constraints.`
+
+Reproduced identically on **both** the 1B model and the 0.5B model **with `context_window_size`
+capped at 2048** — so it is **not** model-size or context driven. With healthy reported limits and
+`shader-f16` present, the cause is the **Android 10 + Adreno 6xx driver killing the GPU process during
+WebLLM's shader-pipeline compilation** — a documented WebLLM-on-Android failure mode on older
+Qualcomm drivers, with no app-level lever. The feature is opt-in + capability-gated, so such devices
+simply should not enable it.
+
+### 🛠️ Code changes made during verification
+- **CSP reconciliation** — `securityHeaders.ts` + `vercel.json` (above).
+- **Catalog: added Tiny tier** `Qwen2.5-0.5B-Instruct-q4f16_1-MLC` (~380 MB) for best low-end
+  compatibility; `webllmModels.ts`.
+- **Reduced warm-up footprint** — `createEngine()` passes `context_window_size: 2048` (our prompts
+  are tiny); `webllmProvider.ts`.
+- **Graceful device-loss handling (TDD)** — `webllmProvider.ts` now detects WebGPU device-loss,
+  resets engine state (no wedge; retry re-creates), and surfaces one clean error instead of the
+  raw cascade. UI already renders a clean "Could not generate an explanation." message + retry.
+  Covered by 2 new `webllmProvider.test.ts` cases.
+
+### ⏸️ Not verified (blocked by the device GPU limit)
+- Strength-explain / breach-impact **token streaming** — could not reach inference on this device.
+- **Airplane-mode offline** inference — same.
+- These remain to be confirmed on a device whose driver sustains WebLLM init (e.g. a newer
+  Adreno 7xx / Mali / Tensor device).
+
+**Suite:** AI + config + settings = **65/65 passing** after the above changes; `type-check` + `lint` clean.
+
+---
+
 ## On-Device AI "Explain Password Strength" Validation — June 19, 2026
 
 **Change**: Added coverage for the on-device AI password-strength explanation flow, plus a shared test-environment `localStorage` shim so storage-backed tests run reliably under Vitest.

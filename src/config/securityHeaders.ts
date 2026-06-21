@@ -18,13 +18,22 @@ export const HIBP_ORIGINS = [
 
 /**
  * Origins WebLLM fetches model weights/config from (Android on-device AI).
- * Weight download ONLY — no user data leaves the device. Confirm the exact
- * host set via the Network tab during on-device verification; keep minimal.
+ * Weight download ONLY — no user data leaves the device.
+ *
+ * Confirmed via on-device Network-tab capture (2026-06-21, Llama-3.2-1B):
+ *   - huggingface.co .............. mlc-chat-config.json, tokenizer, resolve URLs
+ *   - *.xethub.hf.co / *.aws.cdn.hf.co ... weight shards (params_shard_*.bin)
+ *       via HF's Xet storage backend. Shards are load-balanced across regional
+ *       CDN hosts (observed: cas-bridge.xethub.hf.co, us.aws.cdn.hf.co), so we
+ *       allow the two HF-controlled Xet CDN domains by wildcard rather than
+ *       pinning region-specific hosts that would break downloads elsewhere.
+ *       These replaced the legacy cdn-lfs*.huggingface.co LFS hosts (never hit).
+ *   - raw.githubusercontent.com ... model_lib .wasm (mlc-ai/binary-mlc-llm-libs)
  */
 export const WEBLLM_MODEL_ORIGINS = [
   'https://huggingface.co',
-  'https://cdn-lfs.huggingface.co',
-  'https://cdn-lfs-us-1.huggingface.co',
+  'https://*.xethub.hf.co',
+  'https://*.aws.cdn.hf.co',
   'https://raw.githubusercontent.com',
 ] as const;
 

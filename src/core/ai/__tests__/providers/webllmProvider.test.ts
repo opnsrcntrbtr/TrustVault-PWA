@@ -65,6 +65,31 @@ describe('webllmProvider', () => {
     );
   });
 
+  it('normalizes a GPU device-lost failure during init and resets so a retry re-creates', async () => {
+    create.mockReset();
+    create.mockRejectedValueOnce(
+      new Error('Device was lost. This can happen due to insufficient memory or other GPU constraints.'),
+    );
+    await expect(webllmProvider.ensureReady()).rejects.toThrow(/on-device AI could not start/i);
+    // State must be reset: a second attempt re-invokes CreateMLCEngine.
+    create.mockResolvedValueOnce(engine);
+    await webllmProvider.ensureReady();
+    expect(create).toHaveBeenCalledTimes(2);
+  });
+
+  it('normalizes a device-lost failure mid-stream and resets the engine', async () => {
+    engine.chat.completions.create.mockRejectedValueOnce(
+      new Error('A valid external Instance reference no longer exists.'),
+    );
+    const stream = webllmProvider.runStreaming({ systemPrompt: 's', userPrompt: 'u' });
+    await expect((async () => { const out: string[] = []; for await (const c of stream) out.push(c); })())
+      .rejects.toThrow(/on-device AI could not start/i);
+    // Engine reset → a follow-up ensureReady re-creates (create called again).
+    create.mockResolvedValueOnce(engine);
+    await webllmProvider.ensureReady();
+    expect(create).toHaveBeenCalledTimes(2);
+  });
+
   it('runStreaming interrupts generation when the signal aborts', async () => {
     const controller = new AbortController();
     // eslint-disable-next-line @typescript-eslint/require-await -- async generator stub, no await needed

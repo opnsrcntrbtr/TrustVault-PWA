@@ -26,6 +26,29 @@ export function __resetWebllmEngineForTesting(): void {
   engine = null; engineModelId = null; initPromise = null;
 }
 
+/**
+ * User-facing message when the GPU can't sustain WebLLM. Seen on low-end /
+ * older mobile GPUs (e.g. some Android 10 + Adreno 6xx drivers) that lose the
+ * WebGPU device during engine warm-up regardless of model size.
+ */
+const DEVICE_UNAVAILABLE_MESSAGE =
+  "On-device AI could not start on this device's GPU. It may not support running this model.";
+
+/**
+ * True for WebGPU device-loss / dropped-instance failures, which cascade once
+ * the GPU device is gone. We normalize these into one clean error and reset the
+ * engine, instead of letting WebLLM's internal rejections flood the console.
+ */
+function isDeviceLostError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err);
+  return /device was lost|external instance reference|poperrorscope|gpudevice|device is lost/i.test(msg);
+}
+
+/** Drops all engine state so the next ensureReady() re-creates from scratch. */
+function resetEngineState(): void {
+  engine = null; engineModelId = null; initPromise = null;
+}
+
 /** Unloads the engine (frees GPU/WASM memory) so a different model can be picked. */
 export async function removeWebllmModel(): Promise<void> {
   if (engine) await engine.unload();
@@ -37,11 +60,20 @@ async function createEngine(
   onProgress?: (p: AiDownloadProgress) => void,
 ): Promise<MlcEngine> {
   const { CreateMLCEngine } = await import('@mlc-ai/web-llm');
-  const created = await CreateMLCEngine(modelId, {
-    initProgressCallback: (r: { progress: number; text: string }) => {
-      onProgress?.({ progress: r.progress, text: r.text });
+  // Both AI surfaces send short prompts (strength rating / breach metadata), so
+  // a large context is unnecessary. Capping context_window_size keeps the
+  // warm-up KV-cache allocation small — this avoids the GPU device-loss seen on
+  // low-end/older mobile GPUs (e.g. Adreno 6xx) where the model's default
+  // context blows the warm-up memory budget.
+  const created = await CreateMLCEngine(
+    modelId,
+    {
+      initProgressCallback: (r: { progress: number; text: string }) => {
+        onProgress?.({ progress: r.progress, text: r.text });
+      },
     },
-  });
+    { context_window_size: 2048 },
+  );
   return created as unknown as MlcEngine;
 }
 
@@ -52,7 +84,11 @@ async function ensureReady(onProgress?: (p: AiDownloadProgress) => void): Promis
   try { await navigator.storage.persist(); } catch { /* best-effort */ }
   initPromise = createEngine(modelId, onProgress)
     .then((e) => { engine = e; engineModelId = modelId; initPromise = null; return e; })
-    .catch((err: unknown) => { initPromise = null; throw err; });
+    .catch((err: unknown) => {
+      resetEngineState();
+      if (isDeviceLostError(err)) throw new Error(DEVICE_UNAVAILABLE_MESSAGE);
+      throw err;
+    });
   await initPromise;
 }
 
@@ -76,6 +112,11 @@ async function* runStreaming(args: {
       const piece = chunk.choices[0]?.delta.content;
       if (piece) yield piece;
     }
+  } catch (err: unknown) {
+    // A device-loss mid-generation leaves the engine wedged — reset it so the
+    // next attempt re-creates, and surface one clean error instead of cascade.
+    if (isDeviceLostError(err)) { resetEngineState(); throw new Error(DEVICE_UNAVAILABLE_MESSAGE); }
+    throw err;
   } finally {
     args.signal?.removeEventListener('abort', onAbort);
   }
