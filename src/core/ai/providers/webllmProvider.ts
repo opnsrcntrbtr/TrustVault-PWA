@@ -7,6 +7,7 @@ import type { AiAvailability } from '@/core/ai/aiTypes';
 import type { AiProvider, AiDownloadProgress } from '@/core/ai/providers/types';
 import { hasWebGpu } from '@/core/ai/providers/capabilities';
 import { loadAiSettings } from '@/core/ai/aiSettings';
+import { isDeviceLostError, DEVICE_UNAVAILABLE_MESSAGE } from '@/core/ai/providers/gpuErrors';
 
 interface MlcEngine {
   chat: { completions: { create(opts: {
@@ -24,24 +25,6 @@ let initPromise: Promise<MlcEngine> | null = null;
 
 export function __resetWebllmEngineForTesting(): void {
   engine = null; engineModelId = null; initPromise = null;
-}
-
-/**
- * User-facing message when the GPU can't sustain WebLLM. Seen on low-end /
- * older mobile GPUs (e.g. some Android 10 + Adreno 6xx drivers) that lose the
- * WebGPU device during engine warm-up regardless of model size.
- */
-const DEVICE_UNAVAILABLE_MESSAGE =
-  "On-device AI could not start on this device's GPU. It may not support running this model.";
-
-/**
- * True for WebGPU device-loss / dropped-instance failures, which cascade once
- * the GPU device is gone. We normalize these into one clean error and reset the
- * engine, instead of letting WebLLM's internal rejections flood the console.
- */
-function isDeviceLostError(err: unknown): boolean {
-  const msg = err instanceof Error ? err.message : String(err);
-  return /device was lost|external instance reference|poperrorscope|gpudevice|device is lost/i.test(msg);
 }
 
 /** Drops all engine state so the next ensureReady() re-creates from scratch. */
