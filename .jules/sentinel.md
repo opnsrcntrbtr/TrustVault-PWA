@@ -13,3 +13,11 @@
 **Learning:** URL parsers in browsers effectively strip control characters like tabs (`\t`) or line feeds (`\n`) out of URLs during interpretation. However, JavaScript URL parsers, strict protocol matchers, or regular expressions without `\s` equivalents might fail to match them. This creates an XSS vulnerability vector.
 
 **Prevention:** URLs should have all control characters `[\x00-\x1F\x7F-\x9F]` explicitly stripped out using `.replace(/[\x00-\x1F\x7F-\x9F]/g, '')` prior to ANY security-related checks or evaluation.
+
+## 2026-06-19 - [Insecure Randomness] Math.random() usage in Vault Bridge
+
+**Vulnerability:** Weak randomness using `Math.random()` to generate `requestId` in `chrome-extension/scripts/vault-bridge.js`.
+
+**Learning:** `Math.random()` is not cryptographically secure and can generate predictable values. In security contexts (like generating identifiers that might be used to correlate or authorize messages in extensions between content scripts and background workers), predictable random values could potentially lead to spoofing attacks or other logic flaws where an attacker anticipates the IDs.
+
+**Prevention:** Always use cryptographically secure random number generators such as `crypto.randomUUID()` or `crypto.getRandomValues()` instead of `Math.random()`, especially in components dealing with request identifiers or security tokens.

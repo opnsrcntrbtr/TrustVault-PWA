@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     return undefined;
   }
 
-  const requestId = `${Date.now()}-${Math.random()}`;
+  const requestId = crypto.randomUUID();
   let responded = false;
 
   const finish = (credentials) => {
