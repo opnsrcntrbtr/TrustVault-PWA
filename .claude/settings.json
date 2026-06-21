@@ -1,4 +1,10 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(pkill -f \"vite --host\")",
+      "Bash(npm test *)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
