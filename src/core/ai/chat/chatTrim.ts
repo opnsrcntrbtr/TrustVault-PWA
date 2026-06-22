@@ -7,7 +7,7 @@
 export const MAX_CHAT_TURNS = 8;
 
 /** Mutates `messages` in place: keeps a leading system message + last `maxTurns`. */
-export function trimChatMessages<T extends { role: string }>(messages: T[], maxTurns: number): void {
+export function trimChatMessages(messages: { role: string }[], maxTurns: number): void {
   const hasSystem = messages[0]?.role === 'system' ? 1 : 0;
   const nonSystem = messages.length - hasSystem;
   if (nonSystem <= maxTurns) return;

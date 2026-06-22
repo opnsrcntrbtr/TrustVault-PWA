@@ -3,13 +3,13 @@ import { assertNoSecrets, buildAssistantSystemPrompt } from '@/core/ai/chat/chat
 
 describe('assertNoSecrets', () => {
   it('throws when a password field is present', () => {
-    expect(() => assertNoSecrets('password: hunter2')).toThrow(/safety invariant/i);
+    expect(() => { assertNoSecrets('password: hunter2'); }).toThrow(/safety invariant/i);
   });
   it('throws when a notes field is present', () => {
-    expect(() => assertNoSecrets('Notes: my secret')).toThrow(/safety invariant/i);
+    expect(() => { assertNoSecrets('Notes: my secret'); }).toThrow(/safety invariant/i);
   });
   it('passes for clean context', () => {
-    expect(() => assertNoSecrets('Title: GitHub\nCategory: dev')).not.toThrow();
+    expect(() => { assertNoSecrets('Title: GitHub\nCategory: dev'); }).not.toThrow();
   });
 });
 
@@ -26,7 +26,7 @@ describe('buildAssistantSystemPrompt', () => {
     });
     expect(p).toContain('10');
     expect(p).toContain('weak');
-    expect(() => assertNoSecrets(p)).not.toThrow();
+    expect(() => { assertNoSecrets(p); }).not.toThrow();
   });
 
   it('per-credential: includes safe fields only', () => {

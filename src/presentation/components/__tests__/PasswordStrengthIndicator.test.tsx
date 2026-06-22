@@ -5,12 +5,12 @@ import PasswordStrengthIndicator from '@/presentation/components/PasswordStrengt
 const sendMock = vi.fn().mockResolvedValue(undefined);
 const useAiChatMock = vi.fn();
 vi.mock('@/presentation/hooks/useAiChat', () => ({
-  useAiChat: () => useAiChatMock(),
+  useAiChat: (): unknown => useAiChatMock(),
 }));
 
 const loadAiSettingsMock = vi.fn();
 vi.mock('@/core/ai/aiSettings', () => ({
-  loadAiSettings: () => loadAiSettingsMock(),
+  loadAiSettings: (): unknown => loadAiSettingsMock(),
 }));
 
 beforeEach(() => {
@@ -43,7 +43,7 @@ describe('PasswordStrengthIndicator AI Explanation', () => {
     const btn = screen.getByText('Explain with AI');
     expect(btn).toBeInTheDocument();
     fireEvent.click(btn);
-    await waitFor(() => expect(sendMock).toHaveBeenCalled());
+    await waitFor(() => { expect(sendMock).toHaveBeenCalled(); });
   });
 
   it('shows a follow-up chat input after the explanation when chat is enabled', async () => {

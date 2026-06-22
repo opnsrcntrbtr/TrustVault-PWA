@@ -1,5 +1,5 @@
 import type { Credential, StoredCredential } from '@/domain/entities';
-import type { CredentialCategory } from '@/domain/entities';
+
 
 export const mockCredentialData: Partial<Credential> = {
   id: 'cred-1',
@@ -8,7 +8,7 @@ export const mockCredentialData: Partial<Credential> = {
   password: 'SecurePassword123!',
   url: 'https://example.com',
   notes: 'Main account',
-  category: 'banking' as CredentialCategory,
+  category: 'banking',
 };
 
 export const mockStoredCredential: StoredCredential = {

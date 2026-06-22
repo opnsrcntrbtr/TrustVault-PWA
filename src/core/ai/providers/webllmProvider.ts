@@ -109,6 +109,7 @@ async function* runStreaming(args: {
 type ChatRoleMsg = { role: 'system' | 'user' | 'assistant'; content: string };
 
 async function createChatSession(systemPrompt: string): Promise<ChatSession> {
+  await Promise.resolve();
   const messages: ChatRoleMsg[] = [{ role: 'system', content: systemPrompt }];
   let destroyed = false;
   return {

@@ -671,8 +671,7 @@ describe('Credential CRUD Integration', () => {
       const backupCodeInput = screen.getByPlaceholderText('e.g., 12345678');
       const firstCodeElement = codeElements[0] as HTMLElement;
       expect(firstCodeElement).toBeDefined();
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      await user.type(backupCodeInput, firstCodeElement.textContent!);
+      await user.type(backupCodeInput, firstCodeElement.textContent || '');
 
       // Use the code
       await user.click(screen.getByRole('button', { name: /use this code/i }));

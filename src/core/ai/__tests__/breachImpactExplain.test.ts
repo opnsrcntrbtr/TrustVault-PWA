@@ -50,7 +50,7 @@ describe('breachImpactExplain', () => {
           credentialUsername: 'password: mysecretpassword',
           breaches: [],
         })
-      ).toThrowError(/Safety invariant violation/);
+      ).toThrow(/Safety invariant violation/);
       
       expect(() =>
         buildBreachPrompt({
@@ -58,13 +58,14 @@ describe('breachImpactExplain', () => {
           credentialCategory: 'notes: some secret',
           breaches: [],
         })
-      ).toThrowError(/Safety invariant violation/);
+      ).toThrow(/Safety invariant violation/);
     });
   });
 
   describe('explainBreachImpact', () => {
     it('calls runPromptStreaming with the correct arguments', async () => {
       async function* mockStream() {
+        await Promise.resolve();
         yield 'Test ';
         yield 'response';
       }
@@ -82,8 +83,8 @@ describe('breachImpactExplain', () => {
 
       expect(result).toBe('Test response');
       expect(promptApi.runPromptStreaming).toHaveBeenCalledWith({
-        systemPrompt: expect.stringContaining('You are a security assistant'),
-        userPrompt: expect.stringContaining('Title: Site'),
+        systemPrompt: expect.stringContaining('You are a security assistant') as unknown as string,
+        userPrompt: expect.stringContaining('Title: Site') as unknown as string,
       });
     });
   });

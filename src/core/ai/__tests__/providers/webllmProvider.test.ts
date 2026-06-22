@@ -133,7 +133,7 @@ describe('webllmProvider', () => {
     const chat = await webllmProvider.createChatSession('sys');
     chat.destroy();
     await expect((async () => {
-      for await (const _c of chat.send('q')) { /* drain */ }
+      for await (const chunk of chat.send('q')) { void chunk; }
     })()).rejects.toThrow('destroyed');
   });
 });

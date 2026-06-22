@@ -6,12 +6,12 @@ import type { BreachData } from '@/core/breach/breachTypes';
 const sendMock = vi.fn().mockResolvedValue(undefined);
 const useAiChatMock = vi.fn();
 vi.mock('@/presentation/hooks/useAiChat', () => ({
-  useAiChat: () => useAiChatMock(),
+  useAiChat: (): unknown => useAiChatMock(),
 }));
 
 const loadAiSettingsMock = vi.fn();
 vi.mock('@/core/ai/aiSettings', () => ({
-  loadAiSettings: () => loadAiSettingsMock(),
+  loadAiSettings: (): unknown => loadAiSettingsMock(),
 }));
 
 const breach: BreachData = {
@@ -64,7 +64,7 @@ describe('BreachDetailsModal AI Impact Analysis', () => {
     );
     fireEvent.click(await screen.findByText(/AI Impact Analysis/i));
     expect(await screen.findByPlaceholderText(/ask a follow-up/i)).toBeInTheDocument();
-    await waitFor(() => expect(sendMock).toHaveBeenCalled());
+    await waitFor(() => { expect(sendMock).toHaveBeenCalled(); });
   });
 
   it('does not render the AI section when chat is not enabled', () => {

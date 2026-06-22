@@ -41,7 +41,7 @@ export function GeneralAssistant({ open, onClose }: GeneralAssistantProps): JSX.
             size="small"
             value={scope}
             inputProps={{ 'aria-label': 'scope' }}
-            onChange={(e) => handleScope(e.target.value as ChatScope)}
+            onChange={(e) => { handleScope(e.target.value as ChatScope); }}
           >
             {(Object.keys(SCOPE_LABELS) as ChatScope[]).map((s) => (
               <MenuItem key={s} value={s}>{SCOPE_LABELS[s]}</MenuItem>

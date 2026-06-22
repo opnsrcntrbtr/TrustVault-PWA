@@ -36,7 +36,7 @@ describe('WebAuthn Core Functions', () => {
       isConditionalMediationAvailable: vi.fn().mockResolvedValue(true),
     });
 
-    global.window = {
+    globalThis.window = {
       PublicKeyCredential: PublicKeyCredentialMock,
       location: {
         hostname: 'localhost',
@@ -54,7 +54,7 @@ describe('WebAuthn Core Functions', () => {
       type WindowWithOptionalPublicKey = typeof globalThis.window & {
         PublicKeyCredential?: unknown;
       };
-      (global.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
+      (globalThis.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
       expect(isWebAuthnSupported()).toBe(false);
     });
   });
@@ -69,7 +69,7 @@ describe('WebAuthn Core Functions', () => {
       type WindowWithOptionalPublicKey = typeof globalThis.window & {
         PublicKeyCredential?: unknown;
       };
-      (global.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
+      (globalThis.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
       const available = await isBiometricAvailable();
       expect(available).toBe(false);
     });
@@ -80,7 +80,8 @@ describe('WebAuthn Core Functions', () => {
           isUserVerifyingPlatformAuthenticatorAvailable: () => Promise<boolean>;
         };
       };
-      (global.window as WindowWithPublicKey).PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable = vi.fn().mockRejectedValue(new Error('Not available'));
+      const windowMock = globalThis.window as WindowWithPublicKey;
+      windowMock.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable = vi.fn().mockRejectedValue(new Error('Not available'));
 
       const available = await isBiometricAvailable();
       expect(available).toBe(false);
@@ -88,11 +89,11 @@ describe('WebAuthn Core Functions', () => {
   });
 
   describe('getDeviceName', () => {
-    const originalNavigator = global.navigator;
+    const originalNavigator = globalThis.navigator;
 
     afterEach(() => {
       // Restore original navigator
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: originalNavigator,
         configurable: true,
         writable: true,
@@ -100,7 +101,7 @@ describe('WebAuthn Core Functions', () => {
     });
 
     it('should return "Mac Touch ID" for Mac devices', () => {
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: {
           userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
         },
@@ -117,7 +118,7 @@ describe('WebAuthn Core Functions', () => {
     });
 
     it('should return "Windows Hello" for Windows devices', () => {
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: {
           userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         },
@@ -129,7 +130,7 @@ describe('WebAuthn Core Functions', () => {
     });
 
     it('should return "Android Biometric" for Android devices', () => {
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: {
           userAgent: 'Mozilla/5.0 (Linux; Android 11)',
         },
@@ -141,7 +142,7 @@ describe('WebAuthn Core Functions', () => {
     });
 
     it('should return generic name for unknown devices', () => {
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: {
           userAgent: 'Unknown Device',
         },
@@ -313,7 +314,7 @@ describe('WebAuthn Integration', () => {
       type WindowWithOptionalPublicKey = typeof globalThis.window & {
         PublicKeyCredential?: unknown;
       };
-      (global.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
+      (globalThis.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
 
       await expect(registerBiometric({
         rpName: 'TrustVault',
@@ -432,10 +433,10 @@ describe('WebAuthn Integration', () => {
 });
 
 describe('Platform-Specific Features', () => {
-  const originalNavigator = global.navigator;
+  const originalNavigator = globalThis.navigator;
 
   afterEach(() => {
-    Object.defineProperty(global, 'navigator', {
+    Object.defineProperty(globalThis, 'navigator', {
       value: originalNavigator,
       configurable: true,
       writable: true,
@@ -444,7 +445,7 @@ describe('Platform-Specific Features', () => {
 
   describe('Touch ID (macOS/iOS)', () => {
     it('should detect Touch ID devices', () => {
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: {
           userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
         },
@@ -467,7 +468,7 @@ describe('Platform-Specific Features', () => {
 
   describe('Windows Hello', () => {
     it('should detect Windows Hello devices', () => {
-      Object.defineProperty(global, 'navigator', {
+      Object.defineProperty(globalThis, 'navigator', {
         value: {
           userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
         },

@@ -43,10 +43,7 @@ export interface RegistrationOptions {
  * Checks if WebAuthn is supported in the browser
  */
 export function isWebAuthnSupported(): boolean {
-  return (
-    window.PublicKeyCredential !== undefined &&
-    typeof window.PublicKeyCredential === 'function'
-  );
+  return typeof window !== 'undefined' && typeof window.PublicKeyCredential === 'function';
 }
 
 /**
@@ -286,13 +283,8 @@ export async function getAuthenticatorInfo(): Promise<{
   const biometricAvailable = await isBiometricAvailable();
   
   let conditionalMediationAvailable = false;
-  if (
-    window.PublicKeyCredential?.isConditionalMediationAvailable !== undefined
-  ) {
-    const cond = window.PublicKeyCredential.isConditionalMediationAvailable;
-    if (cond !== undefined) {
-      conditionalMediationAvailable = await cond();
-    }
+  if (typeof window.PublicKeyCredential === 'function') {
+    conditionalMediationAvailable = await window.PublicKeyCredential.isConditionalMediationAvailable();
   }
 
   return {

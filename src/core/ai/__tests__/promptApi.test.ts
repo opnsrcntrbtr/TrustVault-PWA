@@ -37,11 +37,12 @@ describe('promptApi delegation', () => {
   it('createChatSession delegates to the active provider', async () => {
     const fakeSession = { send: vi.fn(), destroy: vi.fn() };
     const provider = fakeProvider([]);
-    provider.createChatSession = vi.fn().mockResolvedValue(fakeSession);
+    const createChatSessionMock = vi.fn().mockResolvedValue(fakeSession);
+    provider.createChatSession = createChatSessionMock;
     __setActiveProviderForTesting(provider);
 
     const session = await createChatSession('sys');
-    expect(provider.createChatSession).toHaveBeenCalledWith('sys');
+    expect(createChatSessionMock).toHaveBeenCalledWith('sys');
     expect(session).toBe(fakeSession);
   });
 

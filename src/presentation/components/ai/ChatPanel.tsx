@@ -6,7 +6,7 @@ export interface ChatPanelProps {
   messages: ChatMessage[];
   streaming: boolean;
   error: boolean;
-  onSend: (text: string) => void;
+  onSend: (text: string) => void | Promise<void>;
   onStop: () => void;
   onRetry: () => void;
   suggestions?: string[];
@@ -23,7 +23,7 @@ export function ChatPanel(props: ChatPanelProps): JSX.Element {
     const text = input.trim();
     if (!text) return;
     setInput('');
-    onSend(text);
+    void onSend(text);
   };
 
   return (
@@ -63,7 +63,7 @@ export function ChatPanel(props: ChatPanelProps): JSX.Element {
       {suggestions && suggestions.length > 0 && (
         <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
           {suggestions.map((s) => (
-            <Chip key={s} label={s} size="small" onClick={() => onSend(s)} />
+            <Chip key={s} label={s} size="small" onClick={() => { void onSend(s); }} />
           ))}
         </Stack>
       )}
@@ -72,7 +72,7 @@ export function ChatPanel(props: ChatPanelProps): JSX.Element {
         <TextField
           fullWidth size="small" placeholder="Ask a follow-up…"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { setInput(e.target.value); }}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } }}
         />
         {streaming
