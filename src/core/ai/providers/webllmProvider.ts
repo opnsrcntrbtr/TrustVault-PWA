@@ -12,7 +12,7 @@ import { trimChatMessages, MAX_CHAT_TURNS } from '@/core/ai/chat/chatTrim';
 
 interface MlcEngine {
   chat: { completions: { create(opts: {
-    messages: Array<{ role: 'system' | 'user'; content: string }>;
+    messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>;
     stream: true;
   }): Promise<AsyncIterable<{ choices: Array<{ delta: { content?: string } }> }>> } };
   interruptGenerate(): void;

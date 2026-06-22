@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { runPrompt, runPromptStreaming } from '@/core/ai/promptApi';
+import { runPrompt, runPromptStreaming, createChatSession } from '@/core/ai/promptApi';
 import { __setActiveProviderForTesting, __resetRegistryForTesting } from '@/core/ai/providers/registry';
 import type { AiProvider } from '@/core/ai/providers/types';
 
@@ -11,6 +11,7 @@ function fakeProvider(chunks: string[]): AiProvider {
     warmUp: vi.fn().mockResolvedValue(undefined),
     // eslint-disable-next-line @typescript-eslint/require-await -- async generator stub, no await needed
     runStreaming: async function* () { for (const c of chunks) yield c; },
+    createChatSession: vi.fn(),
   };
 }
 
@@ -31,5 +32,21 @@ describe('promptApi delegation', () => {
   it('throws when no provider is active', async () => {
     __setActiveProviderForTesting(null);
     await expect(runPrompt({ systemPrompt: 's', userPrompt: 'u' })).rejects.toThrow(/no on-device ai provider/i);
+  });
+
+  it('createChatSession delegates to the active provider', async () => {
+    const fakeSession = { send: vi.fn(), destroy: vi.fn() };
+    const provider = fakeProvider([]);
+    provider.createChatSession = vi.fn().mockResolvedValue(fakeSession);
+    __setActiveProviderForTesting(provider);
+
+    const session = await createChatSession('sys');
+    expect(provider.createChatSession).toHaveBeenCalledWith('sys');
+    expect(session).toBe(fakeSession);
+  });
+
+  it('createChatSession returns null when no provider is available', async () => {
+    __setActiveProviderForTesting(null);
+    expect(await createChatSession('sys')).toBeNull();
   });
 });
