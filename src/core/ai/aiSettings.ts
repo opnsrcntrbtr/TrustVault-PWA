@@ -4,6 +4,7 @@
  */
 import { DEFAULT_WEBLLM_MODEL_ID } from '@/core/ai/webllmModels';
 import { DEFAULT_LITERT_MODEL_ID } from '@/core/ai/litertModels';
+import type { ChatScope } from '@/core/ai/chat/chatTypes';
 
 export interface AiSettings {
   /** Master toggle for Chrome built-in AI. */
@@ -22,6 +23,12 @@ export interface AiSettings {
   litertModelId: string;
   /** Cached flag: LiteRT-LM weights downloaded & usable. Verified against cache on load. */
   litertModelReady: boolean;
+  /** Follow-up chat in the inline strength/breach panels. */
+  allowChatFollowUp: boolean;
+  /** Show the standalone general assistant entry point. */
+  enableGeneralAssistant: boolean;
+  /** Scope the standalone assistant opens with. */
+  generalAssistantDefaultScope: ChatScope;
 }
 
 const STORAGE_KEY = 'trustvault_ai_settings';
@@ -35,6 +42,9 @@ export const DEFAULT_AI_SETTINGS: AiSettings = {
   mobileInferenceEngine: 'litert-lm',
   litertModelId: DEFAULT_LITERT_MODEL_ID,
   litertModelReady: false,
+  allowChatFollowUp: true,
+  enableGeneralAssistant: true,
+  generalAssistantDefaultScope: 'stateless',
 };
 
 export function loadAiSettings(): AiSettings {

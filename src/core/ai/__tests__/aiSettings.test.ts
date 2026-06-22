@@ -21,6 +21,9 @@ describe('aiSettings', () => {
       mobileInferenceEngine: 'litert-lm',
       litertModelId: 'gemma-3n-E2B-it',
       litertModelReady: false,
+      allowChatFollowUp: true,
+      enableGeneralAssistant: true,
+      generalAssistantDefaultScope: 'stateless',
     });
   });
 
@@ -39,6 +42,9 @@ describe('aiSettings', () => {
       mobileInferenceEngine: 'litert-lm',
       litertModelId: 'gemma-3n-E2B-it',
       litertModelReady: false,
+      allowChatFollowUp: true,
+      enableGeneralAssistant: true,
+      generalAssistantDefaultScope: 'stateless',
     });
   });
 
@@ -52,6 +58,9 @@ describe('aiSettings', () => {
       mobileInferenceEngine: 'webllm',
       litertModelId: 'gemma-3n-E4B-it',
       litertModelReady: true,
+      allowChatFollowUp: false,
+      enableGeneralAssistant: false,
+      generalAssistantDefaultScope: 'curated',
     };
     saveAiSettings(s);
     expect(loadAiSettings()).toEqual(s);
@@ -60,5 +69,20 @@ describe('aiSettings', () => {
   it('falls back to defaults on corrupt JSON', () => {
     localStorage.setItem(STORAGE_KEY, '{not json');
     expect(loadAiSettings()).toEqual(DEFAULT_AI_SETTINGS);
+  });
+
+  it('defaults the new chat settings to on / stateless', () => {
+    localStorage.clear();
+    const s = loadAiSettings();
+    expect(s.allowChatFollowUp).toBe(true);
+    expect(s.enableGeneralAssistant).toBe(true);
+    expect(s.generalAssistantDefaultScope).toBe('stateless');
+  });
+
+  it('merges missing new fields from defaults for older stored blobs', () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ enableOnDeviceAI: false }));
+    const s = loadAiSettings();
+    expect(s.enableOnDeviceAI).toBe(false);
+    expect(s.allowChatFollowUp).toBe(true);
   });
 });
