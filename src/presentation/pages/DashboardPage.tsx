@@ -42,6 +42,7 @@ import {
   AccessTime,
   Star as StarIcon,
   VpnKey as VpnKeyIcon,
+  AutoAwesome as AiAssistantIcon,
 } from '@mui/icons-material';
 import { useAuthStore } from '../store/authStore';
 import { useProfileStore } from '../store/profileStore';
@@ -62,6 +63,8 @@ import type { Credential, CredentialCategory } from '@/domain/entities/Credentia
 import { clipboardManager } from '@/presentation/utils/clipboard';
 import BreachAlertBanner from '@/presentation/components/BreachAlertBanner';
 import { runUnlockBreachRefresh } from '@/core/breach/unlockBreachRefresh';
+import { GeneralAssistant } from '@/presentation/components/ai/GeneralAssistant';
+import { loadAiSettings } from '@/core/ai/aiSettings';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -72,6 +75,7 @@ export default function DashboardPage() {
 
   // UI state
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -361,6 +365,11 @@ export default function DashboardPage() {
           <TourHelpButton />
           <ProfileSwitcher />
           <ThemeToggle />
+          {loadAiSettings().enableGeneralAssistant && (
+            <IconButton color="inherit" aria-label="AI assistant" onClick={() => { setAssistantOpen(true); }}>
+              <AiAssistantIcon />
+            </IconButton>
+          )}
           <IconButton color="inherit" onClick={handleLockVault}>
             <LockIcon />
           </IconButton>
@@ -753,6 +762,8 @@ export default function DashboardPage() {
         onConfirm={handleDeleteConfirm}
         loading={deleting}
       />
+
+      <GeneralAssistant open={assistantOpen} onClose={() => { setAssistantOpen(false); }} />
 
       {/* Snackbar for notifications */}
       <Snackbar
