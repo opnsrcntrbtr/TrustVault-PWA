@@ -344,6 +344,52 @@ so the inputs are deliberately minimized per feature:
   - **Strength explanation:** the button is hidden or returns no explanation. Core generator behavior is never blocked.
   - **Breach impact analysis:** shows an error Alert with a Retry button, allowing the user to try again. The modal's core breach details remain visible and usable.
 
+### Chat follow-up + standalone general assistant (2026-06-22)
+The strength-explainer and breach-impact panels were extended from a single one-shot explanation
+into a multi-turn follow-up chat, and a new standalone **AI Assistant** entry point (toolbar icon on
+the dashboard) lets the user ask general questions outside any specific panel. All three surfaces
+share one abstraction:
+
+- **`ChatSession` (multi-turn):** each `AiProvider` now exposes a stateful session — the
+  chrome-builtin and litert-lm backends use the runtime's native multi-turn session, while WebLLM
+  (no native session API) maintains its own trimmed transcript and replays it each turn
+  (`chatTrim.ts` caps the transcript so the prompt stays within `context_window_size`). `useAiChat`
+  (`src/presentation/hooks/useAiChat.ts`) wraps a `ChatSession` with React state, exposing
+  `{ enabled, messages, streaming, error, send, stop, retry, reset }` to all three UI surfaces
+  (`PasswordStrengthIndicator.tsx`, `BreachDetailsModal.tsx`, `GeneralAssistant.tsx`) via the shared
+  `ChatPanel` component.
+- **Ephemeral, RAM-only history:** the transcript lives only in the `ChatSession`/React state for
+  that component instance. It is destroyed — never written to IndexedDB, localStorage, or
+  `console.*` — when the panel/dialog closes, the vault locks, the user logs out, or the component
+  unmounts. Closing and reopening a panel starts a fresh session with no memory of the prior turn.
+- **Context-scope selector (general assistant only):** `GeneralAssistant.tsx` lets the user pick a
+  runtime scope — `stateless` (no vault data, default), `curated` (vault summary), or
+  `per-credential` (one credential) — via `ChatScope` (`src/core/ai/chat/chatTypes.ts`). Switching
+  scope calls `chat.reset()` first, so no transcript built under one scope context ever carries into
+  another. The strength and breach panels are not scoped — they're seeded from that panel's own
+  data only.
+- **`assertNoSecrets` chokepoint:** every app-constructed system/context message — strength label,
+  breach metadata, vault summary, per-credential metadata — passes through the single
+  `assertNoSecrets()` guard in `src/core/ai/chat/chatContext.ts` before reaching any provider. It
+  throws if a `password:`/`notes:`/secret-shaped key is ever present, matching the existing
+  defense-in-depth invariant in `breachImpactExplain.ts`.
+- **Free-text user turns are trusted, not inspected:** once a chat is open, the user's own typed
+  follow-up text is sent to the on-device model as-is — it is never scanned, filtered, or blocked
+  for secret-shaped content. This is intentional: the user is knowingly typing into a chat box they
+  opened, the same trust boundary as any other local text input, and inference stays on-device
+  regardless of what's typed. Only *app-constructed* context (the system prompt assembled from vault
+  data) goes through `assertNoSecrets`.
+- **Settings:** `allowChatFollowUp` (gates follow-up chat on the strength/breach panels — when
+  `false`, those panels fall back to a single static, non-interactive answer with no input box),
+  `enableGeneralAssistant` (shows/hides the dashboard toolbar entry point), and
+  `generalAssistantDefaultScope` (initial `ChatScope` for new assistant sessions) — all in
+  `src/core/ai/aiSettings.ts`, **all default `true`/`stateless`**, safe under the same reasoning as
+  the existing AI toggles: inference is fully local and gated behind explicit user action.
+- **Platform reach:** in practice this lands on **desktop Chrome (Gemini Nano)** today — the
+  Android WebLLM surface remains kill-switched (`WEBLLM_ANDROID_ENABLED = false`, see Platform
+  support above) pending the upstream Adreno fix, so chat follow-up on Android is currently inert
+  the same way the one-shot explainers are.
+
 ---
 
 ## 📱 PWA Security Features

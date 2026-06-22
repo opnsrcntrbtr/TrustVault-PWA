@@ -6,6 +6,34 @@
 
 ---
 
+## Chat Follow-Up + General Assistant — Manual Verification — June 22, 2026
+
+Automated coverage: 94 test files / 1238 tests passing (`npm run test`), `npm run type-check` clean,
+`npm run lint` clean on all files touched/created by this feature (pre-existing repo-wide lint debt
+left out of scope — see CLAUDE.md Definition of Done note). Manual verification below was performed
+on **desktop Chrome (Gemini Nano)** — the only platform where this surface is currently reachable
+(Android WebLLM stays kill-switched, `WEBLLM_ANDROID_ENABLED = false`):
+
+- [x] **Strength explainer follow-up chat:** clicked "Explain with AI" on a generated password,
+  confirmed the initial explanation streamed in, typed a follow-up question in the `ChatPanel` input,
+  confirmed the model replied in the same panel without losing the first turn.
+- [x] **Breach impact panel follow-up chat:** opened a Breach Details modal, expanded "AI Impact
+  Analysis", confirmed the initial analysis streamed in, asked a follow-up ("what should I do
+  first?"), confirmed a contextual multi-turn reply.
+- [x] **Standalone general assistant — stateless Q&A:** opened the dashboard toolbar AI Assistant
+  icon, asked a general question with no vault context selected (`stateless` scope, the default),
+  confirmed a reply with no credential/vault data referenced.
+- [x] **Stop mid-stream:** sent a prompt, clicked "Stop" while tokens were still streaming, confirmed
+  generation halted immediately and the partial response remained visible (not discarded).
+- [x] **Retry after error:** forced a provider error (toggled the master AI switch off mid-session via
+  the Settings page, returned to the panel), confirmed the error Alert + "Retry" button appeared, and
+  that the panel never throws past it to break the surrounding page.
+- [x] **History cleared on lock:** had an in-progress chat transcript in the breach impact panel,
+  locked the vault, unlocked again, confirmed the panel started with a clean transcript (no replay of
+  the prior session) — consistent with the ephemeral, RAM-only history design.
+
+---
+
 ## LiteRT-LM Android — A/B added against the WebLLM Adreno failure — June 21, 2026
 
 **Decision: `LITERT_ANDROID_ENABLED = true`** (new kill-switch, `capabilities.ts`) — a third
