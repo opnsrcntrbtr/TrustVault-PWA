@@ -15,6 +15,9 @@ const { DEFAULTS, saveAiSettings, webllmEnsureReadySpy, removeWebllmModelSpy, li
     mobileInferenceEngine: 'litert-lm' as 'litert-lm' | 'webllm',
     litertModelId: 'gemma-3n-E2B-it',
     litertModelReady: false,
+    allowChatFollowUp: true,
+    enableGeneralAssistant: true,
+    generalAssistantDefaultScope: 'stateless' as 'stateless' | 'curated' | 'per-credential',
   },
   saveAiSettings: vi.fn(),
   webllmEnsureReadySpy: vi.fn().mockImplementation(
@@ -183,5 +186,24 @@ describe('AiAssistanceSettings', () => {
         expect.objectContaining({ mobileInferenceEngine: 'webllm' }),
       );
     });
+  });
+
+  it('renders chat toggles and persists changes when AI is available', async () => {
+    render(<AiAssistanceSettings />);
+    const followUp = await screen.findByRole('checkbox', { name: /follow-up chat/i });
+    expect(followUp).toBeChecked();
+    fireEvent.click(followUp);
+    await waitFor(() => {
+      expect(saveAiSettings).toHaveBeenCalledWith(
+        expect.objectContaining({ allowChatFollowUp: false }),
+      );
+    });
+  });
+
+  it('disables chat toggles when AI is unavailable', async () => {
+    vi.mocked(getAiAvailability).mockResolvedValue('unavailable');
+    render(<AiAssistanceSettings />);
+    const followUp = await screen.findByRole('checkbox', { name: /follow-up chat/i });
+    await waitFor(() => { expect(followUp).toBeDisabled(); });
   });
 });

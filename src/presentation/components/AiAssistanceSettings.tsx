@@ -6,6 +6,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { Box, Typography, FormControlLabel, Switch, Paper, TextField, Button, LinearProgress } from '@mui/material';
+import type { ChatScope } from '@/core/ai/chat/chatTypes';
 import { loadAiSettings, saveAiSettings, type AiSettings } from '@/core/ai/aiSettings';
 import { getAiAvailability } from '@/core/ai/aiAvailability';
 import type { AiAvailability } from '@/core/ai/aiTypes';
@@ -127,9 +128,52 @@ export default function AiAssistanceSettings() {
           }
           label="Allow AI to explain breach impact and remediation"
         />
-        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4 }}>
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4, mb: 1 }}>
           AI receives only public breach data and credential metadata (like username and category) — never your password or notes.
         </Typography>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={settings.allowChatFollowUp}
+              disabled={!settings.enableOnDeviceAI || availability === 'unavailable'}
+              onChange={(e) => { update({ allowChatFollowUp: e.target.checked }); }}
+            />
+          }
+          label="Follow-up chat"
+        />
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4, mb: 1 }}>
+          Chat stays on your device; history is cleared when you close it or lock the vault.
+        </Typography>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={settings.enableGeneralAssistant}
+              disabled={!settings.enableOnDeviceAI || availability === 'unavailable'}
+              onChange={(e) => { update({ enableGeneralAssistant: e.target.checked }); }}
+            />
+          }
+          label="General assistant"
+        />
+        <Typography variant="caption" color="text.secondary" display="block" sx={{ ml: 4, mb: 1 }}>
+          Adds a standalone assistant you can open anytime to ask security questions.
+        </Typography>
+
+        <TextField
+          select
+          slotProps={{ select: { native: true } }}
+          label="Assistant default scope"
+          value={settings.generalAssistantDefaultScope}
+          disabled={!settings.enableGeneralAssistant || !settings.enableOnDeviceAI || availability === 'unavailable'}
+          onChange={(e) => { update({ generalAssistantDefaultScope: e.target.value as ChatScope }); }}
+          size="small"
+          sx={{ mb: 1, minWidth: 240, display: 'block' }}
+        >
+          <option value="stateless">Stateless</option>
+          <option value="curated">Curated summary</option>
+          <option value="per-credential">Per-credential</option>
+        </TextField>
       </Box>
 
       {showMobileBlock && (
