@@ -1,4 +1,4 @@
-import { useState, type ReactNode, type JSX } from 'react';
+import { useEffect, useRef, useState, type ReactNode, type JSX } from 'react';
 import { Box, Stack, TextField, Button, Typography, Chip, Alert } from '@mui/material';
 import type { ChatMessage } from '@/core/ai/chat/chatTypes';
 
@@ -18,6 +18,12 @@ const DISCLAIMER = 'Replies are generated on your device and never leave it. Avo
 export function ChatPanel(props: ChatPanelProps): JSX.Element {
   const { messages, streaming, error, onSend, onStop, onRetry, suggestions, header } = props;
   const [input, setInput] = useState('');
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, streaming]);
 
   const submit = () => {
     const text = input.trim();
@@ -33,7 +39,7 @@ export function ChatPanel(props: ChatPanelProps): JSX.Element {
         ⓘ {DISCLAIMER}
       </Typography>
 
-      <Stack spacing={1} sx={{ maxHeight: 320, overflowY: 'auto' }}>
+      <Stack ref={scrollRef} spacing={1} sx={{ maxHeight: 320, overflowY: 'auto' }}>
         {messages.map((m) => (
           <Box
             key={m.id}
