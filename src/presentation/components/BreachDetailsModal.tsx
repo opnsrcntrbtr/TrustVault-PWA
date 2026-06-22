@@ -39,7 +39,10 @@ import {
 } from '@mui/icons-material';
 import DOMPurify from 'dompurify';
 import type { BreachData, BreachSeverity } from '@/core/breach/breachTypes';
-import { useAiBreachImpactExplain } from '@/presentation/hooks/useAiBreachImpactExplain';
+import { useAiChat } from '@/presentation/hooks/useAiChat';
+import { buildBreachPrompt, BREACH_SYSTEM_PROMPT } from '@/core/ai/breachImpactExplain';
+import { loadAiSettings } from '@/core/ai/aiSettings';
+import { ChatPanel } from '@/presentation/components/ai/ChatPanel';
 
 interface BreachDetailsModalProps {
   open: boolean;
@@ -66,7 +69,9 @@ export default function BreachDetailsModal({
   credentialCategory,
   credentialAgeDays,
 }: BreachDetailsModalProps) {
-  const ai = useAiBreachImpactExplain();
+  const chat = useAiChat({ systemPrompt: BREACH_SYSTEM_PROMPT });
+  const aiSettings = loadAiSettings();
+  const aiAllowed = aiSettings.enableOnDeviceAI && aiSettings.allowBreachImpactAnalysis;
 
   const getSeverityColor = (sev: BreachSeverity): 'error' | 'warning' | 'info' | 'success' => {
     switch (sev) {
@@ -207,18 +212,18 @@ export default function BreachDetailsModal({
         </Box>
 
         {/* AI Analysis Section */}
-        {ai.enabled && (
+        {aiAllowed && chat.enabled && (
           <Accordion
             sx={{ mb: 3, border: 1, borderColor: 'divider', boxShadow: 'none', '&:before': { display: 'none' } }}
             onChange={(_, expanded) => {
-              if (expanded && ai.explanation === null && !ai.loading && !ai.error) {
-                void ai.analyze({
+              if (expanded && chat.messages.length === 0 && !chat.streaming) {
+                void chat.send(buildBreachPrompt({
                   breaches,
                   credentialTitle,
                   credentialUsername,
                   credentialCategory,
                   credentialAgeDays,
-                });
+                }));
               }
             }}
           >
@@ -234,48 +239,46 @@ export default function BreachDetailsModal({
               </Box>
             </AccordionSummary>
             <AccordionDetails sx={{ pt: 2, pb: 2 }}>
-              {ai.loading && !ai.explanation ? (
+              {chat.streaming && chat.messages.length === 0 ? (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 2 }}>
                   <CircularProgress size={20} />
                   <Typography variant="body2" color="text.secondary">
                     Analyzing breach impact...
                   </Typography>
                 </Box>
-              ) : ai.error ? (
+              ) : aiSettings.allowChatFollowUp ? (
+                <ChatPanel
+                  messages={chat.messages}
+                  streaming={chat.streaming}
+                  error={chat.error}
+                  onSend={chat.send}
+                  onStop={chat.stop}
+                  onRetry={chat.retry}
+                  suggestions={['How do I fix this?', 'Should I change my password?']}
+                />
+              ) : chat.error ? (
                 <Alert
                   severity="error"
                   sx={{ mb: 1 }}
                   action={
-                    <Button
-                      color="inherit"
-                      size="small"
-                      onClick={() => {
-                        void ai.analyze({
-                          breaches,
-                          credentialTitle,
-                          credentialUsername,
-                          credentialCategory,
-                          credentialAgeDays,
-                        });
-                      }}
-                    >
+                    <Button color="inherit" size="small" onClick={chat.retry}>
                       Retry
                     </Button>
                   }
                 >
                   Failed to generate AI analysis.
                 </Alert>
-              ) : ai.explanation ? (
+              ) : chat.messages.length > 0 ? (
                 <Box>
                   <Typography
                     variant="body2"
                     component="div"
                     sx={{ whiteSpace: 'pre-line' }}
                   >
-                    {ai.explanation}
+                    {chat.messages.at(-1)?.content}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2, fontStyle: 'italic' }}>
-                    Generated securely on-device by Chrome built-in AI.
+                    Generated securely on-device by on-device AI.
                   </Typography>
                 </Box>
               ) : null}
