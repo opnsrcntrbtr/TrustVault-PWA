@@ -5,6 +5,7 @@
  */
 import type { BreachData } from '@/core/breach/breachTypes';
 import { runPromptStreaming } from './promptApi';
+import { assertNoSecrets } from '@/core/ai/chat/chatContext';
 
 export interface BreachImpactExplainInput {
   breaches: BreachData[];
@@ -48,13 +49,7 @@ export function buildBreachPrompt(input: BreachImpactExplainInput): string {
 
   prompt += `\nPlease explain the specific risks for this type of credential based on the compromised data, and list actionable remediation steps.`;
 
-  // Explicit safety check: Ensure no "password" value is somehow injected into the values.
-  // This is a defense-in-depth measure.
-  const lowerPrompt = prompt.toLowerCase();
-  if (lowerPrompt.includes('password: ') || lowerPrompt.includes('notes: ')) {
-    throw new Error('Safety invariant violation: Prompt contains potential secret fields.');
-  }
-
+  assertNoSecrets(prompt);
   return prompt;
 }
 
