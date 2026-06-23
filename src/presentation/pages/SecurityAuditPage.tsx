@@ -3,8 +3,8 @@
  * Shows credential health dashboard with weak, reused, and old passwords
  */
 
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -67,7 +67,9 @@ interface SecurityIssue {
 
 export default function SecurityAuditPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, vaultKey } = useAuthStore();
+  const scanTriggerRef = useRef(false);
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [loading, setLoading] = useState(true);
   const [securityScore, setSecurityScore] = useState(0);
@@ -120,6 +122,18 @@ export default function SecurityAuditPage() {
     analyzeCredentials();
     loadBreachStats();
   }, [credentials]);
+
+  // Auto-trigger a fresh HIBP scan when navigated from the Breach Alert Banner.
+  useEffect(() => {
+    if (scanTriggerRef.current) return; // fire only once
+    const shouldScan = (location.state as { triggerBreachScan?: boolean } | null)?.triggerBreachScan;
+    if (!shouldScan) return;
+
+    // Clear the navigation state so reload doesn't re-trigger
+    navigate(location, { replace: true, state: {} });
+
+    void scanForBreaches();
+  }, [location.state, location, navigate]);
 
   const analyzeCredentials = async () => {
     setLoading(true);

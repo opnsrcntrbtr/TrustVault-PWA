@@ -83,7 +83,7 @@ export default function BreachAlertBanner({ refreshTrigger }: BreachAlertBannerP
   };
 
   const handleReview = () => {
-    navigate('/security-audit');
+    navigate('/security-audit', { state: { triggerBreachScan: true } });
   };
 
   if (!open || breachCount === 0) {
