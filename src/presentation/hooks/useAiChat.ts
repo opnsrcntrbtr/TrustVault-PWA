@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createChatSession, warmUpAi } from '@/core/ai/promptApi';
 import { getAiAvailability, isFeatureUsable } from '@/core/ai/aiAvailability';
+import { checkChatUsage } from '@/core/ai/chat/chatTrim';
 import type { ChatSession } from '@/core/ai/providers/types';
 import type { ChatMessage } from '@/core/ai/chat/chatTypes';
 import { useAuthStore } from '@/presentation/store/authStore';
@@ -15,6 +16,7 @@ export interface UseAiChat {
   messages: ChatMessage[];
   streaming: boolean;
   error: boolean;
+  usageWarning: boolean;
   send: (text: string) => Promise<void>;
   stop: () => void;
   retry: () => void;
@@ -31,6 +33,7 @@ export function useAiChat(opts: UseAiChatOptions): UseAiChat {
   const [messages, setMessages] = useState<ChatMessage[]>(seedMessages ?? []);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState(false);
+  const [usageWarning, setUsageWarning] = useState(false);
 
   const sessionRef = useRef<ChatSession | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -50,6 +53,7 @@ export function useAiChat(opts: UseAiChatOptions): UseAiChat {
     setMessages([]);
     setStreaming(false);
     setError(false);
+    setUsageWarning(false);
   }, [teardown]);
 
   // Availability + warm-up.
@@ -101,6 +105,8 @@ export function useAiChat(opts: UseAiChatOptions): UseAiChat {
         sessionRef.current = await createChatSession(systemPrompt);
       }
       if (!sessionRef.current) throw new Error('No on-device AI provider available');
+      const usage = await checkChatUsage(sessionRef.current, trimmed);
+      if (usage) setUsageWarning(usage.nearLimit);
       let acc = '';
       for await (const chunk of sessionRef.current.send(trimmed, controller.signal)) {
         acc += chunk;
@@ -125,5 +131,5 @@ export function useAiChat(opts: UseAiChatOptions): UseAiChat {
     if (lastUserRef.current) void send(lastUserRef.current);
   }, [send]);
 
-  return { enabled, messages, streaming, error, send, stop, retry, reset };
+  return { enabled, messages, streaming, error, usageWarning, send, stop, retry, reset };
 }

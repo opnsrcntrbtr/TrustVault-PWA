@@ -6,6 +6,7 @@ export interface ChatPanelProps {
   messages: ChatMessage[];
   streaming: boolean;
   error: boolean;
+  usageWarning?: boolean;
   onSend: (text: string) => void | Promise<void>;
   onStop: () => void;
   onRetry: () => void;
@@ -16,7 +17,7 @@ export interface ChatPanelProps {
 const DISCLAIMER = 'Replies are generated on your device and never leave it. Avoid pasting real passwords.';
 
 export function ChatPanel(props: ChatPanelProps): JSX.Element {
-  const { messages, streaming, error, onSend, onStop, onRetry, suggestions, header } = props;
+  const { messages, streaming, error, usageWarning, onSend, onStop, onRetry, suggestions, header } = props;
   const [input, setInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -64,6 +65,12 @@ export function ChatPanel(props: ChatPanelProps): JSX.Element {
         <Alert severity="error" action={<Button color="inherit" size="small" onClick={onRetry}>Retry</Button>}>
           Could not generate a response.
         </Alert>
+      )}
+
+      {usageWarning && (
+        <Typography variant="caption" color="warning.main" sx={{ display: 'block' }}>
+          Long conversation — older messages may be dropped.
+        </Typography>
       )}
 
       {suggestions && suggestions.length > 0 && (

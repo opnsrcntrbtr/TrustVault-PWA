@@ -296,6 +296,7 @@ export default function BreachDetailsModal({
                     messages={chat.messages}
                     streaming={chat.streaming}
                     error={chat.error}
+                    usageWarning={chat.usageWarning}
                     onSend={chat.send}
                     onStop={chat.stop}
                     onRetry={chat.retry}

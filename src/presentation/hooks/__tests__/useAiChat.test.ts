@@ -13,13 +13,14 @@ vi.mock('@/core/ai/aiAvailability', () => ({
 
 import { useAiChat } from '@/presentation/hooks/useAiChat';
 
-function sessionStreaming(chunks: string[]) {
+function sessionStreaming(chunks: string[], measureUsage?: (text: string) => Promise<{ usage: number; quota: number } | null>) {
   return {
     send: vi.fn(() => (async function* () {
       await Promise.resolve();
       for (const c of chunks) yield c;
     })()),
     destroy: vi.fn(),
+    ...(measureUsage ? { measureUsage } : {}),
   };
 }
 
@@ -60,5 +61,34 @@ describe('useAiChat', () => {
     act(() => { result.current.reset(); });
     expect(result.current.messages).toEqual([]);
     expect(session.destroy).toHaveBeenCalled();
+  });
+
+  it('sets usageWarning when the session reports near-limit usage', async () => {
+    const session = sessionStreaming(['a'], () => Promise.resolve({ usage: 950, quota: 1000 }));
+    createChatSession.mockResolvedValue(session);
+    const { result } = renderHook(() => useAiChat({ systemPrompt: 'sys' }));
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
+    await act(async () => { await result.current.send('q'); });
+    expect(result.current.usageWarning).toBe(true);
+  });
+
+  it('does not set usageWarning when usage is well under quota', async () => {
+    const session = sessionStreaming(['a'], () => Promise.resolve({ usage: 50, quota: 1000 }));
+    createChatSession.mockResolvedValue(session);
+    const { result } = renderHook(() => useAiChat({ systemPrompt: 'sys' }));
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
+    await act(async () => { await result.current.send('q'); });
+    expect(result.current.usageWarning).toBe(false);
+  });
+
+  it('reset() clears usageWarning', async () => {
+    const session = sessionStreaming(['a'], () => Promise.resolve({ usage: 950, quota: 1000 }));
+    createChatSession.mockResolvedValue(session);
+    const { result } = renderHook(() => useAiChat({ systemPrompt: 'sys' }));
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
+    await act(async () => { await result.current.send('q'); });
+    expect(result.current.usageWarning).toBe(true);
+    act(() => { result.current.reset(); });
+    expect(result.current.usageWarning).toBe(false);
   });
 });
