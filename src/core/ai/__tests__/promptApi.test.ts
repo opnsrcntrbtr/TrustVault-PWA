@@ -6,6 +6,7 @@ import type { AiProvider } from '@/core/ai/providers/types';
 function fakeProvider(chunks: string[]): AiProvider {
   return {
     id: 'chrome-builtin',
+    supports: () => true,
     getAvailability: vi.fn().mockResolvedValue('available'),
     ensureReady: vi.fn().mockResolvedValue(undefined),
     warmUp: vi.fn().mockResolvedValue(undefined),

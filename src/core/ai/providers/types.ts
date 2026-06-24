@@ -7,6 +7,9 @@ import type { AiAvailability } from '@/core/ai/aiTypes';
 
 export type AiProviderId = 'chrome-builtin' | 'webllm' | 'litert-lm';
 
+/** Optional capabilities a provider may natively support. */
+export type AiCapability = 'structured' | 'params' | 'quota' | 'languages';
+
 export interface AiDownloadProgress {
   /** Normalized 0..1 download/initialization progress. */
   progress: number;
@@ -23,6 +26,8 @@ export interface ChatSession {
 
 export interface AiProvider {
   readonly id: AiProviderId;
+  /** Whether this provider natively supports a given capability. */
+  supports(cap: AiCapability): boolean;
   /** Cheap, read-only capability probe. MUST NOT trigger a download. */
   getAvailability(): Promise<AiAvailability>;
   /** Ensure the model is usable. No-op for chrome-builtin; downloads for webllm. */

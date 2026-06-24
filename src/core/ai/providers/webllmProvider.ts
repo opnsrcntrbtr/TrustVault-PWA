@@ -146,6 +146,7 @@ async function createChatSession(systemPrompt: string): Promise<ChatSession> {
 
 export const webllmProvider: AiProvider = {
   id: 'webllm',
+  supports(): boolean { return false; },
   async getAvailability(): Promise<AiAvailability> {
     if (!(await hasWebGpu())) return 'unavailable';
     return loadAiSettings().mobileAiModelReady ? 'available' : 'downloadable';

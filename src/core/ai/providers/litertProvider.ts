@@ -195,6 +195,7 @@ async function createChatSession(systemPrompt: string): Promise<ChatSession> {
 
 export const litertProvider: AiProvider = {
   id: 'litert-lm',
+  supports(): boolean { return false; },
   async getAvailability(): Promise<AiAvailability> {
     if (!(await hasWebGpu())) return 'unavailable';
     return loadAiSettings().litertModelReady ? 'available' : 'downloadable';

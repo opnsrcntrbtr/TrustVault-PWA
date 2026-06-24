@@ -85,6 +85,7 @@ async function createChatSession(systemPrompt: string): Promise<ChatSession> {
 
 export const chromeBuiltinProvider: AiProvider = {
   id: 'chrome-builtin',
+  supports(): boolean { return true; },
   async getAvailability(): Promise<AiAvailability> {
     const lm = (globalThis as Record<string, unknown>).LanguageModel as LanguageModelStatic | undefined;
     if (!lm || typeof lm.availability !== 'function') return 'unavailable';
