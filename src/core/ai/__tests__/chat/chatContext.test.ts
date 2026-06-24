@@ -14,6 +14,13 @@ describe('assertNoSecrets', () => {
 });
 
 describe('buildAssistantSystemPrompt', () => {
+  it('states the on-device guarantee so the model does not claim messages leave the device', () => {
+    const p = buildAssistantSystemPrompt('stateless');
+    expect(p).toMatch(/entirely on this device/i);
+    expect(p).toMatch(/nothing.*ever sent to a server/i);
+    expect(p).toMatch(/nothing leaves the device/i);
+  });
+
   it('stateless: emits the base prompt with no vault data', () => {
     const p = buildAssistantSystemPrompt('stateless');
     expect(p).toContain('no access');
