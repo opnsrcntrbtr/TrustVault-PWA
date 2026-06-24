@@ -1,4 +1,6 @@
 import type { VaultSafeAggregate } from '@/core/ai/chat/chatTypes';
+import { assertNoSecrets } from '@/core/ai/chat/chatContext';
+import { summarize } from '@/core/ai/summarizer';
 
 export interface CredentialSummary {
   category?: string | undefined;
@@ -20,4 +22,26 @@ export function computeVaultSafeAggregate(items: CredentialSummary[]): VaultSafe
     if (it.ageDays !== undefined) oldest = oldest === undefined ? it.ageDays : Math.max(oldest, it.ageDays);
   }
   return { total: items.length, weak, reused, breached, categories, oldestPasswordAgeDays: oldest };
+}
+
+export function formatVaultOverviewText(agg: VaultSafeAggregate): string {
+  const cats = Object.entries(agg.categories).map(([k, v]) => `${k}=${String(v)}`).join(', ');
+  let t = `Vault overview (no passwords or secrets):\n`;
+  t += `- Total credentials: ${String(agg.total)}\n`;
+  t += `- weak: ${String(agg.weak)}, reused: ${String(agg.reused)}, breached: ${String(agg.breached)}\n`;
+  if (cats) t += `- Categories: ${cats}\n`;
+  if (agg.oldestPasswordAgeDays !== undefined) {
+    t += `- Oldest password age: ${String(Math.round(agg.oldestPasswordAgeDays))} days\n`;
+  }
+  assertNoSecrets(t);
+  return t;
+}
+
+export async function summarizeVaultOverview(
+  agg: VaultSafeAggregate,
+  signal?: AbortSignal,
+): Promise<string> {
+  const text = formatVaultOverviewText(agg);
+  const summary = await summarize(text, signal);
+  return summary ?? text;
 }
