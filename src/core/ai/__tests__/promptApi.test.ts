@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { runPrompt, runPromptStreaming, createChatSession, supportsCapability } from '@/core/ai/promptApi';
+import { runPrompt, runPromptStreaming, createChatSession, supportsCapability, runStructured } from '@/core/ai/promptApi';
 import { __setActiveProviderForTesting, __resetRegistryForTesting } from '@/core/ai/providers/registry';
 import type { AiProvider } from '@/core/ai/providers/types';
 
@@ -60,5 +60,22 @@ describe('promptApi delegation', () => {
   it('supportsCapability is false when no provider is active', async () => {
     __setActiveProviderForTesting(null);
     expect(await supportsCapability('quota')).toBe(false);
+  });
+
+  it('runStructured passes responseConstraint and returns raw JSON', async () => {
+    const structuredSpy = vi.fn().mockResolvedValue('{"severity":"high"}');
+    __setActiveProviderForTesting({
+      ...fakeProvider([]),
+      runStructured: structuredSpy,
+    });
+    const out = await runStructured({ systemPrompt: 's', userPrompt: 'u', schema: { type: 'object' } });
+    expect(out).toBe('{"severity":"high"}');
+    expect(structuredSpy).toHaveBeenCalledWith({ systemPrompt: 's', userPrompt: 'u', schema: { type: 'object' } });
+  });
+
+  it('runStructured throws when the provider lacks structured support', async () => {
+    __setActiveProviderForTesting({ ...fakeProvider([]), supports: () => false });
+    await expect(runStructured({ systemPrompt: 's', userPrompt: 'u', schema: {} }))
+      .rejects.toThrow(/structured output/i);
   });
 });

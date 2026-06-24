@@ -4,10 +4,11 @@
  * Desktop-only; never downloads a model (ensureReady is a no-op).
  */
 import type { AiAvailability } from '@/core/ai/aiTypes';
-import type { AiProvider, AiLanguageHints, AiRunParams, ChatSession } from '@/core/ai/providers/types';
+import type { AiProvider, AiLanguageHints, AiRunParams, ChatSession, StructuredArgs } from '@/core/ai/providers/types';
 
 interface AiSession {
   promptStreaming(input: string, opts?: { signal?: AbortSignal }): AsyncIterable<string>;
+  prompt?(input: string, opts?: { responseConstraint?: object; signal?: AbortSignal }): Promise<string>;
   clone?(): Promise<AiSession>;
   destroy(): void;
   measureInputUsage?(text: string): Promise<number>;
@@ -129,6 +130,21 @@ async function createChatSession(
   };
 }
 
+async function runStructured(args: StructuredArgs): Promise<string> {
+  const lm = getLanguageModel();
+  const session = await lm.create(buildCreateOpts(args.systemPrompt, args.params, args.languages));
+  try {
+    if (typeof session.prompt !== 'function') {
+      throw new Error('Chrome built-in AI (LanguageModel) does not support structured output');
+    }
+    const opts: { responseConstraint: object; signal?: AbortSignal } = { responseConstraint: args.schema };
+    if (args.signal) opts.signal = args.signal;
+    return await session.prompt(args.userPrompt, opts);
+  } finally {
+    session.destroy();
+  }
+}
+
 export const chromeBuiltinProvider: AiProvider = {
   id: 'chrome-builtin',
   supports(): boolean { return true; },
@@ -141,4 +157,5 @@ export const chromeBuiltinProvider: AiProvider = {
   warmUp,
   runStreaming,
   createChatSession,
+  runStructured,
 };

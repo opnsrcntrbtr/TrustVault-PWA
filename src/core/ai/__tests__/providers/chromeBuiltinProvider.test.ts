@@ -146,4 +146,25 @@ describe('chromeBuiltinProvider', () => {
     const chat = await chromeBuiltinProvider.createChatSession('sys');
     expect(await chat.measureUsage?.('hello')).toBeNull();
   });
+
+  it('runStructured passes responseConstraint to session.prompt and destroys the session', async () => {
+    const destroy = vi.fn();
+    const prompt = vi.fn().mockResolvedValue('{"severity":"high"}');
+    const create = vi.fn().mockResolvedValue({ promptStreaming: vi.fn(), prompt, destroy });
+    setLanguageModel({ create, availability: vi.fn() });
+
+    const schema = { type: 'object' };
+    const out = await chromeBuiltinProvider.runStructured?.({ systemPrompt: 'sys', userPrompt: 'u', schema });
+
+    expect(out).toBe('{"severity":"high"}');
+    expect(prompt).toHaveBeenCalledWith('u', { responseConstraint: schema });
+    expect(destroy).toHaveBeenCalledOnce();
+  });
+
+  it('runStructured throws when session.prompt is unavailable', async () => {
+    const create = vi.fn().mockResolvedValue({ promptStreaming: vi.fn(), destroy: vi.fn() });
+    setLanguageModel({ create, availability: vi.fn() });
+    await expect(chromeBuiltinProvider.runStructured?.({ systemPrompt: 'sys', userPrompt: 'u', schema: {} }))
+      .rejects.toThrow(/structured output/i);
+  });
 });

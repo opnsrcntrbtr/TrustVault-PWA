@@ -22,6 +22,15 @@ export interface AiLanguageHints {
   outputLanguage?: string;
 }
 
+export interface StructuredArgs {
+  systemPrompt: string;
+  userPrompt: string;
+  schema: object;
+  signal?: AbortSignal;
+  params?: AiRunParams;
+  languages?: AiLanguageHints;
+}
+
 export interface AiDownloadProgress {
   /** Normalized 0..1 download/initialization progress. */
   progress: number;
@@ -61,4 +70,6 @@ export interface AiProvider {
     params?: AiRunParams;
     languages?: AiLanguageHints;
   }): Promise<ChatSession>;
+  /** One-shot structured generation. Returns raw JSON text. */
+  runStructured?(args: StructuredArgs): Promise<string>;
 }
