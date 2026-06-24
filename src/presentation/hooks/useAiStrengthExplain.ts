@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { getAiAvailability, isFeatureUsable } from '@/core/ai/aiAvailability';
-import { explainStrength, STRENGTH_SYSTEM_PROMPT } from '@/core/ai/strengthExplain';
+import { explainStrengthStructured, STRENGTH_SYSTEM_PROMPT, type StrengthInsight } from '@/core/ai/strengthExplain';
 import { warmUpAi } from '@/core/ai/promptApi';
 import type { StrengthExplainInput } from '@/core/ai/aiTypes';
 
 interface UseAiStrengthExplain {
   enabled: boolean;
   loading: boolean;
-  explanation: string | null;
+  insight: StrengthInsight | null;
+  rawText: string | null;
   error: boolean;
   explain: (input: StrengthExplainInput) => Promise<void>;
   reset: () => void;
@@ -17,7 +18,8 @@ interface UseAiStrengthExplain {
 export function useAiStrengthExplain(): UseAiStrengthExplain {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [explanation, setExplanation] = useState<string | null>(null);
+  const [insight, setInsight] = useState<StrengthInsight | null>(null);
+  const [rawText, setRawText] = useState<string | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -41,23 +43,30 @@ export function useAiStrengthExplain(): UseAiStrengthExplain {
   const explain = useCallback(async (input: StrengthExplainInput) => {
     setLoading(true);
     setError(false);
-    setExplanation(null);
+    setInsight(null);
+    setRawText(null);
     try {
-      const text = await explainStrength(input);
-      setExplanation(text);
+      const result = await explainStrengthStructured(input);
+      if ('insight' in result) {
+        setInsight(result.insight);
+      } else {
+        setRawText(result.raw);
+      }
     } catch {
       setError(true);
-      setExplanation(null);
+      setInsight(null);
+      setRawText(null);
     } finally {
       setLoading(false);
     }
   }, []);
 
   const reset = useCallback(() => {
-    setExplanation(null);
+    setInsight(null);
+    setRawText(null);
     setError(false);
     setLoading(false);
   }, []);
 
-  return { enabled, loading, explanation, error, explain, reset };
+  return { enabled, loading, insight, rawText, error, explain, reset };
 }

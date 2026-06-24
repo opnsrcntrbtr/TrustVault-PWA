@@ -76,7 +76,8 @@ describe('PasswordGeneratorPage AI strength explanation', () => {
     mockedUseAiStrengthExplain.mockReturnValue({
       enabled: true,
       loading: false,
-      explanation: null,
+      insight: null,
+      rawText: null,
       error: false,
       explain: vi.fn(),
       reset: vi.fn(),
@@ -96,7 +97,8 @@ describe('PasswordGeneratorPage AI strength explanation', () => {
     mockedUseAiStrengthExplain.mockReturnValue({
       enabled: true,
       loading: false,
-      explanation: null,
+      insight: null,
+      rawText: null,
       error: false,
       explain,
       reset: vi.fn(),
@@ -122,7 +124,8 @@ describe('PasswordGeneratorPage AI strength explanation', () => {
     mockedUseAiStrengthExplain.mockReturnValue({
       enabled: true,
       loading: true,
-      explanation: null,
+      insight: null,
+      rawText: null,
       error: false,
       explain: vi.fn(),
       reset: vi.fn(),
@@ -142,7 +145,8 @@ describe('PasswordGeneratorPage AI strength explanation', () => {
     mockedUseAiStrengthExplain.mockReturnValue({
       enabled: true,
       loading: false,
-      explanation: null,
+      insight: null,
+      rawText: null,
       error: true,
       explain: vi.fn(),
       reset: vi.fn(),
@@ -159,11 +163,32 @@ describe('PasswordGeneratorPage AI strength explanation', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders a typed insight when explanation succeeds', async () => {
+    mockedUseAiStrengthExplain.mockReturnValue({
+      enabled: true,
+      loading: false,
+      insight: { severity: 'low', factors: ['long'], rankedActions: ['use a passphrase'] },
+      rawText: null,
+      error: false,
+      explain: vi.fn(),
+      reset: vi.fn(),
+    });
+
+    render(
+      <MemoryRouter>
+        <PasswordGeneratorPage />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText(/use a passphrase/i)).toBeInTheDocument();
+  });
+
   it('hides the AI button when the hook disables the feature', () => {
     mockedUseAiStrengthExplain.mockReturnValue({
       enabled: false,
       loading: false,
-      explanation: null,
+      insight: null,
+      rawText: null,
       error: false,
       explain: vi.fn(),
       reset: vi.fn(),

@@ -4,7 +4,7 @@ import { warmUpAi } from '@/core/ai/promptApi';
 
 const loadAiSettings = vi.fn();
 const getAiAvailability = vi.fn();
-const explainStrength = vi.fn();
+const explainStrengthStructured = vi.fn();
 
 vi.mock('@/core/ai/aiSettings', () => ({
   loadAiSettings: (): unknown => loadAiSettings(),
@@ -14,7 +14,7 @@ vi.mock('@/core/ai/aiAvailability', () => ({
   isFeatureUsable: (a: string): boolean => a === 'available',
 }));
 vi.mock('@/core/ai/strengthExplain', () => ({
-  explainStrength: (...a: unknown[]): unknown => explainStrength(...a),
+  explainStrengthStructured: (...a: unknown[]): unknown => explainStrengthStructured(...a),
   STRENGTH_SYSTEM_PROMPT: 'mock-system-prompt'
 }));
 vi.mock('@/core/ai/promptApi', () => ({
@@ -31,7 +31,7 @@ describe('useAiStrengthExplain', () => {
   beforeEach(() => {
     loadAiSettings.mockReset();
     getAiAvailability.mockReset();
-    explainStrength.mockReset();
+    explainStrengthStructured.mockReset();
     vi.mocked(warmUpAi).mockReset();
   });
   afterEach(() => {
@@ -61,29 +61,46 @@ describe('useAiStrengthExplain', () => {
     expect(warmUpAi).toHaveBeenCalled();
   });
 
-  it('explain sets explanation on success', async () => {
+  it('explain sets a typed insight on success', async () => {
     bothOn();
     getAiAvailability.mockResolvedValue('available');
-    explainStrength.mockResolvedValue('Strong because long.');
+    explainStrengthStructured.mockResolvedValue({
+      insight: { severity: 'high', factors: ['short'], rankedActions: ['lengthen'] },
+    });
+    const { result } = renderHook(() => useAiStrengthExplain());
+    await waitFor(() => { expect(result.current.enabled).toBe(true); });
+    await act(async () => {
+      await result.current.explain({ strength: 'weak', entropyBits: 20 });
+    });
+    expect(result.current.insight).toEqual({ severity: 'high', factors: ['short'], rankedActions: ['lengthen'] });
+    expect(result.current.rawText).toBeNull();
+    expect(result.current.error).toBe(false);
+  });
+
+  it('explain sets rawText when structured validation falls back', async () => {
+    bothOn();
+    getAiAvailability.mockResolvedValue('available');
+    explainStrengthStructured.mockResolvedValue({ raw: 'Strong because long.' });
     const { result } = renderHook(() => useAiStrengthExplain());
     await waitFor(() => { expect(result.current.enabled).toBe(true); });
     await act(async () => {
       await result.current.explain({ strength: 'strong', entropyBits: 80 });
     });
-    expect(result.current.explanation).toBe('Strong because long.');
-    expect(result.current.error).toBe(false);
+    expect(result.current.rawText).toBe('Strong because long.');
+    expect(result.current.insight).toBeNull();
   });
 
-  it('explain degrades to error=true, explanation=null on failure', async () => {
+  it('explain degrades to error=true, insight=null on failure', async () => {
     bothOn();
     getAiAvailability.mockResolvedValue('available');
-    explainStrength.mockRejectedValue(new Error('boom'));
+    explainStrengthStructured.mockRejectedValue(new Error('boom'));
     const { result } = renderHook(() => useAiStrengthExplain());
     await waitFor(() => { expect(result.current.enabled).toBe(true); });
     await act(async () => {
       await result.current.explain({ strength: 'weak', entropyBits: 10 });
     });
-    expect(result.current.explanation).toBeNull();
+    expect(result.current.insight).toBeNull();
+    expect(result.current.rawText).toBeNull();
     expect(result.current.error).toBe(true);
     expect(result.current.loading).toBe(false);
   });

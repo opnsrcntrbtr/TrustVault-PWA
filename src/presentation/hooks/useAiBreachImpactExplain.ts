@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { getAiAvailability, isFeatureUsable } from '@/core/ai/aiAvailability';
-import { explainBreachImpact, type BreachImpactExplainInput, BREACH_SYSTEM_PROMPT } from '@/core/ai/breachImpactExplain';
+import {
+  explainBreachImpactStructured,
+  type BreachImpactExplainInput,
+  type BreachInsight,
+  BREACH_SYSTEM_PROMPT,
+} from '@/core/ai/breachImpactExplain';
 import { warmUpAi } from '@/core/ai/promptApi';
 
 interface UseAiBreachImpactExplain {
   enabled: boolean;
   loading: boolean;
-  explanation: string | null;
+  insight: BreachInsight | null;
+  rawText: string | null;
   error: boolean;
   analyze: (input: BreachImpactExplainInput) => Promise<void>;
   reset: () => void;
@@ -16,9 +22,10 @@ interface UseAiBreachImpactExplain {
 export function useAiBreachImpactExplain(): UseAiBreachImpactExplain {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [explanation, setExplanation] = useState<string | null>(null);
+  const [insight, setInsight] = useState<BreachInsight | null>(null);
+  const [rawText, setRawText] = useState<string | null>(null);
   const [error, setError] = useState(false);
-  
+
   // Keep track of the current abort controller so we can cancel previous streams
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -49,14 +56,15 @@ export function useAiBreachImpactExplain(): UseAiBreachImpactExplain {
 
     setLoading(true);
     setError(false);
-    setExplanation(''); // Start with empty string for streaming
-    
+    setInsight(null);
+    setRawText(null);
+
     try {
-      const stream = explainBreachImpact(input, abortController.signal);
-      let fullText = '';
-      for await (const chunk of stream) {
-        fullText += chunk;
-        setExplanation(fullText);
+      const result = await explainBreachImpactStructured(input, abortController.signal);
+      if ('insight' in result) {
+        setInsight(result.insight);
+      } else {
+        setRawText(result.raw);
       }
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'AbortError') {
@@ -77,7 +85,8 @@ export function useAiBreachImpactExplain(): UseAiBreachImpactExplain {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
-    setExplanation(null);
+    setInsight(null);
+    setRawText(null);
     setError(false);
     setLoading(false);
   }, []);
@@ -91,5 +100,5 @@ export function useAiBreachImpactExplain(): UseAiBreachImpactExplain {
     };
   }, []);
 
-  return { enabled, loading, explanation, error, analyze, reset };
+  return { enabled, loading, insight, rawText, error, analyze, reset };
 }
