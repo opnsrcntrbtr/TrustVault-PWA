@@ -5,6 +5,7 @@
  */
 import type { StrengthExplainInput } from './aiTypes';
 import { runPrompt, runStructured } from './promptApi';
+import { resolveAiLanguage } from './aiLanguages';
 
 export const STRENGTH_SYSTEM_PROMPT =
   'You are a security assistant. Explain password strength in 2-3 simple sentences. ' +
@@ -69,6 +70,7 @@ export async function explainStrengthStructured(
     userPrompt: buildStrengthPrompt(input),
     schema: STRENGTH_INSIGHT_SCHEMA,
     params: { temperature: 0.3, topK: 3 },
+    languages: { expectedInputLanguages: ['en'], outputLanguage: resolveAiLanguage(navigator.language) },
     ...(signal ? { signal } : {}),
   });
   const insight = parseStrengthInsight(raw);

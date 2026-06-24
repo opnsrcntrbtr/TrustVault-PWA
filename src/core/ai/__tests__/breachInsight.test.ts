@@ -35,4 +35,13 @@ describe('explainBreachImpactStructured', () => {
     vi.mocked(runStructured).mockResolvedValue('oops');
     expect(await explainBreachImpactStructured(input)).toEqual({ raw: 'oops' });
   });
+
+  it('passes the locale-resolved output language to runStructured', async () => {
+    vi.mocked(runStructured).mockResolvedValue('{"riskLevel":"low","exposedData":[],"steps":[]}');
+    Object.defineProperty(navigator, 'language', { value: 'fr-FR', configurable: true });
+    await explainBreachImpactStructured(input);
+    expect(vi.mocked(runStructured)).toHaveBeenCalledWith(
+      expect.objectContaining({ languages: { expectedInputLanguages: ['en'], outputLanguage: 'fr' } }),
+    );
+  });
 });

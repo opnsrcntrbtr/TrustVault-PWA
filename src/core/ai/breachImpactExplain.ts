@@ -6,6 +6,7 @@
 import type { BreachData } from '@/core/breach/breachTypes';
 import { runPromptStreaming, runStructured } from './promptApi';
 import { assertNoSecrets } from '@/core/ai/chat/chatContext';
+import { resolveAiLanguage } from './aiLanguages';
 
 export interface BreachImpactExplainInput {
   breaches: BreachData[];
@@ -107,6 +108,7 @@ export async function explainBreachImpactStructured(
     userPrompt: buildBreachPrompt(input),
     schema: BREACH_INSIGHT_SCHEMA,
     params: { temperature: 0.3, topK: 3 },
+    languages: { expectedInputLanguages: ['en'], outputLanguage: resolveAiLanguage(navigator.language) },
     ...(signal ? { signal } : {}),
   });
   const insight = parseBreachInsight(raw);

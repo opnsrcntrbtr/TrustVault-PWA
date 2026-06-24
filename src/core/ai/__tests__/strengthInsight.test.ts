@@ -32,4 +32,13 @@ describe('explainStrengthStructured', () => {
     const r = await explainStrengthStructured({ strength: 'weak', entropyBits: 20 });
     expect(r).toEqual({ raw: 'garbage' });
   });
+
+  it('passes the locale-resolved output language to runStructured', async () => {
+    vi.mocked(runStructured).mockResolvedValue('{"severity":"low","factors":[],"rankedActions":[]}');
+    Object.defineProperty(navigator, 'language', { value: 'es-ES', configurable: true });
+    await explainStrengthStructured({ strength: 'strong', entropyBits: 80 });
+    expect(vi.mocked(runStructured)).toHaveBeenCalledWith(
+      expect.objectContaining({ languages: { expectedInputLanguages: ['en'], outputLanguage: 'es' } }),
+    );
+  });
 });
