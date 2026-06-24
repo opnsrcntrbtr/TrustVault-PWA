@@ -149,17 +149,27 @@ on each other.
   `downloadable`/`downloading` states).
 - **User-visible change:** none beyond steadier outputs. Pure foundation.
 
-### Phase 2 — Structured security insights
+### Phase 2 — Structured security insights (insight card + chat below)
+**Codebase reality (verified 2026-06-24):** the strength/breach screens are now
+**chat-driven** — `PasswordStrengthIndicator.tsx` and `BreachDetailsModal.tsx` call
+`chat.send(buildStrengthPrompt(...))` / `chat.send(buildBreachPrompt(...))` via
+`useAiChat`, not the one-shot explainers. Structured output (`responseConstraint`)
+is a one-shot `prompt()` concept and does not fit a free-text multi-turn stream.
+
+**Resolution:** structured output powers a one-shot **insight card** rendered
+*above* the existing chat; the free-text chat stays below it for follow-up.
 - `strengthExplain.ts`: define `StrengthInsight` type + JSON Schema
-  (`{ severity, factors[], rankedActions[] }`) and call
-  `promptApi.runStructured(schema, …)`.
+  (`{ severity, factors[], rankedActions[] }`); add `explainStrengthStructured()`
+  using `promptApi.runStructured(schema, …)`.
 - `breachImpactExplain.ts`: define `BreachInsight` type + JSON Schema
-  (`{ riskLevel, exposedData[], steps[] }`).
-- Hooks (`useAiStrengthExplain`, `useAiBreachImpactExplain`) return typed objects;
-  `PasswordStrengthIndicator.tsx` and `BreachDetailsModal.tsx` render typed fields
-  instead of parsing prose.
-- **Multi-turn chat turns remain free-text** (structured output applies only to the
-  one-shot explainers).
+  (`{ riskLevel, exposedData[], steps[] }`); add `explainBreachImpactStructured()`.
+- One-shot hooks `useAiStrengthExplain` / `useAiBreachImpactExplain` return the
+  typed insight object (`{ insight }` on success, `{ raw }` on validation fallback).
+- New `StrengthInsightCard` / `BreachInsightCard` presentational components render
+  typed fields; the two screens render the card, then the existing `ChatPanel`
+  below for follow-up.
+- **Multi-turn chat turns remain free-text** — structured output applies only to
+  the one-shot insight card, never to chat turns.
 
 ### Phase 3 — Summarizer-backed vault overview
 - New `summarizer.ts` wrapping the global `Summarizer` (availability/create/summarize).
@@ -256,4 +266,8 @@ PasswordStrengthIndicator.tsx
   active provider is `chrome-builtin`; no degraded path for WebLLM/LiteRT now.
 - **Structure:** Approach A (capability-typed provider + thin facade, per-feature
   schemas). Rejected: central schema registry (B), free-text + post-hoc parsing (C).
+- **Phase 2 shape:** strength/breach screens are already chat-driven, so structured
+  output renders as a one-shot **insight card above the existing chat** (chat turns
+  stay free-text). Rejected: structured-seed-into-chat (awkward), defer (loses the
+  highest-leverage capability).
 - **Single spec, five phases** sharing the Phase 1 foundation; not decomposed.
