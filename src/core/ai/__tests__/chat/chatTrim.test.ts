@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { trimChatMessages, MAX_CHAT_TURNS } from '@/core/ai/chat/chatTrim';
+import { trimChatMessages, MAX_CHAT_TURNS, checkChatUsage } from '@/core/ai/chat/chatTrim';
 
 describe('trimChatMessages', () => {
   it('keeps the system message and the last N non-system messages', () => {
@@ -28,5 +28,27 @@ describe('trimChatMessages', () => {
 
   it('exposes a positive default turn budget', () => {
     expect(MAX_CHAT_TURNS).toBeGreaterThan(0);
+  });
+});
+
+describe('checkChatUsage', () => {
+  it('returns null when measureUsage is absent', async () => {
+    expect(await checkChatUsage({}, 'hi')).toBeNull();
+  });
+  it('flags nearLimit past the threshold', async () => {
+    const session = { measureUsage: () => Promise.resolve({ usage: 900, quota: 1000 }) };
+    expect(await checkChatUsage(session, 'hi', 0.8)).toEqual({ usage: 900, quota: 1000, nearLimit: true });
+  });
+  it('not nearLimit below threshold', async () => {
+    const session = { measureUsage: () => Promise.resolve({ usage: 100, quota: 1000 }) };
+    expect(await checkChatUsage(session, 'hi', 0.8)).toEqual({ usage: 100, quota: 1000, nearLimit: false });
+  });
+  it('returns null when measureUsage resolves to null', async () => {
+    const session = { measureUsage: () => Promise.resolve(null) };
+    expect(await checkChatUsage(session, 'hi')).toBeNull();
+  });
+  it('returns null when quota is non-positive', async () => {
+    const session = { measureUsage: () => Promise.resolve({ usage: 0, quota: 0 }) };
+    expect(await checkChatUsage(session, 'hi')).toBeNull();
   });
 });
