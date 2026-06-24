@@ -8,6 +8,12 @@ vi.mock('@/presentation/hooks/useAiChat', () => ({
   useAiChat: (): unknown => useAiChatMock(),
 }));
 
+const explainMock = vi.fn().mockResolvedValue(undefined);
+const useAiStrengthExplainMock = vi.fn();
+vi.mock('@/presentation/hooks/useAiStrengthExplain', () => ({
+  useAiStrengthExplain: (): unknown => useAiStrengthExplainMock(),
+}));
+
 const loadAiSettingsMock = vi.fn();
 vi.mock('@/core/ai/aiSettings', () => ({
   loadAiSettings: (): unknown => loadAiSettingsMock(),
@@ -15,6 +21,7 @@ vi.mock('@/core/ai/aiSettings', () => ({
 
 beforeEach(() => {
   sendMock.mockClear();
+  explainMock.mockClear();
   useAiChatMock.mockReturnValue({
     enabled: true,
     messages: [],
@@ -23,6 +30,15 @@ beforeEach(() => {
     send: sendMock,
     stop: vi.fn(),
     retry: vi.fn(),
+    reset: vi.fn(),
+  });
+  useAiStrengthExplainMock.mockReturnValue({
+    enabled: true,
+    loading: false,
+    insight: null,
+    rawText: null,
+    error: false,
+    explain: explainMock,
     reset: vi.fn(),
   });
   loadAiSettingsMock.mockReturnValue({
@@ -38,12 +54,27 @@ describe('PasswordStrengthIndicator AI Explanation', () => {
     expect(screen.queryByText('Explain with AI')).not.toBeInTheDocument();
   });
 
-  it('renders AI button and triggers chat.send when clicked', async () => {
+  it('renders AI button and triggers strengthInsight.explain when clicked', async () => {
     render(<PasswordStrengthIndicator password="Password123!" allowAiExplanation={true} />);
     const btn = screen.getByText('Explain with AI');
     expect(btn).toBeInTheDocument();
     fireEvent.click(btn);
-    await waitFor(() => { expect(sendMock).toHaveBeenCalled(); });
+    await waitFor(() => { expect(explainMock).toHaveBeenCalled(); });
+  });
+
+  it('renders a typed StrengthInsightCard once explanation resolves', async () => {
+    useAiStrengthExplainMock.mockReturnValue({
+      enabled: true,
+      loading: false,
+      insight: { severity: 'low', factors: ['long'], rankedActions: ['use a passphrase'] },
+      rawText: null,
+      error: false,
+      explain: explainMock,
+      reset: vi.fn(),
+    });
+    render(<PasswordStrengthIndicator password="Password123!" allowAiExplanation={true} />);
+    fireEvent.click(await screen.findByRole('button', { name: /explain with ai/i }));
+    expect(await screen.findByText(/use a passphrase/i)).toBeInTheDocument();
   });
 
   it('shows a follow-up chat input after the explanation when chat is enabled', async () => {
@@ -58,14 +89,13 @@ describe('PasswordStrengthIndicator AI Explanation', () => {
       allowStrengthExplanation: true,
       allowChatFollowUp: false,
     });
-    useAiChatMock.mockReturnValue({
+    useAiStrengthExplainMock.mockReturnValue({
       enabled: true,
-      messages: [{ id: '1', role: 'assistant', content: 'Static explanation text' }],
-      streaming: false,
+      loading: false,
+      insight: null,
+      rawText: 'Static explanation text',
       error: false,
-      send: sendMock,
-      stop: vi.fn(),
-      retry: vi.fn(),
+      explain: explainMock,
       reset: vi.fn(),
     });
     render(<PasswordStrengthIndicator password="Password123!" allowAiExplanation={true} />);

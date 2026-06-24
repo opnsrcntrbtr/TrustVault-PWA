@@ -40,9 +40,11 @@ import {
 import DOMPurify from 'dompurify';
 import type { BreachData, BreachSeverity } from '@/core/breach/breachTypes';
 import { useAiChat } from '@/presentation/hooks/useAiChat';
-import { buildBreachPrompt, BREACH_SYSTEM_PROMPT } from '@/core/ai/breachImpactExplain';
+import { useAiBreachImpactExplain } from '@/presentation/hooks/useAiBreachImpactExplain';
+import { BREACH_SYSTEM_PROMPT } from '@/core/ai/breachImpactExplain';
 import { loadAiSettings } from '@/core/ai/aiSettings';
 import { ChatPanel } from '@/presentation/components/ai/ChatPanel';
+import { BreachInsightCard } from '@/presentation/components/ai/BreachInsightCard';
 
 interface BreachDetailsModalProps {
   open: boolean;
@@ -70,6 +72,7 @@ export default function BreachDetailsModal({
   credentialAgeDays,
 }: BreachDetailsModalProps) {
   const chat = useAiChat({ systemPrompt: BREACH_SYSTEM_PROMPT });
+  const breachInsight = useAiBreachImpactExplain();
   const aiSettings = loadAiSettings();
   const aiAllowed = aiSettings.enableOnDeviceAI && aiSettings.allowBreachImpactAnalysis;
 
@@ -212,18 +215,18 @@ export default function BreachDetailsModal({
         </Box>
 
         {/* AI Analysis Section */}
-        {aiAllowed && chat.enabled && (
+        {aiAllowed && breachInsight.enabled && (
           <Accordion
             sx={{ mb: 3, border: 1, borderColor: 'divider', boxShadow: 'none', '&:before': { display: 'none' } }}
             onChange={(_, expanded) => {
-              if (expanded && chat.messages.length === 0 && !chat.streaming) {
-                void chat.send(buildBreachPrompt({
+              if (expanded && !breachInsight.insight && !breachInsight.rawText && !breachInsight.loading) {
+                void breachInsight.analyze({
                   breaches,
                   credentialTitle,
                   credentialUsername,
                   credentialCategory,
                   credentialAgeDays,
-                }));
+                });
               }
             }}
           >
@@ -239,49 +242,67 @@ export default function BreachDetailsModal({
               </Box>
             </AccordionSummary>
             <AccordionDetails sx={{ pt: 2, pb: 2 }}>
-              {chat.streaming && chat.messages.length === 0 ? (
+              {breachInsight.loading ? (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 2 }}>
                   <CircularProgress size={20} />
                   <Typography variant="body2" color="text.secondary">
                     Analyzing breach impact...
                   </Typography>
                 </Box>
-              ) : aiSettings.allowChatFollowUp ? (
-                <ChatPanel
-                  messages={chat.messages}
-                  streaming={chat.streaming}
-                  error={chat.error}
-                  onSend={chat.send}
-                  onStop={chat.stop}
-                  onRetry={chat.retry}
-                  suggestions={['How do I fix this?', 'Should I change my password?']}
-                />
-              ) : chat.error ? (
-                <Alert
-                  severity="error"
-                  sx={{ mb: 1 }}
-                  action={
-                    <Button color="inherit" size="small" onClick={chat.retry}>
-                      Retry
-                    </Button>
-                  }
-                >
-                  Failed to generate AI analysis.
-                </Alert>
-              ) : chat.messages.length > 0 ? (
+              ) : breachInsight.insight ? (
+                <BreachInsightCard insight={breachInsight.insight} />
+              ) : breachInsight.rawText ? (
                 <Box>
                   <Typography
                     variant="body2"
                     component="div"
                     sx={{ whiteSpace: 'pre-line' }}
                   >
-                    {chat.messages.at(-1)?.content}
+                    {breachInsight.rawText}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2, fontStyle: 'italic' }}>
                     Generated securely on-device by on-device AI.
                   </Typography>
                 </Box>
+              ) : breachInsight.error ? (
+                <Alert
+                  severity="error"
+                  sx={{ mb: 1 }}
+                  action={
+                    <Button
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        void breachInsight.analyze({
+                          breaches,
+                          credentialTitle,
+                          credentialUsername,
+                          credentialCategory,
+                          credentialAgeDays,
+                        });
+                      }}
+                    >
+                      Retry
+                    </Button>
+                  }
+                >
+                  Failed to generate AI analysis.
+                </Alert>
               ) : null}
+
+              {aiSettings.allowChatFollowUp && chat.enabled && (
+                <Box sx={{ mt: 2 }}>
+                  <ChatPanel
+                    messages={chat.messages}
+                    streaming={chat.streaming}
+                    error={chat.error}
+                    onSend={chat.send}
+                    onStop={chat.stop}
+                    onRetry={chat.retry}
+                    suggestions={['How do I fix this?', 'Should I change my password?']}
+                  />
+                </Box>
+              )}
             </AccordionDetails>
           </Accordion>
         )}
