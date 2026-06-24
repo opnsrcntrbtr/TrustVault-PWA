@@ -34,6 +34,8 @@ export interface ChatSession {
   send(userText: string, signal?: AbortSignal): AsyncIterableIterator<string>;
   /** Free native resources / clear transcript. Idempotent. */
   destroy(): void;
+  /** Token usage/quota for a prospective input. null if unsupported. */
+  measureUsage?(text: string): Promise<{ usage: number; quota: number } | null>;
 }
 
 export interface AiProvider {

@@ -10,6 +10,8 @@ interface AiSession {
   promptStreaming(input: string, opts?: { signal?: AbortSignal }): AsyncIterable<string>;
   clone?(): Promise<AiSession>;
   destroy(): void;
+  measureInputUsage?(text: string): Promise<number>;
+  inputQuota?: number;
 }
 interface CreateOpts {
   initialPrompts: Array<{ role: 'system'; content: string }>;
@@ -116,6 +118,13 @@ async function createChatSession(
       if (destroyed) return;
       destroyed = true;
       session.destroy();
+    },
+    async measureUsage(text: string): Promise<{ usage: number; quota: number } | null> {
+      if (typeof session.measureInputUsage !== 'function' || typeof session.inputQuota !== 'number') return null;
+      try {
+        const usage = await session.measureInputUsage(text);
+        return { usage, quota: session.inputQuota };
+      } catch { return null; }
     },
   };
 }

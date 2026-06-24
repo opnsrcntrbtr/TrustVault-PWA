@@ -124,4 +124,26 @@ describe('chromeBuiltinProvider', () => {
     });
     expect(destroy).toHaveBeenCalledOnce();
   });
+
+  it('chat session measureUsage reports usage/quota when the session supports it', async () => {
+    const measureInputUsage = vi.fn().mockResolvedValue(42);
+    const clone = vi.fn().mockResolvedValue({
+      promptStreaming: vi.fn(), destroy: vi.fn(), measureInputUsage, inputQuota: 1024,
+    });
+    const create = vi.fn().mockResolvedValue({ clone, destroy: vi.fn() });
+    setLanguageModel({ create, availability: vi.fn().mockResolvedValue('available') });
+
+    const chat = await chromeBuiltinProvider.createChatSession('sys');
+    const usage = await chat.measureUsage?.('hello');
+    expect(usage).toEqual({ usage: 42, quota: 1024 });
+  });
+
+  it('chat session measureUsage returns null when unsupported', async () => {
+    const clone = vi.fn().mockResolvedValue({ promptStreaming: vi.fn(), destroy: vi.fn() });
+    const create = vi.fn().mockResolvedValue({ clone, destroy: vi.fn() });
+    setLanguageModel({ create, availability: vi.fn().mockResolvedValue('available') });
+
+    const chat = await chromeBuiltinProvider.createChatSession('sys');
+    expect(await chat.measureUsage?.('hello')).toBeNull();
+  });
 });

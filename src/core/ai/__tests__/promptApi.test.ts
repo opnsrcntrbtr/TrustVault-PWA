@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { runPrompt, runPromptStreaming, createChatSession } from '@/core/ai/promptApi';
+import { runPrompt, runPromptStreaming, createChatSession, supportsCapability } from '@/core/ai/promptApi';
 import { __setActiveProviderForTesting, __resetRegistryForTesting } from '@/core/ai/providers/registry';
 import type { AiProvider } from '@/core/ai/providers/types';
 
@@ -50,5 +50,15 @@ describe('promptApi delegation', () => {
   it('createChatSession returns null when no provider is available', async () => {
     __setActiveProviderForTesting(null);
     expect(await createChatSession('sys')).toBeNull();
+  });
+
+  it('supportsCapability reflects the active provider', async () => {
+    __setActiveProviderForTesting(fakeProvider([]));
+    expect(await supportsCapability('structured')).toBe(true);
+  });
+
+  it('supportsCapability is false when no provider is active', async () => {
+    __setActiveProviderForTesting(null);
+    expect(await supportsCapability('quota')).toBe(false);
   });
 });

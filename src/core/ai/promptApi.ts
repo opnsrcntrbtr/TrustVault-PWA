@@ -4,7 +4,7 @@
  */
 import { getActiveProvider } from '@/core/ai/providers/registry';
 import { chromeBuiltinProvider, __clearChromeSessionCacheForTesting } from '@/core/ai/providers/chromeBuiltinProvider';
-import type { ChatSession } from '@/core/ai/providers/types';
+import type { AiCapability, ChatSession } from '@/core/ai/providers/types';
 
 /** Test seam retained for back-compat with existing suites. */
 export function __clearSessionCacheForTesting(): void {
@@ -37,6 +37,11 @@ export async function createChatSession(systemPrompt: string): Promise<ChatSessi
   const provider = await getActiveProvider();
   if (!provider) return null;
   return provider.createChatSession(systemPrompt);
+}
+
+export async function supportsCapability(cap: AiCapability): Promise<boolean> {
+  const provider = await getActiveProvider();
+  return provider ? provider.supports(cap) : false;
 }
 
 // Re-export so `getActiveProvider()` fallback (Task 6) and tests can reach the
