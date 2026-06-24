@@ -10,6 +10,18 @@ export type AiProviderId = 'chrome-builtin' | 'webllm' | 'litert-lm';
 /** Optional capabilities a provider may natively support. */
 export type AiCapability = 'structured' | 'params' | 'quota' | 'languages';
 
+/** Sampling parameters (native to chrome-builtin; ignored by other providers). */
+export interface AiRunParams {
+  temperature?: number;
+  topK?: number;
+}
+
+/** Input/output language hints (native to chrome-builtin; ignored by other providers). */
+export interface AiLanguageHints {
+  expectedInputLanguages?: string[];
+  outputLanguage?: string;
+}
+
 export interface AiDownloadProgress {
   /** Normalized 0..1 download/initialization progress. */
   progress: number;
@@ -39,7 +51,12 @@ export interface AiProvider {
     systemPrompt: string;
     userPrompt: string;
     signal?: AbortSignal;
+    params?: AiRunParams;
+    languages?: AiLanguageHints;
   }): AsyncIterableIterator<string>;
   /** Create a multi-turn session primed with a (pre-inspected) system prompt. */
-  createChatSession(systemPrompt: string): Promise<ChatSession>;
+  createChatSession(systemPrompt: string, opts?: {
+    params?: AiRunParams;
+    languages?: AiLanguageHints;
+  }): Promise<ChatSession>;
 }

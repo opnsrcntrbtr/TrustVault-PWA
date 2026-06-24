@@ -100,4 +100,28 @@ describe('chromeBuiltinProvider', () => {
     chat.destroy();
     await expect(collect(chat.send('q'))).rejects.toThrow('destroyed');
   });
+
+  it('threads params and language hints into create()', async () => {
+    const destroy = vi.fn();
+    const promptStreaming = vi.fn().mockReturnValue(streamOf(['ok']));
+    const createSpy = vi.fn().mockResolvedValue({ promptStreaming, destroy });
+    setLanguageModel({ create: createSpy, availability: vi.fn().mockResolvedValue('available') });
+
+    const text = await collect(chromeBuiltinProvider.runStreaming({
+      systemPrompt: 'sys',
+      userPrompt: 'hi',
+      params: { temperature: 0.3, topK: 3 },
+      languages: { expectedInputLanguages: ['en'], outputLanguage: 'es' },
+    }));
+
+    expect(text).toBe('ok');
+    expect(createSpy).toHaveBeenCalledWith({
+      initialPrompts: [{ role: 'system', content: 'sys' }],
+      temperature: 0.3,
+      topK: 3,
+      expectedInputs: [{ type: 'text', languages: ['en'] }],
+      expectedOutputs: [{ type: 'text', languages: ['es'] }],
+    });
+    expect(destroy).toHaveBeenCalledOnce();
+  });
 });

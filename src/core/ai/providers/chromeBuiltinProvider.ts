@@ -4,16 +4,45 @@
  * Desktop-only; never downloads a model (ensureReady is a no-op).
  */
 import type { AiAvailability } from '@/core/ai/aiTypes';
-import type { AiProvider, ChatSession } from '@/core/ai/providers/types';
+import type { AiProvider, AiLanguageHints, AiRunParams, ChatSession } from '@/core/ai/providers/types';
 
 interface AiSession {
   promptStreaming(input: string, opts?: { signal?: AbortSignal }): AsyncIterable<string>;
   clone?(): Promise<AiSession>;
   destroy(): void;
 }
+interface CreateOpts {
+  initialPrompts: Array<{ role: 'system'; content: string }>;
+  temperature?: number;
+  topK?: number;
+  expectedInputs?: Array<{ type: 'text'; languages?: string[] }>;
+  expectedOutputs?: Array<{ type: 'text'; languages?: string[] }>;
+}
 interface LanguageModelStatic {
-  create(opts: { initialPrompts: Array<{ role: 'system'; content: string }> }): Promise<AiSession>;
+  create(opts: CreateOpts): Promise<AiSession>;
   availability(): Promise<AiAvailability>;
+}
+
+function buildCreateOpts(
+  systemPrompt: string,
+  params?: AiRunParams,
+  languages?: AiLanguageHints,
+): CreateOpts {
+  const opts: CreateOpts = { initialPrompts: [{ role: 'system', content: systemPrompt }] };
+  if (params?.temperature !== undefined) opts.temperature = params.temperature;
+  if (params?.topK !== undefined) opts.topK = params.topK;
+  if (languages?.expectedInputLanguages) {
+    opts.expectedInputs = [{ type: 'text', languages: languages.expectedInputLanguages }];
+  }
+  if (languages?.outputLanguage) {
+    opts.expectedOutputs = [{ type: 'text', languages: [languages.outputLanguage] }];
+  }
+  return opts;
+}
+
+function hasCustomOpts(params?: AiRunParams, languages?: AiLanguageHints): boolean {
+  return Boolean(params?.temperature !== undefined || params?.topK !== undefined
+    || languages?.expectedInputLanguages || languages?.outputLanguage);
 }
 
 function getLanguageModel(): LanguageModelStatic {
@@ -54,8 +83,11 @@ async function getClonedSession(systemPrompt: string): Promise<AiSession> {
 
 async function* runStreaming(args: {
   systemPrompt: string; userPrompt: string; signal?: AbortSignal;
+  params?: AiRunParams; languages?: AiLanguageHints;
 }): AsyncIterableIterator<string> {
-  const session = await getClonedSession(args.systemPrompt);
+  const session = hasCustomOpts(args.params, args.languages)
+    ? await getLanguageModel().create(buildCreateOpts(args.systemPrompt, args.params, args.languages))
+    : await getClonedSession(args.systemPrompt);
   try {
     const opts = args.signal ? { signal: args.signal } : undefined;
     for await (const chunk of session.promptStreaming(args.userPrompt, opts)) {
@@ -66,8 +98,13 @@ async function* runStreaming(args: {
   }
 }
 
-async function createChatSession(systemPrompt: string): Promise<ChatSession> {
-  const session = await getClonedSession(systemPrompt); // persistent for the whole conversation
+async function createChatSession(
+  systemPrompt: string,
+  opts?: { params?: AiRunParams; languages?: AiLanguageHints },
+): Promise<ChatSession> {
+  const session = hasCustomOpts(opts?.params, opts?.languages)
+    ? await getLanguageModel().create(buildCreateOpts(systemPrompt, opts?.params, opts?.languages))
+    : await getClonedSession(systemPrompt); // persistent for the whole conversation
   let destroyed = false;
   return {
     async *send(userText: string, signal?: AbortSignal): AsyncIterableIterator<string> {
