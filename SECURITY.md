@@ -390,6 +390,42 @@ share one abstraction:
   support above) pending the upstream Adreno fix, so chat follow-up on Android is currently inert
   the same way the one-shot explainers are.
 
+### Chrome built-in AI alignment (2026-06-24)
+The chrome-builtin provider was hardened to use the stable June 2026 Prompt API surface
+(`AiProvider.supports()` capability gate, sampling `params`, `expectedInputs`/`expectedOutputs`
+language hints, `measureInputUsage`/`inputQuota`), then extended with four Chrome-only,
+hard-gated capabilities — every one of them composes with the existing ZK boundary rather than
+bypassing it:
+
+- **Structured insight cards (`responseConstraint`):** the strength and breach one-shot explainers
+  (`strengthExplain.ts` / `breachImpactExplain.ts`) gained `explainStrengthStructured()` /
+  `explainBreachImpactStructured()`, which call `promptApi.runStructured()` with a JSON Schema
+  (`STRENGTH_INSIGHT_SCHEMA` / `BREACH_INSIGHT_SCHEMA`). **Schemas describe only non-secret fields**
+  — severity/risk level, category labels, ranked action strings — never a password or secret field.
+  The typed result renders as a `StrengthInsightCard`/`BreachInsightCard` *above* the existing
+  free-text follow-up chat; chat turns themselves remain free-text and untouched by this change. On
+  schema-validation failure the raw text is shown instead of erroring.
+- **Summarizer-backed vault overview:** `vaultAggregate.ts` gained `summarizeVaultOverview()`,
+  which runs the already non-secret, `assertNoSecrets()`-checked overview text
+  (`formatVaultOverviewText()`) through the standalone Summarizer API wrapper
+  (`src/core/ai/summarizer.ts`) and falls back to the formatted text verbatim if the Summarizer is
+  unavailable. No new data reaches the model beyond what `vaultAggregate.ts` already aggregated.
+- **Multilingual output:** `resolveAiLanguage()` (`src/core/ai/aiLanguages.ts`) maps the browser
+  locale to one of Gemini Nano's supported languages (`en`/`es`/`ja`/`de`/`fr`), falling back to
+  English for anything else. Only changes which language the model replies in — no change to what
+  data is sent.
+- **Quota-aware chat:** `checkChatUsage()` (`chatTrim.ts`) reads `ChatSession.measureUsage()` (Chrome
+  only) to warn the user in `ChatPanel` before the context fills, instead of relying solely on the
+  turn-count heuristic. WebLLM/LiteRT sessions don't expose `measureUsage`, so they silently keep the
+  existing heuristic — no behavior change on Android.
+
+**Hard gate:** all four capabilities are unavailable unless `provider.supports(cap)` is true, which
+only the chrome-builtin provider reports. WebLLM and LiteRT-LM return `false` for every new
+capability, so callers fall back to pre-existing behavior automatically — no Android-specific code
+path was added or changed. **No new network egress and no new CSP exception** — every capability
+above runs through the same fully-local `LanguageModel`/`Summarizer` globals as the existing
+one-shot/chat paths.
+
 ---
 
 ## 📱 PWA Security Features
@@ -521,6 +557,6 @@ Contact: security@trustvault.example (example - update with real contact)
 
 ---
 
-**Last Updated**: June 10, 2026
-**Security Version**: 1.2.0 (S2 strict CSP, S7 key hygiene, S8 import validation, P2/P5 supply chain — see SECURITY_HARDENING_PLAN_2026-06.md)
+**Last Updated**: June 24, 2026
+**Security Version**: 1.3.0 (S2 strict CSP, S7 key hygiene, S8 import validation, P2/P5 supply chain + multi-turn chat follow-up security boundary — see SECURITY.md § Chat follow-up + standalone general assistant)
 **Compliance Level**: OWASP Mobile Top 10 2025 ✅

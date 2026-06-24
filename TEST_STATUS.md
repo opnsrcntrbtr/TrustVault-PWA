@@ -1,8 +1,8 @@
 # Test Suite Status Report
 
-**Date**: May 30, 2026 (originally December 2024; updated with each milestone)  
-**Test Framework**: Vitest 2.1.8 + React Testing Library 16.0.0  
-**Overall Status**: ✅ **~169/183 tests passing (92%+)** — includes S1 WebAuthn PRF tests
+**Date**: June 24, 2026 (originally December 2024; updated with each milestone)  
+**Test Framework**: Vitest 4.1.6 + React Testing Library 16.0.0  
+**Overall Status**: ✅ **1261/1268 tests passing (99.4%)** — 94 test files
 
 ---
 
@@ -772,3 +772,47 @@ Not addressed here (separate, pre-existing issue): the 7 tests in
 `src/__tests__/integration/import-export.test.tsx` time out at the default
 5000ms, independent of this fix — likely slow PBKDF2/scrypt key derivation
 under jsdom hitting default timeouts.
+
+---
+
+## Chrome Built-in AI Alignment — 2026-06-24
+
+Implemented per `docs/superpowers/plans/2026-06-24-chrome-builtin-ai-alignment.md` (16 tasks,
+6 phases) on branch `feat/chrome-builtin-ai-alignment-spec`. Automated verification run locally
+after every task and again at the end of the full plan:
+
+| Check | Result |
+|---|---|
+| `npm run type-check` | ✅ 0 errors |
+| `npm run lint` | ✅ 855 problems (801 errors, 54 warnings) — identical to the pre-existing baseline; 0 new issues introduced by this work |
+| `npm run test` (full repo) | ✅ 102 files / 1291 tests — all passed |
+
+New/changed test coverage for this work: `providers/supports.test.ts`,
+`providers/chromeBuiltinProvider.test.ts` (params/languages/runStructured/measureUsage),
+`promptApi.test.ts` (supportsCapability/runStructured), `strengthInsight.test.ts`,
+`breachInsight.test.ts`, `summarizer.test.ts`, `aiLanguages.test.ts`, `chatTrim.test.ts`
+(checkChatUsage), `vaultAggregate.test.ts` (Summarizer overview), `useAiStrengthExplain.test.ts`,
+`useAiBreachImpactExplain.test.ts`, `useAiChat.test.ts` (usageWarning),
+`StrengthInsightCard.test.tsx`, `BreachInsightCard.test.tsx`, `BreachDetailsModal.test.tsx`,
+`PasswordStrengthIndicator.test.tsx`, `PasswordGeneratorPage.test.tsx` (all updated for the
+`insight`/`rawText` hook contract change).
+
+### Manual on-device verification — ⚠️ NOT YET PERFORMED
+
+The plan calls for live verification in Chrome 148+/149 with the Prompt API and Summarizer API
+enabled. This was **not performed** in this session (no browser with Gemini Nano flags available
+in this environment) — flagging explicitly rather than claiming it passed. Before merging, a
+human should verify in real Chrome:
+
+1. Password generator / strength indicator → "Explain with AI" renders a typed
+   `StrengthInsightCard` (severity chip + ranked actions), with the existing follow-up chat
+   working below it.
+2. Breach Details modal → "AI Impact Analysis" renders a typed `BreachInsightCard` (risk-level
+   chip + exposed-data chips + numbered steps), with follow-up chat working below it.
+3. With the OS/browser language set to `es` or `fr`, both insight cards render in that language;
+   with an unsupported language (e.g. `zh`), they fall back to English.
+4. General Assistant → curated scope shows a Summarizer-backed vault overview (or the formatted
+   fallback text if the Summarizer API is unavailable in that Chrome build).
+5. A long chat conversation (10+ turns) surfaces the "Long conversation — older messages may be
+   dropped" warning in `ChatPanel`.
+6. DevTools → Network shows no new egress during any of the above — inference stays fully local.
