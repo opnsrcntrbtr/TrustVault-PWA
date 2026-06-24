@@ -4,7 +4,7 @@
  * Passwords and secret notes MUST NEVER be passed into this module.
  */
 import type { BreachData } from '@/core/breach/breachTypes';
-import { runPromptStreaming } from './promptApi';
+import { runPromptStreaming, runStructured } from './promptApi';
 import { assertNoSecrets } from '@/core/ai/chat/chatContext';
 
 export interface BreachImpactExplainInput {
@@ -62,4 +62,53 @@ export function explainBreachImpact(
     userPrompt: buildBreachPrompt(input),
     ...(signal ? { signal } : {}),
   });
+}
+
+export interface BreachInsight {
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  exposedData: string[];
+  steps: string[];
+}
+
+export const BREACH_INSIGHT_SCHEMA = {
+  type: 'object',
+  required: ['riskLevel', 'exposedData', 'steps'],
+  additionalProperties: false,
+  properties: {
+    riskLevel: { type: 'string', enum: ['low', 'medium', 'high', 'critical'] },
+    exposedData: { type: 'array', items: { type: 'string' }, maxItems: 8 },
+    steps: { type: 'array', items: { type: 'string' }, maxItems: 5 },
+  },
+} as const;
+
+const BREACH_RISK_LEVELS = ['low', 'medium', 'high', 'critical'];
+
+export function parseBreachInsight(raw: string): BreachInsight | null {
+  try {
+    const v = JSON.parse(raw) as Record<string, unknown>;
+    if (typeof v.riskLevel !== 'string' || !BREACH_RISK_LEVELS.includes(v.riskLevel)) return null;
+    if (!Array.isArray(v.exposedData) || !Array.isArray(v.steps)) return null;
+    return {
+      riskLevel: v.riskLevel as BreachInsight['riskLevel'],
+      exposedData: v.exposedData.filter((x): x is string => typeof x === 'string'),
+      steps: v.steps.filter((x): x is string => typeof x === 'string'),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function explainBreachImpactStructured(
+  input: BreachImpactExplainInput,
+  signal?: AbortSignal,
+): Promise<{ insight: BreachInsight } | { raw: string }> {
+  const raw = await runStructured({
+    systemPrompt: BREACH_SYSTEM_PROMPT,
+    userPrompt: buildBreachPrompt(input),
+    schema: BREACH_INSIGHT_SCHEMA,
+    params: { temperature: 0.3, topK: 3 },
+    ...(signal ? { signal } : {}),
+  });
+  const insight = parseBreachInsight(raw);
+  return insight ? { insight } : { raw };
 }
