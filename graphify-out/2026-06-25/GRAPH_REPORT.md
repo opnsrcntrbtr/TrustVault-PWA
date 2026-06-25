@@ -1,7 +1,7 @@
-# Graph Report - trustvault-pwa  (2026-06-24)
+# Graph Report - trustvault-pwa  (2026-06-25)
 
 ## Corpus Check
-- 352 files · ~295,709 words
+- 367 files · ~309,189 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f8c00c61`
+- Built from commit: `55fad52b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -1410,7 +1410,7 @@ Nodes (7): checkRateLimit(), clearAttempts(), formatRemaining(), lockoutMs(), re
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `Community 163`, `WebAuthn Ceremony`, `Community 282`, `Community 206`, `Community 246`, `Community 184`, `Community 250`, `Community 285`, `Community 31`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Why does `CredentialRepository` connect `Community 307` to `Crypto Error & Dialogs`, `Community 163`, `Community 36`, `Community 206`, `Community 184`, `Community 250`, `Community 285`, `Community 31`?**
   _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Why does `loadAiSettings()` connect `Community 282` to `Breach UI & Category Icons`, `Community 148`, `Community 246`, `Community 92`, `Community 285`, `Community 126`?**
