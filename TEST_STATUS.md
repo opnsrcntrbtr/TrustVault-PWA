@@ -1,8 +1,48 @@
 # Test Suite Status Report
 
-**Date**: June 24, 2026 (originally December 2024; updated with each milestone)  
+**Date**: June 25, 2026 (originally December 2024; updated with each milestone)  
 **Test Framework**: Vitest 4.1.6 + React Testing Library 16.0.0  
-**Overall Status**: ✅ **1261/1268 tests passing (99.4%)** — 94 test files
+**Overall Status**: ✅ **1414/1415 tests passing (99.9%)** — 119 test files
+
+---
+
+## Tier 1/2 Test Coverage Additions — June 25, 2026
+
+Implemented per `docs/superpowers/plans/2026-06-25-test-coverage-improvement.md`
+(11 tasks; Task 2 found pre-existing coverage and was skipped). Added focused unit
+test coverage to security-critical core logic (Tier 1) and supporting utilities
+(Tier 2) that previously had no test file, prioritized by security impact and
+ability to unblock future work, per
+`docs/superpowers/specs/2026-06-25-test-coverage-improvement-design.md`.
+
+**Tier 1 (security-critical core logic):**
+
+| Module | New tests |
+|---|---|
+| `src/core/breach/__tests__/hibpService.test.ts` | 13 — k-anonymity caching, rate-limit serialization, 429 exponential backoff, 404 short-circuit, severity band boundaries, email-breach API-key gating |
+| `src/core/auth/__tests__/rateLimiter.test.ts` | (pre-existing, 15 tests — already covered lockout thresholds/decay/clearing; no new work needed) |
+| `src/features/vault/generator/__tests__/passwordGenerator.test.ts` | 19 — option matrix, entropy/strength boundaries, diversity guarantee, count/length validation |
+| `src/features/vault/generator/__tests__/passphraseGenerator.test.ts` | 15 — word-count bounds, separator styles, capitalization modes, digit insertion, memorable preset |
+| `src/features/vault/generator/__tests__/strengthAnalyzer.test.ts` | 16 — zxcvbn-backed scoring, weakness detection, crack-time formatting, quick-check and minimum-requirements helpers |
+| `src/core/ocr/__tests__/credentialParser.test.ts` | 18 — labeled-field extraction, standalone email/URL fallback, OCR email-mangling repair, garbage-token prevention |
+
+**Tier 2 (supporting hooks/utilities):**
+
+| Module | New tests |
+|---|---|
+| `src/presentation/utils/__tests__/performance.test.ts` | 12 — render-time warning threshold, debounce/throttle collapsing behavior, environment-detection helpers |
+| `src/hooks/__tests__/useDriverTour.test.ts` | 7 — tour-completion state via the hook's public surface (driver.js mocked) |
+| `src/core/ocr/__tests__/tesseractService.test.ts` | 8 — lazy worker memoization, recognition pass-through, teardown, support detection (tesseract.js mocked) |
+| `src/core/ocr/__tests__/cameraCapture.test.ts` | 15 — support detection, stream lifecycle (`stop()` halting every track), frame capture, image-data clearing, quality heuristics |
+
+**Verification:**
+- [x] `npm run type-check`: 0 errors
+- [x] `npm run lint`: 855 problems — identical to the pre-existing baseline; 0 new issues across all 9 new test files (confirmed via isolated `eslint` run against just the new files)
+- [x] `npm run test` (full repo): 1414/1415 passing, 119 test files. The single failure (`import-export.test.tsx` > "should reject import with wrong password") is a pre-existing timing-sensitive flake under full-suite load — confirmed passing in isolation both on this branch and at the `main` baseline (stashed diff), not a regression from this work.
+
+Tier 3 (pages/dialogs) was explicitly out of scope per the design spec — better
+suited to the existing `src/__tests__/integration/` suite than new isolated unit
+tests.
 
 ---
 
