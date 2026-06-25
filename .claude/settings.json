@@ -4,7 +4,12 @@
       "Bash(pkill -f \"vite --host\")",
       "Bash(npm test *)",
       "mcp__plugin_claude-mem_mcp-search__search",
-      "Bash(perl -i -pe 's/\\\\bglobal\\\\b/globalThis/g' src/core/auth/__tests__/webauthn.test.ts)"
+      "Bash(perl -i -pe 's/\\\\bglobal\\\\b/globalThis/g' src/core/auth/__tests__/webauthn.test.ts)",
+      "Bash(cat)",
+      "Bash(chmod +x /tmp/check_coverage.sh)",
+      "Bash(bash /tmp/check_coverage.sh)",
+      "Bash(chmod +x /tmp/find_untested.sh)",
+      "Bash(bash /tmp/find_untested.sh)"
     ]
   },
   "hooks": {
