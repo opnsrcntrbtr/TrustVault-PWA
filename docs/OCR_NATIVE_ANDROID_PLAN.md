@@ -110,13 +110,21 @@ Sources: [Capacitor 7 GA](https://ionic.io/blog/capacitor-7-has-hit-ga) · [Upda
 
 **Goal:** de-risk the single thing that can invalidate the whole effort.
 
-- [ ] Stand up a throwaway Capacitor shell (`androidScheme: 'https'` → serves from `https://localhost`).
-- [ ] Verify **WebAuthn platform authenticator + PRF extension (`prf-v1`) unlock works** inside the
-      Android WebView under `https://localhost`. The RP ID assumption changes vs. your deployed origin.
-- [ ] Verify Dexie/IndexedDB persistence and the strict CSP behave in-WebView.
+- [x] **Research complete — see [OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md](./OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md).**
+- [ ] On-device confirmation of PRF pass-through (spike §4) — *optional, off the OCR critical path.*
 
-**Exit:** biometric unlock confirmed working in-WebView, OR a documented mitigation (e.g. master-password
-fallback only on the Android build). **If this fails, stop and re-plan before Phase 3.**
+**Finding:** `prf-v1` biometric unlock does **not** work transparently in a Capacitor WebView.
+Capacitor's WebView doesn't enable WebAuthn by default; PRF extension pass-through is undocumented on
+every path; and Credential Manager ties the origin to the **app signature** (not the web RP ID), so
+browser-enrolled passkeys don't carry over. PRF itself is fine in Chrome-on-Android — the gap is the
+WebView embedding.
+
+**Decision (D1/D2):** the Capacitor Android build ships OCR with **master-password unlock** (the
+existing non-PRF path); **biometric-in-WebView is decoupled** into a separate optional track. This was
+the plan's pre-registered mitigation, so **Phase 3 proceeds** — no re-plan needed.
+
+**Exit:** ✅ met via documented mitigation. Biometric disabled/hidden on the Capacitor surface;
+master-password unlock intact.
 
 ---
 
@@ -197,7 +205,8 @@ target**, not a transparent shim.
 - [ ] **CSP parity** — re-assert strict hash-based CSP inside the WebView (`securityHeaders.ts` /
       `vercel.json` headers are not applied in-WebView); add `https://localhost` where origin checks
       assume the production domain.
-- [ ] **WebAuthn/PRF** — confirm Phase 2 result holds in the release build.
+- [ ] **WebAuthn/PRF** — per Phase 2 (D1/D2): confirm biometric is **disabled/hidden** on the Capacitor
+      surface and the **master-password unlock path is intact**. (PRF-in-WebView is out of scope here.)
 - [ ] **No new egress** — confirm bundled ML Kit model (jcesarmobile default `16.0.1`), no Play-Services
       model download. (Phase 4 Firebase path audited separately if enabled.)
 - [ ] **In-memory only** — base64 path holds no disk temp file; do **not** switch to `@capacitor/camera`
@@ -233,7 +242,7 @@ target**, not a transparent shim.
 
 | Risk | Mitigation |
 |---|---|
-| WebAuthn/PRF biometric breaks under `https://localhost` | **Phase 2 spike first**; master-password fallback on Android build if needed |
+| WebAuthn/PRF biometric breaks under `https://localhost` | ✅ **Resolved (Phase 2):** confirmed it does not work transparently in a Capacitor WebView → Android build uses **master-password unlock**; biometric decoupled. See [spike doc](./OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md). |
 | Overlay's Firebase `google-services.json` violates ZK posture | Overlay is opt-in/off-by-default; Firebase never bundled unless toggle ships (Phase 4) |
 | Second Android maintenance surface (build/signing pipeline) | Sideload-only scope; PWA remains the primary, fully-functional surface |
 | Plugin abandonment | Provider seam isolates the dependency; swap plugins behind `NativeMlKitOcrProvider` |
