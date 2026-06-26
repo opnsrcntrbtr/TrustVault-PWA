@@ -163,6 +163,22 @@ export async function captureFrame(
 }
 
 /**
+ * Encode a Blob as a base64 data URL (e.g. `data:image/png;base64,...`).
+ * Used to hand a captured frame to the native OCR plugin, which accepts a
+ * data URL or a file URL. Kept in-memory — no disk round-trip.
+ */
+export function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => { resolve(reader.result as string); };
+    reader.onerror = () => {
+      reject(reader.error ?? new Error('Failed to read image blob'));
+    };
+    reader.readAsDataURL(blob);
+  });
+}
+
+/**
  * Securely clear image data from memory.
  * Call this after OCR processing is complete.
  */

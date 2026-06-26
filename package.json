@@ -32,14 +32,19 @@
     "analyze:bundle": "vite build && du -sh dist/assets/js/*.js | sort -h",
     "ocr:assets": "node scripts/copy-ocr-assets.js",
     "litert:assets": "node scripts/copy-litert-assets.js",
+    "cap:sync": "npm run build && cap sync android",
+    "cap:android": "npm run build && cap sync android && cap open android",
     "predev": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js",
     "prebuild": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js",
     "prebuild:deploy": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js",
     "prepreview": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js"
   },
   "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@jcesarmobile/capacitor-ocr": "^0.3.0",
     "@litert-lm/core": "^0.13.1",
     "@mlc-ai/web-llm": "^0.2.84",
     "@mui/icons-material": "^6.1.7",
@@ -60,6 +65,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.4.1",
     "@eslint/js": "^9.38.0",
     "@tesseract.js-data/eng": "^1.0.0",
     "@testing-library/jest-dom": "^6.9.1",

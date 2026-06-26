@@ -14,6 +14,7 @@ import {
   clearImageData,
   assessImageQuality,
   enhanceForOcr,
+  blobToDataUrl,
 } from '@/core/ocr/cameraCapture';
 
 describe('cameraCapture', () => {
@@ -175,6 +176,16 @@ describe('cameraCapture', () => {
       const data = new Uint8ClampedArray([...pixel(128), ...pixel(128)]);
 
       expect(() => { enhanceForOcr(data); }).not.toThrow();
+    });
+  });
+
+  describe('blobToDataUrl()', () => {
+    it('encodes a blob as a base64 data URL preserving the MIME type', async () => {
+      const blob = new Blob(['hello'], { type: 'image/png' });
+
+      const url = await blobToDataUrl(blob);
+
+      expect(url).toMatch(/^data:image\/png;base64,/);
     });
   });
 

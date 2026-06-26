@@ -64,17 +64,22 @@ gated behind a Settings toggle so the Firebase dependency is never present unles
 
 ---
 
-## 3. Toolchain & requirements (verified — Capacitor 7)
+## 3. Toolchain & requirements (Capacitor 8 — corrected during Phase 3)
+
+> **Correction:** `@jcesarmobile/capacitor-ocr@0.3.0` peer-requires `@capacitor/core >=8.0.0`,
+> so this targets **Capacitor 8** (installed: `@capacitor/core`/`cli`/`android` `8.4.1`), not 7 as
+> originally drafted. Capacitor 8 requirements below.
 
 | Requirement | Value |
 |---|---|
 | Node.js | ≥ 20 (project already requires this) |
 | Android API | minSdk 24+ (Android 7+) |
 | JDK | 21 |
-| Android Studio | Ladybug 2024.2.1+ |
+| Android Studio | Ladybug 2024.2.1+ (or newer) |
 | WebView | Chrome 60+ |
 
-Sources: [Capacitor 7 GA](https://ionic.io/blog/capacitor-7-has-hit-ga) · [Updating to 7.0](https://capacitorjs.com/docs/updating/7-0).
+Sources: [Capacitor 7 GA](https://ionic.io/blog/capacitor-7-has-hit-ga) · [Updating to 7.0](https://capacitorjs.com/docs/updating/7-0)
+(v8 raised the same baselines; plugin peer dep forced the major bump).
 
 ---
 
@@ -132,50 +137,24 @@ master-password unlock intact.
 
 **Goal:** wire `@jcesarmobile/capacitor-ocr` behind the seam.
 
-```bash
-npm i @capacitor/core @capacitor/cli @jcesarmobile/capacitor-ocr
-npx cap init TrustVault io.trustvault.app --web-dir=dist
-npm run build && npx cap add android && npx cap sync
-```
+### Done (in-repo, verified)
+- [x] Installed `@capacitor/core` + `@capacitor/cli` + `@capacitor/android` (`8.4.1`) + `@jcesarmobile/capacitor-ocr` (`0.3.0`).
+- [x] [`capacitor.config.ts`](../capacitor.config.ts) — `androidScheme: 'https'`, `appId: io.trustvault.app`, master-password-only note.
+- [x] [`src/core/ocr/nativeMlKitOcrProvider.ts`](../src/core/ocr/nativeMlKitOcrProvider.ts) — implements `OcrProvider`; `isAvailable()` gates on **native Android only**; plugin **lazy dynamic-imported** inside `recognize()` (never enters the web bundle); confirmed real plugin API `Ocr.process({ image }) → { results: [{ text, confidence }] }`; confidence treated as 0–1 (ML Kit/Vision scale) and clamped; blob zeroized in `finally`.
+- [x] Registered first in `getOcrProviders()` ahead of Tesseract (`ocrProvider.ts`); web/iOS/un-wrapped-Android all fall through to Tesseract.
+- [x] `blobToDataUrl()` helper added to `cameraCapture.ts` (in-memory, no disk).
+- [x] `@jcesarmobile/capacitor-ocr` added to `optimizeDeps.exclude` (vite.config.ts), mirroring WebLLM/LiteRT.
+- [x] `cap:sync` / `cap:android` npm scripts (each runs `npm run build` first).
+- [x] **Verified:** `tsc --noEmit` 0 errors · OCR suite **68/68** (incl. 7 native-provider tests) · `npm run build` (web) succeeds, plugin not bundled into main chunk · new files lint-clean.
 
-`capacitor.config.ts`:
-```ts
-const config: CapacitorConfig = {
-  appId: 'io.trustvault.app',
-  webDir: 'dist',
-  server: { androidScheme: 'https' },     // https://localhost — closest to real CSP/origin model
-  android: { allowMixedContent: false },
-};
-```
-
-`src/core/ocr/nativeMlKitOcrProvider.ts`:
-```ts
-import { Capacitor } from '@capacitor/core';
-import { Ocr } from '@jcesarmobile/capacitor-ocr';
-
-export class NativeMlKitOcrProvider implements OcrProvider {
-  readonly streamsProgress = false;
-  isAvailable() { return Capacitor.isNativePlatform(); }
-
-  async recognize(getBlob: () => Promise<Blob>) {
-    const blob = await getBlob();
-    const image = await blobToDataUrl(blob);          // 'data:image/png;base64,...'
-    const { results } = await Ocr.process({ image });
-    await clearImageData(blob);                        // reuse existing zeroization
-    const text = results.map(r => r.text).join('\n');
-    const engineConfidence = results.length
-      ? results.reduce((s, r) => s + r.confidence, 0) / results.length
-      : undefined;
-    return { text, engineConfidence };
-  }
-}
-```
-
-- [ ] Register `new NativeMlKitOcrProvider()` first in the selection array.
-- [ ] Pre-build hook (mirror `copy-ocr-assets.js`): `npm run build && npx cap sync` before Android build.
-- [ ] Downstream (`parseCredentialText`, field-confidence merge) unchanged.
+### Remaining — on-machine (needs Android SDK / Studio; not runnable in CI/sandbox)
+- [ ] `npx cap add android` — generates the `android/` Gradle project (large; commit or `.gitignore` per preference).
+- [ ] `npm run cap:sync` — build web + copy into the native project.
+- [ ] Open in Android Studio (`npm run cap:android`), build & run on a device.
+- [ ] **Manual parity check:** scan real credential cards/screenshots; confirm ML Kit output flows through `parseCredentialText` to the same `{ username, password, url }` as Tesseract on identical inputs. Record in `TEST_STATUS.md`.
 
 **Exit:** on-device Android OCR functioning; parser output parity vs. Tesseract on identical ground-truth.
+(In-repo code/wiring/tests ✅ done; on-device verification pending hardware.)
 
 ---
 

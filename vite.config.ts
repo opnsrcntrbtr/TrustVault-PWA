@@ -183,7 +183,10 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    exclude: ['@mlc-ai/web-llm', '@litert-lm/core'],
+    // Native-only Capacitor OCR plugin: lazy-imported inside the native ML Kit
+    // provider, never executed on web. Exclude so the dev server doesn't try to
+    // pre-bundle a plugin whose entry assumes a Capacitor native runtime.
+    exclude: ['@mlc-ai/web-llm', '@litert-lm/core', '@jcesarmobile/capacitor-ocr'],
   },
 
   build: {

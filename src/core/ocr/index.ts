@@ -18,7 +18,7 @@ export {
   type OcrMode,
 } from './tesseractService';
 
-// OCR Provider seam (engine abstraction — Tesseract today, native Android later)
+// OCR Provider seam (engine abstraction — native Android ML Kit + Tesseract)
 export {
   TesseractOcrProvider,
   getOcrProviders,
@@ -26,6 +26,7 @@ export {
   type OcrProvider,
   type OcrRecognition,
 } from './ocrProvider';
+export { NativeMlKitOcrProvider } from './nativeMlKitOcrProvider';
 
 // Credential Parser
 export {

@@ -15,6 +15,7 @@ import {
   type OcrMode,
 } from './tesseractService';
 import { clearImageData } from './cameraCapture';
+import { NativeMlKitOcrProvider } from './nativeMlKitOcrProvider';
 
 export interface OcrRecognition {
   text: string;
@@ -70,11 +71,12 @@ export class TesseractOcrProvider implements OcrProvider {
 }
 
 /**
- * Ordered provider registry. Native providers (Phase 3) prepend ahead of
- * Tesseract so they're preferred when available.
+ * Ordered provider registry. The native Android ML Kit provider is preferred
+ * when available (native Android); Tesseract is the universal fallback for
+ * every other surface (web, iOS Safari, un-wrapped Android).
  */
 export function getOcrProviders(): OcrProvider[] {
-  return [new TesseractOcrProvider()];
+  return [new NativeMlKitOcrProvider(), new TesseractOcrProvider()];
 }
 
 /**
