@@ -9,7 +9,8 @@
       "Bash(chmod +x /tmp/check_coverage.sh)",
       "Bash(bash /tmp/check_coverage.sh)",
       "Bash(chmod +x /tmp/find_untested.sh)",
-      "Bash(bash /tmp/find_untested.sh)"
+      "Bash(bash /tmp/find_untested.sh)",
+      "WebFetch(domain:capawesome.io)"
     ]
   },
   "hooks": {
