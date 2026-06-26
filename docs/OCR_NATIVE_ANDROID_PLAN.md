@@ -196,12 +196,80 @@ target**, not a transparent shim.
 
 ---
 
-## Phase 6 — Build, sideload distribution & docs
+## Phase 6 — CSP injection script + build, sideload distribution & docs
 
+### Pre-requisite: CSP injection (gates this phase — see OCR_PHASE5_SECURITY_AUDIT.md §A)
+- [ ] Create `scripts/inject-csp-for-capacitor.js` — post-`sync` script that:
+  - Reads `capacitor.config.ts` to find the copied native `dist/index.html` location.
+  - Calls `buildContentSecurityPolicy()` from `src/config/securityHeaders.ts` to generate the policy.
+  - Injects a `<meta http-equiv="Content-Security-Policy" content="…">` into the native `<head>` ONLY.
+  - Validates no `https://localhost` origin assumptions exist in OCR/parse paths (audit: none found).
+  - Runs at `cap sync` time (add to npm `cap:sync` script).
+- [ ] Test on-device that strict CSP is enforced (DevTools → Sources/CSP violations tab).
+- [ ] **Document in Phase 6 checklist below.**
+
+### Then: build & distribution
 - [ ] Gradle build + signing key (new — none exists today).
 - [ ] **Distribution: internal/sideload APK** (no Play Store listing for now). The web PWA stays fully
       functional via Tesseract, so the Android APK is a pure enhancement and can ship independently.
 - [ ] Update `PROJECT_STATUS.md`, `ROADMAP.md`, `TEST_STATUS.md`, `CLAUDE.md`.
+
+---
+
+## Session Continuation Guide
+
+**Status as of 2026-06-26 EOD:** Phases 1–3, 5 complete and in-repo, verified. Phase 2 spike doc captures
+biometric decision. Phase 4 (overlay) and Phase 6 (distribution) deferred. One blocker: CSP injection.
+
+### To resume Phase 6 (on-device + distribution)
+
+1. **Prerequisite: CSP injection script** (§above)
+   - File: `scripts/inject-csp-for-capacitor.js`
+   - Template: mirror `scripts/inject-sw-version.js` (existing post-build hook pattern)
+   - Call from `npm run cap:sync` (add to package.json script)
+   - Validate: open the copied native `dist/index.html` in a text editor, confirm meta CSP is present
+
+2. **Android build on-machine**
+   ```bash
+   npx cap add android    # generates android/ directory (large; decide: commit or .gitignore)
+   npm run cap:android    # builds web → syncs → opens Android Studio
+   ```
+   - Android Studio will prompt for Gradle sync; let it complete.
+   - Build & run on a device (real device or emulator with API 24+).
+
+3. **On-device parity check** → record in `TEST_STATUS.md`
+   - Scan real credential cards/screenshots; compare ML Kit output vs. Tesseract on identical inputs.
+   - Confirm parser produces the same `{ username, password, url }`.
+   - Biometric enrollment should be **hidden** (Settings → Biometric should have no option).
+   - Check CSP is enforced: DevTools → Sources → CSP violation console messages (should be none).
+
+4. **Optional Phase 4** (bounding-box overlay)
+   - If desired: `npm i @capacitor-community/image-to-text` + implement toggle per plan Phase 4.
+   - Requires `google-services.json` setup (Firebase); adds a `connect-src` origin to CSP.
+   - Deferred because it's opt-in and adds Firebase (not a blocker for OCR MVP).
+
+5. **Distribution**
+   - APK signing key: create or use existing (not covered here).
+   - Sideload to internal users or upload to internal testing track (not Play Store).
+   - Update docs: add a new "Changelog" entry in `PROJECT_STATUS.md` linking to the three audit/plan docs.
+
+### Files to reference when resuming
+- **Main plan:** [OCR_NATIVE_ANDROID_PLAN.md](./OCR_NATIVE_ANDROID_PLAN.md) (this file)
+- **Phase 2 findings:** [OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md](./OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md) — why biometric is off on the native surface
+- **Phase 5 audit:** [OCR_PHASE5_SECURITY_AUDIT.md](./OCR_PHASE5_SECURITY_AUDIT.md) — CSP gap, biometric gate, egress audit
+- **Code entry points:**
+  - Platform seam: [src/core/platform/runtime.ts](../src/core/platform/runtime.ts) — native detection (single source of truth)
+  - Biometric gate: [src/core/auth/webauthn.ts:52](../src/core/auth/webauthn.ts#L52) — `isBiometricAvailable()` returns `false` on native app
+  - OCR provider: [src/core/ocr/nativeMlKitOcrProvider.ts](../src/core/ocr/nativeMlKitOcrProvider.ts) — native Android OCR
+  - Capacitor config: [capacitor.config.ts](../capacitor.config.ts) — app ID, origin, Android settings
+  - Package scripts: [package.json](../package.json) lines 35–36 — `cap:sync` / `cap:android` commands
+
+### Git state (head of session)
+- All in-repo work committed (no local changes needed).
+- `android/` directory does **not** exist yet (generated at `npx cap add android` on-machine).
+- Web build continues to pass; all OCR/platform/webauthn tests pass.
+
+---
 
 ---
 
