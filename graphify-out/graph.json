@@ -542,514 +542,14 @@
   },
   "nodes": [
     {
-      "label": "cameraCapture.test.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "tests_cameracapture_test",
-      "community": 12,
-      "norm_label": "cameracapture.test.ts"
-    },
-    {
-      "label": "credentialParser.test.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "tests_credentialparser_test",
-      "community": 267,
-      "norm_label": "credentialparser.test.ts"
-    },
-    {
-      "label": "ocrProvider.test.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "tests_ocrprovider_test",
-      "community": 12,
-      "norm_label": "ocrprovider.test.ts"
-    },
-    {
-      "label": "{ recognizeTextMock, clearImageDataMock, isOCRSupportedMock }",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "tests_ocrprovider_test_recognizetextmock_clearimagedatamock_isocrsupportedmock",
-      "community": 12,
-      "norm_label": "{ recognizetextmock, clearimagedatamock, isocrsupportedmock }"
-    },
-    {
-      "label": "tesseractService.test.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "tests_tesseractservice_test",
-      "community": 12,
-      "norm_label": "tesseractservice.test.ts"
-    },
-    {
-      "label": "recognizeMock",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "tests_tesseractservice_test_recognizemock",
-      "community": 12,
-      "norm_label": "recognizemock"
-    },
-    {
-      "label": "setParametersMock",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "tests_tesseractservice_test_setparametersmock",
-      "community": 12,
-      "norm_label": "setparametersmock"
-    },
-    {
-      "label": "terminateMock",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
-      "source_location": "L11",
-      "_origin": "ast",
-      "id": "tests_tesseractservice_test_terminatemock",
-      "community": 12,
-      "norm_label": "terminatemock"
-    },
-    {
-      "label": "createWorkerMock",
-      "file_type": "code",
-      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "tests_tesseractservice_test_createworkermock",
-      "community": 12,
-      "norm_label": "createworkermock"
-    },
-    {
-      "label": "cameraCapture.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "ocr_cameracapture",
-      "community": 12,
-      "norm_label": "cameracapture.ts"
-    },
-    {
-      "label": "CaptureResult",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_captureresult",
-      "community": 12,
-      "norm_label": "captureresult"
-    },
-    {
-      "label": "CameraStream",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L15",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_camerastream",
-      "community": 12,
-      "norm_label": "camerastream"
-    },
-    {
-      "label": "isCameraSupported()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L24",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_iscamerasupported",
-      "community": 12,
-      "norm_label": "iscamerasupported()"
-    },
-    {
-      "label": "requestCameraAccess()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L36",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_requestcameraaccess",
-      "community": 12,
-      "norm_label": "requestcameraaccess()"
-    },
-    {
-      "label": "enhanceForOcr()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L75",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_enhanceforocr",
-      "community": 12,
-      "norm_label": "enhanceforocr()"
-    },
-    {
-      "label": "captureFrame()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L111",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_captureframe",
-      "community": 12,
-      "norm_label": "captureframe()"
-    },
-    {
-      "label": "clearImageData()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L169",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_clearimagedata",
-      "community": 12,
-      "norm_label": "clearimagedata()"
-    },
-    {
-      "label": "assessImageQuality()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/cameraCapture.ts",
-      "source_location": "L184",
-      "_origin": "ast",
-      "id": "ocr_cameracapture_assessimagequality",
-      "community": 12,
-      "norm_label": "assessimagequality()"
-    },
-    {
-      "label": "credentialParser.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "ocr_credentialparser",
-      "community": 267,
-      "norm_label": "credentialparser.ts"
-    },
-    {
-      "label": "ParsedCredential",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_parsedcredential",
-      "community": 287,
-      "norm_label": "parsedcredential"
-    },
-    {
-      "label": "PATTERNS",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L23",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_patterns",
-      "community": 267,
-      "norm_label": "patterns"
-    },
-    {
-      "label": "KNOWN_TLDS",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L37",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_known_tlds",
-      "community": 267,
-      "norm_label": "known_tlds"
-    },
-    {
-      "label": "normalizeOcrEmail()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L60",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_normalizeocremail",
-      "community": 267,
-      "norm_label": "normalizeocremail()"
-    },
-    {
-      "label": "extractLabeledValue()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L96",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_extractlabeledvalue",
-      "community": 267,
-      "norm_label": "extractlabeledvalue()"
-    },
-    {
-      "label": "findStandalonePatterns()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L160",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_findstandalonepatterns",
-      "community": 267,
-      "norm_label": "findstandalonepatterns()"
-    },
-    {
-      "label": "looksLikePassword()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L195",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_lookslikepassword",
-      "community": 267,
-      "norm_label": "lookslikepassword()"
-    },
-    {
-      "label": "parseCredentialText()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L212",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_parsecredentialtext",
-      "community": 267,
-      "norm_label": "parsecredentialtext()"
-    },
-    {
-      "label": "sanitizeValue()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/credentialParser.ts",
-      "source_location": "L296",
-      "_origin": "ast",
-      "id": "ocr_credentialparser_sanitizevalue",
-      "community": 267,
-      "norm_label": "sanitizevalue()"
-    },
-    {
-      "label": "index.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/index.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "ocr_index",
-      "community": 12,
-      "norm_label": "index.ts"
-    },
-    {
-      "label": "ocrProvider.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider",
-      "community": 12,
-      "norm_label": "ocrprovider.ts"
-    },
-    {
-      "label": "OcrRecognition",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L19",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_ocrrecognition",
-      "community": 12,
-      "norm_label": "ocrrecognition"
-    },
-    {
-      "label": "OcrProvider",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L25",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_ocrprovider",
-      "community": 12,
-      "norm_label": "ocrprovider"
-    },
-    {
-      "label": "TesseractOcrProvider",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L48",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_tesseractocrprovider",
-      "community": 12,
-      "norm_label": "tesseractocrprovider"
-    },
-    {
-      "label": ".isAvailable()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L52",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_tesseractocrprovider_isavailable",
-      "community": 12,
-      "norm_label": ".isavailable()"
-    },
-    {
-      "label": ".recognize()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L56",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_tesseractocrprovider_recognize",
-      "community": 12,
-      "norm_label": ".recognize()"
-    },
-    {
-      "label": "getOcrProviders()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L76",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_getocrproviders",
-      "community": 12,
-      "norm_label": "getocrproviders()"
-    },
-    {
-      "label": "getActiveOcrProvider()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/ocrProvider.ts",
-      "source_location": "L84",
-      "_origin": "ast",
-      "id": "ocr_ocrprovider_getactiveocrprovider",
-      "community": 12,
-      "norm_label": "getactiveocrprovider()"
-    },
-    {
-      "label": "tesseractService.ts",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice",
-      "community": 12,
-      "norm_label": "tesseractservice.ts"
-    },
-    {
-      "label": "OCRProgress",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L15",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_ocrprogress",
-      "community": 12,
-      "norm_label": "ocrprogress"
-    },
-    {
-      "label": "OcrMode",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L29",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_ocrmode",
-      "community": 12,
-      "norm_label": "ocrmode"
-    },
-    {
-      "label": "MODE_TO_PSM",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L31",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_mode_to_psm",
-      "community": 12,
-      "norm_label": "mode_to_psm"
-    },
-    {
-      "label": "getWorker()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L41",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_getworker",
-      "community": 12,
-      "norm_label": "getworker()"
-    },
-    {
-      "label": "recognizeText()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L94",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_recognizetext",
-      "community": 12,
-      "norm_label": "recognizetext()"
-    },
-    {
-      "label": "terminateWorker()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L118",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_terminateworker",
-      "community": 12,
-      "norm_label": "terminateworker()"
-    },
-    {
-      "label": "isOCRSupported()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L129",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_isocrsupported",
-      "community": 12,
-      "norm_label": "isocrsupported()"
-    },
-    {
-      "label": "prefetchTesseractAssets()",
-      "file_type": "code",
-      "source_file": "src/core/ocr/tesseractService.ts",
-      "source_location": "L144",
-      "_origin": "ast",
-      "id": "ocr_tesseractservice_prefetchtesseractassets",
-      "community": 12,
-      "norm_label": "prefetchtesseractassets()"
-    },
-    {
-      "label": "CameraScanDialog.tsx",
-      "file_type": "code",
-      "source_file": "src/presentation/components/CameraScanDialog.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "components_camerascandialog",
-      "community": 12,
-      "norm_label": "camerascandialog.tsx"
-    },
-    {
-      "label": "CameraScanDialogProps",
-      "file_type": "code",
-      "source_file": "src/presentation/components/CameraScanDialog.tsx",
-      "source_location": "L42",
-      "_origin": "ast",
-      "id": "components_camerascandialog_camerascandialogprops",
-      "community": 287,
-      "norm_label": "camerascandialogprops"
-    },
-    {
-      "label": "ScanState",
-      "file_type": "code",
-      "source_file": "src/presentation/components/CameraScanDialog.tsx",
-      "source_location": "L48",
-      "_origin": "ast",
-      "id": "components_camerascandialog_scanstate",
-      "community": 12,
-      "norm_label": "scanstate"
-    },
-    {
-      "label": "CameraScanDialog()",
-      "file_type": "code",
-      "source_file": "src/presentation/components/CameraScanDialog.tsx",
-      "source_location": "L56",
-      "_origin": "ast",
-      "id": "components_camerascandialog_camerascandialog",
-      "community": 287,
-      "norm_label": "camerascandialog()"
-    },
-    {
       "label": "OCR_NATIVE_ANDROID_PLAN.md",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan",
       "community": 277,
-      "norm_label": "ocr_native_android_plan.md",
-      "id": "docs_ocr_native_android_plan"
+      "norm_label": "ocr_native_android_plan.md"
     },
     {
       "label": "Native Android OCR \u2014 Implementation Plan (Capacitor + ML Kit)",
@@ -1057,9 +557,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L1",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
       "community": 277,
-      "norm_label": "native android ocr \u2014 implementation plan (capacitor + ml kit)",
-      "id": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit"
+      "norm_label": "native android ocr \u2014 implementation plan (capacitor + ml kit)"
     },
     {
       "label": "0. Goal & Premise",
@@ -1067,9 +567,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L10",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_0_goal_premise",
       "community": 277,
-      "norm_label": "0. goal & premise",
-      "id": "docs_ocr_native_android_plan_0_goal_premise"
+      "norm_label": "0. goal & premise"
     },
     {
       "label": "Validated decisions",
@@ -1077,9 +577,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L20",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_validated_decisions",
       "community": 277,
-      "norm_label": "validated decisions",
-      "id": "docs_ocr_native_android_plan_validated_decisions"
+      "norm_label": "validated decisions"
     },
     {
       "label": "1. Why not TWA / raw WebView (rejected alternatives)",
@@ -1087,9 +587,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L31",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_1_why_not_twa_raw_webview_rejected_alternatives",
       "community": 277,
-      "norm_label": "1. why not twa / raw webview (rejected alternatives)",
-      "id": "docs_ocr_native_android_plan_1_why_not_twa_raw_webview_rejected_alternatives"
+      "norm_label": "1. why not twa / raw webview (rejected alternatives)"
     },
     {
       "label": "2. Plugin selection",
@@ -1097,9 +597,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L43",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_2_plugin_selection",
       "community": 277,
-      "norm_label": "2. plugin selection",
-      "id": "docs_ocr_native_android_plan_2_plugin_selection"
+      "norm_label": "2. plugin selection"
     },
     {
       "label": "3. Toolchain & requirements (verified \u2014 Capacitor 7)",
@@ -1107,9 +607,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L67",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_3_toolchain_requirements_verified_capacitor_7",
       "community": 277,
-      "norm_label": "3. toolchain & requirements (verified \u2014 capacitor 7)",
-      "id": "docs_ocr_native_android_plan_3_toolchain_requirements_verified_capacitor_7"
+      "norm_label": "3. toolchain & requirements (verified \u2014 capacitor 7)"
     },
     {
       "label": "Phase 1 \u2014 Provider seam (pure web, zero native, ships to all users)",
@@ -1117,9 +617,9 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L81",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_phase_1_provider_seam_pure_web_zero_native_ships_to_all_users",
       "community": 277,
-      "norm_label": "phase 1 \u2014 provider seam (pure web, zero native, ships to all users)",
-      "id": "docs_ocr_native_android_plan_phase_1_provider_seam_pure_web_zero_native_ships_to_all_users"
+      "norm_label": "phase 1 \u2014 provider seam (pure web, zero native, ships to all users)"
     },
     {
       "label": "Phase 2 \u2014 Biometric-under-WebView spike (highest-risk validation, BEFORE native wiring)",
@@ -1127,89 +627,719 @@
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
       "source_location": "L109",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_phase_2_biometric_under_webview_spike_highest_risk_validation_before_native_wiring",
       "community": 277,
-      "norm_label": "phase 2 \u2014 biometric-under-webview spike (highest-risk validation, before native wiring)",
-      "id": "docs_ocr_native_android_plan_phase_2_biometric_under_webview_spike_highest_risk_validation_before_native_wiring"
+      "norm_label": "phase 2 \u2014 biometric-under-webview spike (highest-risk validation, before native wiring)"
     },
     {
       "label": "Phase 3 \u2014 Native ML Kit OCR provider (Android default path)",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L123",
+      "source_location": "L131",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_phase_3_native_ml_kit_ocr_provider_android_default_path",
       "community": 277,
-      "norm_label": "phase 3 \u2014 native ml kit ocr provider (android default path)",
-      "id": "docs_ocr_native_android_plan_phase_3_native_ml_kit_ocr_provider_android_default_path"
+      "norm_label": "phase 3 \u2014 native ml kit ocr provider (android default path)"
     },
     {
       "label": "Phase 4 \u2014 Optional bounding-box overlay (opt-in, gated)",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L174",
+      "source_location": "L182",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_phase_4_optional_bounding_box_overlay_opt_in_gated",
       "community": 277,
-      "norm_label": "phase 4 \u2014 optional bounding-box overlay (opt-in, gated)",
-      "id": "docs_ocr_native_android_plan_phase_4_optional_bounding_box_overlay_opt_in_gated"
+      "norm_label": "phase 4 \u2014 optional bounding-box overlay (opt-in, gated)"
     },
     {
       "label": "Phase 5 \u2014 Security / CSP / origin re-audit (gate before any distribution)",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L192",
+      "source_location": "L200",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_phase_5_security_csp_origin_re_audit_gate_before_any_distribution",
       "community": 277,
-      "norm_label": "phase 5 \u2014 security / csp / origin re-audit (gate before any distribution)",
-      "id": "docs_ocr_native_android_plan_phase_5_security_csp_origin_re_audit_gate_before_any_distribution"
+      "norm_label": "phase 5 \u2014 security / csp / origin re-audit (gate before any distribution)"
     },
     {
       "label": "Phase 6 \u2014 Build, sideload distribution & docs",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L211",
+      "source_location": "L220",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_phase_6_build_sideload_distribution_docs",
       "community": 277,
-      "norm_label": "phase 6 \u2014 build, sideload distribution & docs",
-      "id": "docs_ocr_native_android_plan_phase_6_build_sideload_distribution_docs"
+      "norm_label": "phase 6 \u2014 build, sideload distribution & docs"
     },
     {
       "label": "Testing",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L220",
+      "source_location": "L229",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_testing",
       "community": 277,
-      "norm_label": "testing",
-      "id": "docs_ocr_native_android_plan_testing"
+      "norm_label": "testing"
     },
     {
       "label": "Risks & open items",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L232",
+      "source_location": "L241",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_risks_open_items",
       "community": 277,
-      "norm_label": "risks & open items",
-      "id": "docs_ocr_native_android_plan_risks_open_items"
+      "norm_label": "risks & open items"
     },
     {
       "label": "Decisions locked (this revision)",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L243",
+      "source_location": "L252",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_decisions_locked_this_revision",
       "community": 277,
-      "norm_label": "decisions locked (this revision)",
-      "id": "docs_ocr_native_android_plan_decisions_locked_this_revision"
+      "norm_label": "decisions locked (this revision)"
     },
     {
       "label": "Sources",
       "file_type": "document",
       "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L252",
+      "source_location": "L261",
       "_origin": "ast",
+      "id": "docs_ocr_native_android_plan_sources",
       "community": 277,
-      "norm_label": "sources",
-      "id": "docs_ocr_native_android_plan_sources"
+      "norm_label": "sources"
+    },
+    {
+      "label": "OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike",
+      "community": 293,
+      "norm_label": "ocr_phase2_biometric_webview_spike.md"
+    },
+    {
+      "label": "Phase 2 Spike \u2014 WebAuthn/PRF Biometric Unlock under a Capacitor WebView",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "community": 293,
+      "norm_label": "phase 2 spike \u2014 webauthn/prf biometric unlock under a capacitor webview"
+    },
+    {
+      "label": "Verdict",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_verdict",
+      "community": 293,
+      "norm_label": "verdict"
+    },
+    {
+      "label": "1. Findings (authoritative sources)",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_1_findings_authoritative_sources",
+      "community": 293,
+      "norm_label": "1. findings (authoritative sources)"
+    },
+    {
+      "label": "F1 \u2014 Android WebView WebAuthn is opt-in and new",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_f1_android_webview_webauthn_is_opt_in_and_new",
+      "community": 293,
+      "norm_label": "f1 \u2014 android webview webauthn is opt-in and new"
+    },
+    {
+      "label": "F2 \u2014 Capacitor's WebView does not enable it by default",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_f2_capacitor_s_webview_does_not_enable_it_by_default",
+      "community": 293,
+      "norm_label": "f2 \u2014 capacitor's webview does not enable it by default"
+    },
+    {
+      "label": "F3 \u2014 PRF extension pass-through is undocumented on every path",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_f3_prf_extension_pass_through_is_undocumented_on_every_path",
+      "community": 293,
+      "norm_label": "f3 \u2014 prf extension pass-through is undocumented on every path"
+    },
+    {
+      "label": "F4 \u2014 Origin / RP-ID is tied to the app signature, not the web origin",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_f4_origin_rp_id_is_tied_to_the_app_signature_not_the_web_origin",
+      "community": 293,
+      "norm_label": "f4 \u2014 origin / rp-id is tied to the app signature, not the web origin"
+    },
+    {
+      "label": "2. Why this does not block OCR",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L69",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_2_why_this_does_not_block_ocr",
+      "community": 293,
+      "norm_label": "2. why this does not block ocr"
+    },
+    {
+      "label": "3. If biometric-in-WebView is pursued later (out of scope for OCR)",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L86",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_3_if_biometric_in_webview_is_pursued_later_out_of_scope_for_ocr",
+      "community": 293,
+      "norm_label": "3. if biometric-in-webview is pursued later (out of scope for ocr)"
+    },
+    {
+      "label": "4. On-device confirmation protocol (the remaining 10%)",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_4_on_device_confirmation_protocol_the_remaining_10",
+      "community": 293,
+      "norm_label": "4. on-device confirmation protocol (the remaining 10%)"
+    },
+    {
+      "label": "5. Net effect on the plan",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_5_net_effect_on_the_plan",
+      "community": 293,
+      "norm_label": "5. net effect on the plan"
+    },
+    {
+      "label": "Sources",
+      "file_type": "document",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L126",
+      "_origin": "ast",
+      "id": "docs_ocr_phase2_biometric_webview_spike_sources",
+      "community": 293,
+      "norm_label": "sources"
+    },
+    {
+      "label": "cameraCapture.test.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "cameracapture.test.ts",
+      "id": "tests_cameracapture_test"
+    },
+    {
+      "label": "credentialParser.test.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "credentialparser.test.ts",
+      "id": "tests_credentialparser_test"
+    },
+    {
+      "label": "ocrProvider.test.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "ocrprovider.test.ts",
+      "id": "tests_ocrprovider_test"
+    },
+    {
+      "label": "{ recognizeTextMock, clearImageDataMock, isOCRSupportedMock }",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "{ recognizetextmock, clearimagedatamock, isocrsupportedmock }",
+      "id": "tests_ocrprovider_test_recognizetextmock_clearimagedatamock_isocrsupportedmock"
+    },
+    {
+      "label": "tesseractService.test.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "tesseractservice.test.ts",
+      "id": "tests_tesseractservice_test"
+    },
+    {
+      "label": "recognizeMock",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "recognizemock",
+      "id": "tests_tesseractservice_test_recognizemock"
+    },
+    {
+      "label": "setParametersMock",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "setparametersmock",
+      "id": "tests_tesseractservice_test_setparametersmock"
+    },
+    {
+      "label": "terminateMock",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "terminatemock",
+      "id": "tests_tesseractservice_test_terminatemock"
+    },
+    {
+      "label": "createWorkerMock",
+      "file_type": "code",
+      "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "createworkermock",
+      "id": "tests_tesseractservice_test_createworkermock"
+    },
+    {
+      "label": "cameraCapture.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "cameracapture.ts",
+      "id": "ocr_cameracapture"
+    },
+    {
+      "label": "CaptureResult",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "captureresult",
+      "id": "ocr_cameracapture_captureresult"
+    },
+    {
+      "label": "CameraStream",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "camerastream",
+      "id": "ocr_cameracapture_camerastream"
+    },
+    {
+      "label": "isCameraSupported()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "iscamerasupported()",
+      "id": "ocr_cameracapture_iscamerasupported"
+    },
+    {
+      "label": "requestCameraAccess()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L36",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "requestcameraaccess()",
+      "id": "ocr_cameracapture_requestcameraaccess"
+    },
+    {
+      "label": "enhanceForOcr()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "enhanceforocr()",
+      "id": "ocr_cameracapture_enhanceforocr"
+    },
+    {
+      "label": "captureFrame()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L111",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "captureframe()",
+      "id": "ocr_cameracapture_captureframe"
+    },
+    {
+      "label": "clearImageData()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L169",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "clearimagedata()",
+      "id": "ocr_cameracapture_clearimagedata"
+    },
+    {
+      "label": "assessImageQuality()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/cameraCapture.ts",
+      "source_location": "L184",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "assessimagequality()",
+      "id": "ocr_cameracapture_assessimagequality"
+    },
+    {
+      "label": "credentialParser.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "credentialparser.ts",
+      "id": "ocr_credentialparser"
+    },
+    {
+      "label": "ParsedCredential",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "community": 287,
+      "norm_label": "parsedcredential",
+      "id": "ocr_credentialparser_parsedcredential"
+    },
+    {
+      "label": "PATTERNS",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "patterns",
+      "id": "ocr_credentialparser_patterns"
+    },
+    {
+      "label": "KNOWN_TLDS",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "known_tlds",
+      "id": "ocr_credentialparser_known_tlds"
+    },
+    {
+      "label": "normalizeOcrEmail()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L60",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "normalizeocremail()",
+      "id": "ocr_credentialparser_normalizeocremail"
+    },
+    {
+      "label": "extractLabeledValue()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L96",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "extractlabeledvalue()",
+      "id": "ocr_credentialparser_extractlabeledvalue"
+    },
+    {
+      "label": "findStandalonePatterns()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L160",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "findstandalonepatterns()",
+      "id": "ocr_credentialparser_findstandalonepatterns"
+    },
+    {
+      "label": "looksLikePassword()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L195",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "lookslikepassword()",
+      "id": "ocr_credentialparser_lookslikepassword"
+    },
+    {
+      "label": "parseCredentialText()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L212",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "parsecredentialtext()",
+      "id": "ocr_credentialparser_parsecredentialtext"
+    },
+    {
+      "label": "sanitizeValue()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/credentialParser.ts",
+      "source_location": "L296",
+      "_origin": "ast",
+      "community": 267,
+      "norm_label": "sanitizevalue()",
+      "id": "ocr_credentialparser_sanitizevalue"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/index.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "index.ts",
+      "id": "ocr_index"
+    },
+    {
+      "label": "ocrProvider.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "ocrprovider.ts",
+      "id": "ocr_ocrprovider"
+    },
+    {
+      "label": "OcrRecognition",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "ocrrecognition",
+      "id": "ocr_ocrprovider_ocrrecognition"
+    },
+    {
+      "label": "OcrProvider",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "ocrprovider",
+      "id": "ocr_ocrprovider_ocrprovider"
+    },
+    {
+      "label": "TesseractOcrProvider",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L48",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "tesseractocrprovider",
+      "id": "ocr_ocrprovider_tesseractocrprovider"
+    },
+    {
+      "label": ".isAvailable()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L52",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": ".isavailable()",
+      "id": "ocr_ocrprovider_tesseractocrprovider_isavailable"
+    },
+    {
+      "label": ".recognize()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": ".recognize()",
+      "id": "ocr_ocrprovider_tesseractocrprovider_recognize"
+    },
+    {
+      "label": "getOcrProviders()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L76",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "getocrproviders()",
+      "id": "ocr_ocrprovider_getocrproviders"
+    },
+    {
+      "label": "getActiveOcrProvider()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/ocrProvider.ts",
+      "source_location": "L84",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "getactiveocrprovider()",
+      "id": "ocr_ocrprovider_getactiveocrprovider"
+    },
+    {
+      "label": "tesseractService.ts",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "tesseractservice.ts",
+      "id": "ocr_tesseractservice"
+    },
+    {
+      "label": "OCRProgress",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "ocrprogress",
+      "id": "ocr_tesseractservice_ocrprogress"
+    },
+    {
+      "label": "OcrMode",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "ocrmode",
+      "id": "ocr_tesseractservice_ocrmode"
+    },
+    {
+      "label": "MODE_TO_PSM",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L31",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "mode_to_psm",
+      "id": "ocr_tesseractservice_mode_to_psm"
+    },
+    {
+      "label": "getWorker()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "getworker()",
+      "id": "ocr_tesseractservice_getworker"
+    },
+    {
+      "label": "recognizeText()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L94",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "recognizetext()",
+      "id": "ocr_tesseractservice_recognizetext"
+    },
+    {
+      "label": "terminateWorker()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L118",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "terminateworker()",
+      "id": "ocr_tesseractservice_terminateworker"
+    },
+    {
+      "label": "isOCRSupported()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L129",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "isocrsupported()",
+      "id": "ocr_tesseractservice_isocrsupported"
+    },
+    {
+      "label": "prefetchTesseractAssets()",
+      "file_type": "code",
+      "source_file": "src/core/ocr/tesseractService.ts",
+      "source_location": "L144",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "prefetchtesseractassets()",
+      "id": "ocr_tesseractservice_prefetchtesseractassets"
+    },
+    {
+      "label": "CameraScanDialog.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/components/CameraScanDialog.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "camerascandialog.tsx",
+      "id": "components_camerascandialog"
+    },
+    {
+      "label": "CameraScanDialogProps",
+      "file_type": "code",
+      "source_file": "src/presentation/components/CameraScanDialog.tsx",
+      "source_location": "L42",
+      "_origin": "ast",
+      "community": 287,
+      "norm_label": "camerascandialogprops",
+      "id": "components_camerascandialog_camerascandialogprops"
+    },
+    {
+      "label": "ScanState",
+      "file_type": "code",
+      "source_file": "src/presentation/components/CameraScanDialog.tsx",
+      "source_location": "L48",
+      "_origin": "ast",
+      "community": 12,
+      "norm_label": "scanstate",
+      "id": "components_camerascandialog_scanstate"
+    },
+    {
+      "label": "CameraScanDialog()",
+      "file_type": "code",
+      "source_file": "src/presentation/components/CameraScanDialog.tsx",
+      "source_location": "L56",
+      "_origin": "ast",
+      "community": 287,
+      "norm_label": "camerascandialog()",
+      "id": "components_camerascandialog_camerascandialog"
     },
     {
       "label": "2026-06-25-test-coverage-improvement.md",
@@ -3569,7 +3699,7 @@
       "source_file": "src/__tests__/hooks/useAutoLock.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "useautolock.test.tsx",
       "id": "hooks_useautolock_test"
     },
@@ -3579,7 +3709,7 @@
       "source_file": "src/__tests__/hooks/useAutoLock.test.tsx",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "mocknavigate",
       "id": "hooks_useautolock_test_mocknavigate"
     },
@@ -3589,7 +3719,7 @@
       "source_file": "src/__tests__/integration/auth-flow.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 32,
+      "community": 3,
       "norm_label": "auth-flow.test.tsx",
       "id": "integration_auth_flow_test"
     },
@@ -3599,7 +3729,7 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 163,
+      "community": 338,
       "norm_label": "dashboard-sort.test.tsx",
       "id": "integration_dashboard_sort_test"
     },
@@ -3609,7 +3739,7 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 163,
+      "community": 338,
       "norm_label": "setupauthenticateduser()",
       "id": "integration_dashboard_sort_test_setupauthenticateduser"
     },
@@ -3619,7 +3749,7 @@
       "source_file": "src/__tests__/integration/dashboard-sort.test.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 163,
+      "community": 338,
       "norm_label": "createcredential()",
       "id": "integration_dashboard_sort_test_createcredential"
     },
@@ -3629,7 +3759,7 @@
       "source_file": "src/__tests__/integration/import-export.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 163,
       "norm_label": "import-export.test.tsx",
       "id": "integration_import_export_test"
     },
@@ -3639,7 +3769,7 @@
       "source_file": "src/__tests__/integration/import-export.test.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 3,
+      "community": 163,
       "norm_label": "setupauthenticateduserwithmultiplecredentials()",
       "id": "integration_import_export_test_setupauthenticateduserwithmultiplecredentials"
     },
@@ -3649,7 +3779,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 163,
       "norm_label": "master-password-change.test.tsx",
       "id": "integration_master_password_change_test"
     },
@@ -3659,7 +3789,7 @@
       "source_file": "src/__tests__/integration/master-password-change.test.tsx",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 3,
+      "community": 163,
       "norm_label": "setupauthenticateduserwithcredentials()",
       "id": "integration_master_password_change_test_setupauthenticateduserwithcredentials"
     },
@@ -3709,7 +3839,7 @@
       "source_file": "src/components/OnboardingTour.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "onboardingtour.tsx",
       "id": "components_onboardingtour"
     },
@@ -3719,7 +3849,7 @@
       "source_file": "src/components/OnboardingTour.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "onboardingtourprops",
       "id": "components_onboardingtour_onboardingtourprops"
     },
@@ -3729,7 +3859,7 @@
       "source_file": "src/components/OnboardingTour.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "onboardingtour()",
       "id": "components_onboardingtour_onboardingtour"
     },
@@ -3739,7 +3869,7 @@
       "source_file": "src/components/TourHelpButton.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourhelpbutton.tsx",
       "id": "components_tourhelpbutton"
     },
@@ -3749,7 +3879,7 @@
       "source_file": "src/components/TourHelpButton.tsx",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourhelpbutton()",
       "id": "components_tourhelpbutton_tourhelpbutton"
     },
@@ -3859,7 +3989,7 @@
       "source_file": "src/core/ai/__tests__/aiLanguages.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 271,
+      "community": 148,
       "norm_label": "ailanguages.test.ts",
       "id": "tests_ailanguages_test"
     },
@@ -4139,7 +4269,7 @@
       "source_file": "src/core/ai/__tests__/providers/supports.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 126,
+      "community": 92,
       "norm_label": "supports.test.ts",
       "id": "providers_supports_test"
     },
@@ -4269,7 +4399,7 @@
       "source_file": "src/core/ai/aiLanguages.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 271,
+      "community": 148,
       "norm_label": "ailanguages.ts",
       "id": "ai_ailanguages"
     },
@@ -4279,7 +4409,7 @@
       "source_file": "src/core/ai/aiLanguages.ts",
       "source_location": "L2",
       "_origin": "ast",
-      "community": 271,
+      "community": 148,
       "norm_label": "supported_ai_languages",
       "id": "ai_ailanguages_supported_ai_languages"
     },
@@ -4289,7 +4419,7 @@
       "source_file": "src/core/ai/aiLanguages.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 271,
+      "community": 148,
       "norm_label": "supportedailanguage",
       "id": "ai_ailanguages_supportedailanguage"
     },
@@ -4299,7 +4429,7 @@
       "source_file": "src/core/ai/aiLanguages.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 271,
+      "community": 148,
       "norm_label": "resolveailanguage()",
       "id": "ai_ailanguages_resolveailanguage"
     },
@@ -4359,7 +4489,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "aitypes.ts",
       "id": "ai_aitypes"
     },
@@ -4369,7 +4499,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L2",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "aiavailability",
       "id": "ai_aitypes_aiavailability"
     },
@@ -4379,7 +4509,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "strengthlabel",
       "id": "ai_aitypes_strengthlabel"
     },
@@ -4389,7 +4519,7 @@
       "source_file": "src/core/ai/aiTypes.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "strengthexplaininput",
       "id": "ai_aitypes_strengthexplaininput"
     },
@@ -4609,7 +4739,7 @@
       "source_file": "src/core/ai/chat/chatTypes.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "chatmessage",
       "id": "chat_chattypes_chatmessage"
     },
@@ -4749,7 +4879,7 @@
       "source_file": "src/core/ai/promptApi.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 45,
+      "community": 261,
       "norm_label": "warmupai()",
       "id": "ai_promptapi_warmupai"
     },
@@ -4789,7 +4919,7 @@
       "source_file": "src/core/ai/promptApi.ts",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 271,
+      "community": 148,
       "norm_label": "runstructured()",
       "id": "ai_promptapi_runstructured"
     },
@@ -5279,7 +5409,7 @@
       "source_file": "src/core/ai/providers/types.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 45,
+      "community": 7,
       "norm_label": "aidownloadprogress",
       "id": "providers_types_aidownloadprogress"
     },
@@ -5399,7 +5529,7 @@
       "source_file": "src/core/ai/providers/webllmProvider.ts",
       "source_location": "L147",
       "_origin": "ast",
-      "community": 126,
+      "community": 92,
       "norm_label": "webllmprovider",
       "id": "providers_webllmprovider_webllmprovider"
     },
@@ -5439,7 +5569,7 @@
       "source_file": "src/core/ai/strengthExplain.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "strengthinsight",
       "id": "ai_strengthexplain_strengthinsight"
     },
@@ -5589,7 +5719,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "biometricmigration.test.ts",
       "id": "tests_biometricmigration_test"
     },
@@ -5599,7 +5729,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "legacy",
       "id": "tests_biometricmigration_test_legacy"
     },
@@ -5609,7 +5739,7 @@
       "source_file": "src/core/auth/__tests__/biometricMigration.test.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "prf",
       "id": "tests_biometricmigration_test_prf"
     },
@@ -5619,7 +5749,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "biometricvaultkey.test.ts",
       "id": "tests_biometricvaultkey_test"
     },
@@ -5629,7 +5759,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "fixedprfoutput()",
       "id": "tests_biometricvaultkey_test_fixedprfoutput"
     },
@@ -5639,7 +5769,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "fixedvaultkeyraw()",
       "id": "tests_biometricvaultkey_test_fixedvaultkeyraw"
     },
@@ -5649,7 +5779,7 @@
       "source_file": "src/core/auth/__tests__/biometricVaultKey.test.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "importraw()",
       "id": "tests_biometricvaultkey_test_importraw"
     },
@@ -5669,7 +5799,7 @@
       "source_file": "src/core/auth/__tests__/rateLimiter.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "ratelimiter.test.ts",
       "id": "tests_ratelimiter_test"
     },
@@ -5919,7 +6049,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "biometricmigration.ts",
       "id": "auth_biometricmigration"
     },
@@ -5929,7 +6059,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "isprfcredential()",
       "id": "auth_biometricmigration_isprfcredential"
     },
@@ -5939,7 +6069,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "stripresult",
       "id": "auth_biometricmigration_stripresult"
     },
@@ -5949,7 +6079,7 @@
       "source_file": "src/core/auth/biometricMigration.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "striplegacybiometric()",
       "id": "auth_biometricmigration_striplegacybiometric"
     },
@@ -5959,7 +6089,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "biometricvaultkey.ts",
       "id": "auth_biometricvaultkey"
     },
@@ -5969,7 +6099,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "generateprfsalt()",
       "id": "auth_biometricvaultkey_generateprfsalt"
     },
@@ -5979,7 +6109,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "derivewrapkeyfromprf()",
       "id": "auth_biometricvaultkey_derivewrapkeyfromprf"
     },
@@ -5989,7 +6119,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "wrapvaultkeywithprf()",
       "id": "auth_biometricvaultkey_wrapvaultkeywithprf"
     },
@@ -5999,7 +6129,7 @@
       "source_file": "src/core/auth/biometricVaultKey.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "unwrapvaultkeywithprf()",
       "id": "auth_biometricvaultkey_unwrapvaultkeywithprf"
     },
@@ -6009,7 +6139,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "ratelimiter.ts",
       "id": "auth_ratelimiter"
     },
@@ -6019,7 +6149,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "thresholds",
       "id": "auth_ratelimiter_thresholds"
     },
@@ -6029,7 +6159,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "lockoutms()",
       "id": "auth_ratelimiter_lockoutms"
     },
@@ -6039,7 +6169,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "formatremaining()",
       "id": "auth_ratelimiter_formatremaining"
     },
@@ -6049,7 +6179,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "checkratelimit()",
       "id": "auth_ratelimiter_checkratelimit"
     },
@@ -6059,7 +6189,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "recordfailedattempt()",
       "id": "auth_ratelimiter_recordfailedattempt"
     },
@@ -6069,7 +6199,7 @@
       "source_file": "src/core/auth/rateLimiter.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": "clearattempts()",
       "id": "auth_ratelimiter_clearattempts"
     },
@@ -6389,7 +6519,7 @@
       "source_file": "src/core/auth/webauthn.ts",
       "source_location": "L225",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "verifyauthenticationresponse()",
       "id": "auth_webauthn_verifyauthenticationresponse"
     },
@@ -6759,7 +6889,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L60",
       "_origin": "ast",
-      "community": 206,
+      "community": 184,
       "norm_label": "shouldstoreinbrowser()",
       "id": "autofill_credentialmanagementservice_shouldstoreinbrowser"
     },
@@ -6809,7 +6939,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L171",
       "_origin": "ast",
-      "community": 206,
+      "community": 287,
       "norm_label": "storecredentialinbrowser()",
       "id": "autofill_credentialmanagementservice_storecredentialinbrowser"
     },
@@ -6849,7 +6979,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L292",
       "_origin": "ast",
-      "community": 206,
+      "community": 287,
       "norm_label": "tobrowsercredential()",
       "id": "autofill_credentialmanagementservice_tobrowsercredential"
     },
@@ -6859,7 +6989,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L317",
       "_origin": "ast",
-      "community": 206,
+      "community": 287,
       "norm_label": "batchstorecredentials()",
       "id": "autofill_credentialmanagementservice_batchstorecredentials"
     },
@@ -6969,7 +7099,7 @@
       "source_file": "src/core/breach/__tests__/unlockBreachRefresh.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "unlockbreachrefresh.test.ts",
       "id": "tests_unlockbreachrefresh_test"
     },
@@ -7039,7 +7169,7 @@
       "source_file": "src/core/breach/breachTypes.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachdata",
       "id": "breach_breachtypes_breachdata"
     },
@@ -7229,7 +7359,7 @@
       "source_file": "src/core/breach/hibpService.ts",
       "source_location": "L447",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "ishibpenabled()",
       "id": "breach_hibpservice_ishibpenabled"
     },
@@ -7309,7 +7439,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "unlockbreachrefresh.ts",
       "id": "breach_unlockbreachrefresh"
     },
@@ -7319,7 +7449,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "isbreachcheckstale()",
       "id": "breach_unlockbreachrefresh_isbreachcheckstale"
     },
@@ -7329,7 +7459,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "markbreachcheckcomplete()",
       "id": "breach_unlockbreachrefresh_markbreachcheckcomplete"
     },
@@ -7339,7 +7469,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "getlastfullcheckat()",
       "id": "breach_unlockbreachrefresh_getlastfullcheckat"
     },
@@ -7349,7 +7479,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "registerhibpperiodicsync()",
       "id": "breach_unlockbreachrefresh_registerhibpperiodicsync"
     },
@@ -7359,7 +7489,7 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts",
       "source_location": "L93",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "rununlockbreachrefresh()",
       "id": "breach_unlockbreachrefresh_rununlockbreachrefresh"
     },
@@ -7489,7 +7619,7 @@
       "source_file": "src/core/crypto/encryption.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "encrypteddata",
       "id": "crypto_encryption_encrypteddata"
     },
@@ -7749,7 +7879,7 @@
       "source_file": "src/core/utils/__tests__/base64.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "base64.test.ts",
       "id": "tests_base64_test"
     },
@@ -7759,7 +7889,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "base64.ts",
       "id": "utils_base64"
     },
@@ -7769,7 +7899,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "normalizebase64()",
       "id": "utils_base64_normalizebase64"
     },
@@ -7779,7 +7909,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "decodebase64tostring()",
       "id": "utils_base64_decodebase64tostring"
     },
@@ -7789,7 +7919,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "decodebase64touint8array()",
       "id": "utils_base64_decodebase64touint8array"
     },
@@ -7799,7 +7929,7 @@
       "source_file": "src/core/utils/base64.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": "encodeuint8arraytobase64()",
       "id": "utils_base64_encodeuint8arraytobase64"
     },
@@ -8199,7 +8329,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 342,
+      "community": 234,
       "norm_label": ".authenticatewithpassword()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_authenticatewithpassword"
     },
@@ -8209,7 +8339,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L217",
       "_origin": "ast",
-      "community": 234,
+      "community": 250,
       "norm_label": ".authenticatewithbiometric()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_authenticatewithbiometric"
     },
@@ -8269,7 +8399,7 @@
       "source_file": "src/data/repositories/UserRepositoryImpl.ts",
       "source_location": "L362",
       "_origin": "ast",
-      "community": 4,
+      "community": 250,
       "norm_label": ".registerbiometric()",
       "id": "repositories_userrepositoryimpl_userrepositoryimpl_registerbiometric"
     },
@@ -8579,7 +8709,7 @@
       "source_file": "src/data/repositories/__tests__/metadataEncryption.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 307,
+      "community": 285,
       "norm_label": "metadataencryption.test.ts",
       "id": "tests_metadataencryption_test"
     },
@@ -8589,7 +8719,7 @@
       "source_file": "src/data/repositories/__tests__/metadataEncryption.test.ts",
       "source_location": "L293",
       "_origin": "ast",
-      "community": 307,
+      "community": 285,
       "norm_label": "insertlegacyrecord()",
       "id": "tests_metadataencryption_test_insertlegacyrecord"
     },
@@ -8609,7 +8739,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 293,
+      "community": 163,
       "norm_label": "profilemigration.test.ts",
       "id": "tests_profilemigration_test"
     },
@@ -8619,7 +8749,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 293,
+      "community": 163,
       "norm_label": "makevaultkey()",
       "id": "tests_profilemigration_test_makevaultkey"
     },
@@ -8629,7 +8759,7 @@
       "source_file": "src/data/repositories/__tests__/profileMigration.test.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 293,
+      "community": 163,
       "norm_label": "logininput()",
       "id": "tests_profilemigration_test_logininput"
     },
@@ -8679,7 +8809,7 @@
       "source_file": "src/data/repositories/breachResultsRepository.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "savebreachresult()",
       "id": "repositories_breachresultsrepository_savebreachresult"
     },
@@ -8909,7 +9039,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 293,
+      "community": 234,
       "norm_label": "profilemigration.ts",
       "id": "repositories_profilemigration"
     },
@@ -8919,7 +9049,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 293,
+      "community": 234,
       "norm_label": "todomain()",
       "id": "repositories_profilemigration_todomain"
     },
@@ -8929,7 +9059,7 @@
       "source_file": "src/data/repositories/profileMigration.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 293,
+      "community": 234,
       "norm_label": "ensuredefaultprofile()",
       "id": "repositories_profilemigration_ensuredefaultprofile"
     },
@@ -9179,7 +9309,7 @@
       "source_file": "src/domain/entities/User.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 234,
+      "community": 318,
       "norm_label": "webauthncredential",
       "id": "entities_user_webauthncredential"
     },
@@ -9249,7 +9379,7 @@
       "source_file": "src/domain/repositories/ICredentialRepository.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 163,
+      "community": 2,
       "norm_label": "icredentialrepository.ts",
       "id": "repositories_icredentialrepository"
     },
@@ -9259,7 +9389,7 @@
       "source_file": "src/domain/repositories/ICredentialRepository.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 163,
+      "community": 2,
       "norm_label": "icredentialrepository",
       "id": "repositories_icredentialrepository_icredentialrepository"
     },
@@ -9679,7 +9809,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "usedrivertour.ts",
       "id": "hooks_usedrivertour"
     },
@@ -9689,7 +9819,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "gettourstate()",
       "id": "hooks_usedrivertour_gettourstate"
     },
@@ -9699,7 +9829,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "savetourstate()",
       "id": "hooks_usedrivertour_savetourstate"
     },
@@ -9709,7 +9839,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "marktourcompleted()",
       "id": "hooks_usedrivertour_marktourcompleted"
     },
@@ -9719,7 +9849,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "isfirsttimeuser()",
       "id": "hooks_usedrivertour_isfirsttimeuser"
     },
@@ -9729,7 +9859,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "istourcompleted()",
       "id": "hooks_usedrivertour_istourcompleted"
     },
@@ -9739,7 +9869,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "resettourstate()",
       "id": "hooks_usedrivertour_resettourstate"
     },
@@ -9749,7 +9879,7 @@
       "source_file": "src/hooks/useDriverTour.ts",
       "source_location": "L94",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "usedrivertour()",
       "id": "hooks_usedrivertour_usedrivertour"
     },
@@ -9909,7 +10039,7 @@
       "source_file": "src/presentation/App.tsx",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 32,
+      "community": 20,
       "norm_label": "approutes()",
       "id": "presentation_app_approutes"
     },
@@ -9979,7 +10109,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 270,
+      "community": 331,
       "norm_label": "autolocksettings.tsx",
       "id": "components_autolocksettings"
     },
@@ -9989,7 +10119,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 270,
+      "community": 331,
       "norm_label": "autolocksettingsprops",
       "id": "components_autolocksettings_autolocksettingsprops"
     },
@@ -9999,7 +10129,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 270,
+      "community": 331,
       "norm_label": "timeout_options",
       "id": "components_autolocksettings_timeout_options"
     },
@@ -10009,7 +10139,7 @@
       "source_file": "src/presentation/components/AutoLockSettings.tsx",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 270,
+      "community": 331,
       "norm_label": "autolocksettings()",
       "id": "components_autolocksettings_autolocksettings"
     },
@@ -10139,7 +10269,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachdetailsmodal.tsx",
       "id": "components_breachdetailsmodal"
     },
@@ -10149,7 +10279,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachdetailsmodalprops",
       "id": "components_breachdetailsmodal_breachdetailsmodalprops"
     },
@@ -10159,7 +10289,7 @@
       "source_file": "src/presentation/components/BreachDetailsModal.tsx",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachdetailsmodal()",
       "id": "components_breachdetailsmodal_breachdetailsmodal"
     },
@@ -10279,7 +10409,7 @@
       "source_file": "src/presentation/components/ClipboardNotification.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 14,
+      "community": 20,
       "norm_label": "clipboardnotification()",
       "id": "components_clipboardnotification_clipboardnotification"
     },
@@ -10389,7 +10519,7 @@
       "source_file": "src/presentation/components/CredentialDetailsDialog.tsx",
       "source_location": "L88",
       "_origin": "ast",
-      "community": 31,
+      "community": 2,
       "norm_label": "credentialdetailsdialog()",
       "id": "components_credentialdetailsdialog_credentialdetailsdialog"
     },
@@ -10609,7 +10739,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "filterchips.tsx",
       "id": "components_filterchips"
     },
@@ -10619,7 +10749,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "filterchipsprops",
       "id": "components_filterchips_filterchipsprops"
     },
@@ -10629,7 +10759,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "category_options",
       "id": "components_filterchips_category_options"
     },
@@ -10639,7 +10769,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "filterchips()",
       "id": "components_filterchips_filterchips"
     },
@@ -10649,7 +10779,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 13,
+      "community": 250,
       "norm_label": "importdialog.tsx",
       "id": "components_importdialog"
     },
@@ -10659,7 +10789,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 13,
+      "community": 250,
       "norm_label": "importdialogprops",
       "id": "components_importdialog_importdialogprops"
     },
@@ -10669,7 +10799,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 13,
+      "community": 250,
       "norm_label": "importmode",
       "id": "components_importdialog_importmode"
     },
@@ -10819,7 +10949,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 148,
+      "community": 283,
       "norm_label": "passwordstrengthindicator.tsx",
       "id": "components_passwordstrengthindicator"
     },
@@ -10829,7 +10959,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 148,
+      "community": 283,
       "norm_label": "passwordstrengthindicatorprops",
       "id": "components_passwordstrengthindicator_passwordstrengthindicatorprops"
     },
@@ -10839,7 +10969,7 @@
       "source_file": "src/presentation/components/PasswordStrengthIndicator.tsx",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 265,
+      "community": 283,
       "norm_label": "passwordstrengthindicator()",
       "id": "components_passwordstrengthindicator_passwordstrengthindicator"
     },
@@ -10899,7 +11029,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 337,
       "norm_label": "reencryptionprogress.tsx",
       "id": "components_reencryptionprogress"
     },
@@ -10909,7 +11039,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 3,
+      "community": 337,
       "norm_label": "reencryptionprogressprops",
       "id": "components_reencryptionprogress_reencryptionprogressprops"
     },
@@ -10919,7 +11049,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 3,
+      "community": 337,
       "norm_label": "reencryptionprogress()",
       "id": "components_reencryptionprogress_reencryptionprogress"
     },
@@ -10959,7 +11089,7 @@
       "source_file": "src/presentation/components/SearchBar.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "searchbar.tsx",
       "id": "components_searchbar"
     },
@@ -10969,7 +11099,7 @@
       "source_file": "src/presentation/components/SearchBar.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "searchbarprops",
       "id": "components_searchbar_searchbarprops"
     },
@@ -10979,7 +11109,7 @@
       "source_file": "src/presentation/components/SearchBar.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "searchbar()",
       "id": "components_searchbar_searchbar"
     },
@@ -10989,7 +11119,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sortdropdown.tsx",
       "id": "components_sortdropdown"
     },
@@ -10999,7 +11129,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sortdropdownprops",
       "id": "components_sortdropdown_sortdropdownprops"
     },
@@ -11009,7 +11139,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sort_options",
       "id": "components_sortdropdown_sort_options"
     },
@@ -11019,7 +11149,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sortdropdown()",
       "id": "components_sortdropdown_sortdropdown"
     },
@@ -11089,7 +11219,7 @@
       "source_file": "src/presentation/components/ThemeToggle.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "themetoggle.tsx",
       "id": "components_themetoggle"
     },
@@ -11099,7 +11229,7 @@
       "source_file": "src/presentation/components/ThemeToggle.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "themetoggle()",
       "id": "components_themetoggle_themetoggle"
     },
@@ -11269,7 +11399,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "breachdetailsmodal.test.tsx",
       "id": "tests_breachdetailsmodal_test"
     },
@@ -11279,7 +11409,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "sendmock",
       "id": "tests_breachdetailsmodal_test_sendmock"
     },
@@ -11289,7 +11419,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "useaichatmock",
       "id": "tests_breachdetailsmodal_test_useaichatmock"
     },
@@ -11299,7 +11429,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "analyzemock",
       "id": "tests_breachdetailsmodal_test_analyzemock"
     },
@@ -11309,7 +11439,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "useaibreachimpactexplainmock",
       "id": "tests_breachdetailsmodal_test_useaibreachimpactexplainmock"
     },
@@ -11319,7 +11449,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "loadaisettingsmock",
       "id": "tests_breachdetailsmodal_test_loadaisettingsmock"
     },
@@ -11329,7 +11459,7 @@
       "source_file": "src/presentation/components/__tests__/BreachDetailsModal.test.tsx",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 246,
+      "community": 329,
       "norm_label": "breach",
       "id": "tests_breachdetailsmodal_test_breach"
     },
@@ -11449,7 +11579,7 @@
       "source_file": "src/presentation/components/__tests__/SortDropdown.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sortdropdown.test.tsx",
       "id": "tests_sortdropdown_test"
     },
@@ -11459,7 +11589,7 @@
       "source_file": "src/presentation/components/ai/BreachInsightCard.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachinsightcard.tsx",
       "id": "ai_breachinsightcard"
     },
@@ -11469,7 +11599,7 @@
       "source_file": "src/presentation/components/ai/BreachInsightCard.tsx",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "risk_color",
       "id": "ai_breachinsightcard_risk_color"
     },
@@ -11479,7 +11609,7 @@
       "source_file": "src/presentation/components/ai/BreachInsightCard.tsx",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachinsightcard()",
       "id": "ai_breachinsightcard_breachinsightcard"
     },
@@ -11489,7 +11619,7 @@
       "source_file": "src/presentation/components/ai/ChatPanel.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 282,
+      "community": 283,
       "norm_label": "chatpanel.tsx",
       "id": "ai_chatpanel"
     },
@@ -11499,7 +11629,7 @@
       "source_file": "src/presentation/components/ai/ChatPanel.tsx",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "chatpanelprops",
       "id": "ai_chatpanel_chatpanelprops"
     },
@@ -11509,7 +11639,7 @@
       "source_file": "src/presentation/components/ai/ChatPanel.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 282,
+      "community": 283,
       "norm_label": "chatpanel()",
       "id": "ai_chatpanel_chatpanel"
     },
@@ -11559,7 +11689,7 @@
       "source_file": "src/presentation/components/ai/StrengthInsightCard.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 148,
+      "community": 283,
       "norm_label": "strengthinsightcard.tsx",
       "id": "ai_strengthinsightcard"
     },
@@ -11569,7 +11699,7 @@
       "source_file": "src/presentation/components/ai/StrengthInsightCard.tsx",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 148,
+      "community": 283,
       "norm_label": "severity_color",
       "id": "ai_strengthinsightcard_severity_color"
     },
@@ -11579,7 +11709,7 @@
       "source_file": "src/presentation/components/ai/StrengthInsightCard.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 148,
+      "community": 283,
       "norm_label": "strengthinsightcard()",
       "id": "ai_strengthinsightcard_strengthinsightcard"
     },
@@ -11589,7 +11719,7 @@
       "source_file": "src/presentation/components/ai/__tests__/BreachInsightCard.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 246,
+      "community": 271,
       "norm_label": "breachinsightcard.test.tsx",
       "id": "tests_breachinsightcard_test"
     },
@@ -11599,7 +11729,7 @@
       "source_file": "src/presentation/components/ai/__tests__/ChatPanel.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 282,
+      "community": 283,
       "norm_label": "chatpanel.test.tsx",
       "id": "tests_chatpanel_test"
     },
@@ -11609,7 +11739,7 @@
       "source_file": "src/presentation/components/ai/__tests__/ChatPanel.test.tsx",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 282,
+      "community": 283,
       "norm_label": "base",
       "id": "tests_chatpanel_test_base"
     },
@@ -11629,7 +11759,7 @@
       "source_file": "src/presentation/components/ai/__tests__/StrengthInsightCard.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 148,
+      "community": 283,
       "norm_label": "strengthinsightcard.test.tsx",
       "id": "tests_strengthinsightcard_test"
     },
@@ -11639,7 +11769,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiBreachImpactExplain.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "useaibreachimpactexplain.test.ts",
       "id": "tests_useaibreachimpactexplain_test"
     },
@@ -11649,7 +11779,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiBreachImpactExplain.test.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "loadaisettings",
       "id": "tests_useaibreachimpactexplain_test_loadaisettings"
     },
@@ -11659,7 +11789,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiBreachImpactExplain.test.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "getaiavailability",
       "id": "tests_useaibreachimpactexplain_test_getaiavailability"
     },
@@ -11669,7 +11799,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiBreachImpactExplain.test.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "explainbreachimpactstructured",
       "id": "tests_useaibreachimpactexplain_test_explainbreachimpactstructured"
     },
@@ -11679,7 +11809,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiBreachImpactExplain.test.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "input",
       "id": "tests_useaibreachimpactexplain_test_input"
     },
@@ -11689,7 +11819,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiBreachImpactExplain.test.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "bothon()",
       "id": "tests_useaibreachimpactexplain_test_bothon"
     },
@@ -11699,7 +11829,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiChat.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "useaichat.test.ts",
       "id": "tests_useaichat_test"
     },
@@ -11709,7 +11839,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiChat.test.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "createchatsession",
       "id": "tests_useaichat_test_createchatsession"
     },
@@ -11719,7 +11849,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiChat.test.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "sessionstreaming()",
       "id": "tests_useaichat_test_sessionstreaming"
     },
@@ -11729,7 +11859,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 45,
+      "community": 261,
       "norm_label": "useaistrengthexplain.test.ts",
       "id": "tests_useaistrengthexplain_test"
     },
@@ -11739,7 +11869,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 45,
+      "community": 261,
       "norm_label": "loadaisettings",
       "id": "tests_useaistrengthexplain_test_loadaisettings"
     },
@@ -11749,7 +11879,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 45,
+      "community": 261,
       "norm_label": "getaiavailability",
       "id": "tests_useaistrengthexplain_test_getaiavailability"
     },
@@ -11759,7 +11889,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 45,
+      "community": 261,
       "norm_label": "explainstrengthstructured",
       "id": "tests_useaistrengthexplain_test_explainstrengthstructured"
     },
@@ -11769,7 +11899,7 @@
       "source_file": "src/presentation/hooks/__tests__/useAiStrengthExplain.test.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 45,
+      "community": 261,
       "norm_label": "bothon()",
       "id": "tests_useaistrengthexplain_test_bothon"
     },
@@ -11919,7 +12049,7 @@
       "source_file": "src/presentation/hooks/useAiBreachImpactExplain.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 271,
+      "community": 261,
       "norm_label": "useaibreachimpactexplain.ts",
       "id": "hooks_useaibreachimpactexplain"
     },
@@ -11949,7 +12079,7 @@
       "source_file": "src/presentation/hooks/useAiChat.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "useaichatoptions",
       "id": "hooks_useaichat_useaichatoptions"
     },
@@ -11959,7 +12089,7 @@
       "source_file": "src/presentation/hooks/useAiChat.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 261,
+      "community": 283,
       "norm_label": "useaichat",
       "id": "hooks_useaichat_useaichat"
     },
@@ -11979,7 +12109,7 @@
       "source_file": "src/presentation/hooks/useAiStrengthExplain.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "useaistrengthexplain.ts",
       "id": "hooks_useaistrengthexplain"
     },
@@ -11989,7 +12119,7 @@
       "source_file": "src/presentation/hooks/useAiStrengthExplain.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 148,
+      "community": 261,
       "norm_label": "useaistrengthexplain",
       "id": "hooks_useaistrengthexplain_useaistrengthexplain"
     },
@@ -11999,7 +12129,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "useautolock.ts",
       "id": "hooks_useautolock"
     },
@@ -12009,7 +12139,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "autolockconfig",
       "id": "hooks_useautolock_autolockconfig"
     },
@@ -12019,7 +12149,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "useautolock()",
       "id": "hooks_useautolock_useautolock"
     },
@@ -12029,7 +12159,7 @@
       "source_file": "src/presentation/hooks/useAutoLock.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "community": 32,
+      "community": 20,
       "norm_label": "getdefaultautolockconfig()",
       "id": "hooks_useautolock_getdefaultautolockconfig"
     },
@@ -12179,7 +12309,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 229,
       "norm_label": "credentialdetailpage.tsx",
       "id": "pages_credentialdetailpage"
     },
@@ -12189,7 +12319,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 3,
+      "community": 229,
       "norm_label": "credentialdetailpage()",
       "id": "pages_credentialdetailpage_credentialdetailpage"
     },
@@ -12199,7 +12329,7 @@
       "source_file": "src/presentation/pages/DashboardPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "dashboardpage.tsx",
       "id": "pages_dashboardpage"
     },
@@ -12239,7 +12369,7 @@
       "source_file": "src/presentation/pages/EditCredentialPage.tsx",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 287,
+      "community": 229,
       "norm_label": "editcredentialpage()",
       "id": "pages_editcredentialpage_editcredentialpage"
     },
@@ -12329,7 +12459,7 @@
       "source_file": "src/presentation/pages/SecurityAuditPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "securityauditpage.tsx",
       "id": "pages_securityauditpage"
     },
@@ -12349,7 +12479,7 @@
       "source_file": "src/presentation/pages/SecurityAuditPage.tsx",
       "source_location": "L68",
       "_origin": "ast",
-      "community": 31,
+      "community": 327,
       "norm_label": "securityauditpage()",
       "id": "pages_securityauditpage_securityauditpage"
     },
@@ -12359,7 +12489,7 @@
       "source_file": "src/presentation/pages/SettingsPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 270,
+      "community": 3,
       "norm_label": "settingspage.tsx",
       "id": "pages_settingspage"
     },
@@ -12369,7 +12499,7 @@
       "source_file": "src/presentation/pages/SettingsPage.tsx",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "settingspage()",
       "id": "pages_settingspage_settingspage"
     },
@@ -12599,7 +12729,7 @@
       "source_file": "src/presentation/store/__tests__/authStore.test.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 307,
+      "community": 303,
       "norm_label": "createauthstore()",
       "id": "tests_authstore_test_createauthstore"
     },
@@ -12639,7 +12769,7 @@
       "source_file": "src/presentation/store/__tests__/credentialStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "credentialstore.test.ts",
       "id": "tests_credentialstore_test"
     },
@@ -12649,7 +12779,7 @@
       "source_file": "src/presentation/store/__tests__/credentialStore.test.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "makecredential()",
       "id": "tests_credentialstore_test_makecredential"
     },
@@ -12699,7 +12829,7 @@
       "source_file": "src/presentation/store/__tests__/themeStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "themestore.test.ts",
       "id": "tests_themestore_test"
     },
@@ -12769,7 +12899,7 @@
       "source_file": "src/presentation/store/credentialStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "credentialstore.ts",
       "id": "store_credentialstore"
     },
@@ -12779,7 +12909,7 @@
       "source_file": "src/presentation/store/credentialStore.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "credentialstate",
       "id": "store_credentialstore_credentialstate"
     },
@@ -12789,7 +12919,7 @@
       "source_file": "src/presentation/store/credentialStore.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 270,
+      "community": 20,
       "norm_label": "usecredentialstore",
       "id": "store_credentialstore_usecredentialstore"
     },
@@ -12849,7 +12979,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "themestore.ts",
       "id": "store_themestore"
     },
@@ -12859,7 +12989,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "thememode",
       "id": "store_themestore_thememode"
     },
@@ -12869,7 +12999,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "themestate",
       "id": "store_themestore_themestate"
     },
@@ -12879,7 +13009,7 @@
       "source_file": "src/presentation/store/themeStore.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "usethemestore",
       "id": "store_themestore_usethemestore"
     },
@@ -12889,7 +13019,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "theme.ts",
       "id": "theme_theme"
     },
@@ -12899,7 +13029,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "getthemeoptions()",
       "id": "theme_theme_getthemeoptions"
     },
@@ -12909,7 +13039,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L176",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "createapptheme()",
       "id": "theme_theme_createapptheme"
     },
@@ -12919,7 +13049,7 @@
       "source_file": "src/presentation/theme/theme.ts",
       "source_location": "L179",
       "_origin": "ast",
-      "community": 32,
+      "community": 321,
       "norm_label": "theme",
       "id": "theme_theme_theme"
     },
@@ -13019,7 +13149,7 @@
       "source_file": "src/presentation/utils/__tests__/credentialSort.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "credentialsort.test.ts",
       "id": "tests_credentialsort_test"
     },
@@ -13029,7 +13159,7 @@
       "source_file": "src/presentation/utils/__tests__/credentialSort.test.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "cred()",
       "id": "tests_credentialsort_test_cred"
     },
@@ -13039,7 +13169,7 @@
       "source_file": "src/presentation/utils/__tests__/timeFormat.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "timeformat.test.ts",
       "id": "tests_timeformat_test"
     },
@@ -13049,7 +13179,7 @@
       "source_file": "src/presentation/utils/__tests__/url.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "url.test.ts",
       "id": "tests_url_test"
     },
@@ -13259,7 +13389,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "credentialsort.ts",
       "id": "utils_credentialsort"
     },
@@ -13269,7 +13399,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sortoption",
       "id": "utils_credentialsort_sortoption"
     },
@@ -13279,7 +13409,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sort_option_values",
       "id": "utils_credentialsort_sort_option_values"
     },
@@ -13289,7 +13419,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "issortoption()",
       "id": "utils_credentialsort_issortoption"
     },
@@ -13299,7 +13429,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "comparators",
       "id": "utils_credentialsort_comparators"
     },
@@ -13309,7 +13439,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "sortcredentials()",
       "id": "utils_credentialsort_sortcredentials"
     },
@@ -13319,7 +13449,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L76",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "loadsortpreference()",
       "id": "utils_credentialsort_loadsortpreference"
     },
@@ -13329,7 +13459,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 229,
+      "community": 13,
       "norm_label": "savesortpreference()",
       "id": "utils_credentialsort_savesortpreference"
     },
@@ -13499,7 +13629,7 @@
       "source_file": "src/presentation/utils/timeFormat.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "timeformat.ts",
       "id": "utils_timeformat"
     },
@@ -13519,7 +13649,7 @@
       "source_file": "src/presentation/utils/timeFormat.ts",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "formatshortrelativetime()",
       "id": "utils_timeformat_formatshortrelativetime"
     },
@@ -13529,7 +13659,7 @@
       "source_file": "src/presentation/utils/timeFormat.ts",
       "source_location": "L72",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "formatabsolutedate()",
       "id": "utils_timeformat_formatabsolutedate"
     },
@@ -13539,7 +13669,7 @@
       "source_file": "src/presentation/utils/timeFormat.ts",
       "source_location": "L96",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "formatfulldatetime()",
       "id": "utils_timeformat_formatfulldatetime"
     },
@@ -13549,7 +13679,7 @@
       "source_file": "src/presentation/utils/timeFormat.ts",
       "source_location": "L120",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "formatsmarttime()",
       "id": "utils_timeformat_formatsmarttime"
     },
@@ -13559,7 +13689,7 @@
       "source_file": "src/presentation/utils/timeFormat.ts",
       "source_location": "L141",
       "_origin": "ast",
-      "community": 2,
+      "community": 328,
       "norm_label": "formatdistancetonow()",
       "id": "utils_timeformat_formatdistancetonow"
     },
@@ -13569,7 +13699,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "url.ts",
       "id": "utils_url"
     },
@@ -13579,7 +13709,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "allowed_protocols",
       "id": "utils_url_allowed_protocols"
     },
@@ -13589,7 +13719,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "sanitizeurl()",
       "id": "utils_url_sanitizeurl"
     },
@@ -13599,7 +13729,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 31,
+      "community": 13,
       "norm_label": "normalizeurl()",
       "id": "utils_url_normalizeurl"
     },
@@ -13749,7 +13879,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tour.ts",
       "id": "types_tour"
     },
@@ -13759,7 +13889,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourstep",
       "id": "types_tour_tourstep"
     },
@@ -13769,7 +13899,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourconfig",
       "id": "types_tour_tourconfig"
     },
@@ -13779,7 +13909,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourtype",
       "id": "types_tour_tourtype"
     },
@@ -13789,7 +13919,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourstate",
       "id": "types_tour_tourstate"
     },
@@ -13799,7 +13929,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 20,
+      "community": 13,
       "norm_label": "tourevent",
       "id": "types_tour_tourevent"
     },
@@ -35402,7 +35532,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 234,
+      "community": 318,
       "norm_label": "biometricmigration tests",
       "id": "test_biometricmigration"
     },
@@ -35415,7 +35545,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 342,
+      "community": 234,
       "norm_label": "ratelimiter tests",
       "id": "test_ratelimiter"
     },
@@ -35519,7 +35649,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 234,
+      "community": 318,
       "norm_label": "isprfcredential",
       "id": "auth_biometricmigration_isprf_credential"
     },
@@ -35532,7 +35662,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 234,
+      "community": 318,
       "norm_label": "prf vault key scheme (prf-v1)",
       "id": "concept_prf_vault_key_scheme"
     },
@@ -35545,7 +35675,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 234,
+      "community": 318,
       "norm_label": "db v6 biometric migration",
       "id": "concept_db_v6_migration"
     },
@@ -35559,7 +35689,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Vault key is wrapped with HKDF-SHA256-derived key from WebAuthn PRF output. PRF output never stored \u2014 XSS or full IndexedDB dump cannot re-derive wrapping key. Previous device-key scheme was insecure because inputs (credentialId, userId, salt) were all stored and recomputable.",
-      "community": 4,
+      "community": 250,
       "norm_label": "prf-v1 vault key wrapping scheme",
       "id": "auth_biometricvaultkey_prf_v1_scheme"
     },
@@ -35573,7 +35703,7 @@
       "author": null,
       "contributor": null,
       "rationale": "unwrapVaultKeyWithPRF takes raw vault key bytes (not a CryptoKey) so the session CryptoKey can stay non-extractable; transient raw bytes zeroized in finally block after import",
-      "community": 4,
+      "community": 250,
       "norm_label": "s7 non-extractable session key",
       "id": "auth_biometricvaultkey_s7_non_extractable"
     },
@@ -35833,7 +35963,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 265,
+      "community": 283,
       "norm_label": "strengthanalyzer (vault/generator)",
       "id": "features_vault_generator_strengthanalyzer"
     },
@@ -35939,7 +36069,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 270,
+      "community": 20,
       "norm_label": "credentialstate interface",
       "id": "store_credentialstore_credentialstateinterface"
     },
@@ -35952,7 +36082,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 32,
+      "community": 321,
       "norm_label": "thememode type reference",
       "id": "theme_theme_thememoderef"
     },
@@ -35991,7 +36121,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 328,
       "norm_label": "timeformat test suite",
       "id": "utils_timeformat_test_timeformat_test"
     },
@@ -36056,7 +36186,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 328,
       "norm_label": "chroncraft library",
       "id": "utils_timeformat_chroncraft"
     },
@@ -36173,7 +36303,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 13,
       "norm_label": "driver.js library",
       "id": "types_tour_driverjs"
     },
@@ -38050,15 +38180,295 @@
   ],
   "links": [
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan",
+      "target": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_0_goal_premise"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_1_why_not_twa_raw_webview_rejected_alternatives"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L43",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_2_plugin_selection"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L67",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_3_toolchain_requirements_verified_capacitor_7"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L243",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_decisions_locked_this_revision"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L81",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_phase_1_provider_seam_pure_web_zero_native_ships_to_all_users"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_phase_2_biometric_under_webview_spike_highest_risk_validation_before_native_wiring"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L123",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_phase_3_native_ml_kit_ocr_provider_android_default_path"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L174",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_phase_4_optional_bounding_box_overlay_opt_in_gated"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L192",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_phase_5_security_csp_origin_re_audit_gate_before_any_distribution"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L211",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_phase_6_build_sideload_distribution_docs"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L232",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_risks_open_items"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L252",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_sources"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L220",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
+      "target": "docs_ocr_native_android_plan_testing"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ocr_native_android_plan_0_goal_premise",
+      "target": "docs_ocr_native_android_plan_validated_decisions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike",
+      "target": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_1_findings_authoritative_sources",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_2_why_this_does_not_block_ocr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_3_if_biometric_in_webview_is_pursued_later_out_of_scope_for_ocr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_4_on_device_confirmation_protocol_the_remaining_10",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_5_net_effect_on_the_plan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_sources",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_phase_2_spike_webauthn_prf_biometric_unlock_under_a_capacitor_webview",
+      "target": "docs_ocr_phase2_biometric_webview_spike_verdict",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_1_findings_authoritative_sources",
+      "target": "docs_ocr_phase2_biometric_webview_spike_f1_android_webview_webauthn_is_opt_in_and_new",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_1_findings_authoritative_sources",
+      "target": "docs_ocr_phase2_biometric_webview_spike_f2_capacitor_s_webview_does_not_enable_it_by_default",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_1_findings_authoritative_sources",
+      "target": "docs_ocr_phase2_biometric_webview_spike_f3_prf_extension_pass_through_is_undocumented_on_every_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "docs_ocr_phase2_biometric_webview_spike_1_findings_authoritative_sources",
+      "target": "docs_ocr_phase2_biometric_webview_spike_f4_origin_rp_id_is_tied_to_the_app_signature_not_the_web_origin",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture"
     },
     {
       "relation": "imports",
@@ -38067,9 +38477,9 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture_assessimagequality",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_assessimagequality"
     },
     {
       "relation": "imports",
@@ -38078,9 +38488,9 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture_captureframe",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_captureframe"
     },
     {
       "relation": "imports",
@@ -38089,9 +38499,9 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture_clearimagedata",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_clearimagedata"
     },
     {
       "relation": "imports",
@@ -38100,9 +38510,9 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture_enhanceforocr",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_enhanceforocr"
     },
     {
       "relation": "imports",
@@ -38111,9 +38521,9 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture_iscamerasupported",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_iscamerasupported"
     },
     {
       "relation": "imports",
@@ -38122,9 +38532,9 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_cameracapture_test",
-      "target": "ocr_cameracapture_requestcameraaccess",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_requestcameraaccess"
     },
     {
       "relation": "imports_from",
@@ -38133,9 +38543,9 @@
       "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_credentialparser_test",
-      "target": "ocr_credentialparser",
-      "confidence_score": 1.0
+      "target": "ocr_credentialparser"
     },
     {
       "relation": "imports",
@@ -38144,9 +38554,9 @@
       "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_credentialparser_test",
-      "target": "ocr_credentialparser_normalizeocremail",
-      "confidence_score": 1.0
+      "target": "ocr_credentialparser_normalizeocremail"
     },
     {
       "relation": "imports",
@@ -38155,9 +38565,9 @@
       "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_credentialparser_test",
-      "target": "ocr_credentialparser_parsecredentialtext",
-      "confidence_score": 1.0
+      "target": "ocr_credentialparser_parsecredentialtext"
     },
     {
       "relation": "imports",
@@ -38166,9 +38576,9 @@
       "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_credentialparser_test",
-      "target": "ocr_credentialparser_sanitizevalue",
-      "confidence_score": 1.0
+      "target": "ocr_credentialparser_sanitizevalue"
     },
     {
       "relation": "imports_from",
@@ -38177,9 +38587,9 @@
       "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_ocrprovider_test",
-      "target": "ocr_ocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider"
     },
     {
       "relation": "imports",
@@ -38188,9 +38598,9 @@
       "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_ocrprovider_test",
-      "target": "ocr_ocrprovider_getactiveocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_getactiveocrprovider"
     },
     {
       "relation": "imports",
@@ -38199,9 +38609,9 @@
       "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_ocrprovider_test",
-      "target": "ocr_ocrprovider_ocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_ocrprovider"
     },
     {
       "relation": "imports",
@@ -38210,9 +38620,9 @@
       "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_ocrprovider_test",
-      "target": "ocr_ocrprovider_tesseractocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_tesseractocrprovider"
     },
     {
       "relation": "contains",
@@ -38220,9 +38630,9 @@
       "source_file": "src/core/ocr/__tests__/ocrProvider.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_ocrprovider_test",
-      "target": "tests_ocrprovider_test_recognizetextmock_clearimagedatamock_isocrsupportedmock",
-      "confidence_score": 1.0
+      "target": "tests_ocrprovider_test_recognizetextmock_clearimagedatamock_isocrsupportedmock"
     },
     {
       "relation": "imports_from",
@@ -38231,9 +38641,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "ocr_tesseractservice",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice"
     },
     {
       "relation": "imports",
@@ -38242,9 +38652,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "ocr_tesseractservice_isocrsupported",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_isocrsupported"
     },
     {
       "relation": "imports",
@@ -38253,9 +38663,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "ocr_tesseractservice_recognizetext",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_recognizetext"
     },
     {
       "relation": "imports",
@@ -38264,9 +38674,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "ocr_tesseractservice_terminateworker",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_terminateworker"
     },
     {
       "relation": "contains",
@@ -38274,9 +38684,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "tests_tesseractservice_test_createworkermock",
-      "confidence_score": 1.0
+      "target": "tests_tesseractservice_test_createworkermock"
     },
     {
       "relation": "contains",
@@ -38284,9 +38694,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "tests_tesseractservice_test_recognizemock",
-      "confidence_score": 1.0
+      "target": "tests_tesseractservice_test_recognizemock"
     },
     {
       "relation": "contains",
@@ -38294,9 +38704,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "tests_tesseractservice_test_setparametersmock",
-      "confidence_score": 1.0
+      "target": "tests_tesseractservice_test_setparametersmock"
     },
     {
       "relation": "contains",
@@ -38304,9 +38714,9 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_tesseractservice_test",
-      "target": "tests_tesseractservice_test_terminatemock",
-      "confidence_score": 1.0
+      "target": "tests_tesseractservice_test_terminatemock"
     },
     {
       "relation": "contains",
@@ -38364,9 +38774,9 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_cameracapture",
-      "target": "ocr_cameracapture_enhanceforocr",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_enhanceforocr"
     },
     {
       "relation": "contains",
@@ -38406,9 +38816,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_cameracapture",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture"
     },
     {
       "relation": "re_exports",
@@ -38549,9 +38959,9 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_cameracapture_captureframe",
-      "target": "ocr_cameracapture_enhanceforocr",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_enhanceforocr"
     },
     {
       "relation": "imports",
@@ -38614,9 +39024,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_cameracapture_clearimagedata",
-      "confidence_score": 1.0
+      "target": "ocr_cameracapture_clearimagedata"
     },
     {
       "relation": "calls",
@@ -38989,9 +39399,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_ocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider"
     },
     {
       "relation": "re_exports",
@@ -39000,9 +39410,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_ocrprovider_getactiveocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_getactiveocrprovider"
     },
     {
       "relation": "re_exports",
@@ -39011,9 +39421,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_ocrprovider_getocrproviders",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_getocrproviders"
     },
     {
       "relation": "re_exports",
@@ -39022,9 +39432,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_ocrprovider_ocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_ocrprovider"
     },
     {
       "relation": "re_exports",
@@ -39033,9 +39443,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_ocrprovider_ocrrecognition",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_ocrrecognition"
     },
     {
       "relation": "re_exports",
@@ -39044,9 +39454,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_ocrprovider_tesseractocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_tesseractocrprovider"
     },
     {
       "relation": "re_exports",
@@ -39066,9 +39476,9 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_index",
-      "target": "ocr_tesseractservice_ocrmode",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_ocrmode"
     },
     {
       "relation": "re_exports",
@@ -39153,9 +39563,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_ocrprovider_getactiveocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_getactiveocrprovider"
     },
     {
       "relation": "contains",
@@ -39163,9 +39573,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L76",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_ocrprovider_getocrproviders",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_getocrproviders"
     },
     {
       "relation": "contains",
@@ -39173,9 +39583,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_ocrprovider_ocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_ocrprovider"
     },
     {
       "relation": "contains",
@@ -39183,9 +39593,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_ocrprovider_ocrrecognition",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_ocrrecognition"
     },
     {
       "relation": "contains",
@@ -39193,9 +39603,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_ocrprovider_tesseractocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_tesseractocrprovider"
     },
     {
       "relation": "imports_from",
@@ -39204,9 +39614,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_tesseractservice",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice"
     },
     {
       "relation": "imports",
@@ -39215,9 +39625,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_tesseractservice_isocrsupported",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_isocrsupported"
     },
     {
       "relation": "imports",
@@ -39226,9 +39636,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_tesseractservice_ocrmode",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_ocrmode"
     },
     {
       "relation": "imports",
@@ -39237,9 +39647,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_tesseractservice_ocrprogress",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_ocrprogress"
     },
     {
       "relation": "imports",
@@ -39248,9 +39658,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider",
-      "target": "ocr_tesseractservice_recognizetext",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_recognizetext"
     },
     {
       "relation": "implements",
@@ -39259,9 +39669,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider_tesseractocrprovider",
-      "target": "ocr_ocrprovider_ocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_ocrprovider"
     },
     {
       "relation": "method",
@@ -39269,9 +39679,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider_tesseractocrprovider",
-      "target": "ocr_ocrprovider_tesseractocrprovider_isavailable",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_tesseractocrprovider_isavailable"
     },
     {
       "relation": "method",
@@ -39279,9 +39689,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider_tesseractocrprovider",
-      "target": "ocr_ocrprovider_tesseractocrprovider_recognize",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_tesseractocrprovider_recognize"
     },
     {
       "relation": "calls",
@@ -39301,9 +39711,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider_tesseractocrprovider_recognize",
-      "target": "ocr_tesseractservice_ocrmode",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_ocrmode"
     },
     {
       "relation": "references",
@@ -39312,9 +39722,9 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_ocrprovider_tesseractocrprovider_recognize",
-      "target": "ocr_tesseractservice_ocrprogress",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_ocrprogress"
     },
     {
       "relation": "calls",
@@ -39334,9 +39744,9 @@
       "source_file": "src/presentation/components/CameraScanDialog.tsx",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_camerascandialog",
-      "target": "ocr_ocrprovider_getactiveocrprovider",
-      "confidence_score": 1.0
+      "target": "ocr_ocrprovider_getactiveocrprovider"
     },
     {
       "relation": "contains",
@@ -39364,9 +39774,9 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_tesseractservice",
-      "target": "ocr_tesseractservice_mode_to_psm",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_mode_to_psm"
     },
     {
       "relation": "contains",
@@ -39374,9 +39784,9 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "ocr_tesseractservice",
-      "target": "ocr_tesseractservice_ocrmode",
-      "confidence_score": 1.0
+      "target": "ocr_tesseractservice_ocrmode"
     },
     {
       "relation": "contains",
@@ -39556,166 +39966,6 @@
       "confidence_score": 1.0,
       "source": "pages_editcredentialpage",
       "target": "components_camerascandialog_camerascandialog"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan",
-      "target": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L10",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_0_goal_premise"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_1_why_not_twa_raw_webview_rejected_alternatives"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L43",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_2_plugin_selection"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L67",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_3_toolchain_requirements_verified_capacitor_7"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L243",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_decisions_locked_this_revision"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L81",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_phase_1_provider_seam_pure_web_zero_native_ships_to_all_users"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L109",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_phase_2_biometric_under_webview_spike_highest_risk_validation_before_native_wiring"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L123",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_phase_3_native_ml_kit_ocr_provider_android_default_path"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L174",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_phase_4_optional_bounding_box_overlay_opt_in_gated"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L192",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_phase_5_security_csp_origin_re_audit_gate_before_any_distribution"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L211",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_phase_6_build_sideload_distribution_docs"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L232",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_risks_open_items"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L252",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_sources"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L220",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_native_android_ocr_implementation_plan_capacitor_ml_kit",
-      "target": "docs_ocr_native_android_plan_testing"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/OCR_NATIVE_ANDROID_PLAN.md",
-      "source_location": "L20",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ocr_native_android_plan_0_goal_premise",
-      "target": "docs_ocr_native_android_plan_validated_decisions"
     },
     {
       "relation": "contains",
@@ -92789,5 +93039,5 @@
       "source_file": "src/data/repositories/CredentialRepositoryImpl.ts"
     }
   ],
-  "built_at_commit": "a0abcbb67d84f13949359ef66a4c52a72ba0af16"
+  "built_at_commit": "ac5d9ec556678b2a59ef098bac8394f9634fcbbf"
 }
