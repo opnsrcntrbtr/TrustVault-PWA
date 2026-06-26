@@ -19,6 +19,7 @@ import {
   encodeUint8ArrayToBase64,
   encodeUint8ArrayToBase64Url,
 } from '@/core/utils/base64';
+import { isNativeApp } from '@/core/platform/runtime';
 
 export interface BiometricCredential {
   id: string;
@@ -47,9 +48,20 @@ export function isWebAuthnSupported(): boolean {
 }
 
 /**
- * Checks if platform authenticator (biometric) is available
+ * Checks if platform authenticator (biometric) is available.
+ *
+ * Forced OFF inside the native Capacitor app: the `prf-v1` unlock relies on the
+ * WebAuthn PRF extension, which does not pass through the Android WebView →
+ * Credential Manager path, and Credential Manager binds the origin to the app
+ * signature rather than the web RP ID (see
+ * docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md). The native build therefore uses
+ * master-password unlock only, and biometric enrollment/UI stays hidden.
  */
 export async function isBiometricAvailable(): Promise<boolean> {
+  if (isNativeApp()) {
+    return false;
+  }
+
   if (!isWebAuthnSupported()) {
     return false;
   }

@@ -10,10 +10,9 @@
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const { isNativePlatformMock, getPlatformMock, processMock, clearImageDataMock } =
-  vi.hoisted(() => ({
-    isNativePlatformMock: vi.fn(() => true),
-    getPlatformMock: vi.fn(() => 'android'),
+const { isNativeAndroidAppMock, processMock, clearImageDataMock } = vi.hoisted(
+  () => ({
+    isNativeAndroidAppMock: vi.fn(() => true),
     processMock: vi.fn(() =>
       Promise.resolve({
         results: [
@@ -23,13 +22,12 @@ const { isNativePlatformMock, getPlatformMock, processMock, clearImageDataMock }
       })
     ),
     clearImageDataMock: vi.fn(() => Promise.resolve()),
-  }));
+  })
+);
 
-vi.mock('@capacitor/core', () => ({
-  Capacitor: {
-    isNativePlatform: isNativePlatformMock,
-    getPlatform: getPlatformMock,
-  },
+vi.mock('@/core/platform/runtime', () => ({
+  isNativeAndroidApp: isNativeAndroidAppMock,
+  isNativeApp: vi.fn(() => true),
 }));
 vi.mock('@jcesarmobile/capacitor-ocr', () => ({ Ocr: { process: processMock } }));
 vi.mock('@/core/ocr/cameraCapture', () => ({
@@ -42,8 +40,7 @@ import { NativeMlKitOcrProvider } from '@/core/ocr/nativeMlKitOcrProvider';
 describe('NativeMlKitOcrProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    isNativePlatformMock.mockReturnValue(true);
-    getPlatformMock.mockReturnValue('android');
+    isNativeAndroidAppMock.mockReturnValue(true);
   });
 
   describe('isAvailable()', () => {
@@ -51,13 +48,8 @@ describe('NativeMlKitOcrProvider', () => {
       expect(new NativeMlKitOcrProvider().isAvailable()).toBe(true);
     });
 
-    it('is NOT available on the web (non-native platform)', () => {
-      isNativePlatformMock.mockReturnValue(false);
-      expect(new NativeMlKitOcrProvider().isAvailable()).toBe(false);
-    });
-
-    it('is NOT available on native iOS (Android-only scope, plan decision #1)', () => {
-      getPlatformMock.mockReturnValue('ios');
+    it('is NOT available off native Android (web / iOS — seam returns false)', () => {
+      isNativeAndroidAppMock.mockReturnValue(false);
       expect(new NativeMlKitOcrProvider().isAvailable()).toBe(false);
     });
 

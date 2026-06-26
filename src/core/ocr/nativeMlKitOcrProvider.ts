@@ -11,7 +11,7 @@
  * Scope: Android only (iOS Apple Vision path deferred — plan decision #1).
  */
 
-import { Capacitor } from '@capacitor/core';
+import { isNativeAndroidApp } from '@/core/platform/runtime';
 import { blobToDataUrl, clearImageData } from './cameraCapture';
 import type { OcrProvider, OcrRecognition } from './ocrProvider';
 import type { OcrMode, OCRProgress } from './tesseractService';
@@ -22,7 +22,7 @@ export class NativeMlKitOcrProvider implements OcrProvider {
   readonly streamsProgress = false;
 
   isAvailable(): boolean {
-    return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
+    return isNativeAndroidApp();
   }
 
   async recognize(

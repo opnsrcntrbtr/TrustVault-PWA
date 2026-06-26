@@ -4,6 +4,18 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+
+// Native-app detection seam — defaults to web (false) so existing browser tests
+// are unaffected; a single test flips it to verify biometric is disabled on the
+// native Capacitor surface (Phase 2 D1/D2).
+const { isNativeAppMock } = vi.hoisted(() => ({
+  isNativeAppMock: vi.fn(() => false),
+}));
+vi.mock('@/core/platform/runtime', () => ({
+  isNativeApp: isNativeAppMock,
+  isNativeAndroidApp: vi.fn(() => false),
+}));
+
 import {
   isWebAuthnSupported,
   isBiometricAvailable,
@@ -60,9 +72,19 @@ describe('WebAuthn Core Functions', () => {
   });
 
   describe('isBiometricAvailable', () => {
+    beforeEach(() => {
+      isNativeAppMock.mockReturnValue(false);
+    });
+
     it('should return true when platform authenticator is available', async () => {
       const available = await isBiometricAvailable();
       expect(available).toBe(true);
+    });
+
+    it('should return false inside the native Capacitor app (PRF unsupported in WebView)', async () => {
+      isNativeAppMock.mockReturnValue(true);
+      const available = await isBiometricAvailable();
+      expect(available).toBe(false);
     });
 
     it('should return false when WebAuthn is not supported', async () => {

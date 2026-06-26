@@ -428,6 +428,38 @@ one-shot/chat paths.
 
 ---
 
+### Native Android OCR surface (Capacitor + ML Kit, 2026-06-26)
+
+An **optional** Capacitor Android wrapper adds an on-device **ML Kit Text Recognition v2** path for
+OCR-based credential entry, selected ahead of the browser Tesseract.js path only on native Android
+(`@jcesarmobile/capacitor-ocr`). The web PWA remains the primary, fully-functional surface; the wrapper
+is purely additive. See `docs/OCR_NATIVE_ANDROID_PLAN.md` and the phase docs
+(`OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md`, `OCR_PHASE5_SECURITY_AUDIT.md`).
+
+This Capacitor app is treated as a **distinct platform target** (origin `https://localhost`, not the
+deployed domain), so the PWA's header-based guarantees were re-audited rather than assumed:
+
+- **Biometric disabled on this surface.** The `prf-v1` WebAuthn PRF unlock does **not** pass through the
+  Android WebView → Credential Manager path, and Credential Manager binds the response origin to the app
+  signature (Digital Asset Links) rather than the web RP ID. `isBiometricAvailable()` therefore returns
+  `false` inside the native app (`isNativeApp()` seam in `src/core/platform/runtime.ts`), hiding biometric
+  enrollment/UI and leaving the existing **Scrypt master-password unlock** as the only path. Web behavior
+  is unchanged.
+- **No new network egress / no new CSP origin.** ML Kit recognition is fully on-device using the
+  **bundled** model (`16.0.1`) — no model download — so `connect-src` in `securityHeaders.ts` is unchanged.
+  (The optional bounding-box overlay plugin, which would add Firebase/`google-services.json`, stays gated
+  off by default — `docs/OCR_NATIVE_ANDROID_PLAN.md` Phase 4.)
+- **In-memory only.** The captured frame is handed to the recognizer as an in-memory base64 data URL
+  (no `file://` temp / `FileProvider`) and zeroized after recognition — same zero-knowledge frame handling
+  as the web path.
+- **On-device AI stays kill-switched** on this surface (`WEBLLM_ANDROID_ENABLED = false`), consistent with
+  the web build; the OCR path shares no code with the AI providers.
+- **Residual (pre-distribution):** the strict CSP is HTTP-header-based and absent inside the WebView; a
+  Capacitor-only meta-CSP injection (derived from `buildContentSecurityPolicy()`, no shared-`index.html`
+  edit) is required at `cap sync` time and **gates distribution** (`OCR_PHASE5_SECURITY_AUDIT.md` §A).
+
+---
+
 ## 📱 PWA Security Features
 
 ### Service Worker
