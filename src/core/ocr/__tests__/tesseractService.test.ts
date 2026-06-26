@@ -17,7 +17,7 @@ const createWorkerMock = vi.fn(() => Promise.resolve({
 
 vi.mock('tesseract.js', () => ({
   createWorker: createWorkerMock,
-  PSM: { SINGLE_COLUMN: 4 },
+  PSM: { SINGLE_COLUMN: 4, SINGLE_LINE: 7, SPARSE_TEXT: 11 },
 }));
 
 import { recognizeText, terminateWorker, isOCRSupported } from '@/core/ocr/tesseractService';
@@ -56,6 +56,30 @@ describe('tesseractService', () => {
       await recognizeText(blob);
 
       expect(setParametersMock).toHaveBeenCalledWith({ tessedit_pageseg_mode: 4 });
+    });
+
+    it('defaults to single-column (form) page segmentation per recognition', async () => {
+      const blob = new Blob(['fake image bytes'], { type: 'image/png' });
+
+      await recognizeText(blob);
+
+      expect(setParametersMock).toHaveBeenCalledWith({ tessedit_pageseg_mode: 4 });
+    });
+
+    it('switches to single-line segmentation for line mode (OTP/password)', async () => {
+      const blob = new Blob(['fake image bytes'], { type: 'image/png' });
+
+      await recognizeText(blob, undefined, 'line');
+
+      expect(setParametersMock).toHaveBeenCalledWith({ tessedit_pageseg_mode: 7 });
+    });
+
+    it('switches to sparse-text segmentation for block mode (cluttered screenshots)', async () => {
+      const blob = new Blob(['fake image bytes'], { type: 'image/png' });
+
+      await recognizeText(blob, undefined, 'block');
+
+      expect(setParametersMock).toHaveBeenCalledWith({ tessedit_pageseg_mode: 11 });
     });
 
     it('resolves without throwing when an onProgress callback is supplied', async () => {

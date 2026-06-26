@@ -43,6 +43,16 @@ describe('credentialParser', () => {
       expect(result.password).toBeUndefined();
     });
 
+    it('does not treat a date-shaped value as a password', () => {
+      expect(parseCredentialText('Password: 12/05/2024').password).toBeUndefined();
+      expect(parseCredentialText('Password: 2024-01-31').password).toBeUndefined();
+    });
+
+    it('does not treat a currency amount as a password', () => {
+      expect(parseCredentialText('Password: $1,234.56').password).toBeUndefined();
+      expect(parseCredentialText('Password: 1,000.00').password).toBeUndefined();
+    });
+
     it('extracts notes from a labeled notes field', () => {
       const result = parseCredentialText('Notes: backup-account');
       expect(result.notes).toBe('backup-account');

@@ -13,6 +13,7 @@ import {
   captureFrame,
   clearImageData,
   assessImageQuality,
+  enhanceForOcr,
 } from '@/core/ocr/cameraCapture';
 
 describe('cameraCapture', () => {
@@ -133,6 +134,47 @@ describe('cameraCapture', () => {
       } as unknown as HTMLCanvasElement);
 
       await expect(captureFrame(videoElement)).rejects.toThrow('Failed to create image blob');
+    });
+  });
+
+  describe('enhanceForOcr()', () => {
+    // RGBA pixels: one dark (luminance 50), one light (luminance 200).
+    // Contrast stretch should map the darkest to 0 and lightest to 255.
+    const pixel = (v: number) => [v, v, v, 255];
+
+    it('converts to grayscale (R=G=B per pixel)', () => {
+      const data = new Uint8ClampedArray([10, 120, 240, 255, 240, 120, 10, 255]);
+
+      enhanceForOcr(data);
+
+      expect(data[0]).toBe(data[1]);
+      expect(data[1]).toBe(data[2]);
+      expect(data[4]).toBe(data[5]);
+      expect(data[5]).toBe(data[6]);
+    });
+
+    it('stretches contrast so the darkest pixel is 0 and the lightest is 255', () => {
+      const data = new Uint8ClampedArray([...pixel(50), ...pixel(200)]);
+
+      enhanceForOcr(data);
+
+      expect(data[0]).toBe(0); // darkest → black
+      expect(data[4]).toBe(255); // lightest → white
+    });
+
+    it('preserves the alpha channel', () => {
+      const data = new Uint8ClampedArray([...pixel(50), ...pixel(200)]);
+
+      enhanceForOcr(data);
+
+      expect(data[3]).toBe(255);
+      expect(data[7]).toBe(255);
+    });
+
+    it('does not divide by zero on a flat (single-luminance) image', () => {
+      const data = new Uint8ClampedArray([...pixel(128), ...pixel(128)]);
+
+      expect(() => { enhanceForOcr(data); }).not.toThrow();
     });
   });
 

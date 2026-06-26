@@ -182,11 +182,21 @@ function findStandalonePatterns(text: string): {
 }
 
 /**
+ * Values that are structurally a date or a monetary amount. These frequently
+ * sit next to a "password"-ish label on statements/forms but are never the
+ * secret, so reject them before the looks-like-a-password test.
+ */
+const DATE_LIKE = /^\d{1,4}[/\-.]\d{1,2}[/\-.]\d{1,4}$/;
+const AMOUNT_LIKE = /^[$€£]?\d{1,3}(,\d{3})*(\.\d{1,2})?$/;
+
+/**
  * Determine if a string looks like a password (mixed chars, no spaces, reasonable length).
  */
 function looksLikePassword(value: string): boolean {
   if (value.length < 4 || value.length > 128) return false;
   if (/\s/.test(value)) return false;
+  // Reject date/amount-shaped tokens — common false positives near labels.
+  if (DATE_LIKE.test(value) || AMOUNT_LIKE.test(value)) return false;
   // Has mix of character types or special chars
   const hasLower = /[a-z]/.test(value);
   const hasUpper = /[A-Z]/.test(value);

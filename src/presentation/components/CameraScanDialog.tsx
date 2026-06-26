@@ -29,12 +29,11 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import {
   requestCameraAccess,
   captureFrame,
-  clearImageData,
   assessImageQuality,
-  recognizeText,
   parseCredentialText,
   terminateWorker,
   isCameraSupported,
+  getActiveOcrProvider,
   type CameraStream,
   type ParsedCredential,
   type OCRProgress,
@@ -164,16 +163,21 @@ export function CameraScanDialog({
 
     setScanState('capturing');
 
+    const video = videoRef.current;
+
     try {
-      const { blob } = await captureFrame(videoRef.current);
+      // The active provider owns the frame lifecycle: it pulls the capture,
+      // recognizes it, and zeroizes the blob. On native (Android ML Kit) this
+      // is a different engine; here it's Tesseract. Downstream parsing is identical.
+      const provider = getActiveOcrProvider();
 
       setScanState('processing');
       setOcrProgress({ status: 'initializing', progress: 0 });
 
-      const { text, confidence } = await recognizeText(blob, setOcrProgress);
-
-      // Clear image data immediately after OCR
-      await clearImageData(blob);
+      const { text, engineConfidence } = await provider.recognize(
+        async () => (await captureFrame(video)).blob,
+        provider.streamsProgress ? setOcrProgress : undefined
+      );
 
       if (text.trim().length === 0) {
         setScanState('error');
@@ -184,7 +188,10 @@ export function CameraScanDialog({
       }
 
       const parsed = parseCredentialText(text);
-      parsed.confidence.overall = (parsed.confidence.overall + confidence / 100) / 2;
+      if (engineConfidence != null) {
+        parsed.confidence.overall =
+          (parsed.confidence.overall + engineConfidence) / 2;
+      }
 
       onResult(parsed);
       onClose();

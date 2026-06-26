@@ -6,7 +6,7 @@
  * immediately after recognition to maintain zero-knowledge guarantees.
  */
 
-import type { Worker, RecognizeResult } from 'tesseract.js';
+import type { Worker, RecognizeResult, PSM } from 'tesseract.js';
 
 let tesseractWorker: Worker | null = null;
 let initializationPromise: Promise<Worker> | null = null;
@@ -16,6 +16,23 @@ export interface OCRProgress {
   status: string;
   progress: number;
 }
+
+/**
+ * Per-flow page segmentation mode. The optimal Tesseract PSM depends on the
+ * layout being scanned:
+ *  - 'form'  → SINGLE_COLUMN (4): stacked label/value credential forms (default).
+ *  - 'line'  → SINGLE_LINE (7):   a single OTP secret or password line.
+ *  - 'block' → SPARSE_TEXT (11):  credentials embedded in a cluttered screenshot.
+ * Values mirror Tesseract's stable PSM constants so we don't depend on the
+ * dynamically-imported enum inside the hot recognition path.
+ */
+export type OcrMode = 'form' | 'line' | 'block';
+
+const MODE_TO_PSM: Record<OcrMode, number> = {
+  form: 4, // PSM.SINGLE_COLUMN
+  line: 7, // PSM.SINGLE_LINE
+  block: 11, // PSM.SPARSE_TEXT
+};
 
 /**
  * Initialize or retrieve the Tesseract worker singleton.
@@ -71,13 +88,20 @@ async function getWorker(
  * Recognize text from an image blob.
  * @param imageBlob - The captured image as a Blob
  * @param onProgress - Optional progress callback
+ * @param mode - Page segmentation hint for the layout being scanned (default 'form')
  * @returns Recognized text and confidence score
  */
 export async function recognizeText(
   imageBlob: Blob,
-  onProgress?: (progress: OCRProgress) => void
+  onProgress?: (progress: OCRProgress) => void,
+  mode: OcrMode = 'form'
 ): Promise<{ text: string; confidence: number }> {
   const worker = await getWorker(onProgress);
+
+  // Set PSM per recognition so a single memoized worker can serve every flow.
+  await worker.setParameters({
+    tessedit_pageseg_mode: MODE_TO_PSM[mode] as unknown as PSM,
+  });
 
   const result: RecognizeResult = await worker.recognize(imageBlob);
 

@@ -65,11 +65,52 @@ export async function requestCameraAccess(): Promise<CameraStream> {
 }
 
 /**
+ * Enhance a frame in-place for OCR: convert to grayscale, then stretch contrast
+ * across the full 0–255 range (min–max normalization).
+ *
+ * Small printed credential text benefits enormously from binarization-friendly
+ * input — Tesseract resolves edges far better on a high-contrast grayscale image
+ * than on a raw, low-contrast colour photo. Mutates the supplied RGBA buffer.
+ */
+export function enhanceForOcr(data: Uint8ClampedArray): void {
+  const pixelCount = data.length >> 2;
+  const luminance = new Uint8Array(pixelCount);
+
+  let min = 255;
+  let max = 0;
+  for (let p = 0, i = 0; p < pixelCount; p++, i += 4) {
+    // Rec. 601 luma — perceptually weighted grayscale.
+    const g =
+      ((data[i] ?? 0) * 0.299 +
+        (data[i + 1] ?? 0) * 0.587 +
+        (data[i + 2] ?? 0) * 0.114) |
+      0;
+    luminance[p] = g;
+    if (g < min) min = g;
+    if (g > max) max = g;
+  }
+
+  // Guard against a flat image (range 0) to avoid divide-by-zero.
+  const range = max - min || 1;
+  for (let p = 0, i = 0; p < pixelCount; p++, i += 4) {
+    const stretched = (((luminance[p] ?? 0) - min) * 255) / range;
+    const v = stretched | 0;
+    data[i] = v;
+    data[i + 1] = v;
+    data[i + 2] = v;
+    // Alpha (data[i + 3]) is intentionally left untouched.
+  }
+}
+
+/**
  * Capture a still frame from a video element.
  * Uses canvas fallback for maximum browser compatibility.
+ * When `preprocess` is true (default) and the canvas supports pixel access,
+ * the frame is grayscaled + contrast-stretched to improve OCR precision.
  */
 export async function captureFrame(
-  videoElement: HTMLVideoElement
+  videoElement: HTMLVideoElement,
+  preprocess = true
 ): Promise<CaptureResult> {
   const width = videoElement.videoWidth;
   const height = videoElement.videoHeight;
@@ -88,6 +129,18 @@ export async function captureFrame(
   }
 
   ctx.drawImage(videoElement, 0, 0, width, height);
+
+  // Grayscale + contrast-stretch for sharper OCR. Guarded so environments
+  // without full canvas pixel access (e.g. some test mocks) fall through.
+  if (
+    preprocess &&
+    typeof ctx.getImageData === 'function' &&
+    typeof ctx.putImageData === 'function'
+  ) {
+    const imageData = ctx.getImageData(0, 0, width, height);
+    enhanceForOcr(imageData.data);
+    ctx.putImageData(imageData, 0, 0);
+  }
 
   const blob = await new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
