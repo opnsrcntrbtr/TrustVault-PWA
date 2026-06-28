@@ -199,14 +199,21 @@ target**, not a transparent shim.
 ## Phase 6 — CSP injection script + build, sideload distribution & docs
 
 ### Pre-requisite: CSP injection (gates this phase — see OCR_PHASE5_SECURITY_AUDIT.md §A)
-- [ ] Create `scripts/inject-csp-for-capacitor.js` — post-`sync` script that:
-  - Reads `capacitor.config.ts` to find the copied native `dist/index.html` location.
-  - Calls `buildContentSecurityPolicy()` from `src/config/securityHeaders.ts` to generate the policy.
-  - Injects a `<meta http-equiv="Content-Security-Policy" content="…">` into the native `<head>` ONLY.
-  - Validates no `https://localhost` origin assumptions exist in OCR/parse paths (audit: none found).
-  - Runs at `cap sync` time (add to npm `cap:sync` script).
-- [ ] Test on-device that strict CSP is enforced (DevTools → Sources/CSP violations tab).
-- [ ] **Document in Phase 6 checklist below.**
+- [x] Create `scripts/inject-csp-for-capacitor.js` — post-`sync` script that (2026-06-28):
+  - Locates the copied native `android/app/src/main/assets/public/index.html`.
+  - Imports `buildContentSecurityPolicy()` directly from `src/config/securityHeaders.ts` (Node 24 native
+    TS type-stripping — no transpile step, no duplicated/drifting policy string).
+  - Injects a `<meta http-equiv="Content-Security-Policy" content="…">` into the native `<head>` ONLY,
+    with `frame-ancestors` stripped (spec-ignored in `<meta>`; meaningless for a native WebView anyway).
+  - Idempotent — re-running replaces rather than duplicates the meta tag.
+  - Skips gracefully with a clear message when `android/` hasn't been generated yet (verified: no
+    `android/` dir in this repo).
+  - Wired into `npm run cap:sync` / `npm run cap:android` (`package.json`), runs automatically after
+    `cap sync android`.
+  - Verified manually against a throwaway `android/.../index.html` fixture: injects once, re-run does
+    not duplicate (`grep -c "Content-Security-Policy"` stayed at 1), fixture removed after.
+- [ ] Test on-device that strict CSP is enforced (DevTools → Sources/CSP violations tab) — **requires
+      the real `android/` project; deferred with the on-device build below.**
 
 ### Then: build & distribution
 - [ ] Gradle build + signing key (new — none exists today).
@@ -218,16 +225,15 @@ target**, not a transparent shim.
 
 ## Session Continuation Guide
 
-**Status as of 2026-06-26 EOD:** Phases 1–3, 5 complete and in-repo, verified. Phase 2 spike doc captures
-biometric decision. Phase 4 (overlay) and Phase 6 (distribution) deferred. One blocker: CSP injection.
+**Status as of 2026-06-28:** Phases 1–3, 5 complete and in-repo, verified. CSP injection script (the
+Phase 6 pre-requisite) is also done and in-repo. Phase 2 spike doc captures biometric decision. Phase 4
+(overlay) and the rest of Phase 6 (on-device build + distribution) remain — both require an Android SDK
+machine, unavailable in this environment.
 
 ### To resume Phase 6 (on-device + distribution)
 
-1. **Prerequisite: CSP injection script** (§above)
-   - File: `scripts/inject-csp-for-capacitor.js`
-   - Template: mirror `scripts/inject-sw-version.js` (existing post-build hook pattern)
-   - Call from `npm run cap:sync` (add to package.json script)
-   - Validate: open the copied native `dist/index.html` in a text editor, confirm meta CSP is present
+1. ~~Prerequisite: CSP injection script~~ — **done** (`scripts/inject-csp-for-capacitor.js`, wired into
+   `cap:sync`/`cap:android`). Nothing to do here; it'll run automatically on the next `cap sync android`.
 
 2. **Android build on-machine**
    ```bash

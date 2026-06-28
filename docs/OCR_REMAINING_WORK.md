@@ -7,10 +7,10 @@ Quick reference for resuming Phases 4 & 6 after Phase 5 security audit. See main
 
 ## Blockers (must complete before distribution)
 
-| Task | Why | Where to implement | Estimate |
+| Task | Why | Where to implement | Status |
 |---|---|---|---|
-| **CSP injection script** | Capacitor WebView has no HTTP headers → CSP missing in-app. Must inject meta tag derived from `buildContentSecurityPolicy()`. | `scripts/inject-csp-for-capacitor.js` (new) + hook in `package.json:cap:sync` | 2–3h |
-| **On-device parity test** | Confirm ML Kit OCR produces same `{username,password,url}` as Tesseract on ground-truth cards/screenshots. Run on real device (API 24+). Record in `TEST_STATUS.md`. | Android device / emulator | 1h |
+| **CSP injection script** | Capacitor WebView has no HTTP headers → CSP missing in-app. Injects meta tag derived from `buildContentSecurityPolicy()`. | `scripts/inject-csp-for-capacitor.js` + hook in `package.json:cap:sync`/`cap:android` | **Done (2026-06-28)** — imports the policy builder directly via Node 24 native TS stripping, idempotent, skips gracefully without `android/`. Manually verified against a throwaway fixture. |
+| **On-device parity test** | Confirm ML Kit OCR produces same `{username,password,url}` as Tesseract on ground-truth cards/screenshots. Run on real device (API 24+). Record in `TEST_STATUS.md`. | Android device / emulator | Not started — requires Android SDK machine |
 
 ---
 
@@ -38,10 +38,10 @@ Quick reference for resuming Phases 4 & 6 after Phase 5 security audit. See main
 
 ## Checklist for resuming (in order)
 
-- [ ] **CSP injection script** (Phase 6 blocker)
-  - [ ] Create `scripts/inject-csp-for-capacitor.js`
-  - [ ] Update `package.json:cap:sync` to run the script post-sync
-  - [ ] Test on-device: inspect native `dist/index.html`, confirm meta CSP present
+- [x] **CSP injection script** (Phase 6 blocker) — done 2026-06-28
+  - [x] Create `scripts/inject-csp-for-capacitor.js`
+  - [x] Update `package.json:cap:sync`/`cap:android` to run the script post-sync
+  - [ ] Test on-device: inspect native `android/.../index.html`, confirm meta CSP present (deferred — needs real `android/` project)
   
 - [ ] **On-device build** (on a machine with Android SDK)
   - [ ] `npx cap add android` (generates `android/` project)
@@ -65,13 +65,14 @@ Quick reference for resuming Phases 4 & 6 after Phase 5 security audit. See main
 
 ## Status recap
 
-**Done (in-repo):** Phases 1–3, 5 all verified.
+**Done (in-repo):** Phases 1–3, 5 all verified, plus the Phase 6 CSP injection script.
 - Phase 1: provider seam, image preprocessing, per-flow PSM, parser heuristics.
 - Phase 2: biometric spike → biometric disabled on native.
 - Phase 3: native ML Kit provider + Capacitor deps + `capacitor.config.ts`.
 - Phase 5: security audit → biometric gate + platform seam + SECURITY.md updated.
+- Phase 6 (partial): `scripts/inject-csp-for-capacitor.js` — meta CSP injection, wired into `cap:sync`/`cap:android`.
 
-**Not done:** CSP injection (phase 6 blocker), on-device build + test, Phase 4 overlay.
+**Not done:** on-device build + parity test + CSP enforcement check (all require an Android SDK machine), Phase 4 overlay, distribution.
 
 ---
 
