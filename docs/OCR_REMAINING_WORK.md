@@ -18,7 +18,7 @@ Quick reference for resuming Phases 4 & 6 after Phase 5 security audit. See main
 
 | Task | Why | Where to implement | Notes |
 |---|---|---|---|
-| **Phase 4 overlay** | Bounding-box overlay for live feedback. Adds Firebase (`google-services.json`), no confidence scores. Off-by-default toggle. | `src/presentation/components/…` (Settings page), swap plugin to `@capacitor-community/image-to-text`, extend CSP `connect-src` for Firebase | Blocked on CSP injection; low priority |
+| **Phase 4 overlay — on-device verification only** | Code is done (see Status recap below); only on-device confirmation that the overlay renders correctly and Firebase ML Vision actually loads on a real device remains. | n/a — needs Android device | Not blocked on anything else; low priority |
 | **Phase 2 on-device PRF verification** | Test whether PRF extension results survive WebView → Credential Manager on real hardware (Capacitor 8, AndroidX WebKit 1.12.1+). Settles "10% uncertainty" in spike doc. | Minimal Capacitor harness + Android device | Optional; doesn't block OCR |
 
 ---
@@ -51,10 +51,10 @@ Quick reference for resuming Phases 4 & 6 after Phase 5 security audit. See main
   - [ ] Confirm biometric is **hidden** (Settings)
   - [ ] Confirm CSP is enforced (DevTools, no CSP violations)
   
-- [ ] **Phase 4 (optional)**
-  - [ ] If pursuing overlay: install `@capacitor-community/image-to-text` + implement Settings toggle
-  - [ ] Add Firebase CSP origins to `securityHeaders.ts` (document why)
-  - [ ] Test overlay on device
+- [x] **Phase 4** — done 2026-06-28
+  - [x] `@capacitor-community/image-to-text` installed + `NativeBoundingBoxOcrProvider` + `ocrSettings.ts` toggle + `OcrOverlaySettings.tsx` Settings UI
+  - [x] No Firebase CSP origin needed — `detectText()` is a native-bridge call, not WebView JS network traffic (CSP doesn't apply); see plan doc Phase 4 for the full reasoning
+  - [ ] Test overlay on device (needs Android SDK machine)
   
 - [ ] **Distribution** (sideload / internal APK)
   - [ ] Set up APK signing key (not covered here)
@@ -65,14 +65,15 @@ Quick reference for resuming Phases 4 & 6 after Phase 5 security audit. See main
 
 ## Status recap
 
-**Done (in-repo):** Phases 1–3, 5 all verified, plus the Phase 6 CSP injection script.
+**Done (in-repo):** Phases 1–5 all verified, plus the Phase 6 CSP injection script.
 - Phase 1: provider seam, image preprocessing, per-flow PSM, parser heuristics.
 - Phase 2: biometric spike → biometric disabled on native.
 - Phase 3: native ML Kit provider + Capacitor deps + `capacitor.config.ts`.
+- Phase 4: bounding-box overlay toggle (`ocrSettings.ts`, `NativeBoundingBoxOcrProvider`, `OcrOverlaySettings.tsx`, `CameraScanDialog.tsx` review screen) — off by default, single-shot review not live video (see plan doc).
 - Phase 5: security audit → biometric gate + platform seam + SECURITY.md updated.
 - Phase 6 (partial): `scripts/inject-csp-for-capacitor.js` — meta CSP injection, wired into `cap:sync`/`cap:android`.
 
-**Not done:** on-device build + parity test + CSP enforcement check (all require an Android SDK machine), Phase 4 overlay, distribution.
+**Not done:** on-device build + parity test + CSP enforcement check + Phase 4 overlay on-device verification (all require an Android SDK machine), distribution.
 
 ---
 

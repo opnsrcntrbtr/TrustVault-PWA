@@ -160,19 +160,36 @@ master-password unlock intact.
 
 ## Phase 4 — Optional bounding-box overlay (opt-in, gated)
 
-**Goal:** offer a live bounding-box overlay as a **Settings toggle**, accepting its trade-offs explicitly.
+**Goal:** offer a bounding-box overlay as a **Settings toggle**, accepting its trade-offs explicitly.
 
-- [ ] New setting `ocrShowBoundingBoxOverlay` (default **off**, marked experimental).
-- [ ] When **on**, the native provider routes through `@capacitor-community/image-to-text`
-      (`detectText({ base64 })` → corner points) to render an overlay over the camera frame.
-- [ ] **Trade-offs to surface in the toggle's help text / decision log:**
-  - Pulls in **Firebase ML Vision** + `google-services.json` → new Google dependency/telemetry surface
-    (must be reconciled with `SECURITY.md` ZK boundary).
-  - Plugin returns **no confidence** → fall back to parser-only field confidence when overlay mode is active.
-- [ ] If the Firebase dependency is judged unacceptable, keep the toggle but back it with bounding boxes
-      from a future standalone-ML-Kit plugin instead. **Do not bundle `image-to-text` unless the toggle ships.**
+- [x] New setting `ocrShowBoundingBoxOverlay` (default **off**, marked experimental) — `src/core/ocr/ocrSettings.ts`.
+- [x] When **on**, the native provider routes through `@capacitor-community/image-to-text`
+      (`detectText({ base64 })` → corner points) via `NativeBoundingBoxOcrProvider`
+      (`src/core/ocr/nativeBoundingBoxOcrProvider.ts`); `getOcrProviders(preferOverlay)` selects it ahead
+      of the confidence-only `NativeMlKitOcrProvider` when the toggle is on.
+- [x] **Scope correction vs. the original plan:** `detectText()` is **single-shot**, not a continuous
+      video stream — there is no live frame-by-frame detection API in this plugin. The overlay is
+      implemented as a brief (1.8s, auto-continuing, user-dismissable via "Continue") **post-capture
+      review** rendered over the frozen captured frame (`CameraScanDialog.tsx`, `'overlay'` scan state,
+      SVG `viewBox` + `<polygon>` per detection), not a live video overlay. "Live overlay" in this doc's
+      earlier wording was aspirational and not achievable with this plugin's API.
+- [x] **Trade-offs surfaced in the toggle's help text** (`OcrOverlaySettings.tsx`, Settings page):
+  - Pulls in **Firebase ML Vision** + `google-services.json` → new Google dependency/telemetry surface,
+    but it is **lazy-imported only inside `NativeBoundingBoxOcrProvider`** and excluded from
+    `vite.config.ts` `optimizeDeps` — never loaded unless the toggle is on AND the device is native
+    Android, so default builds (web, and native builds with the toggle off) stay Firebase-free at
+    runtime. Reconciled with `SECURITY.md` ZK boundary below.
+  - Plugin returns **no confidence** → `engineConfidence` stays `undefined` from this provider; parser-only
+    field confidence is used when this path is active (same `engineConfidence != null` guard already in
+    `CameraScanDialog.handleCapture`, so no special-casing was needed).
+  - **No new CSP `connect-src` origin required.** `detectText()` is a Capacitor native-bridge/binder call,
+    not a WebView-JS-initiated network request — CSP only governs JS-context network calls, so it's
+    inapplicable here. (Differs from the WebLLM/LiteRT model-download case, which *does* need a
+    `connect-src` exception because that fetch happens in JS.)
 
-**Exit:** overlay toggle works; default builds remain Firebase-free.
+**Exit:** overlay toggle works (4 component tests + 9 provider tests + 3 selection tests, all passing);
+default builds (web; native with toggle off) remain Firebase-free at runtime. **Not yet verified
+on-device** (needs an Android SDK/device — same blocker as the rest of Phase 6).
 
 ---
 
@@ -225,9 +242,11 @@ target**, not a transparent shim.
 
 ## Session Continuation Guide
 
-**Status as of 2026-06-28:** Phases 1–3, 5 complete and in-repo, verified. CSP injection script (the
-Phase 6 pre-requisite) is also done and in-repo. Phase 2 spike doc captures biometric decision. Phase 4
-(overlay) and the rest of Phase 6 (on-device build + distribution) remain — both require an Android SDK
+**Status as of 2026-06-28:** Phases 1–5 complete and in-repo, verified (Phase 4's bounding-box overlay
+toggle shipped this session — see Phase 4 above for the live-vs-reviewed-overlay scope correction). CSP
+injection script (the Phase 6 pre-requisite) is also done and in-repo. Phase 2 spike doc captures
+biometric decision. Only the on-device portions of Phase 6 (Gradle build + signing + sideload
+distribution, plus on-device verification of Phase 4/5/6) remain — these require an Android SDK
 machine, unavailable in this environment.
 
 ### To resume Phase 6 (on-device + distribution)

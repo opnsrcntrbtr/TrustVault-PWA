@@ -34,10 +34,27 @@ import {
   terminateWorker,
   isCameraSupported,
   getActiveOcrProvider,
+  loadOcrSettings,
   type CameraStream,
   type ParsedCredential,
   type OCRProgress,
+  type OcrBoundingBox,
 } from '@/core/ocr';
+
+/** Frozen-frame bounding-box preview shown when the overlay toggle is on
+ *  (Phase 4). The plugin behind this does single-shot detection, not live
+ *  streaming, so the "overlay" is a brief post-capture review rather than a
+ *  continuous video overlay — documented in docs/OCR_NATIVE_ANDROID_PLAN.md. */
+interface OverlayPreview {
+  imageUrl: string;
+  boxes: OcrBoundingBox[];
+  width: number;
+  height: number;
+  parsed: ParsedCredential;
+}
+
+/** How long the bounding-box review is shown before auto-continuing. */
+const OVERLAY_AUTO_CONTINUE_MS = 1800;
 
 export interface CameraScanDialogProps {
   open: boolean;
@@ -51,6 +68,7 @@ type ScanState =
   | 'streaming'
   | 'capturing'
   | 'processing'
+  | 'overlay'
   | 'error';
 
 export function CameraScanDialog({
@@ -65,6 +83,7 @@ export function CameraScanDialog({
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [qualityIssues, setQualityIssues] = useState<string[]>([]);
   const [ocrProgress, setOcrProgress] = useState<OCRProgress | null>(null);
+  const [overlayPreview, setOverlayPreview] = useState<OverlayPreview | null>(null);
 
   // Start camera when dialog opens
   useEffect(() => {
@@ -136,6 +155,10 @@ export function CameraScanDialog({
       setErrorMessage('');
       setQualityIssues([]);
       setOcrProgress(null);
+      setOverlayPreview((prev) => {
+        if (prev) URL.revokeObjectURL(prev.imageUrl);
+        return null;
+      });
 
       if (cameraStreamRef.current) {
         cameraStreamRef.current.stop();
@@ -166,16 +189,17 @@ export function CameraScanDialog({
     const video = videoRef.current;
 
     try {
-      // The active provider owns the frame lifecycle: it pulls the capture,
-      // recognizes it, and zeroizes the blob. On native (Android ML Kit) this
-      // is a different engine; here it's Tesseract. Downstream parsing is identical.
+      // Capture once so a single frame backs both recognition and (if the
+      // overlay toggle is on) the bounding-box review — the provider still
+      // owns zeroizing it once recognition completes.
+      const frame = await captureFrame(video);
       const provider = getActiveOcrProvider();
 
       setScanState('processing');
       setOcrProgress({ status: 'initializing', progress: 0 });
 
-      const { text, engineConfidence } = await provider.recognize(
-        async () => (await captureFrame(video)).blob,
+      const { text, engineConfidence, boundingBoxes } = await provider.recognize(
+        () => Promise.resolve(frame.blob),
         provider.streamsProgress ? setOcrProgress : undefined
       );
 
@@ -193,6 +217,20 @@ export function CameraScanDialog({
           (parsed.confidence.overall + engineConfidence) / 2;
       }
 
+      // Experimental overlay (Phase 4, off by default): briefly show the
+      // detected text blocks over the captured frame before continuing.
+      if (boundingBoxes?.length && loadOcrSettings().ocrShowBoundingBoxOverlay) {
+        setOverlayPreview({
+          imageUrl: URL.createObjectURL(frame.blob),
+          boxes: boundingBoxes,
+          width: frame.width,
+          height: frame.height,
+          parsed,
+        });
+        setScanState('overlay');
+        return;
+      }
+
       onResult(parsed);
       onClose();
     } catch (err) {
@@ -202,6 +240,24 @@ export function CameraScanDialog({
       );
     }
   }, [scanState, onResult, onClose]);
+
+  const finishOverlay = useCallback(() => {
+    setOverlayPreview((prev) => {
+      if (prev) {
+        URL.revokeObjectURL(prev.imageUrl);
+        onResult(prev.parsed);
+      }
+      return null;
+    });
+    onClose();
+  }, [onResult, onClose]);
+
+  // Auto-continue the bounding-box review after a brief pause.
+  useEffect(() => {
+    if (scanState !== 'overlay') return;
+    const timeout = setTimeout(finishOverlay, OVERLAY_AUTO_CONTINUE_MS);
+    return () => { clearTimeout(timeout); };
+  }, [scanState, finishOverlay]);
 
   const handleClose = useCallback(() => {
     // Ensure cleanup before closing
@@ -374,6 +430,48 @@ export function CameraScanDialog({
               <Typography variant="caption" sx={{ mt: 1, opacity: 0.7 }}>
                 Processing locally on your device
               </Typography>
+            </Box>
+          )}
+
+          {/* Experimental bounding-box overlay (Phase 4, off by default) —
+              single-shot detection review, not a live video overlay. */}
+          {scanState === 'overlay' && overlayPreview && (
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                bgcolor: 'black',
+              }}
+            >
+              <svg
+                viewBox={`0 0 ${String(overlayPreview.width)} ${String(overlayPreview.height)}`}
+                style={{ width: '100%', height: '100%', display: 'block' }}
+                role="img"
+                aria-label="Detected text regions"
+              >
+                <image
+                  href={overlayPreview.imageUrl}
+                  width={overlayPreview.width}
+                  height={overlayPreview.height}
+                />
+                {overlayPreview.boxes.map((box, i) => (
+                  <polygon
+                    key={`${box.text}-${String(i)}`}
+                    points={box.corners.map(([x, y]) => `${String(x)},${String(y)}`).join(' ')}
+                    fill="rgba(76, 175, 80, 0.15)"
+                    stroke="#4caf50"
+                    strokeWidth={Math.max(1, overlayPreview.width / 400)}
+                  />
+                ))}
+              </svg>
+              <Button
+                size="small"
+                variant="contained"
+                onClick={finishOverlay}
+                sx={{ position: 'absolute', bottom: 12, right: 12 }}
+              >
+                Continue
+              </Button>
             </Box>
           )}
         </Box>

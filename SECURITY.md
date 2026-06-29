@@ -447,16 +447,43 @@ deployed domain), so the PWA's header-based guarantees were re-audited rather th
   is unchanged.
 - **No new network egress / no new CSP origin.** ML Kit recognition is fully on-device using the
   **bundled** model (`16.0.1`) — no model download — so `connect-src` in `securityHeaders.ts` is unchanged.
-  (The optional bounding-box overlay plugin, which would add Firebase/`google-services.json`, stays gated
-  off by default — `docs/OCR_NATIVE_ANDROID_PLAN.md` Phase 4.)
 - **In-memory only.** The captured frame is handed to the recognizer as an in-memory base64 data URL
   (no `file://` temp / `FileProvider`) and zeroized after recognition — same zero-knowledge frame handling
   as the web path.
 - **On-device AI stays kill-switched** on this surface (`WEBLLM_ANDROID_ENABLED = false`), consistent with
   the web build; the OCR path shares no code with the AI providers.
-- **Residual (pre-distribution):** the strict CSP is HTTP-header-based and absent inside the WebView; a
-  Capacitor-only meta-CSP injection (derived from `buildContentSecurityPolicy()`, no shared-`index.html`
-  edit) is required at `cap sync` time and **gates distribution** (`OCR_PHASE5_SECURITY_AUDIT.md` §A).
+- **CSP injection (Phase 6 prerequisite, done 2026-06-28):** `scripts/inject-csp-for-capacitor.js` injects
+  a `<meta http-equiv="Content-Security-Policy">` tag derived from `buildContentSecurityPolicy()` into the
+  native `android/.../index.html` at `cap sync` time (Node 24 native TS type-stripping, no duplicated
+  policy string to drift). `frame-ancestors` is stripped (spec-ignored in `<meta>`). Idempotent; skips
+  gracefully if `android/` doesn't exist yet. **On-device enforcement still unverified** — requires a real
+  `android/` build.
+
+### Optional bounding-box overlay (Phase 4, done 2026-06-28)
+
+A second, off-by-default toggle (`ocrShowBoundingBoxOverlay` in `src/core/ocr/ocrSettings.ts`, surfaced
+via `OcrOverlaySettings.tsx` in Settings) swaps the native OCR provider to
+`NativeBoundingBoxOcrProvider` (`@capacitor-community/image-to-text`), which returns per-detection corner
+geometry instead of a confidence score:
+
+- **New dependency, but lazy and gated.** `@capacitor-community/image-to-text` wraps Firebase ML Vision +
+  `google-services.json` on Android — a new Google dependency/telemetry surface versus the default ML Kit
+  path. It is imported only inside `NativeBoundingBoxOcrProvider.recognize()` (dynamic `import()`) and
+  excluded from `vite.config.ts` `optimizeDeps`, so it is never loaded — on web, or on native Android with
+  the toggle left at its **off** default.
+- **No new CSP origin.** `detectText()` is a Capacitor native-bridge (binder) call, not a WebView
+  JS-initiated network request. CSP only governs JS-context network calls, so it's structurally
+  inapplicable here — unlike the WebLLM/LiteRT model downloads, which *do* need a `connect-src` exception
+  because those fetches happen in JS. This is a correction to this doc's prior framing, which speculated a
+  CSP exception would be needed.
+- **No confidence score.** `engineConfidence` is always `undefined` from this provider; field confidence
+  falls back to the parser's own heuristics, using the same `engineConfidence != null` guard already in
+  `CameraScanDialog.handleCapture` — no special-casing required.
+- **Single-shot, not live.** `detectText()` has no continuous-frame API. The "overlay" is a brief
+  (1.8s, auto-continuing, user-dismissable) **post-capture review** rendered over the frozen captured
+  frame, not a live video overlay — `docs/OCR_NATIVE_ANDROID_PLAN.md` Phase 4 has the full scope note.
+- **Same zero-knowledge frame handling.** The captured blob is still zeroized in a `finally` after
+  recognition, success or throw, matching every other OCR provider.
 
 ---
 

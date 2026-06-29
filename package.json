@@ -40,6 +40,7 @@
     "prepreview": "node scripts/copy-ocr-assets.js && node scripts/copy-litert-assets.js"
   },
   "dependencies": {
+    "@capacitor-community/image-to-text": "^8.0.0",
     "@capacitor/android": "^8.4.1",
     "@capacitor/core": "^8.4.1",
     "@emotion/react": "^11.13.5",

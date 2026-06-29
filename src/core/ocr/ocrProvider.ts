@@ -16,11 +16,22 @@ import {
 } from './tesseractService';
 import { clearImageData } from './cameraCapture';
 import { NativeMlKitOcrProvider } from './nativeMlKitOcrProvider';
+import { NativeBoundingBoxOcrProvider } from './nativeBoundingBoxOcrProvider';
+import { loadOcrSettings } from './ocrSettings';
+
+/** A single detected text block's corner geometry (Phase 4 — overlay only). */
+export interface OcrBoundingBox {
+  text: string;
+  /** [topLeft, topRight, bottomRight, bottomLeft], in captured-frame pixel space. */
+  corners: [number, number][];
+}
 
 export interface OcrRecognition {
   text: string;
   /** Engine self-confidence, normalized 0–1 (undefined if the engine has none). */
   engineConfidence?: number;
+  /** Per-block geometry for the optional bounding-box overlay (native only). */
+  boundingBoxes?: OcrBoundingBox[];
 }
 
 export interface OcrProvider {
@@ -74,9 +85,18 @@ export class TesseractOcrProvider implements OcrProvider {
  * Ordered provider registry. The native Android ML Kit provider is preferred
  * when available (native Android); Tesseract is the universal fallback for
  * every other surface (web, iOS Safari, un-wrapped Android).
+ *
+ * When the experimental bounding-box overlay setting is on (Phase 4, off by
+ * default), the bounding-box variant takes the native slot instead — it
+ * trades the confidence score for corner geometry the camera dialog can draw.
  */
-export function getOcrProviders(): OcrProvider[] {
-  return [new NativeMlKitOcrProvider(), new TesseractOcrProvider()];
+export function getOcrProviders(
+  preferOverlay: boolean = loadOcrSettings().ocrShowBoundingBoxOverlay
+): OcrProvider[] {
+  const nativeProvider = preferOverlay
+    ? new NativeBoundingBoxOcrProvider()
+    : new NativeMlKitOcrProvider();
+  return [nativeProvider, new TesseractOcrProvider()];
 }
 
 /**

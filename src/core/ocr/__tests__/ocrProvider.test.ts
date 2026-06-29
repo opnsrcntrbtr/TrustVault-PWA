@@ -25,13 +25,25 @@ vi.mock('@/core/ocr/tesseractService', () => ({
 }));
 vi.mock('@/core/ocr/cameraCapture', () => ({
   clearImageData: clearImageDataMock,
+  blobToDataUrl: vi.fn(() => Promise.resolve('data:image/png;base64,AAAA')),
+}));
+vi.mock('@/core/platform/runtime', () => ({
+  isNativeAndroidApp: vi.fn(() => true),
+  isNativeApp: vi.fn(() => true),
+}));
+vi.mock('@jcesarmobile/capacitor-ocr', () => ({ Ocr: { process: vi.fn() } }));
+vi.mock('@capacitor-community/image-to-text', () => ({
+  Ocr: { detectText: vi.fn() },
 }));
 
 import {
   TesseractOcrProvider,
   getActiveOcrProvider,
+  getOcrProviders,
   type OcrProvider,
 } from '@/core/ocr/ocrProvider';
+import { NativeMlKitOcrProvider } from '@/core/ocr/nativeMlKitOcrProvider';
+import { NativeBoundingBoxOcrProvider } from '@/core/ocr/nativeBoundingBoxOcrProvider';
 
 describe('TesseractOcrProvider', () => {
   beforeEach(() => {
@@ -117,5 +129,22 @@ describe('getActiveOcrProvider()', () => {
     const active = getActiveOcrProvider([none]);
 
     expect(active).toBeInstanceOf(TesseractOcrProvider);
+  });
+});
+
+describe('getOcrProviders()', () => {
+  it('puts the ML Kit (confidence) provider first by default (overlay off)', () => {
+    const [native] = getOcrProviders(false);
+    expect(native).toBeInstanceOf(NativeMlKitOcrProvider);
+  });
+
+  it('puts the bounding-box provider first when the overlay preference is on', () => {
+    const [native] = getOcrProviders(true);
+    expect(native).toBeInstanceOf(NativeBoundingBoxOcrProvider);
+  });
+
+  it('always keeps Tesseract as the universal fallback, regardless of overlay preference', () => {
+    const providers = getOcrProviders(true);
+    expect(providers[providers.length - 1]).toBeInstanceOf(TesseractOcrProvider);
   });
 });
