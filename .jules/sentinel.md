@@ -21,3 +21,11 @@
 **Learning:** `Math.random()` is not cryptographically secure and can generate predictable values. In security contexts (like generating identifiers that might be used to correlate or authorize messages in extensions between content scripts and background workers), predictable random values could potentially lead to spoofing attacks or other logic flaws where an attacker anticipates the IDs.
 
 **Prevention:** Always use cryptographically secure random number generators such as `crypto.randomUUID()` or `crypto.getRandomValues()` instead of `Math.random()`, especially in components dealing with request identifiers or security tokens.
+
+## 2026-06-25 - [Insecure Randomness] Math.random() usage in React hooks and tests
+
+**Vulnerability:** Weak randomness using `Math.random()` to generate unique IDs in `src/presentation/hooks/useAiChat.ts` (`newId` function) and in test helpers (`src/presentation/utils/__tests__/credentialSort.test.ts`).
+
+**Learning:** While testing components and simple chat hook IDs might not seem like highly sensitive context initially, using `Math.random()` for IDs can still lead to collisions or predictability. Furthermore, if these IDs eventually correlate to specific security contexts (like user sessions or message tracking), predictable random values could be a risk. In `useAiChat`, this pattern was identical to the insecure randomness previously found in `vault-bridge.js`.
+
+**Prevention:** To maintain consistency and defense-in-depth across the entire codebase (not just background scripts), `crypto.randomUUID()` must always be used over `Math.random()` to ensure cryptographically secure randomness and avoid potential spoofing or collision bugs.
