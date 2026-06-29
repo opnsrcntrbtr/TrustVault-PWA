@@ -24,7 +24,8 @@ export interface UseAiChat {
 }
 
 function newId(): string {
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+  const randomBytes = crypto.getRandomValues(new Uint32Array(1));
+  return `${Date.now().toString(36)}-${randomBytes[0].toString(36)}`;
 }
 
 export function useAiChat(opts: UseAiChatOptions): UseAiChat {
