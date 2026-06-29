@@ -15,7 +15,7 @@ import {
 
 function cred(overrides: Partial<Credential>): Credential {
   return {
-    id: Math.random().toString(36).slice(2),
+    id: crypto.randomUUID(),
     title: 'Title',
     username: 'user',
     password: 'pw',
@@ -25,7 +25,7 @@ function cred(overrides: Partial<Credential>): Credential {
     updatedAt: new Date(0),
     isFavorite: false,
     ...overrides,
-  } as Credential;
+  };
 }
 
 describe('sortCredentials', () => {
