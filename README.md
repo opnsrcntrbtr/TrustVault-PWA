@@ -1,6 +1,10 @@
 # TrustVault PWA
 
-Zero-knowledge credential vault engineered for high-assurance teams. Offline-first React 19 PWA with encrypted storage, biometric unlock, and local on-device AI assistance.
+Zero-knowledge credential vault engineered engineered with State of the Art WebAuthn PRF-backed vault key wrapping (HKDF-SHA256 → AES-256-GCM). Offline-first React 19 PWA with encrypted storage, biometric unlock, and local on-device AI assistance.
+
+A stored record dump alone can never reconstruct your vault key. The wrap key is derived from the authenticator's PRF (hmac-secret) output — produced by hardware only after user verification (biometric/PIN) and never persisted — or from a master password via memory-hard scrypt. 
+
+The production-proven TrustVault-PWA security engine; implements webauthn-prf-zktv npm package which is also the reference implementation for the accompanying research paper [WebAuthn PRF-Based Vault Key Wrapping and Zero-Knowledge PWA Storage Architecture]{https://doi.org/10.6084/m9.figshare.32915411}
 
 > **Status (June 2026):** Production-Ready. All 7 development phases complete. Security hardening A–E complete. On-device AI assistance integrated (Gemini Nano, WebLLM, LiteRT-LM). Ready for production deployment.
 
