@@ -366,8 +366,8 @@ describe('Security Validation Tests', () => {
      * not mocks.
      */
     it('a PRF-wrapped vault key CANNOT be decrypted with the master password alone', async () => {
-      const { deriveKeyFromPassword, decrypt } = await import('@/core/crypto/encryption');
-      const { wrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
+      const { deriveKeyFromPassword } = await import('@/core/crypto/encryption');
+      const { wrapSecret, unwrapSecret } = await import('webauthn-prf-zktv');
 
       const masterPassword = 'SecurePassword123!';
       const salt = crypto.getRandomValues(new Uint8Array(32)); // stored in IndexedDB
@@ -376,31 +376,30 @@ describe('Security Validation Tests', () => {
       // The PRF output exists ONLY inside the authenticator hardware.
       const prfOutput = crypto.getRandomValues(new Uint8Array(32));
       const vaultKeyRaw = crypto.getRandomValues(new Uint8Array(32));
-      const wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKeyRaw, prfOutput);
+      const record = await wrapSecret({ prfOutput, prfSalt, secret: vaultKeyRaw });
 
-      // Attacker model: full IndexedDB dump (salt, prfSalt, wrappedVaultKey)
+      // Attacker model: full IndexedDB dump (salt, prfSalt, wrapped record)
       // PLUS the master password. Without the authenticator's PRF output,
-      // the wrap must not open.
+      // the wrap must not open — even when the attacker's password-derived
+      // key is handed to the same AES-GCM record directly (wrapKey path).
       const passwordKey = await deriveKeyFromPassword(masterPassword, salt);
-      const wrapped = JSON.parse(wrappedVaultKey) as { ciphertext: string; iv: string };
-      await expect(decrypt(wrapped, passwordKey)).rejects.toThrow();
+      await expect(unwrapSecret({ record, wrapKey: passwordKey })).rejects.toThrow();
 
       // A password key derived with the PRF salt must not open it either.
       const prfSaltPasswordKey = await deriveKeyFromPassword(masterPassword, prfSalt);
-      await expect(decrypt(wrapped, prfSaltPasswordKey)).rejects.toThrow();
+      await expect(unwrapSecret({ record, wrapKey: prfSaltPasswordKey })).rejects.toThrow();
     });
 
     it('the correct PRF output unwraps the vault key — and the result is non-extractable (S7)', async () => {
-      const { wrapVaultKeyWithPRF, unwrapVaultKeyWithPRF } = await import(
-        '@/core/auth/biometricVaultKey'
-      );
+      const { wrapSecret, unwrapSecret } = await import('webauthn-prf-zktv');
 
       const prfOutput = crypto.getRandomValues(new Uint8Array(32));
       const prfCopy = new Uint8Array(prfOutput); // unwrap zeroizes transient material
+      const prfSalt = crypto.getRandomValues(new Uint8Array(32));
       const vaultKeyRaw = crypto.getRandomValues(new Uint8Array(32));
-      const wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKeyRaw, prfOutput);
+      const record = await wrapSecret({ prfOutput, prfSalt, secret: vaultKeyRaw });
 
-      const unwrapped = await unwrapVaultKeyWithPRF(wrappedVaultKey, prfCopy);
+      const unwrapped = await unwrapSecret({ record, prfOutput: prfCopy });
       expect(unwrapped).toBeInstanceOf(CryptoKey);
       expect(unwrapped.extractable).toBe(false);
       await expect(crypto.subtle.exportKey('raw', unwrapped)).rejects.toThrow();

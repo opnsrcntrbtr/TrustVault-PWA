@@ -38,19 +38,11 @@ import {
   isBiometricAvailable,
   detectPRFSupport,
   isPRFSupported,
-  registerBiometric,
-  verifyRegistrationResponse,
-  verifyAuthenticationResponse,
   getDeviceName,
 } from '@/core/auth/webauthn';
 import { detectPrfSupport, isPrfViableOnThisClient } from 'webauthn-prf-zktv/webauthn';
-import type { RegistrationResponseJSON, AuthenticationResponseJSON } from '@simplewebauthn/types';
-import { encodeUint8ArrayToBase64Url } from '@/core/utils/base64';
 
 describe('WebAuthn Core Functions', () => {
-  const toBase64Url = (value: string): string =>
-    encodeUint8ArrayToBase64Url(new TextEncoder().encode(value));
-
   beforeEach(() => {
     // Mock PublicKeyCredential
     type WindowWithPublicKey = typeof globalThis.window & {
@@ -222,192 +214,12 @@ describe('WebAuthn Core Functions', () => {
       expect(getDeviceName()).toBe('Biometric Device');
     });
   });
-
-  describe('verifyRegistrationResponse', () => {
-    const mockChallenge = 'test-challenge-123';
-
-    const createMockRegistrationResponse = (overrides?: Partial<RegistrationResponseJSON>): RegistrationResponseJSON => ({
-      id: 'credential-id-123',
-      rawId: 'credential-id-123',
-      response: {
-        clientDataJSON: toBase64Url(JSON.stringify({
-          type: 'webauthn.create',
-          challenge: mockChallenge,
-          origin: 'http://localhost:3000',
-        })),
-        attestationObject: 'mock-attestation',
-        publicKey: toBase64Url('mock-public-key'),
-        transports: ['internal'],
-        publicKeyAlgorithm: -7,
-        authenticatorData: 'mock-auth-data',
-      },
-      type: 'public-key',
-      clientExtensionResults: {},
-      authenticatorAttachment: 'platform',
-      ...overrides,
-    });
-
-    it('should return true for valid registration response', () => {
-      const response = createMockRegistrationResponse();
-      expect(verifyRegistrationResponse(response, mockChallenge)).toBe(true);
-    });
-
-    it('should return false when id is missing', () => {
-      const response = createMockRegistrationResponse({ id: '' });
-      expect(verifyRegistrationResponse(response, mockChallenge)).toBe(false);
-    });
-
-    it('should return false when clientDataJSON is missing', () => {
-      const response = createMockRegistrationResponse();
-      response.response.clientDataJSON = '';
-      expect(verifyRegistrationResponse(response, mockChallenge)).toBe(false);
-    });
-
-    it('should return false for wrong type', () => {
-      const response = createMockRegistrationResponse();
-      response.response.clientDataJSON = toBase64Url(JSON.stringify({
-        type: 'webauthn.get', // Wrong type
-        challenge: mockChallenge,
-        origin: 'http://localhost:3000',
-      }));
-      
-      expect(verifyRegistrationResponse(response, mockChallenge)).toBe(false);
-    });
-
-    it('should return false for origin mismatch', () => {
-      const response = createMockRegistrationResponse();
-      response.response.clientDataJSON = toBase64Url(JSON.stringify({
-        type: 'webauthn.create',
-        challenge: mockChallenge,
-        origin: 'http://evil.com', // Wrong origin
-      }));
-      
-      expect(verifyRegistrationResponse(response, mockChallenge)).toBe(false);
-    });
-  });
-
-  describe('verifyAuthenticationResponse', () => {
-    const mockChallenge = 'test-challenge-456';
-    const storedCounter = 5;
-
-    const createMockAuthenticationResponse = (counter: number = 6): AuthenticationResponseJSON => ({
-      id: 'credential-id-123',
-      rawId: 'credential-id-123',
-      response: {
-        clientDataJSON: toBase64Url(JSON.stringify({
-          type: 'webauthn.get',
-          challenge: mockChallenge,
-          origin: 'http://localhost:3000',
-        })),
-        authenticatorData: encodeUint8ArrayToBase64Url(new Uint8Array([
-          // 32 bytes RP ID hash + 1 byte flags + 4 bytes counter
-          ...Array<number>(33).fill(0),
-          (counter >> 24) & 0xff,
-          (counter >> 16) & 0xff,
-          (counter >> 8) & 0xff,
-          counter & 0xff,
-        ])),
-        signature: 'mock-signature',
-        userHandle: 'user-123',
-      },
-      type: 'public-key',
-      clientExtensionResults: {},
-      authenticatorAttachment: 'platform',
-    });
-
-    it('should return new counter for valid authentication', () => {
-      const response = createMockAuthenticationResponse(6);
-      const newCounter = verifyAuthenticationResponse(response, mockChallenge, storedCounter);
-      expect(newCounter).toBe(6);
-    });
-
-    it('should throw error for counter not increasing', () => {
-      const response = createMockAuthenticationResponse(4); // Lower than stored
-      
-      expect(() =>
-        verifyAuthenticationResponse(response, mockChallenge, storedCounter)
-      ).toThrow('Counter did not increase');
-    });
-
-    it('should allow counter of 0 (some authenticators use 0)', () => {
-      const response = createMockAuthenticationResponse(0);
-      const newCounter = verifyAuthenticationResponse(response, mockChallenge, storedCounter);
-      expect(newCounter).toBe(0);
-    });
-
-    it('should throw error when id is missing', () => {
-      const response = createMockAuthenticationResponse();
-      response.id = '';
-      
-      expect(() =>
-        verifyAuthenticationResponse(response, mockChallenge, storedCounter)
-      ).toThrow('Invalid authentication response');
-    });
-
-    it('should throw error for wrong type', () => {
-      const response = createMockAuthenticationResponse();
-      response.response.clientDataJSON = toBase64Url(JSON.stringify({
-        type: 'webauthn.create', // Wrong type
-        challenge: mockChallenge,
-        origin: 'http://localhost:3000',
-      }));
-      
-      expect(() =>
-        verifyAuthenticationResponse(response, mockChallenge, storedCounter)
-      ).toThrow('Invalid authentication type');
-    });
-
-    it('should throw error for origin mismatch', () => {
-      const response = createMockAuthenticationResponse();
-      response.response.clientDataJSON = toBase64Url(JSON.stringify({
-        type: 'webauthn.get',
-        challenge: mockChallenge,
-        origin: 'http://evil.com', // Wrong origin
-      }));
-      
-      expect(() =>
-        verifyAuthenticationResponse(response, mockChallenge, storedCounter)
-      ).toThrow('Origin mismatch');
-    });
-  });
 });
 
 describe('WebAuthn Integration', () => {
   beforeEach(() => {
     // Reset mocks
     vi.clearAllMocks();
-  });
-
-  describe('Error Handling', () => {
-    it('should handle missing WebAuthn support gracefully', async () => {
-      type WindowWithOptionalPublicKey = typeof globalThis.window & {
-        PublicKeyCredential?: unknown;
-      };
-      (globalThis.window as WindowWithOptionalPublicKey).PublicKeyCredential = undefined;
-
-      await expect(registerBiometric({
-        rpName: 'TrustVault',
-        rpId: 'localhost',
-        userId: 'user-123',
-        userName: 'test@example.com',
-        userDisplayName: 'Test User',
-      })).rejects.toThrow('WebAuthn is not supported');
-    });
-
-    it('should handle registration cancellation', () => {
-      // Mock startRegistration to simulate user cancellation
-      const mockStartRegistration = vi.fn().mockRejectedValue(
-        new Error('The operation was cancelled by the user')
-      );
-
-      vi.doMock('@simplewebauthn/browser', () => ({
-        startRegistration: mockStartRegistration,
-        startAuthentication: vi.fn(),
-      }));
-
-      // Test will naturally fail because user canceled
-      // In production, this would show a user-friendly message
-    });
   });
 
   describe('Security Checks', () => {
