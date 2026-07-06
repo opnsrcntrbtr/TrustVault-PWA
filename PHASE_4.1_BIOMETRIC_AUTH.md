@@ -4,6 +4,7 @@
 **Implementation Date**: October 25, 2025
 **Security Fix**: May 14, 2026 — WebAuthn challenge/counter verification wired into production path
 **Note**: Superseded by the PRF-v1 biometric scheme (S1, 2026-06-10) — see `SECURITY.md`. This summary is kept for historical context on the original WebAuthn integration.
+**Further update (2026-07-06)**: the PRF-v1 ceremonies and vault-key wrapping described below were reimplemented on top of the [`webauthn-prf-zktv`](https://www.npmjs.com/package/webauthn-prf-zktv) npm package (the same engine, extracted from this app); `src/core/auth/webauthn.ts` no longer contains the SimpleWebAuthn-based `registerBiometric`/`authenticateBiometric`/verify* functions this document describes. See `SECURITY.md` § Biometric Authentication for the current implementation and `docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md` for the migration design.
 
 ---
 

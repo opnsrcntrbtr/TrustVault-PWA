@@ -239,28 +239,63 @@ export class UserRepositoryImpl implements IUserRepository {
       ? 'localhost'
       : window.location.hostname;
 
-    const { getPRFOutput } = await import('@/core/auth/webauthn');
-    const { unwrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
+    const { evaluatePrf } = await import('webauthn-prf-zktv/webauthn');
+    const {
+      parseRecord, serializeRecord, unwrapSecret, fromTrustVaultRecord, zeroize,
+    } = await import('webauthn-prf-zktv');
+    const { mapZktvError } = await import('@/core/auth/zktvErrors');
 
-    const prfSaltBytes = decodeBase64ToUint8Array(credential.prfSalt);
-    const { prfOutput, counter: newCounter } = await getPRFOutput(
-      credentialId,
-      prfSaltBytes,
-      rpId,
-      credential.counter,
-    );
+    // Dual-format read: package v1 records parse; legacy TrustVault
+    // EncryptedData JSON does not — that failure IS the format detector.
+    let record: ReturnType<typeof parseRecord> | null = null;
+    try {
+      record = parseRecord(credential.wrappedVaultKey);
+    } catch {
+      record = null; // legacy format → migrate below
+    }
+
+    const prfSaltBytes = record ? record.salt : decodeBase64ToUint8Array(credential.prfSalt);
 
     let vaultKey: CryptoKey;
+    let newCounter: number;
+    let migratedWrappedVaultKey: string | null = null;
     try {
-      vaultKey = await unwrapVaultKeyWithPRF(credential.wrappedVaultKey, prfOutput);
-    } finally {
-      // S7: the PRF output is key material — zeroize once the unwrap is done.
-      prfOutput.fill(0);
+      const { prfOutput, counter } = await evaluatePrf({
+        credentialId,
+        salt: prfSaltBytes,
+        rpId,
+        storedCounter: credential.counter,
+      });
+      newCounter = counter;
+      try {
+        if (record) {
+          vaultKey = await unwrapSecret({ record, prfOutput });
+        } else {
+          // Lazy migration: same PRF output unlocks the legacy HKDF label; re-wrap
+          // into the v1 format so the next unlock takes the fast path.
+          const migrated = await fromTrustVaultRecord({
+            legacyJson: credential.wrappedVaultKey,
+            prfOutput,
+            prfSalt: prfSaltBytes,
+          });
+          vaultKey = await unwrapSecret({ record: migrated, prfOutput });
+          migratedWrappedVaultKey = serializeRecord(migrated);
+        }
+      } finally {
+        zeroize(prfOutput); // S7: PRF output is key material
+      }
+    } catch (error) {
+      throw mapZktvError(error);
     }
 
     const updatedCredentials = user.webAuthnCredentials.map(c =>
       c.id === credentialId
-        ? { ...c, counter: newCounter, lastUsedAt: new Date() }
+        ? {
+            ...c,
+            counter: newCounter,
+            lastUsedAt: new Date(),
+            ...(migratedWrappedVaultKey ? { wrappedVaultKey: migratedWrappedVaultKey } : {}),
+          }
         : c
     );
 
@@ -371,8 +406,7 @@ export class UserRepositoryImpl implements IUserRepository {
       throw new Error('Incorrect master password');
     }
 
-    const { isBiometricAvailable, isPRFSupported, registerCredentialWithPRF, getPRFOutput } =
-      await import('@/core/auth/webauthn');
+    const { isBiometricAvailable, isPRFSupported } = await import('@/core/auth/webauthn');
 
     const available = await isBiometricAvailable();
     if (!available) {
@@ -389,24 +423,22 @@ export class UserRepositoryImpl implements IUserRepository {
       ? 'localhost'
       : window.location.hostname;
 
-    const registration = await registerCredentialWithPRF({
-      rpName: 'TrustVault',
-      rpId,
-      userId: user.id,
-      userName: user.username ?? user.id,
-      userDisplayName: user.displayName ?? user.username ?? user.id,
-    });
+    const { enrollPrfCredential } = await import('webauthn-prf-zktv/webauthn');
+    const { wrapSecret, serializeRecord, zeroize } = await import('webauthn-prf-zktv');
+    const { mapZktvError } = await import('@/core/auth/zktvErrors');
 
-    if (!registration.prfEnabled) {
-      throw new Error('Your authenticator did not enable the PRF extension required for secure biometric unlock. Please use your master password.');
+    let enrollment: Awaited<ReturnType<typeof enrollPrfCredential>>;
+    try {
+      enrollment = await enrollPrfCredential({
+        rpId,
+        rpName: 'TrustVault',
+        userId: user.id,
+        userName: user.username ?? user.id,
+        userDisplayName: user.displayName ?? user.username ?? user.id,
+      });
+    } catch (error) {
+      throw mapZktvError(error);
     }
-
-    const { generatePrfSalt, wrapVaultKeyWithPRF } = await import('@/core/auth/biometricVaultKey');
-    const prfSalt = generatePrfSalt();
-    // Encode the salt for storage BEFORE the PRF ceremony — prfOutput buffers
-    // are zeroized below and must never alias into what gets persisted.
-    const prfSaltB64 = encodeUint8ArrayToBase64(prfSalt);
-    const { prfOutput } = await getPRFOutput(registration.credentialId, prfSalt, rpId);
 
     // Recover the raw vault key bytes from storage using the master password,
     // wrap them under the PRF-derived key, then zeroize all transient material.
@@ -423,22 +455,29 @@ export class UserRepositoryImpl implements IUserRepository {
 
     let wrappedVaultKey: string;
     try {
-      wrappedVaultKey = await wrapVaultKeyWithPRF(vaultKeyRaw, prfOutput);
+      const record = await wrapSecret({
+        prfOutput: enrollment.prfOutput,
+        prfSalt: enrollment.prfSalt,
+        secret: vaultKeyRaw,
+      });
+      wrappedVaultKey = serializeRecord(record);
+    } catch (error) {
+      throw mapZktvError(error);
     } finally {
       vaultKeyRaw.fill(0);
-      prfOutput.fill(0);
+      zeroize(enrollment.prfOutput);
     }
 
     const newCredential = {
-      id: registration.credentialId,
-      publicKey: registration.publicKey,
-      counter: 0,
-      transports: registration.transports,
+      id: enrollment.credentialId,
+      publicKey: enrollment.publicKey ? encodeUint8ArrayToBase64(enrollment.publicKey) : '',
+      counter: enrollment.counter,
+      transports: enrollment.transports as AuthenticatorTransport[],
       createdAt: new Date(),
       deviceName: deviceName ?? 'Biometric Device',
       vaultKeyScheme: 'prf-v1' as const,
       wrappedVaultKey,
-      prfSalt: prfSaltB64,
+      prfSalt: encodeUint8ArrayToBase64(enrollment.prfSalt),
     };
 
     const updatedCredentials = [...user.webAuthnCredentials, newCredential];
