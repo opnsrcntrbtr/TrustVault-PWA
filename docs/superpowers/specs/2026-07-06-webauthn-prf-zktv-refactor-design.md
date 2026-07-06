@@ -104,9 +104,11 @@ a schema bump.
    legacyJson, prfOutput, prfSalt })` re-wraps; `unwrapSecret` unlocks; persist
    `serializeRecord(record)` over the legacy value. Next unlock takes path 1.
 3. Counter updates keep writing to the existing Dexie credential row.
-4. Advisory: decode `readAuthenticatorFlags` BE/BS bits and store/log them so the
-   soft counter check on synced passkeys (counter 0) is an explicit, documented
-   policy rather than an accident.
+4. Advisory (deferred): decoding `readAuthenticatorFlags` BE/BS bits would make
+   the soft counter check on synced passkeys (counter 0) an explicit policy, but
+   the package's high-level `evaluatePrf`/`unlockVault` seam does not expose raw
+   `authenticatorData`. Deferred pending an upstream package change; do not
+   bypass the ceremony composition to obtain it.
 
 The legacy adapter path (step 2) is removable after a deprecation window once
 telemetry/releases indicate all active users have migrated.
