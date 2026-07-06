@@ -6,6 +6,34 @@
 
 ---
 
+## webauthn-prf-zktv Refactor — July 6, 2026
+
+Replaced inline PRF ceremonies and vault-key wrapping (`src/core/auth/biometricVaultKey.ts`,
+plus the SimpleWebAuthn-based half of `src/core/auth/webauthn.ts`) with the
+[`webauthn-prf-zktv`](https://www.npmjs.com/package/webauthn-prf-zktv) npm package,
+per `docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md`. Automated
+suite: 394 tests across `src/core/auth`, `src/data/repositories`,
+`src/test/integration.test.ts` passing (full project: 1403/1403); `npm run
+type-check` 0 errors; `npm run lint` 0 new issues on touched files (baseline
+pre-existing debt unchanged or reduced).
+
+**Manual verification still required before merge to main** (documented here per
+the plan's post-plan checklist; not yet executed in this environment):
+
+- [ ] Fresh biometric enrollment on `localhost` with a PRF-capable
+      authenticator — expect a **single** biometric prompt on Chrome 147+
+      (`usedSingleCeremony: true`), two prompts elsewhere.
+- [ ] Lock → biometric unlock → vault opens; DevTools → IndexedDB → confirm
+      `wrappedVaultKey` is a `{"v":1,...}` envelope, not raw `EncryptedData` JSON.
+- [ ] Biometric unlock for a pre-refactor enrolled user (legacy record) succeeds
+      on the first try and the stored `wrappedVaultKey` flips to the v1 envelope;
+      a second unlock succeeds without re-triggering the migration path.
+- [ ] Cancelling the biometric prompt shows "cancelled or timed out" and master
+      password unlock still works.
+- [ ] `npm run build` succeeds; `npm run lighthouse` still scores >90.
+
+---
+
 ## Tier 1/2 Test Coverage Additions — June 25, 2026
 
 Implemented per `docs/superpowers/plans/2026-06-25-test-coverage-improvement.md`

@@ -76,14 +76,22 @@ This section describes the concrete cryptographic instantiation of the **[Zero-K
 4. Counter-based replay attack prevention
 5. **Demonstrable zero-knowledge vault unlock via the WebAuthn PRF extension**
 
-**How the vault key is protected (`vaultKeyScheme: 'prf-v1'`):**
-- On enroll, the credential is created with the PRF extension, then a second
-  assertion evaluates the PRF at a random per-credential salt to obtain a 32‑byte
-  secret that lives only in the authenticator hardware.
-- That secret is run through **HKDF‑SHA256** (`info: "TrustVault Vault Key Wrapping v1"`)
-  to derive a non‑extractable AES‑256‑GCM **wrap key**, which encrypts the vault key.
-- Storage holds only `{ wrappedVaultKey, prfSalt, vaultKeyScheme }`. The PRF output
-  and the wrap key are **never persisted**.
+**How the vault key is protected (`vaultKeyScheme: 'prf-v1'`):** the ceremonies
+and wrapping are implemented by [`webauthn-prf-zktv`](https://www.npmjs.com/package/webauthn-prf-zktv)
+(`webauthn-prf-zktv/webauthn` + core), the same security engine extracted from
+this app and published as the reference implementation for the accompanying
+research paper — not reimplemented inline.
+- On enroll, `enrollPrfCredential()` adaptively evaluates the PRF: authenticators
+  that support it at creation time (Chrome 147+/Windows Hello v8) finish in a
+  single ceremony; others fall back to a second assertion. Either way the result
+  is a 32‑byte secret that lives only in the authenticator hardware.
+- That secret is run through **HKDF‑SHA256** (`info: "webauthn-prf-zktv vault key
+  wrap v1"`) to derive a non‑extractable AES‑256‑GCM **wrap key**, which
+  encrypts the vault key via `wrapSecret()` into a versioned record
+  (`serializeRecord()`).
+- Storage holds only `{ wrappedVaultKey, prfSalt, vaultKeyScheme }` — `wrappedVaultKey`
+  is now the package's serialized v1 record rather than raw `EncryptedData` JSON.
+  The PRF output and the wrap key are **never persisted**.
 
 **Why this is zero-knowledge (threat model):** the wrap key can only be reproduced
 by the physical authenticator after a biometric user‑verification gesture. Neither
@@ -96,6 +104,12 @@ that let stored data alone unlock the vault.
 - Legacy device‑key credentials are removed by the DB **v6** migration and on the
   next password login; affected users re‑enroll biometric once (master password
   unlock is unaffected and remains the recovery path).
+- Legacy `prf-v1` credentials from before the `webauthn-prf-zktv` refactor (raw
+  `EncryptedData` JSON under the old HKDF label) are migrated **lazily on next
+  unlock**: `UserRepositoryImpl.authenticateWithBiometric` detects the format by
+  whether `parseRecord()` succeeds, and on a legacy record calls the package's
+  `fromTrustVaultRecord()` to re-wrap the *same* vault key under the new label
+  using the *same* PRF ceremony — no extra prompt, no data loss.
 - PRF support is detected as a tri-state (`detectPRFSupport()`):
   - **Known unsupported** (no WebAuthn, or client capabilities report no PRF):
     biometric is **not offered** — the UI disables enrollment and hides the
