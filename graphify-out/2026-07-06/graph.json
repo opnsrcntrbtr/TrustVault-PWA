@@ -276,106 +276,6 @@
   },
   "nodes": [
     {
-      "label": "2026-07-06-webauthn-prf-zktv-refactor.md",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor",
-      "community": 316,
-      "norm_label": "2026-07-06-webauthn-prf-zktv-refactor.md"
-    },
-    {
-      "label": "webauthn-prf-zktv Refactor Implementation Plan",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "community": 316,
-      "norm_label": "webauthn-prf-zktv refactor implementation plan"
-    },
-    {
-      "label": "Global Constraints",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L15",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "community": 316,
-      "norm_label": "global constraints"
-    },
-    {
-      "label": "Task 1: Install the package + import smoke test",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L27",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_1_install_the_package_import_smoke_test",
-      "community": 316,
-      "norm_label": "task 1: install the package + import smoke test"
-    },
-    {
-      "label": "Task 2: Delegate PRF detection in `webauthn.ts` to the package",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L88",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_2_delegate_prf_detection_in_webauthn_ts_to_the_package",
-      "community": 316,
-      "norm_label": "task 2: delegate prf detection in `webauthn.ts` to the package"
-    },
-    {
-      "label": "Task 3: `mapZktvError` \u2014 package errors \u2192 existing user-facing copy",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L223",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_3_mapzktverror_package_errors_existing_user_facing_copy",
-      "community": 316,
-      "norm_label": "task 3: `mapzktverror` \u2014 package errors \u2192 existing user-facing copy"
-    },
-    {
-      "label": "Task 4: Enrollment path \u2014 `registerBiometric` via `enrollPrfCredential` + `wrapSecret`",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L356",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_4_enrollment_path_registerbiometric_via_enrollprfcredential_wrapsecret",
-      "community": 316,
-      "norm_label": "task 4: enrollment path \u2014 `registerbiometric` via `enrollprfcredential` + `wrapsecret`"
-    },
-    {
-      "label": "Task 5: Unlock path + lazy legacy migration \u2014 `authenticateWithBiometric`",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L527",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_5_unlock_path_lazy_legacy_migration_authenticatewithbiometric",
-      "community": 316,
-      "norm_label": "task 5: unlock path + lazy legacy migration \u2014 `authenticatewithbiometric`"
-    },
-    {
-      "label": "Task 6: Cleanup \u2014 delete dead inline code, drop SimpleWebAuthn, refresh docs",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L721",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_6_cleanup_delete_dead_inline_code_drop_simplewebauthn_refresh_docs",
-      "community": 316,
-      "norm_label": "task 6: cleanup \u2014 delete dead inline code, drop simplewebauthn, refresh docs"
-    },
-    {
-      "label": "Post-plan verification (manual, before merge to main)",
-      "file_type": "document",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L779",
-      "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_post_plan_verification_manual_before_merge_to_main",
-      "community": 316,
-      "norm_label": "post-plan verification (manual, before merge to main)"
-    },
-    {
       "label": "2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "file_type": "document",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
@@ -469,7 +369,7 @@
       "label": "4. UI layer",
       "file_type": "document",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L116",
+      "source_location": "L114",
       "_origin": "ast",
       "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_4_ui_layer",
       "community": 14,
@@ -479,7 +379,7 @@
       "label": "5. Error handling",
       "file_type": "document",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L122",
+      "source_location": "L120",
       "_origin": "ast",
       "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_5_error_handling",
       "community": 14,
@@ -489,7 +389,7 @@
       "label": "6. Testing",
       "file_type": "document",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L131",
+      "source_location": "L129",
       "_origin": "ast",
       "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_6_testing",
       "community": 14,
@@ -499,7 +399,7 @@
       "label": "7. Out of scope",
       "file_type": "document",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L146",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_7_out_of_scope",
       "community": 14,
@@ -509,7 +409,7 @@
       "label": "Phasing (4 PRs)",
       "file_type": "document",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L153",
+      "source_location": "L151",
       "_origin": "ast",
       "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_phasing_4_prs",
       "community": 14,
@@ -2521,7 +2421,7 @@
       "source_file": "src/core/ocr/__tests__/ocrSettings.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "ocrsettings.test.ts",
       "id": "tests_ocrsettings_test"
     },
@@ -2531,7 +2431,7 @@
       "source_file": "src/core/ocr/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "index.ts",
       "id": "ocr_index"
     },
@@ -2591,7 +2491,7 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "ocrboundingbox",
       "id": "ocr_ocrprovider_ocrboundingbox"
     },
@@ -2631,7 +2531,7 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": ".isavailable()",
       "id": "ocr_ocrprovider_tesseractocrprovider_isavailable"
     },
@@ -2661,7 +2561,7 @@
       "source_file": "src/core/ocr/ocrProvider.ts",
       "source_location": "L106",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "getactiveocrprovider()",
       "id": "ocr_ocrprovider_getactiveocrprovider"
     },
@@ -2671,7 +2571,7 @@
       "source_file": "src/core/ocr/ocrSettings.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "ocrsettings.ts",
       "id": "ocr_ocrsettings"
     },
@@ -2681,7 +2581,7 @@
       "source_file": "src/core/ocr/ocrSettings.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "ocrsettings",
       "id": "ocr_ocrsettings_ocrsettings"
     },
@@ -2691,7 +2591,7 @@
       "source_file": "src/core/ocr/ocrSettings.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "default_ocr_settings",
       "id": "ocr_ocrsettings_default_ocr_settings"
     },
@@ -2701,7 +2601,7 @@
       "source_file": "src/core/ocr/ocrSettings.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "loadocrsettings()",
       "id": "ocr_ocrsettings_loadocrsettings"
     },
@@ -2711,7 +2611,7 @@
       "source_file": "src/core/ocr/ocrSettings.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "saveocrsettings()",
       "id": "ocr_ocrsettings_saveocrsettings"
     },
@@ -2721,7 +2621,7 @@
       "source_file": "src/presentation/components/CameraScanDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "camerascandialog.tsx",
       "id": "components_camerascandialog"
     },
@@ -2731,7 +2631,7 @@
       "source_file": "src/presentation/components/CameraScanDialog.tsx",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "overlaypreview",
       "id": "components_camerascandialog_overlaypreview"
     },
@@ -2751,7 +2651,7 @@
       "source_file": "src/presentation/components/CameraScanDialog.tsx",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "scanstate",
       "id": "components_camerascandialog_scanstate"
     },
@@ -2771,7 +2671,7 @@
       "source_file": "src/presentation/components/OcrOverlaySettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "ocroverlaysettings.tsx",
       "id": "components_ocroverlaysettings"
     },
@@ -2781,7 +2681,7 @@
       "source_file": "src/presentation/components/OcrOverlaySettings.tsx",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "ocroverlaysettings()",
       "id": "components_ocroverlaysettings_ocroverlaysettings"
     },
@@ -2791,7 +2691,7 @@
       "source_file": "src/presentation/components/__tests__/OcrOverlaySettings.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "ocroverlaysettings.test.tsx",
       "id": "tests_ocroverlaysettings_test"
     },
@@ -2801,7 +2701,7 @@
       "source_file": "src/presentation/components/__tests__/OcrOverlaySettings.test.tsx",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "{ isnativeandroidappmock, saveocrsettingsmock }",
       "id": "tests_ocroverlaysettings_test_isnativeandroidappmock_saveocrsettingsmock"
     },
@@ -2811,7 +2711,7 @@
       "source_file": "src/presentation/components/__tests__/OcrOverlaySettings.test.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 278,
+      "community": 12,
       "norm_label": "current",
       "id": "tests_ocroverlaysettings_test_current"
     },
@@ -2821,7 +2721,7 @@
       "source_file": "src/presentation/pages/SettingsPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 331,
       "norm_label": "settingspage.tsx",
       "id": "pages_settingspage"
     },
@@ -3421,7 +3321,7 @@
       "source_file": "src/core/ocr/__tests__/cameraCapture.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "cameracapture.test.ts",
       "id": "tests_cameracapture_test"
     },
@@ -3431,7 +3331,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "cameracapture.ts",
       "id": "ocr_cameracapture"
     },
@@ -3441,7 +3341,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "captureresult",
       "id": "ocr_cameracapture_captureresult"
     },
@@ -3451,7 +3351,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "camerastream",
       "id": "ocr_cameracapture_camerastream"
     },
@@ -3461,7 +3361,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "iscamerasupported()",
       "id": "ocr_cameracapture_iscamerasupported"
     },
@@ -3471,7 +3371,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "requestcameraaccess()",
       "id": "ocr_cameracapture_requestcameraaccess"
     },
@@ -3481,7 +3381,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L75",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "enhanceforocr()",
       "id": "ocr_cameracapture_enhanceforocr"
     },
@@ -3491,7 +3391,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L111",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "captureframe()",
       "id": "ocr_cameracapture_captureframe"
     },
@@ -3511,7 +3411,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L185",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "clearimagedata()",
       "id": "ocr_cameracapture_clearimagedata"
     },
@@ -3521,7 +3421,7 @@
       "source_file": "src/core/ocr/cameraCapture.ts",
       "source_location": "L200",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "assessimagequality()",
       "id": "ocr_cameracapture_assessimagequality"
     },
@@ -3661,7 +3561,7 @@
       "source_file": "src/core/ocr/__tests__/credentialParser.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "credentialparser.test.ts",
       "id": "tests_credentialparser_test"
     },
@@ -3671,7 +3571,7 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "tesseractservice.test.ts",
       "id": "tests_tesseractservice_test"
     },
@@ -3681,7 +3581,7 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "recognizemock",
       "id": "tests_tesseractservice_test_recognizemock"
     },
@@ -3691,7 +3591,7 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "setparametersmock",
       "id": "tests_tesseractservice_test_setparametersmock"
     },
@@ -3701,7 +3601,7 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "terminatemock",
       "id": "tests_tesseractservice_test_terminatemock"
     },
@@ -3711,7 +3611,7 @@
       "source_file": "src/core/ocr/__tests__/tesseractService.test.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "createworkermock",
       "id": "tests_tesseractservice_test_createworkermock"
     },
@@ -3721,7 +3621,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "credentialparser.ts",
       "id": "ocr_credentialparser"
     },
@@ -3741,7 +3641,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "patterns",
       "id": "ocr_credentialparser_patterns"
     },
@@ -3751,7 +3651,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "known_tlds",
       "id": "ocr_credentialparser_known_tlds"
     },
@@ -3761,7 +3661,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L60",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "normalizeocremail()",
       "id": "ocr_credentialparser_normalizeocremail"
     },
@@ -3771,7 +3671,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L96",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "extractlabeledvalue()",
       "id": "ocr_credentialparser_extractlabeledvalue"
     },
@@ -3781,7 +3681,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L160",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "findstandalonepatterns()",
       "id": "ocr_credentialparser_findstandalonepatterns"
     },
@@ -3791,7 +3691,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L195",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "lookslikepassword()",
       "id": "ocr_credentialparser_lookslikepassword"
     },
@@ -3801,7 +3701,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L212",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "parsecredentialtext()",
       "id": "ocr_credentialparser_parsecredentialtext"
     },
@@ -3811,7 +3711,7 @@
       "source_file": "src/core/ocr/credentialParser.ts",
       "source_location": "L296",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "sanitizevalue()",
       "id": "ocr_credentialparser_sanitizevalue"
     },
@@ -3821,7 +3721,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "tesseractservice.ts",
       "id": "ocr_tesseractservice"
     },
@@ -3851,7 +3751,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "mode_to_psm",
       "id": "ocr_tesseractservice_mode_to_psm"
     },
@@ -3861,7 +3761,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "getworker()",
       "id": "ocr_tesseractservice_getworker"
     },
@@ -3871,7 +3771,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L94",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "recognizetext()",
       "id": "ocr_tesseractservice_recognizetext"
     },
@@ -3881,7 +3781,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L118",
       "_origin": "ast",
-      "community": 206,
+      "community": 12,
       "norm_label": "terminateworker()",
       "id": "ocr_tesseractservice_terminateworker"
     },
@@ -3891,7 +3791,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L129",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "isocrsupported()",
       "id": "ocr_tesseractservice_isocrsupported"
     },
@@ -3901,7 +3801,7 @@
       "source_file": "src/core/ocr/tesseractService.ts",
       "source_location": "L144",
       "_origin": "ast",
-      "community": 267,
+      "community": 12,
       "norm_label": "prefetchtesseractassets()",
       "id": "ocr_tesseractservice_prefetchtesseractassets"
     },
@@ -5283,7 +5183,7 @@
       "source_file": "src/__tests__/integration/auth-flow.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 163,
+      "community": 3,
       "norm_label": "auth-flow.test.tsx",
       "id": "integration_auth_flow_test"
     },
@@ -5363,7 +5263,7 @@
       "source_file": "src/__tests__/integration/ocr-capture.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 313,
+      "community": 12,
       "norm_label": "ocr-capture.test.ts",
       "id": "integration_ocr_capture_test"
     },
@@ -7963,7 +7863,7 @@
       "source_file": "src/core/autofill/__tests__/autofillGating.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "autofillgating.test.ts",
       "id": "tests_autofillgating_test"
     },
@@ -7973,7 +7873,7 @@
       "source_file": "src/core/autofill/__tests__/autofillSettings.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "autofillsettings.test.ts",
       "id": "tests_autofillsettings_test"
     },
@@ -7983,7 +7883,7 @@
       "source_file": "src/core/autofill/__tests__/autofillSettings.test.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "enabledsettings()",
       "id": "tests_autofillsettings_test_enabledsettings"
     },
@@ -8013,7 +7913,7 @@
       "source_file": "src/core/autofill/__tests__/extensionBridge.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "extensionbridge.test.ts",
       "id": "tests_extensionbridge_test"
     },
@@ -8023,7 +7923,7 @@
       "source_file": "src/core/autofill/__tests__/extensionBridge.test.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "mockfindall",
       "id": "tests_extensionbridge_test_mockfindall"
     },
@@ -8033,7 +7933,7 @@
       "source_file": "src/core/autofill/__tests__/extensionBridge.test.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "mockisenabled",
       "id": "tests_extensionbridge_test_mockisenabled"
     },
@@ -8043,7 +7943,7 @@
       "source_file": "src/core/autofill/__tests__/extensionBridge.test.ts",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "cred()",
       "id": "tests_extensionbridge_test_cred"
     },
@@ -8053,7 +7953,7 @@
       "source_file": "src/core/autofill/__tests__/extensionBridge.test.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "unlockvault()",
       "id": "tests_extensionbridge_test_unlockvault"
     },
@@ -8063,7 +7963,7 @@
       "source_file": "src/core/autofill/__tests__/extensionBridge.test.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "lockvault()",
       "id": "tests_extensionbridge_test_lockvault"
     },
@@ -8073,7 +7973,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "autofillsettings.ts",
       "id": "autofill_autofillsettings"
     },
@@ -8083,7 +7983,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "autofillsettings",
       "id": "autofill_autofillsettings_autofillsettings"
     },
@@ -8093,7 +7993,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "default_autofill_settings",
       "id": "autofill_autofillsettings_default_autofill_settings"
     },
@@ -8103,7 +8003,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "loadautofillsettings()",
       "id": "autofill_autofillsettings_loadautofillsettings"
     },
@@ -8113,7 +8013,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "saveautofillsettings()",
       "id": "autofill_autofillsettings_saveautofillsettings"
     },
@@ -8123,7 +8023,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L60",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "isautofillenabledfororigin()",
       "id": "autofill_autofillsettings_isautofillenabledfororigin"
     },
@@ -8133,7 +8033,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L83",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "excludeorigin()",
       "id": "autofill_autofillsettings_excludeorigin"
     },
@@ -8143,7 +8043,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "includeorigin()",
       "id": "autofill_autofillsettings_includeorigin"
     },
@@ -8153,7 +8053,7 @@
       "source_file": "src/core/autofill/autofillSettings.ts",
       "source_location": "L104",
       "_origin": "ast",
-      "community": 51,
+      "community": 267,
       "norm_label": "toggleautofill()",
       "id": "autofill_autofillsettings_toggleautofill"
     },
@@ -8263,7 +8163,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L171",
       "_origin": "ast",
-      "community": 143,
+      "community": 51,
       "norm_label": "storecredentialinbrowser()",
       "id": "autofill_credentialmanagementservice_storecredentialinbrowser"
     },
@@ -8303,7 +8203,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L292",
       "_origin": "ast",
-      "community": 143,
+      "community": 51,
       "norm_label": "tobrowsercredential()",
       "id": "autofill_credentialmanagementservice_tobrowsercredential"
     },
@@ -8313,7 +8213,7 @@
       "source_file": "src/core/autofill/credentialManagementService.ts",
       "source_location": "L317",
       "_origin": "ast",
-      "community": 143,
+      "community": 51,
       "norm_label": "batchstorecredentials()",
       "id": "autofill_credentialmanagementservice_batchstorecredentials"
     },
@@ -8323,7 +8223,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "extensionbridge.ts",
       "id": "autofill_extensionbridge"
     },
@@ -8333,7 +8233,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "bridgecredential",
       "id": "autofill_extensionbridge_bridgecredential"
     },
@@ -8343,7 +8243,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "respond()",
       "id": "autofill_extensionbridge_respond"
     },
@@ -8353,7 +8253,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "resolvecredentialsfororigin()",
       "id": "autofill_extensionbridge_resolvecredentialsfororigin"
     },
@@ -8363,7 +8263,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "handlerequest()",
       "id": "autofill_extensionbridge_handlerequest"
     },
@@ -8373,7 +8273,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L96",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "initextensionbridge()",
       "id": "autofill_extensionbridge_initextensionbridge"
     },
@@ -8383,7 +8283,7 @@
       "source_file": "src/core/autofill/extensionBridge.ts",
       "source_location": "L105",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "_resetbridgefortesting()",
       "id": "autofill_extensionbridge_resetbridgefortesting"
     },
@@ -10053,7 +9953,7 @@
       "source_file": "src/data/repositories/__tests__/profileLockUnlock.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 163,
       "norm_label": "profilelockunlock.test.ts",
       "id": "tests_profilelockunlock_test"
     },
@@ -10613,7 +10513,7 @@
       "source_file": "src/domain/entities/User.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 286,
+      "community": 234,
       "norm_label": "user.ts",
       "id": "entities_user"
     },
@@ -10753,7 +10653,7 @@
       "source_file": "src/domain/repositories/IUserRepository.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 3,
+      "community": 234,
       "norm_label": "iuserrepository",
       "id": "repositories_iuserrepository_iuserrepository"
     },
@@ -10763,7 +10663,7 @@
       "source_file": "src/features/vault/generator/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "index.ts",
       "id": "generator_index"
     },
@@ -10773,7 +10673,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "passphrasegenerator.ts",
       "id": "generator_passphrasegenerator"
     },
@@ -10783,7 +10683,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "diceware_words",
       "id": "generator_passphrasegenerator_diceware_words"
     },
@@ -10793,7 +10693,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "getrandomindex()",
       "id": "generator_passphrasegenerator_getrandomindex"
     },
@@ -10803,7 +10703,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L82",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "getrandomword()",
       "id": "generator_passphrasegenerator_getrandomword"
     },
@@ -10813,7 +10713,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L90",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "capitalizeword()",
       "id": "generator_passphrasegenerator_capitalizeword"
     },
@@ -10823,7 +10723,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "insertrandomdigits()",
       "id": "generator_passphrasegenerator_insertrandomdigits"
     },
@@ -10833,7 +10733,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L106",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "getrandomseparator()",
       "id": "generator_passphrasegenerator_getrandomseparator"
     },
@@ -10853,7 +10753,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L128",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "generatepassphrase()",
       "id": "generator_passphrasegenerator_generatepassphrase"
     },
@@ -10873,7 +10773,7 @@
       "source_file": "src/features/vault/generator/passphraseGenerator.ts",
       "source_location": "L224",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "generatememorablepassphrase()",
       "id": "generator_passphrasegenerator_generatememorablepassphrase"
     },
@@ -10883,7 +10783,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "passwordgenerator.ts",
       "id": "generator_passwordgenerator"
     },
@@ -10903,7 +10803,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 212,
+      "community": 278,
       "norm_label": "generatedpassword",
       "id": "generator_passwordgenerator_generatedpassword"
     },
@@ -10913,7 +10813,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "getrandombytes()",
       "id": "generator_passwordgenerator_getrandombytes"
     },
@@ -10923,7 +10823,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "getrandomint()",
       "id": "generator_passwordgenerator_getrandomint"
     },
@@ -10933,7 +10833,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L63",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "buildcharset()",
       "id": "generator_passwordgenerator_buildcharset"
     },
@@ -10943,7 +10843,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "calculateentropy()",
       "id": "generator_passwordgenerator_calculateentropy"
     },
@@ -10953,7 +10853,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L109",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "determinestrength()",
       "id": "generator_passwordgenerator_determinestrength"
     },
@@ -10963,7 +10863,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L124",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "validateoptions()",
       "id": "generator_passwordgenerator_validateoptions"
     },
@@ -10973,7 +10873,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "ensurecharacterdiversity()",
       "id": "generator_passwordgenerator_ensurecharacterdiversity"
     },
@@ -10983,7 +10883,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L165",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "generatepassword()",
       "id": "generator_passwordgenerator_generatepassword"
     },
@@ -10993,7 +10893,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L206",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "generatepasswords()",
       "id": "generator_passwordgenerator_generatepasswords"
     },
@@ -11003,7 +10903,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L224",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "getdefaultoptions()",
       "id": "generator_passwordgenerator_getdefaultoptions"
     },
@@ -11013,7 +10913,7 @@
       "source_file": "src/features/vault/generator/passwordGenerator.ts",
       "source_location": "L239",
       "_origin": "ast",
-      "community": 212,
+      "community": 192,
       "norm_label": "generatepronounceablepassword()",
       "id": "generator_passwordgenerator_generatepronounceablepassword"
     },
@@ -11023,7 +10923,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "strengthanalyzer.ts",
       "id": "generator_strengthanalyzer"
     },
@@ -11033,7 +10933,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "passwordstrengthresult",
       "id": "generator_strengthanalyzer_passwordstrengthresult"
     },
@@ -11043,7 +10943,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "common_patterns",
       "id": "generator_strengthanalyzer_common_patterns"
     },
@@ -11053,7 +10953,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "detectcommonpatterns()",
       "id": "generator_strengthanalyzer_detectcommonpatterns"
     },
@@ -11063,7 +10963,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "calculateactualentropy()",
       "id": "generator_strengthanalyzer_calculateactualentropy"
     },
@@ -11073,7 +10973,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L102",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "formatcracktime()",
       "id": "generator_strengthanalyzer_formatcracktime"
     },
@@ -11083,7 +10983,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L131",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "convertzxcvbnscore()",
       "id": "generator_strengthanalyzer_convertzxcvbnscore"
     },
@@ -11093,7 +10993,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L146",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "determinestrength()",
       "id": "generator_strengthanalyzer_determinestrength"
     },
@@ -11103,7 +11003,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L161",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "analyzepasswordstrength()",
       "id": "generator_strengthanalyzer_analyzepasswordstrength"
     },
@@ -11113,7 +11013,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L246",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "quickstrengthcheck()",
       "id": "generator_strengthanalyzer_quickstrengthcheck"
     },
@@ -11123,7 +11023,7 @@
       "source_file": "src/features/vault/generator/strengthAnalyzer.ts",
       "source_location": "L286",
       "_origin": "ast",
-      "community": 212,
+      "community": 264,
       "norm_label": "meetsminimumrequirements()",
       "id": "generator_strengthanalyzer_meetsminimumrequirements"
     },
@@ -11213,7 +11113,7 @@
       "source_file": "src/main.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "main.tsx",
       "id": "src_main"
     },
@@ -11223,7 +11123,7 @@
       "source_file": "src/main.tsx",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 51,
+      "community": 206,
       "norm_label": "rootelement",
       "id": "src_main_rootelement"
     },
@@ -11743,7 +11643,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 336,
+      "community": 287,
       "norm_label": "clipboardsettings.tsx",
       "id": "components_clipboardsettings"
     },
@@ -11753,7 +11653,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 336,
+      "community": 287,
       "norm_label": "clipboardsettingsprops",
       "id": "components_clipboardsettings_clipboardsettingsprops"
     },
@@ -11763,7 +11663,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 336,
+      "community": 287,
       "norm_label": "timeout_options",
       "id": "components_clipboardsettings_timeout_options"
     },
@@ -11773,7 +11673,7 @@
       "source_file": "src/presentation/components/ClipboardSettings.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 336,
+      "community": 287,
       "norm_label": "clipboardsettings()",
       "id": "components_clipboardsettings_clipboardsettings"
     },
@@ -11913,7 +11813,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 339,
+      "community": 13,
       "norm_label": "deleteconfirmdialog.tsx",
       "id": "components_deleteconfirmdialog"
     },
@@ -11923,7 +11823,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 339,
+      "community": 13,
       "norm_label": "deleteconfirmdialogprops",
       "id": "components_deleteconfirmdialog_deleteconfirmdialogprops"
     },
@@ -11933,7 +11833,7 @@
       "source_file": "src/presentation/components/DeleteConfirmDialog.tsx",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 339,
+      "community": 13,
       "norm_label": "deleteconfirmdialog()",
       "id": "components_deleteconfirmdialog_deleteconfirmdialog"
     },
@@ -12053,7 +11953,7 @@
       "source_file": "src/presentation/components/ExportDialog.tsx",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 3,
+      "community": 331,
       "norm_label": "exportdialog()",
       "id": "components_exportdialog_exportdialog"
     },
@@ -12063,7 +11963,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "filterchips.tsx",
       "id": "components_filterchips"
     },
@@ -12073,7 +11973,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "filterchipsprops",
       "id": "components_filterchips_filterchipsprops"
     },
@@ -12083,7 +11983,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "category_options",
       "id": "components_filterchips_category_options"
     },
@@ -12093,7 +11993,7 @@
       "source_file": "src/presentation/components/FilterChips.tsx",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "filterchips()",
       "id": "components_filterchips_filterchips"
     },
@@ -12133,7 +12033,7 @@
       "source_file": "src/presentation/components/ImportDialog.tsx",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 3,
+      "community": 331,
       "norm_label": "importdialog()",
       "id": "components_importdialog_importdialog"
     },
@@ -12243,7 +12143,7 @@
       "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 287,
+      "community": 265,
       "norm_label": "passwordgeneratordialog.tsx",
       "id": "components_passwordgeneratordialog"
     },
@@ -12253,7 +12153,7 @@
       "source_file": "src/presentation/components/PasswordGeneratorDialog.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 287,
+      "community": 265,
       "norm_label": "passwordgeneratordialogprops",
       "id": "components_passwordgeneratordialog_passwordgeneratordialogprops"
     },
@@ -12303,7 +12203,7 @@
       "source_file": "src/presentation/components/ProfileSwitcher.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "profileswitcher.tsx",
       "id": "components_profileswitcher"
     },
@@ -12313,7 +12213,7 @@
       "source_file": "src/presentation/components/ProfileSwitcher.tsx",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "profileswitcher()",
       "id": "components_profileswitcher_profileswitcher"
     },
@@ -12353,7 +12253,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 327,
       "norm_label": "reencryptionprogress.tsx",
       "id": "components_reencryptionprogress"
     },
@@ -12363,7 +12263,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 3,
+      "community": 327,
       "norm_label": "reencryptionprogressprops",
       "id": "components_reencryptionprogress_reencryptionprogressprops"
     },
@@ -12373,7 +12273,7 @@
       "source_file": "src/presentation/components/ReEncryptionProgress.tsx",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 3,
+      "community": 327,
       "norm_label": "reencryptionprogress()",
       "id": "components_reencryptionprogress_reencryptionprogress"
     },
@@ -12413,7 +12313,7 @@
       "source_file": "src/presentation/components/SearchBar.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "searchbar.tsx",
       "id": "components_searchbar"
     },
@@ -12423,7 +12323,7 @@
       "source_file": "src/presentation/components/SearchBar.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "searchbarprops",
       "id": "components_searchbar_searchbarprops"
     },
@@ -12433,7 +12333,7 @@
       "source_file": "src/presentation/components/SearchBar.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 327,
+      "community": 13,
       "norm_label": "searchbar()",
       "id": "components_searchbar_searchbar"
     },
@@ -12443,7 +12343,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sortdropdown.tsx",
       "id": "components_sortdropdown"
     },
@@ -12453,7 +12353,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sortdropdownprops",
       "id": "components_sortdropdown_sortdropdownprops"
     },
@@ -12463,7 +12363,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sort_options",
       "id": "components_sortdropdown_sort_options"
     },
@@ -12473,7 +12373,7 @@
       "source_file": "src/presentation/components/SortDropdown.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sortdropdown()",
       "id": "components_sortdropdown_sortdropdown"
     },
@@ -12903,7 +12803,7 @@
       "source_file": "src/presentation/components/__tests__/SortDropdown.test.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sortdropdown.test.tsx",
       "id": "tests_sortdropdown_test"
     },
@@ -13603,7 +13503,7 @@
       "source_file": "src/presentation/pages/AddCredentialPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 143,
+      "community": 51,
       "norm_label": "addcredentialpage.tsx",
       "id": "pages_addcredentialpage"
     },
@@ -13613,7 +13513,7 @@
       "source_file": "src/presentation/pages/AddCredentialPage.tsx",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 143,
+      "community": 51,
       "norm_label": "categories",
       "id": "pages_addcredentialpage_categories"
     },
@@ -13623,7 +13523,7 @@
       "source_file": "src/presentation/pages/AddCredentialPage.tsx",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "addcredentialpage()",
       "id": "pages_addcredentialpage_addcredentialpage"
     },
@@ -13633,7 +13533,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 287,
+      "community": 3,
       "norm_label": "credentialdetailpage.tsx",
       "id": "pages_credentialdetailpage"
     },
@@ -13643,7 +13543,7 @@
       "source_file": "src/presentation/pages/CredentialDetailPage.tsx",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 287,
+      "community": 3,
       "norm_label": "credentialdetailpage()",
       "id": "pages_credentialdetailpage_credentialdetailpage"
     },
@@ -13653,7 +13553,7 @@
       "source_file": "src/presentation/pages/DashboardPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "dashboardpage.tsx",
       "id": "pages_dashboardpage"
     },
@@ -13663,7 +13563,7 @@
       "source_file": "src/presentation/pages/DashboardPage.tsx",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "dashboardpage()",
       "id": "pages_dashboardpage_dashboardpage"
     },
@@ -13693,7 +13593,7 @@
       "source_file": "src/presentation/pages/EditCredentialPage.tsx",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 143,
+      "community": 3,
       "norm_label": "editcredentialpage()",
       "id": "pages_editcredentialpage_editcredentialpage"
     },
@@ -13703,7 +13603,7 @@
       "source_file": "src/presentation/pages/FavoritesPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "favoritespage.tsx",
       "id": "pages_favoritespage"
     },
@@ -13713,7 +13613,7 @@
       "source_file": "src/presentation/pages/FavoritesPage.tsx",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "favoritespage()",
       "id": "pages_favoritespage_favoritespage"
     },
@@ -13833,7 +13733,7 @@
       "source_file": "src/presentation/pages/SignupPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 19,
+      "community": 3,
       "norm_label": "signuppage.tsx",
       "id": "pages_signuppage"
     },
@@ -14093,7 +13993,7 @@
       "source_file": "src/presentation/store/__tests__/loadProfiles.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "loadprofiles.test.ts",
       "id": "tests_loadprofiles_test"
     },
@@ -14103,7 +14003,7 @@
       "source_file": "src/presentation/store/__tests__/loadProfiles.test.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "makekey()",
       "id": "tests_loadprofiles_test_makekey"
     },
@@ -14113,7 +14013,7 @@
       "source_file": "src/presentation/store/__tests__/profileStore.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "profilestore.test.ts",
       "id": "tests_profilestore_test"
     },
@@ -14123,7 +14023,7 @@
       "source_file": "src/presentation/store/__tests__/profileStore.test.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "makeprofile()",
       "id": "tests_profilestore_test_makeprofile"
     },
@@ -14233,7 +14133,7 @@
       "source_file": "src/presentation/store/loadProfiles.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "loadprofiles.ts",
       "id": "store_loadprofiles"
     },
@@ -14243,7 +14143,7 @@
       "source_file": "src/presentation/store/loadProfiles.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "loadprofilesintostore()",
       "id": "store_loadprofiles_loadprofilesintostore"
     },
@@ -14253,7 +14153,7 @@
       "source_file": "src/presentation/store/profileStore.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "profilestore.ts",
       "id": "store_profilestore"
     },
@@ -14273,7 +14173,7 @@
       "source_file": "src/presentation/store/profileStore.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "useprofilestore",
       "id": "store_profilestore_useprofilestore"
     },
@@ -14453,7 +14353,7 @@
       "source_file": "src/presentation/utils/__tests__/credentialSort.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "credentialsort.test.ts",
       "id": "tests_credentialsort_test"
     },
@@ -14463,7 +14363,7 @@
       "source_file": "src/presentation/utils/__tests__/credentialSort.test.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "cred()",
       "id": "tests_credentialsort_test_cred"
     },
@@ -14483,7 +14383,7 @@
       "source_file": "src/presentation/utils/__tests__/url.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "url.test.ts",
       "id": "tests_url_test"
     },
@@ -14543,7 +14443,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 287,
+      "community": 265,
       "norm_label": "copypassword()",
       "id": "utils_clipboard_copypassword"
     },
@@ -14593,7 +14493,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L162",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": "secureclipboardmanager",
       "id": "utils_clipboard_secureclipboardmanager"
     },
@@ -14603,7 +14503,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L177",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".copy()",
       "id": "utils_clipboard_secureclipboardmanager_copy"
     },
@@ -14613,7 +14513,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L212",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".startcleartimer()",
       "id": "utils_clipboard_secureclipboardmanager_startcleartimer"
     },
@@ -14623,7 +14523,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L237",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".clearclipboard()",
       "id": "utils_clipboard_secureclipboardmanager_clearclipboard"
     },
@@ -14633,7 +14533,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L260",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".canceltimers()",
       "id": "utils_clipboard_secureclipboardmanager_canceltimers"
     },
@@ -14643,7 +14543,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L278",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".oncountdown()",
       "id": "utils_clipboard_secureclipboardmanager_oncountdown"
     },
@@ -14653,7 +14553,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L285",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".onclear()",
       "id": "utils_clipboard_secureclipboardmanager_onclear"
     },
@@ -14663,7 +14563,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L292",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".getremaining()",
       "id": "utils_clipboard_secureclipboardmanager_getremaining"
     },
@@ -14673,7 +14573,7 @@
       "source_file": "src/presentation/utils/clipboard.ts",
       "source_location": "L299",
       "_origin": "ast",
-      "community": 314,
+      "community": 287,
       "norm_label": ".isactive()",
       "id": "utils_clipboard_secureclipboardmanager_isactive"
     },
@@ -14693,7 +14593,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "credentialsort.ts",
       "id": "utils_credentialsort"
     },
@@ -14703,7 +14603,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sortoption",
       "id": "utils_credentialsort_sortoption"
     },
@@ -14713,7 +14613,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sort_option_values",
       "id": "utils_credentialsort_sort_option_values"
     },
@@ -14723,7 +14623,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L36",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "issortoption()",
       "id": "utils_credentialsort_issortoption"
     },
@@ -14733,7 +14633,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "comparators",
       "id": "utils_credentialsort_comparators"
     },
@@ -14743,7 +14643,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "sortcredentials()",
       "id": "utils_credentialsort_sortcredentials"
     },
@@ -14753,7 +14653,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L76",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "loadsortpreference()",
       "id": "utils_credentialsort_loadsortpreference"
     },
@@ -14763,7 +14663,7 @@
       "source_file": "src/presentation/utils/credentialSort.ts",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 264,
+      "community": 13,
       "norm_label": "savesortpreference()",
       "id": "utils_credentialsort_savesortpreference"
     },
@@ -15003,7 +14903,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "url.ts",
       "id": "utils_url"
     },
@@ -15013,7 +14913,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "allowed_protocols",
       "id": "utils_url_allowed_protocols"
     },
@@ -15023,7 +14923,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "sanitizeurl()",
       "id": "utils_url_sanitizeurl"
     },
@@ -15033,7 +14933,7 @@
       "source_file": "src/presentation/utils/url.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 192,
+      "community": 13,
       "norm_label": "normalizeurl()",
       "id": "utils_url_normalizeurl"
     },
@@ -15183,7 +15083,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 328,
+      "community": 261,
       "norm_label": "tour.ts",
       "id": "types_tour"
     },
@@ -15193,7 +15093,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 328,
+      "community": 261,
       "norm_label": "tourstep",
       "id": "types_tour_tourstep"
     },
@@ -15203,7 +15103,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 328,
+      "community": 261,
       "norm_label": "tourconfig",
       "id": "types_tour_tourconfig"
     },
@@ -15213,7 +15113,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 328,
+      "community": 261,
       "norm_label": "tourtype",
       "id": "types_tour_tourtype"
     },
@@ -15223,7 +15123,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 328,
+      "community": 261,
       "norm_label": "tourstate",
       "id": "types_tour_tourstate"
     },
@@ -15233,7 +15133,7 @@
       "source_file": "src/types/tour.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 328,
+      "community": 261,
       "norm_label": "tourevent",
       "id": "types_tour_tourevent"
     },
@@ -26543,7 +26443,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L271",
       "_origin": "ast",
-      "community": 338,
+      "community": 165,
       "norm_label": "session & memory security",
       "id": "security_audit_checklist_session_memory_security"
     },
@@ -26553,7 +26453,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L273",
       "_origin": "ast",
-      "community": 338,
+      "community": 165,
       "norm_label": "session management \u2705",
       "id": "security_audit_checklist_session_management"
     },
@@ -26563,7 +26463,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L282",
       "_origin": "ast",
-      "community": 338,
+      "community": 165,
       "norm_label": "memory protection \u2705",
       "id": "security_audit_checklist_memory_protection"
     },
@@ -26573,7 +26473,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L291",
       "_origin": "ast",
-      "community": 338,
+      "community": 165,
       "norm_label": "browser storage analysis \u2705",
       "id": "security_audit_checklist_browser_storage_analysis"
     },
@@ -26583,7 +26483,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L317",
       "_origin": "ast",
-      "community": 340,
+      "community": 165,
       "norm_label": "input validation & output encoding",
       "id": "security_audit_checklist_input_validation_output_encoding"
     },
@@ -26593,7 +26493,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L319",
       "_origin": "ast",
-      "community": 340,
+      "community": 165,
       "norm_label": "input validation \u2705",
       "id": "security_audit_checklist_input_validation"
     },
@@ -26603,7 +26503,7 @@
       "source_file": "SECURITY_AUDIT_CHECKLIST.md",
       "source_location": "L331",
       "_origin": "ast",
-      "community": 340,
+      "community": 165,
       "norm_label": "output encoding \u2705",
       "id": "security_audit_checklist_output_encoding"
     },
@@ -29343,7 +29243,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 330,
+      "community": 131,
       "norm_label": "test suite overview",
       "id": "test_validation_plan_test_suite_overview"
     },
@@ -29353,7 +29253,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 330,
+      "community": 131,
       "norm_label": "test files inventory",
       "id": "test_validation_plan_test_files_inventory"
     },
@@ -29363,7 +29263,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 330,
+      "community": 131,
       "norm_label": "unit tests",
       "id": "test_validation_plan_unit_tests"
     },
@@ -29373,7 +29273,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 330,
+      "community": 131,
       "norm_label": "integration tests",
       "id": "test_validation_plan_integration_tests"
     },
@@ -29383,7 +29283,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 330,
+      "community": 131,
       "norm_label": "security tests",
       "id": "test_validation_plan_security_tests"
     },
@@ -29433,7 +29333,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L142",
       "_origin": "ast",
-      "community": 329,
+      "community": 131,
       "norm_label": "test coverage matrix",
       "id": "test_validation_plan_test_coverage_matrix"
     },
@@ -29443,7 +29343,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L144",
       "_origin": "ast",
-      "community": 329,
+      "community": 131,
       "norm_label": "phase 0: bug fixes",
       "id": "test_validation_plan_phase_0_bug_fixes"
     },
@@ -29453,7 +29353,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L151",
       "_origin": "ast",
-      "community": 329,
+      "community": 131,
       "norm_label": "phase 1: credential management",
       "id": "test_validation_plan_phase_1_credential_management"
     },
@@ -29463,7 +29363,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L160",
       "_origin": "ast",
-      "community": 329,
+      "community": 131,
       "norm_label": "phase 2: security features",
       "id": "test_validation_plan_phase_2_security_features"
     },
@@ -29473,7 +29373,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L168",
       "_origin": "ast",
-      "community": 329,
+      "community": 131,
       "norm_label": "phase 3: settings & ux",
       "id": "test_validation_plan_phase_3_settings_ux"
     },
@@ -29483,7 +29383,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L175",
       "_origin": "ast",
-      "community": 329,
+      "community": 131,
       "norm_label": "phase 4: advanced features",
       "id": "test_validation_plan_phase_4_advanced_features"
     },
@@ -29493,7 +29393,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L184",
       "_origin": "ast",
-      "community": 335,
+      "community": 131,
       "norm_label": "validation criteria",
       "id": "test_validation_plan_validation_criteria"
     },
@@ -29503,7 +29403,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L186",
       "_origin": "ast",
-      "community": 335,
+      "community": 131,
       "norm_label": "unit tests",
       "id": "test_validation_plan_unit_tests_186"
     },
@@ -29513,7 +29413,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L193",
       "_origin": "ast",
-      "community": 335,
+      "community": 131,
       "norm_label": "integration tests",
       "id": "test_validation_plan_integration_tests_193"
     },
@@ -29523,7 +29423,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L200",
       "_origin": "ast",
-      "community": 335,
+      "community": 131,
       "norm_label": "security tests",
       "id": "test_validation_plan_security_tests_200"
     },
@@ -29533,7 +29433,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L207",
       "_origin": "ast",
-      "community": 335,
+      "community": 131,
       "norm_label": "performance tests (manual)",
       "id": "test_validation_plan_performance_tests_manual"
     },
@@ -29543,7 +29443,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L219",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "manual test checklist",
       "id": "test_validation_plan_manual_test_checklist"
     },
@@ -29553,7 +29453,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L221",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "authentication flow",
       "id": "test_validation_plan_authentication_flow"
     },
@@ -29563,7 +29463,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L231",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "credential management",
       "id": "test_validation_plan_credential_management"
     },
@@ -29573,7 +29473,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L241",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "security features",
       "id": "test_validation_plan_security_features"
     },
@@ -29583,7 +29483,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L251",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "search & filter",
       "id": "test_validation_plan_search_filter"
     },
@@ -29593,7 +29493,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L261",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "settings",
       "id": "test_validation_plan_settings"
     },
@@ -29603,7 +29503,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L272",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "offline functionality",
       "id": "test_validation_plan_offline_functionality"
     },
@@ -29613,7 +29513,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L280",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "mobile (devtools responsive mode)",
       "id": "test_validation_plan_mobile_devtools_responsive_mode"
     },
@@ -29623,7 +29523,7 @@
       "source_file": "TEST_VALIDATION_PLAN.md",
       "source_location": "L293",
       "_origin": "ast",
-      "community": 322,
+      "community": 131,
       "norm_label": "browser compatibility",
       "id": "test_validation_plan_browser_compatibility"
     },
@@ -36563,7 +36463,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
+      "community": 331,
       "norm_label": "exportencryption (core/crypto)",
       "id": "core_crypto_exportencryption"
     },
@@ -36602,7 +36502,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 212,
+      "community": 264,
       "norm_label": "generator feature index",
       "id": "src_features_vault_generator_index_generatorindex"
     },
@@ -36799,7 +36699,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 314,
+      "community": 287,
       "norm_label": "secure clipboard auto-clear pattern",
       "id": "concept_secure_clipboard_autoclear"
     },
@@ -36955,7 +36855,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 328,
+      "community": 261,
       "norm_label": "driver.js library",
       "id": "src_types_tour_driverjs"
     },
@@ -38834,96 +38734,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L15",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L779",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_post_plan_verification_manual_before_merge_to_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L27",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_1_install_the_package_import_smoke_test",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L88",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_2_delegate_prf_detection_in_webauthn_ts_to_the_package",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L223",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_3_mapzktverror_package_errors_existing_user_facing_copy",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L356",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_4_enrollment_path_registerbiometric_via_enrollprfcredential_wrapsecret",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L527",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_5_unlock_path_lazy_legacy_migration_authenticatewithbiometric",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
-      "source_location": "L721",
-      "weight": 1.0,
-      "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_6_cleanup_delete_dead_inline_code_drop_simplewebauthn_refresh_docs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -38975,7 +38785,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L153",
+      "source_location": "L151",
       "weight": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
       "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_phasing_4_prs",
@@ -39015,7 +38825,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L116",
+      "source_location": "L114",
       "weight": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
       "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_4_ui_layer",
@@ -39025,7 +38835,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L122",
+      "source_location": "L120",
       "weight": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
       "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_5_error_handling",
@@ -39035,7 +38845,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L131",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
       "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_6_testing",
@@ -39045,7 +38855,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
-      "source_location": "L146",
+      "source_location": "L144",
       "weight": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
       "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_7_out_of_scope",
@@ -94920,5 +94730,5 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts"
     }
   ],
-  "built_at_commit": "30a0d612a606d79ef98cc0af25e07e5be0813c03"
+  "built_at_commit": "b1ac2b26cf46ae7c0525e10ea5911d20a3658041"
 }
