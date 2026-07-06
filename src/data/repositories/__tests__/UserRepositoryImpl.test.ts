@@ -9,30 +9,35 @@ import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
 import { needsRehash } from '@/core/crypto/password';
 import { deriveVaultWrapKey, deriveKeyFromPassword, encrypt, decrypt } from '@/core/crypto/encryption';
-import { isPRFSupported, registerCredentialWithPRF } from '@/core/auth/webauthn';
+import { isPRFSupported } from '@/core/auth/webauthn';
+import {
+  deriveWrapKeyFromPrf,
+  generateSalt,
+  parseRecord,
+  PrfUnsupportedError,
+  TRUSTVAULT_HKDF_INFO,
+  unwrapSecretBytes,
+} from 'webauthn-prf-zktv';
+import { enrollPrfCredential, evaluatePrf } from 'webauthn-prf-zktv/webauthn';
+import { encodeUint8ArrayToBase64 } from '@/core/utils/base64';
 import { db } from '../../storage/database';
 import type { User } from '@/domain/entities/User';
 
-// S1: mock the WebAuthn boundary so biometric enroll/unlock can be exercised
-// without a real authenticator. getPRFOutput returns sha256(salt) — a stable,
-// deterministic stand-in for the hardware PRF, so the same stored salt yields
-// the same secret at enroll and unlock. The crypto wrap/unwrap stays real.
+// S1: mock the app-level availability gate; the WebAuthn/PRF ceremonies and
+// crypto wrap/unwrap live in webauthn-prf-zktv and are mocked separately below.
 vi.mock('@/core/auth/webauthn', () => ({
   isBiometricAvailable: vi.fn(() => Promise.resolve(true)),
   isPRFSupported: vi.fn(() => Promise.resolve(true)),
-  registerCredentialWithPRF: vi.fn(() =>
-    Promise.resolve({
-      credentialId: 'prf-cred-1',
-      publicKey: 'cHVibGljLWtleQ==',
-      transports: ['internal'] as AuthenticatorTransport[],
-      prfEnabled: true,
-    }),
-  ),
-  // Echo the salt as the PRF output: deterministic per salt, so the same stored
-  // salt yields the same secret at enroll and unlock (models a stable hardware PRF).
-  getPRFOutput: vi.fn((_credentialId: string, salt: Uint8Array, _rpId: string, storedCounter: number = -1) =>
-    Promise.resolve({ prfOutput: salt, counter: storedCounter + 2 }),
-  ),
+}));
+
+// enrollPrfCredential/evaluatePrf model a stable hardware PRF deterministically:
+// enrollment's PRF output echoes its own fresh salt; unlock's PRF output echoes
+// whatever salt it's asked to evaluate (== the enrolled credential's stored
+// salt), so the same salt always yields the same secret. The crypto
+// wrap/unwrap/serialize stays real (package internals are not mocked).
+vi.mock('webauthn-prf-zktv/webauthn', () => ({
+  enrollPrfCredential: vi.fn(),
+  evaluatePrf: vi.fn(),
 }));
 
 /**
@@ -676,12 +681,83 @@ describe('UserRepositoryImpl', () => {
         location: { hostname: 'localhost', origin: 'http://localhost:3000' },
       });
       vi.mocked(isPRFSupported).mockResolvedValue(true);
+      vi.mocked(enrollPrfCredential).mockImplementation(() => {
+        const prfSalt = generateSalt(32);
+        return Promise.resolve({
+          credentialId: 'prf-cred-1',
+          // Echo the fresh salt as the PRF output — deterministic stand-in for
+          // a stable hardware PRF, so the same salt yields the same secret.
+          prfOutput: new Uint8Array(prfSalt),
+          prfSalt,
+          transports: ['internal'],
+          publicKey: new Uint8Array([1, 2, 3]),
+          counter: 0,
+          usedSingleCeremony: true,
+        });
+      });
+      vi.mocked(evaluatePrf).mockImplementation((options) => Promise.resolve({
+        // Echo whatever salt is evaluated (== the enrolled credential's stored
+        // salt), so enroll and unlock derive the same wrap key.
+        prfOutput: new Uint8Array(options.salt),
+        counter: (options.storedCounter ?? -1) + 2,
+      }));
     });
 
     afterEach(() => {
       vi.unstubAllGlobals();
       vi.clearAllMocks();
     });
+
+    /** Recovers the raw vault key bytes exactly as registerBiometric does. */
+    async function recoverVaultKeyRaw(userId: string, masterPassword: string): Promise<Uint8Array> {
+      const stored = await db.users.get(userId);
+      if (!stored) throw new Error('recoverVaultKeyRaw: user not found');
+      const userSalt = Uint8Array.from(atob(stored.salt), c => c.charCodeAt(0));
+      const tempKey = stored.vaultKdf === 'scrypt-v1'
+        ? await deriveVaultWrapKey(masterPassword, userSalt)
+        : await deriveKeyFromPassword(masterPassword, userSalt);
+      const vaultKeyBase64 = await decrypt(
+        JSON.parse(stored.encryptedVaultKey) as Parameters<typeof decrypt>[0],
+        tempKey,
+      );
+      return Uint8Array.from(atob(vaultKeyBase64), c => c.charCodeAt(0));
+    }
+
+    /** Builds a legacy-format wrappedVaultKey exactly as pre-refactor TrustVault did. */
+    async function buildLegacyWrappedVaultKey(
+      vaultKeyRaw: Uint8Array,
+      prfOutput: Uint8Array,
+    ): Promise<string> {
+      const legacyWrapKey = await deriveWrapKeyFromPrf(prfOutput, TRUSTVAULT_HKDF_INFO);
+      const encrypted = await encrypt(encodeUint8ArrayToBase64(vaultKeyRaw), legacyWrapKey);
+      return JSON.stringify(encrypted);
+    }
+
+    /** Creates a user whose only biometric credential is stored in the legacy format. */
+    async function createUserWithLegacyBiometric(
+      prfOutput: Uint8Array,
+      prfSalt: Uint8Array,
+    ): Promise<{ userId: string; credentialId: string; vaultKeyRaw: Uint8Array }> {
+      const user = await repository.createUser(`legacy-${crypto.randomUUID()}`, password);
+      const vaultKeyRaw = await recoverVaultKeyRaw(user.id, password);
+      const wrappedVaultKey = await buildLegacyWrappedVaultKey(vaultKeyRaw, prfOutput);
+      const credentialId = 'legacy-cred-1';
+      await db.users.update(user.id, {
+        biometricEnabled: true,
+        webAuthnCredentials: [
+          {
+            id: credentialId,
+            publicKey: '',
+            counter: 2,
+            createdAt: new Date(),
+            vaultKeyScheme: 'prf-v1' as const,
+            wrappedVaultKey,
+            prfSalt: encodeUint8ArrayToBase64(prfSalt),
+          },
+        ] as unknown as User['webAuthnCredentials'],
+      });
+      return { userId: user.id, credentialId, vaultKeyRaw };
+    }
 
     it('enrolls a PRF credential and stores no legacy key material', async () => {
       const user = await repository.createUser(username, password);
@@ -752,6 +828,57 @@ describe('UserRepositoryImpl', () => {
       await expect(crypto.subtle.exportKey('raw', bioSession.vaultKey)).rejects.toThrow();
     });
 
+    it('migrates a legacy record on unlock: same prompt, record replaced, unlock succeeds', async () => {
+      const prfOutput = generateSalt(32);
+      const prfSalt = generateSalt(32);
+      const { userId, credentialId, vaultKeyRaw } = await createUserWithLegacyBiometric(prfOutput, prfSalt);
+
+      vi.mocked(evaluatePrf).mockResolvedValueOnce({ prfOutput: new Uint8Array(prfOutput), counter: 3 });
+
+      const session = await repository.authenticateWithBiometric(userId, credentialId);
+      expect(session.vaultKey).toBeInstanceOf(CryptoKey);
+      expect(evaluatePrf).toHaveBeenCalledTimes(1); // one ceremony, not two
+
+      const stored = await db.users.get(userId);
+      const cred = stored?.webAuthnCredentials.find((c) => c.id === credentialId);
+      expect(cred?.wrappedVaultKey).toBeTruthy();
+      // The legacy JSON has been replaced by a parseable v1 record...
+      const record = parseRecord(cred?.wrappedVaultKey ?? '');
+      // ...that unwraps to the ORIGINAL vault key.
+      const bytes = await unwrapSecretBytes({ record, prfOutput });
+      expect(Array.from(bytes)).toEqual(Array.from(vaultKeyRaw));
+    });
+
+    it('second unlock after migration takes the new-format path (no fromTrustVaultRecord)', async () => {
+      const prfOutput = generateSalt(32);
+      const prfSalt = generateSalt(32);
+      const { userId, credentialId } = await createUserWithLegacyBiometric(prfOutput, prfSalt);
+
+      vi.mocked(evaluatePrf).mockResolvedValueOnce({ prfOutput: new Uint8Array(prfOutput), counter: 3 });
+      await repository.authenticateWithBiometric(userId, credentialId); // migrates
+
+      vi.mocked(evaluatePrf).mockResolvedValueOnce({ prfOutput: new Uint8Array(prfOutput), counter: 4 });
+      const session = await repository.authenticateWithBiometric(userId, credentialId);
+      expect(session.vaultKey).toBeInstanceOf(CryptoKey);
+    });
+
+    it('wrong PRF output yields the generic re-enable message (no wrong-key/corrupt distinction)', async () => {
+      const user = await repository.createUser(username, password);
+      await repository.registerBiometric(user.id, password, 'Dev');
+      const stored = await db.users.get(user.id);
+      const credentialId = stored?.webAuthnCredentials[0]?.id ?? '';
+      expect(credentialId).toBeTruthy();
+
+      vi.mocked(evaluatePrf).mockResolvedValueOnce({
+        prfOutput: new Uint8Array(32).fill(0xee), // wrong output, doesn't match the enrolled salt
+        counter: 1,
+      });
+
+      await expect(repository.authenticateWithBiometric(user.id, credentialId)).rejects.toThrow(
+        'Biometric needs to be re-enabled on this device. Please sign in with your master password and re-enable biometric in Settings.',
+      );
+    });
+
     it('S7: enrollment rejects an incorrect master password', async () => {
       const user = await repository.createUser(username, password);
       await repository.authenticateWithPassword(username, password);
@@ -782,16 +909,47 @@ describe('UserRepositoryImpl', () => {
     it('refuses enrollment when the authenticator does not enable PRF', async () => {
       const user = await repository.createUser(username, password);
       await repository.authenticateWithPassword(username, password);
-      vi.mocked(registerCredentialWithPRF).mockResolvedValueOnce({
-        credentialId: 'c',
-        publicKey: 'p',
-        transports: [],
-        prfEnabled: false,
-      });
+      // enrollPrfCredential hard-verifies PRF internally and throws rather than
+      // returning a prfEnabled: false result.
+      vi.mocked(enrollPrfCredential).mockRejectedValueOnce(
+        new PrfUnsupportedError('Authenticator did not enable the PRF extension'),
+      );
 
       await expect(
         repository.registerBiometric(user.id, password),
-      ).rejects.toThrow(/PRF/);
+      ).rejects.toThrow(
+        'This browser or device does not support the secure PRF extension required for biometric unlock. Please continue using your master password.',
+      );
+
+      const stored = await db.users.get(user.id);
+      expect(stored?.webAuthnCredentials.length).toBe(0);
+    });
+
+    it('stores a serialized v1 record with the ceremony counter and public key', async () => {
+      const user = await repository.createUser(username, password);
+      await repository.authenticateWithPassword(username, password);
+
+      vi.mocked(enrollPrfCredential).mockResolvedValueOnce({
+        credentialId: 'cred-b64url',
+        prfOutput: generateSalt(32),
+        prfSalt: generateSalt(32),
+        transports: ['internal'],
+        publicKey: new Uint8Array([9, 9, 9]),
+        counter: 5,
+        usedSingleCeremony: true,
+      });
+
+      await repository.registerBiometric(user.id, password, 'Test Device');
+
+      const stored = await db.users.get(user.id);
+      const cred = stored?.webAuthnCredentials.find((c) => c.id === 'cred-b64url');
+      expect(cred?.vaultKeyScheme).toBe('prf-v1');
+      expect(cred?.counter).toBe(5);
+      expect(cred?.publicKey).toBe(encodeUint8ArrayToBase64(new Uint8Array([9, 9, 9])));
+
+      // The stored value is a package v1 record — parseRecord must accept it.
+      const record = parseRecord(cred?.wrappedVaultKey ?? '');
+      expect(record.scheme).toBe('prf-v1');
     });
 
     it('rejects biometric unlock for a legacy (non-PRF) credential', async () => {
