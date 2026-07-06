@@ -1,7 +1,7 @@
 # Graph Report - trustvault-pwa  (2026-07-06)
 
 ## Corpus Check
-- 401 files · ~338,641 words
+- 401 files · ~338,700 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `30a0d612`
+- Built from commit: `dc5f792a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -1487,20 +1487,20 @@ Cohesion: 0.67
 Nodes (3): Input Validation ✅, Input Validation & Output Encoding, Output Encoding ✅
 
 ## Knowledge Gaps
-- **2131 isolated node(s):** `Task 1: Install the package + import smoke test`, `Task 2: Delegate PRF detection in `webauthn.ts` to the package`, `Task 3: `mapZktvError` — package errors → existing user-facing copy`, `Task 4: Enrollment path — `registerBiometric` via `enrollPrfCredential` + `wrapSecret``, `Task 5: Unlock path + lazy legacy migration — `authenticateWithBiometric`` (+2126 more)
+- **2131 isolated node(s):** `🎯 Executive Summary`, `📊 Codebase Health`, `Phase 0: Critical Crypto (Completed 2026-05-15)`, `Phase 1: Credential Management (Completed 2026-05-20)`, `Phase 2: Security & Advanced Features (Completed 2026-05-25)` (+2126 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **60 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `Community 192`, `Community 163`, `WebAuthn Ceremony`, `Community 229`, `Community 287`, `Community 264`, `Community 282`, `Community 331`, `User Domain Model`, `Community 143`, `Community 51`, `Username Migration`, `Community 250`, `Community 31`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Why does `CredentialRepository` connect `Community 20` to `Community 192`, `Crypto Error & Dialogs`, `Community 287`, `Community 229`, `Community 163`, `Community 264`, `Community 143`, `Community 304`, `Community 51`, `Community 250`, `Community 31`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `useAuthStore` connect `Crypto Error & Dialogs` to `Community 32`, `Community 192`, `Community 163`, `WebAuthn Ceremony`, `Community 229`, `Community 287`, `Community 264`, `Community 282`, `Community 331`, `User Domain Model`, `Community 143`, `Community 51`, `Username Migration`, `Community 250`, `Community 31`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Why does `loadAiSettings()` connect `Community 283` to `Community 192`, `Breach UI & Category Icons`, `Community 264`, `Community 271`, `Community 148`, `Community 246`, `Community 282`, `Community 92`, `Community 126`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **What connects `Task 1: Install the package + import smoke test`, `Task 2: Delegate PRF detection in `webauthn.ts` to the package`, `Task 3: `mapZktvError` — package errors → existing user-facing copy` to the rest of the system?**
+- **What connects `🎯 Executive Summary`, `📊 Codebase Health`, `Phase 0: Critical Crypto (Completed 2026-05-15)` to the rest of the system?**
   _2142 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `TOTP / 2FA Core` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
