@@ -16,14 +16,34 @@ vi.mock('@/core/platform/runtime', () => ({
   isNativeAndroidApp: vi.fn(() => false),
 }));
 
+// Delegated PRF detection seam — isWebAuthnSupported keeps its real
+// implementation (tested directly against the window mock below); the
+// tri-state/viability functions are mocked so individual tests can control
+// their outcome without reimplementing getClientCapabilities() plumbing.
+vi.mock('webauthn-prf-zktv/webauthn', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('webauthn-prf-zktv/webauthn')>();
+  return {
+    ...actual,
+    detectPrfSupport: vi.fn(),
+    isPrfViableOnThisClient: vi.fn().mockResolvedValue({
+      viable: true,
+      reason: 'ok',
+      environment: 'browser',
+    }),
+  };
+});
+
 import {
   isWebAuthnSupported,
   isBiometricAvailable,
+  detectPRFSupport,
+  isPRFSupported,
   registerBiometric,
   verifyRegistrationResponse,
   verifyAuthenticationResponse,
   getDeviceName,
 } from '@/core/auth/webauthn';
+import { detectPrfSupport, isPrfViableOnThisClient } from 'webauthn-prf-zktv/webauthn';
 import type { RegistrationResponseJSON, AuthenticationResponseJSON } from '@simplewebauthn/types';
 import { encodeUint8ArrayToBase64Url } from '@/core/utils/base64';
 
@@ -107,6 +127,33 @@ describe('WebAuthn Core Functions', () => {
 
       const available = await isBiometricAvailable();
       expect(available).toBe(false);
+    });
+
+    it('should return false in an Android WebView environment (PRF does not reach Credential Manager)', async () => {
+      vi.mocked(isPrfViableOnThisClient).mockResolvedValueOnce({
+        viable: false,
+        reason: 'Android WebView',
+        environment: 'webview',
+      });
+      const available = await isBiometricAvailable();
+      expect(available).toBe(false);
+    });
+  });
+
+  describe('PRF detection (delegated to webauthn-prf-zktv)', () => {
+    it.each(['supported', 'unsupported', 'unknown'] as const)(
+      'detectPRFSupport passes through %s',
+      async (state) => {
+        vi.mocked(detectPrfSupport).mockResolvedValue(state);
+        expect(await detectPRFSupport()).toBe(state);
+      },
+    );
+
+    it('isPRFSupported is false only for known-unsupported', async () => {
+      vi.mocked(detectPrfSupport).mockResolvedValue('unsupported');
+      expect(await isPRFSupported()).toBe(false);
+      vi.mocked(detectPrfSupport).mockResolvedValue('unknown');
+      expect(await isPRFSupported()).toBe(true);
     });
   });
 

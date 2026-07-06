@@ -14,6 +14,12 @@ import type {
   PublicKeyCredentialCreationOptionsJSON,
 } from '@simplewebauthn/types';
 import {
+  detectPrfSupport,
+  isPrfViableOnThisClient,
+  isWebAuthnSupported as zktvIsWebAuthnSupported,
+  type PrfSupport,
+} from 'webauthn-prf-zktv/webauthn';
+import {
   decodeBase64ToString,
   decodeBase64ToUint8Array,
   encodeUint8ArrayToBase64,
@@ -44,7 +50,7 @@ export interface RegistrationOptions {
  * Checks if WebAuthn is supported in the browser
  */
 export function isWebAuthnSupported(): boolean {
-  return typeof window !== 'undefined' && typeof window.PublicKeyCredential === 'function';
+  return zktvIsWebAuthnSupported();
 }
 
 /**
@@ -56,6 +62,8 @@ export function isWebAuthnSupported(): boolean {
  * signature rather than the web RP ID (see
  * docs/OCR_PHASE2_BIOMETRIC_WEBVIEW_SPIKE.md). The native build therefore uses
  * master-password unlock only, and biometric enrollment/UI stays hidden.
+ * `isPrfViableOnThisClient()` detects the same WebView constraint outside
+ * Capacitor (e.g. other in-app browsers), so it's checked as a second gate.
  */
 export async function isBiometricAvailable(): Promise<boolean> {
   if (isNativeApp()) {
@@ -63,6 +71,11 @@ export async function isBiometricAvailable(): Promise<boolean> {
   }
 
   if (!isWebAuthnSupported()) {
+    return false;
+  }
+
+  const viability = await isPrfViableOnThisClient();
+  if (viability.environment === 'webview') {
     return false;
   }
 
@@ -341,7 +354,8 @@ interface PRFExtensionOutputs {
 }
 
 /**
- * Tri-state PRF capability detection for UI gating.
+ * Tri-state PRF capability detection for UI gating (delegates to
+ * webauthn-prf-zktv, which never probes with throwaway credentials).
  *  - 'supported'   : client capabilities positively report the PRF extension
  *  - 'unsupported' : WebAuthn is absent, or capabilities report PRF unavailable
  *  - 'unknown'     : capabilities can't be queried (PublicKeyCredential.
@@ -350,27 +364,10 @@ interface PRFExtensionOutputs {
  *                    the assertion's PRF result, falling back to the master
  *                    password with a clear message if PRF turns out unavailable.
  */
-export type PRFSupport = 'supported' | 'unsupported' | 'unknown';
+export type PRFSupport = PrfSupport;
 
 export async function detectPRFSupport(): Promise<PRFSupport> {
-  if (!isWebAuthnSupported()) {
-    return 'unsupported';
-  }
-  try {
-    const pkc = window.PublicKeyCredential as unknown as {
-      getClientCapabilities?: () => Promise<Record<string, boolean | undefined>>;
-    };
-    if (typeof pkc.getClientCapabilities === 'function') {
-      const caps = await pkc.getClientCapabilities();
-      const prf = caps['extension:prf'] ?? caps['prf'];
-      if (typeof prf === 'boolean') {
-        return prf ? 'supported' : 'unsupported';
-      }
-    }
-  } catch {
-    // capability query failed — treat as unknown, not a hard "no"
-  }
-  return 'unknown';
+  return detectPrfSupport();
 }
 
 /**
