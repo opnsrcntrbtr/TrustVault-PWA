@@ -276,14 +276,374 @@
   },
   "nodes": [
     {
+      "label": "PROJECT_STATUS.md",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "project_status",
+      "community": 210,
+      "norm_label": "project_status.md"
+    },
+    {
+      "label": "TrustVault PWA \u2014 Project Status Summary",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "project_status_trustvault_pwa_project_status_summary",
+      "community": 210,
+      "norm_label": "trustvault pwa \u2014 project status summary"
+    },
+    {
+      "label": "\ud83c\udfaf Executive Summary",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "project_status_executive_summary",
+      "community": 210,
+      "norm_label": "\ud83c\udfaf executive summary"
+    },
+    {
+      "label": "\ud83d\udcca Codebase Health",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "project_status_codebase_health",
+      "community": 210,
+      "norm_label": "\ud83d\udcca codebase health"
+    },
+    {
+      "label": "\u2705 COMPLETED FEATURES (All 7 Phases + AI)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "project_status_completed_features_all_7_phases_ai",
+      "community": 210,
+      "norm_label": "\u2705 completed features (all 7 phases + ai)"
+    },
+    {
+      "label": "Phase 0: Critical Crypto (Completed 2026-05-15)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "project_status_phase_0_critical_crypto_completed_2026_05_15",
+      "community": 210,
+      "norm_label": "phase 0: critical crypto (completed 2026-05-15)"
+    },
+    {
+      "label": "Phase 1: Credential Management (Completed 2026-05-20)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "project_status_phase_1_credential_management_completed_2026_05_20",
+      "community": 210,
+      "norm_label": "phase 1: credential management (completed 2026-05-20)"
+    },
+    {
+      "label": "Phase 2: Security & Advanced Features (Completed 2026-05-25)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "project_status_phase_2_security_advanced_features_completed_2026_05_25",
+      "community": 210,
+      "norm_label": "phase 2: security & advanced features (completed 2026-05-25)"
+    },
+    {
+      "label": "Phase 3: Settings & UX (Completed 2026-06-01)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "project_status_phase_3_settings_ux_completed_2026_06_01",
+      "community": 210,
+      "norm_label": "phase 3: settings & ux (completed 2026-06-01)"
+    },
+    {
+      "label": "Phase 4: Polish & Advanced (Completed 2026-06-10)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "project_status_phase_4_polish_advanced_completed_2026_06_10",
+      "community": 210,
+      "norm_label": "phase 4: polish & advanced (completed 2026-06-10)"
+    },
+    {
+      "label": "Phase 5: Testing & Security Audit (Completed 2026-06-12)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L69",
+      "_origin": "ast",
+      "id": "project_status_phase_5_testing_security_audit_completed_2026_06_12",
+      "community": 210,
+      "norm_label": "phase 5: testing & security audit (completed 2026-06-12)"
+    },
+    {
+      "label": "Phase 6: Production Hardening (Completed 2026-06-15)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L76",
+      "_origin": "ast",
+      "id": "project_status_phase_6_production_hardening_completed_2026_06_15",
+      "community": 210,
+      "norm_label": "phase 6: production hardening (completed 2026-06-15)"
+    },
+    {
+      "label": "Phase 7: Multi-Vault Profiles (Completed 2026-06-18)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "project_status_phase_7_multi_vault_profiles_completed_2026_06_18",
+      "community": 210,
+      "norm_label": "phase 7: multi-vault profiles (completed 2026-06-18)"
+    },
+    {
+      "label": "AI Assistance (Experimental) (Completed 2026-06-21)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L92",
+      "_origin": "ast",
+      "id": "project_status_ai_assistance_experimental_completed_2026_06_21",
+      "community": 210,
+      "norm_label": "ai assistance (experimental) (completed 2026-06-21)"
+    },
+    {
+      "label": "\ud83d\udd10 Security Posture",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "project_status_security_posture",
+      "community": 210,
+      "norm_label": "\ud83d\udd10 security posture"
+    },
+    {
+      "label": "\ud83e\uddea Test Coverage",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L127",
+      "_origin": "ast",
+      "id": "project_status_test_coverage",
+      "community": 210,
+      "norm_label": "\ud83e\uddea test coverage"
+    },
+    {
+      "label": "\u26a0\ufe0f Known Limitations & Tech Debt",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L148",
+      "_origin": "ast",
+      "id": "project_status_known_limitations_tech_debt",
+      "community": 210,
+      "norm_label": "\u26a0\ufe0f known limitations & tech debt"
+    },
+    {
+      "label": "**Blocking Issues:** None",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L150",
+      "_origin": "ast",
+      "id": "project_status_blocking_issues_none",
+      "community": 210,
+      "norm_label": "**blocking issues:** none"
+    },
+    {
+      "label": "**Minor Gaps (Non-blocking, Low Priority):**",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L153",
+      "_origin": "ast",
+      "id": "project_status_minor_gaps_non_blocking_low_priority",
+      "community": 210,
+      "norm_label": "**minor gaps (non-blocking, low priority):**"
+    },
+    {
+      "label": "\ud83d\udcda Documentation Map",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L166",
+      "_origin": "ast",
+      "id": "project_status_documentation_map",
+      "community": 210,
+      "norm_label": "\ud83d\udcda documentation map"
+    },
+    {
+      "label": "\ud83d\ude80 Deployment Checklist",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L181",
+      "_origin": "ast",
+      "id": "project_status_deployment_checklist",
+      "community": 210,
+      "norm_label": "\ud83d\ude80 deployment checklist"
+    },
+    {
+      "label": "\ud83d\udd04 Maintenance & Next Steps",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L196",
+      "_origin": "ast",
+      "id": "project_status_maintenance_next_steps",
+      "community": 210,
+      "norm_label": "\ud83d\udd04 maintenance & next steps"
+    },
+    {
+      "label": "Before Next PR Merge",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L198",
+      "_origin": "ast",
+      "id": "project_status_before_next_pr_merge",
+      "community": 210,
+      "norm_label": "before next pr merge"
+    },
+    {
+      "label": "Post-Production (Phase 8+, if planned)",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L205",
+      "_origin": "ast",
+      "id": "project_status_post_production_phase_8_if_planned",
+      "community": 210,
+      "norm_label": "post-production (phase 8+, if planned)"
+    },
+    {
+      "label": "Documentation Maintenance",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L212",
+      "_origin": "ast",
+      "id": "project_status_documentation_maintenance",
+      "community": 210,
+      "norm_label": "documentation maintenance"
+    },
+    {
+      "label": "\ud83d\udcde Contact & Escalation",
+      "file_type": "document",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L218",
+      "_origin": "ast",
+      "id": "project_status_contact_escalation",
+      "community": 210,
+      "norm_label": "\ud83d\udcde contact & escalation"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "readme",
+      "community": 170,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "TrustVault PWA",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "readme_trustvault_pwa",
+      "community": 170,
+      "norm_label": "trustvault pwa"
+    },
+    {
+      "label": "Why TrustVault",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "readme_why_trustvault",
+      "community": 170,
+      "norm_label": "why trustvault"
+    },
+    {
+      "label": "Current Status \u2014 Feature Complete (June 2026)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "readme_current_status_feature_complete_june_2026",
+      "community": 170,
+      "norm_label": "current status \u2014 feature complete (june 2026)"
+    },
+    {
+      "label": "Architecture Snapshot",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "readme_architecture_snapshot",
+      "community": 170,
+      "norm_label": "architecture snapshot"
+    },
+    {
+      "label": "Getting Started",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "readme_getting_started",
+      "community": 170,
+      "norm_label": "getting started"
+    },
+    {
+      "label": "Verification Matrix",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "readme_verification_matrix",
+      "community": 170,
+      "norm_label": "verification matrix"
+    },
+    {
+      "label": "Documentation Map",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "readme_documentation_map",
+      "community": 170,
+      "norm_label": "documentation map"
+    },
+    {
+      "label": "Contributing & Expectations",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "readme_contributing_expectations",
+      "community": 170,
+      "norm_label": "contributing & expectations"
+    },
+    {
+      "label": "Support & Links",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "readme_support_links",
+      "community": 170,
+      "norm_label": "support & links"
+    },
+    {
       "label": "2026-07-06-webauthn-prf-zktv-refactor.md",
       "file_type": "document",
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor",
       "community": 316,
-      "norm_label": "2026-07-06-webauthn-prf-zktv-refactor.md"
+      "norm_label": "2026-07-06-webauthn-prf-zktv-refactor.md",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor"
     },
     {
       "label": "webauthn-prf-zktv Refactor Implementation Plan",
@@ -291,9 +651,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
       "community": 316,
-      "norm_label": "webauthn-prf-zktv refactor implementation plan"
+      "norm_label": "webauthn-prf-zktv refactor implementation plan",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan"
     },
     {
       "label": "Global Constraints",
@@ -301,9 +661,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
       "community": 316,
-      "norm_label": "global constraints"
+      "norm_label": "global constraints",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints"
     },
     {
       "label": "Task 1: Install the package + import smoke test",
@@ -311,9 +671,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L27",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_1_install_the_package_import_smoke_test",
       "community": 316,
-      "norm_label": "task 1: install the package + import smoke test"
+      "norm_label": "task 1: install the package + import smoke test",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_1_install_the_package_import_smoke_test"
     },
     {
       "label": "Task 2: Delegate PRF detection in `webauthn.ts` to the package",
@@ -321,9 +681,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L88",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_2_delegate_prf_detection_in_webauthn_ts_to_the_package",
       "community": 316,
-      "norm_label": "task 2: delegate prf detection in `webauthn.ts` to the package"
+      "norm_label": "task 2: delegate prf detection in `webauthn.ts` to the package",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_2_delegate_prf_detection_in_webauthn_ts_to_the_package"
     },
     {
       "label": "Task 3: `mapZktvError` \u2014 package errors \u2192 existing user-facing copy",
@@ -331,9 +691,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L223",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_3_mapzktverror_package_errors_existing_user_facing_copy",
       "community": 316,
-      "norm_label": "task 3: `mapzktverror` \u2014 package errors \u2192 existing user-facing copy"
+      "norm_label": "task 3: `mapzktverror` \u2014 package errors \u2192 existing user-facing copy",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_3_mapzktverror_package_errors_existing_user_facing_copy"
     },
     {
       "label": "Task 4: Enrollment path \u2014 `registerBiometric` via `enrollPrfCredential` + `wrapSecret`",
@@ -341,9 +701,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L356",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_4_enrollment_path_registerbiometric_via_enrollprfcredential_wrapsecret",
       "community": 316,
-      "norm_label": "task 4: enrollment path \u2014 `registerbiometric` via `enrollprfcredential` + `wrapsecret`"
+      "norm_label": "task 4: enrollment path \u2014 `registerbiometric` via `enrollprfcredential` + `wrapsecret`",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_4_enrollment_path_registerbiometric_via_enrollprfcredential_wrapsecret"
     },
     {
       "label": "Task 5: Unlock path + lazy legacy migration \u2014 `authenticateWithBiometric`",
@@ -351,9 +711,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L527",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_5_unlock_path_lazy_legacy_migration_authenticatewithbiometric",
       "community": 316,
-      "norm_label": "task 5: unlock path + lazy legacy migration \u2014 `authenticatewithbiometric`"
+      "norm_label": "task 5: unlock path + lazy legacy migration \u2014 `authenticatewithbiometric`",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_5_unlock_path_lazy_legacy_migration_authenticatewithbiometric"
     },
     {
       "label": "Task 6: Cleanup \u2014 delete dead inline code, drop SimpleWebAuthn, refresh docs",
@@ -361,9 +721,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L721",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_6_cleanup_delete_dead_inline_code_drop_simplewebauthn_refresh_docs",
       "community": 316,
-      "norm_label": "task 6: cleanup \u2014 delete dead inline code, drop simplewebauthn, refresh docs"
+      "norm_label": "task 6: cleanup \u2014 delete dead inline code, drop simplewebauthn, refresh docs",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_6_cleanup_delete_dead_inline_code_drop_simplewebauthn_refresh_docs"
     },
     {
       "label": "Post-plan verification (manual, before merge to main)",
@@ -371,9 +731,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L779",
       "_origin": "ast",
-      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_post_plan_verification_manual_before_merge_to_main",
       "community": 316,
-      "norm_label": "post-plan verification (manual, before merge to main)"
+      "norm_label": "post-plan verification (manual, before merge to main)",
+      "id": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_post_plan_verification_manual_before_merge_to_main"
     },
     {
       "label": "2026-07-06-webauthn-prf-zktv-refactor-design.md",
@@ -381,9 +741,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design",
       "community": 14,
-      "norm_label": "2026-07-06-webauthn-prf-zktv-refactor-design.md"
+      "norm_label": "2026-07-06-webauthn-prf-zktv-refactor-design.md",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design"
     },
     {
       "label": "Design: Refactor TrustVault-PWA onto `webauthn-prf-zktv`",
@@ -391,9 +751,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
       "community": 14,
-      "norm_label": "design: refactor trustvault-pwa onto `webauthn-prf-zktv`"
+      "norm_label": "design: refactor trustvault-pwa onto `webauthn-prf-zktv`",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv"
     },
     {
       "label": "Goal",
@@ -401,9 +761,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_goal",
       "community": 14,
-      "norm_label": "goal"
+      "norm_label": "goal",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_goal"
     },
     {
       "label": "Decisions (user-confirmed)",
@@ -411,9 +771,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_decisions_user_confirmed",
       "community": 14,
-      "norm_label": "decisions (user-confirmed)"
+      "norm_label": "decisions (user-confirmed)",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_decisions_user_confirmed"
     },
     {
       "label": "Current state (refactor surface)",
@@ -421,9 +781,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_current_state_refactor_surface",
       "community": 14,
-      "norm_label": "current state (refactor surface)"
+      "norm_label": "current state (refactor surface)",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_current_state_refactor_surface"
     },
     {
       "label": "Design",
@@ -431,9 +791,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L44",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
       "community": 14,
-      "norm_label": "design"
+      "norm_label": "design",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design"
     },
     {
       "label": "1. Dependencies",
@@ -441,9 +801,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L46",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_1_dependencies",
       "community": 14,
-      "norm_label": "1. dependencies"
+      "norm_label": "1. dependencies",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_1_dependencies"
     },
     {
       "label": "2. `src/core/auth/webauthn.ts` \u2014 thin app layer",
@@ -451,9 +811,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L54",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_2_src_core_auth_webauthn_ts_thin_app_layer",
       "community": 14,
-      "norm_label": "2. `src/core/auth/webauthn.ts` \u2014 thin app layer"
+      "norm_label": "2. `src/core/auth/webauthn.ts` \u2014 thin app layer",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_2_src_core_auth_webauthn_ts_thin_app_layer"
     },
     {
       "label": "3. Repository layer (`UserRepositoryImpl.ts`)",
@@ -461,9 +821,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L78",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_3_repository_layer_userrepositoryimpl_ts",
       "community": 14,
-      "norm_label": "3. repository layer (`userrepositoryimpl.ts`)"
+      "norm_label": "3. repository layer (`userrepositoryimpl.ts`)",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_3_repository_layer_userrepositoryimpl_ts"
     },
     {
       "label": "4. UI layer",
@@ -471,9 +831,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L116",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_4_ui_layer",
       "community": 14,
-      "norm_label": "4. ui layer"
+      "norm_label": "4. ui layer",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_4_ui_layer"
     },
     {
       "label": "5. Error handling",
@@ -481,9 +841,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L122",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_5_error_handling",
       "community": 14,
-      "norm_label": "5. error handling"
+      "norm_label": "5. error handling",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_5_error_handling"
     },
     {
       "label": "6. Testing",
@@ -491,9 +851,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L131",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_6_testing",
       "community": 14,
-      "norm_label": "6. testing"
+      "norm_label": "6. testing",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_6_testing"
     },
     {
       "label": "7. Out of scope",
@@ -501,9 +861,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L146",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_7_out_of_scope",
       "community": 14,
-      "norm_label": "7. out of scope"
+      "norm_label": "7. out of scope",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_7_out_of_scope"
     },
     {
       "label": "Phasing (4 PRs)",
@@ -511,9 +871,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L153",
       "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_phasing_4_prs",
       "community": 14,
-      "norm_label": "phasing (4 prs)"
+      "norm_label": "phasing (4 prs)",
+      "id": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_phasing_4_prs"
     },
     {
       "label": "SECURITY.md",
@@ -25638,266 +25998,6 @@
       "id": "project_overview_deprecated_see_project_context_md_instead"
     },
     {
-      "label": "PROJECT_STATUS.md",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "project_status.md",
-      "id": "project_status"
-    },
-    {
-      "label": "TrustVault PWA \u2014 Project Status Summary",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "trustvault pwa \u2014 project status summary",
-      "id": "project_status_trustvault_pwa_project_status_summary"
-    },
-    {
-      "label": "\ud83c\udfaf Executive Summary",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L7",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83c\udfaf executive summary",
-      "id": "project_status_executive_summary"
-    },
-    {
-      "label": "\ud83d\udcca Codebase Health",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L23",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83d\udcca codebase health",
-      "id": "project_status_codebase_health"
-    },
-    {
-      "label": "\u2705 COMPLETED FEATURES (All 7 Phases + AI)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L35",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\u2705 completed features (all 7 phases + ai)",
-      "id": "project_status_completed_features_all_7_phases_ai"
-    },
-    {
-      "label": "Phase 0: Critical Crypto (Completed 202 la-05-15)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L37",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 0: critical crypto (completed 202 la-05-15)",
-      "id": "project_status_phase_0_critical_crypto_completed_202_la_05_15"
-    },
-    {
-      "label": "Phase 1: Credential Management (Completed 2026-05-20)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L42",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 1: credential management (completed 2026-05-20)",
-      "id": "project_status_phase_1_credential_management_completed_2026_05_20"
-    },
-    {
-      "label": "Phase 2: Security & Advanced Features (Completed 2026-05-25)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L48",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 2: security & advanced features (completed 2026-05-25)",
-      "id": "project_status_phase_2_security_advanced_features_completed_2026_05_25"
-    },
-    {
-      "label": "Phase 3: Settings & UX (Completed 2026-06-01)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L56",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 3: settings & ux (completed 2026-06-01)",
-      "id": "project_status_phase_3_settings_ux_completed_2026_06_01"
-    },
-    {
-      "label": "Phase 4: Polish & Advanced (Completed 2026-06-10)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L62",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 4: polish & advanced (completed 2026-06-10)",
-      "id": "project_status_phase_4_polish_advanced_completed_2026_06_10"
-    },
-    {
-      "label": "Phase 5: Testing & Security Audit (Completed 2026-06-12)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L69",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 5: testing & security audit (completed 2026-06-12)",
-      "id": "project_status_phase_5_testing_security_audit_completed_2026_06_12"
-    },
-    {
-      "label": "Phase 6: Production Hardening (Completed 2026-06-15)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L76",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 6: production hardening (completed 2026-06-15)",
-      "id": "project_status_phase_6_production_hardening_completed_2026_06_15"
-    },
-    {
-      "label": "Phase 7: Multi-Vault Profiles (Completed 2026-06-18)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L84",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "phase 7: multi-vault profiles (completed 2026-06-18)",
-      "id": "project_status_phase_7_multi_vault_profiles_completed_2026_06_18"
-    },
-    {
-      "label": "AI Assistance (Experimental) (Completed 2026-06-21)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L92",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "ai assistance (experimental) (completed 2026-06-21)",
-      "id": "project_status_ai_assistance_experimental_completed_2026_06_21"
-    },
-    {
-      "label": "\ud83d\udd10 Security Posture",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L102",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83d\udd10 security posture",
-      "id": "project_status_security_posture"
-    },
-    {
-      "label": "\ud83e\uddea Test Coverage",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L127",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83e\uddea test coverage",
-      "id": "project_status_test_coverage"
-    },
-    {
-      "label": "\u26a0\ufe0f Known Limitations & Tech Debt",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L148",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\u26a0\ufe0f known limitations & tech debt",
-      "id": "project_status_known_limitations_tech_debt"
-    },
-    {
-      "label": "**Blocking Issues:** None",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L150",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "**blocking issues:** none",
-      "id": "project_status_blocking_issues_none"
-    },
-    {
-      "label": "**Minor Gaps (Non-blocking, Low Priority):**",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L153",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "**minor gaps (non-blocking, low priority):**",
-      "id": "project_status_minor_gaps_non_blocking_low_priority"
-    },
-    {
-      "label": "\ud83d\udcda Documentation Map",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L166",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83d\udcda documentation map",
-      "id": "project_status_documentation_map"
-    },
-    {
-      "label": "\ud83d\ude80 Deployment Checklist",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L181",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83d\ude80 deployment checklist",
-      "id": "project_status_deployment_checklist"
-    },
-    {
-      "label": "\ud83d\udd04 Maintenance & Next Steps",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L196",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83d\udd04 maintenance & next steps",
-      "id": "project_status_maintenance_next_steps"
-    },
-    {
-      "label": "Before Next PR Merge",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L198",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "before next pr merge",
-      "id": "project_status_before_next_pr_merge"
-    },
-    {
-      "label": "Post-Production (Phase 8+, if planned)",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L205",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "post-production (phase 8+, if planned)",
-      "id": "project_status_post_production_phase_8_if_planned"
-    },
-    {
-      "label": "Documentation Maintenance",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L212",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "documentation maintenance",
-      "id": "project_status_documentation_maintenance"
-    },
-    {
-      "label": "\ud83d\udcde Contact & Escalation",
-      "file_type": "document",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L218",
-      "_origin": "ast",
-      "community": 210,
-      "norm_label": "\ud83d\udcde contact & escalation",
-      "id": "project_status_contact_escalation"
-    },
-    {
       "label": "PROJECT_SUMMARY.md",
       "file_type": "document",
       "source_file": "PROJECT_SUMMARY.md",
@@ -25936,106 +26036,6 @@
       "community": 255,
       "norm_label": "\u26a0\ufe0f deprecated \u2014 see getting_started.md instead",
       "id": "quickstart_deprecated_see_getting_started_md_instead"
-    },
-    {
-      "label": "README.md",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "readme.md",
-      "id": "readme"
-    },
-    {
-      "label": "TrustVault PWA",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "trustvault pwa",
-      "id": "readme_trustvault_pwa"
-    },
-    {
-      "label": "Why TrustVault",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "why trustvault",
-      "id": "readme_why_trustvault"
-    },
-    {
-      "label": "Current Status \u2014 Feature Complete (June 2026)",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L17",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "current status \u2014 feature complete (june 2026)",
-      "id": "readme_current_status_feature_complete_june_2026"
-    },
-    {
-      "label": "Architecture Snapshot",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L29",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "architecture snapshot",
-      "id": "readme_architecture_snapshot"
-    },
-    {
-      "label": "Getting Started",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L41",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "getting started",
-      "id": "readme_getting_started"
-    },
-    {
-      "label": "Verification Matrix",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L58",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "verification matrix",
-      "id": "readme_verification_matrix"
-    },
-    {
-      "label": "Documentation Map",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L72",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "documentation map",
-      "id": "readme_documentation_map"
-    },
-    {
-      "label": "Contributing & Expectations",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L91",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "contributing & expectations",
-      "id": "readme_contributing_expectations"
-    },
-    {
-      "label": "Support & Links",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L100",
-      "_origin": "ast",
-      "community": 170,
-      "norm_label": "support & links",
-      "id": "readme_support_links"
     },
     {
       "label": "ROADMAP.md",
@@ -38834,12 +38834,352 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "project_status",
+      "target": "project_status_trustvault_pwa_project_status_summary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_codebase_health",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_completed_features_all_7_phases_ai",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L218",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_contact_escalation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L181",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_deployment_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L166",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_documentation_map",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_executive_summary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_known_limitations_tech_debt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L196",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_maintenance_next_steps",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_security_posture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "project_status_trustvault_pwa_project_status_summary",
+      "target": "project_status_test_coverage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_ai_assistance_experimental_completed_2026_06_21",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_0_critical_crypto_completed_2026_05_15",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_1_credential_management_completed_2026_05_20",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_2_security_advanced_features_completed_2026_05_25",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_3_settings_ux_completed_2026_06_01",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_4_polish_advanced_completed_2026_06_10",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_5_testing_security_audit_completed_2026_06_12",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_6_production_hardening_completed_2026_06_15",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "project_status_completed_features_all_7_phases_ai",
+      "target": "project_status_phase_7_multi_vault_profiles_completed_2026_06_18",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "project_status_known_limitations_tech_debt",
+      "target": "project_status_blocking_issues_none",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "project_status_known_limitations_tech_debt",
+      "target": "project_status_minor_gaps_non_blocking_low_priority",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "project_status_maintenance_next_steps",
+      "target": "project_status_before_next_pr_merge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L212",
+      "weight": 1.0,
+      "source": "project_status_maintenance_next_steps",
+      "target": "project_status_documentation_maintenance",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_STATUS.md",
+      "source_location": "L205",
+      "weight": 1.0,
+      "source": "project_status_maintenance_next_steps",
+      "target": "project_status_post_production_phase_8_if_planned",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme",
+      "target": "readme_trustvault_pwa",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_architecture_snapshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_contributing_expectations",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_current_status_feature_complete_june_2026",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_documentation_map",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_getting_started",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_support_links",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_verification_matrix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "readme_trustvault_pwa",
+      "target": "readme_why_trustvault",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan"
     },
     {
       "relation": "contains",
@@ -38847,9 +39187,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints"
     },
     {
       "relation": "contains",
@@ -38857,9 +39197,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L779",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_webauthn_prf_zktv_refactor_implementation_plan",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_post_plan_verification_manual_before_merge_to_main",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_post_plan_verification_manual_before_merge_to_main"
     },
     {
       "relation": "contains",
@@ -38867,9 +39207,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_1_install_the_package_import_smoke_test",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_1_install_the_package_import_smoke_test"
     },
     {
       "relation": "contains",
@@ -38877,9 +39217,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L88",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_2_delegate_prf_detection_in_webauthn_ts_to_the_package",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_2_delegate_prf_detection_in_webauthn_ts_to_the_package"
     },
     {
       "relation": "contains",
@@ -38887,9 +39227,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L223",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_3_mapzktverror_package_errors_existing_user_facing_copy",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_3_mapzktverror_package_errors_existing_user_facing_copy"
     },
     {
       "relation": "contains",
@@ -38897,9 +39237,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L356",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_4_enrollment_path_registerbiometric_via_enrollprfcredential_wrapsecret",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_4_enrollment_path_registerbiometric_via_enrollprfcredential_wrapsecret"
     },
     {
       "relation": "contains",
@@ -38907,9 +39247,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L527",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_5_unlock_path_lazy_legacy_migration_authenticatewithbiometric",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_5_unlock_path_lazy_legacy_migration_authenticatewithbiometric"
     },
     {
       "relation": "contains",
@@ -38917,9 +39257,9 @@
       "source_file": "docs/superpowers/plans/2026-07-06-webauthn-prf-zktv-refactor.md",
       "source_location": "L721",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_global_constraints",
-      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_6_cleanup_delete_dead_inline_code_drop_simplewebauthn_refresh_docs",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_plans_2026_07_06_webauthn_prf_zktv_refactor_task_6_cleanup_delete_dead_inline_code_drop_simplewebauthn_refresh_docs"
     },
     {
       "relation": "contains",
@@ -38927,9 +39267,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv"
     },
     {
       "relation": "contains",
@@ -38937,9 +39277,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_current_state_refactor_surface",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_current_state_refactor_surface"
     },
     {
       "relation": "contains",
@@ -38947,9 +39287,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_decisions_user_confirmed",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_decisions_user_confirmed"
     },
     {
       "relation": "contains",
@@ -38957,9 +39297,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design"
     },
     {
       "relation": "contains",
@@ -38967,9 +39307,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_goal",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_goal"
     },
     {
       "relation": "contains",
@@ -38977,9 +39317,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design_refactor_trustvault_pwa_onto_webauthn_prf_zktv",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_phasing_4_prs",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_phasing_4_prs"
     },
     {
       "relation": "contains",
@@ -38987,9 +39327,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_1_dependencies",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_1_dependencies"
     },
     {
       "relation": "contains",
@@ -38997,9 +39337,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_2_src_core_auth_webauthn_ts_thin_app_layer",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_2_src_core_auth_webauthn_ts_thin_app_layer"
     },
     {
       "relation": "contains",
@@ -39007,9 +39347,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_3_repository_layer_userrepositoryimpl_ts",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_3_repository_layer_userrepositoryimpl_ts"
     },
     {
       "relation": "contains",
@@ -39017,9 +39357,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L116",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_4_ui_layer",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_4_ui_layer"
     },
     {
       "relation": "contains",
@@ -39027,9 +39367,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_5_error_handling",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_5_error_handling"
     },
     {
       "relation": "contains",
@@ -39037,9 +39377,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L131",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_6_testing",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_6_testing"
     },
     {
       "relation": "contains",
@@ -39047,9 +39387,9 @@
       "source_file": "docs/superpowers/specs/2026-07-06-webauthn-prf-zktv-refactor-design.md",
       "source_location": "L146",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_design",
-      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_7_out_of_scope",
-      "confidence_score": 1.0
+      "target": "docs_superpowers_specs_2026_07_06_webauthn_prf_zktv_refactor_design_7_out_of_scope"
     },
     {
       "relation": "contains",
@@ -83271,256 +83611,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status",
-      "target": "project_status_trustvault_pwa_project_status_summary"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L23",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_codebase_health"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_completed_features_all_7_phases_ai"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L209",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_contact_escalation"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L172",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_deployment_checklist"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L157",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_documentation_map"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_executive_summary"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L139",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_known_limitations_tech_debt"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L186",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_maintenance_next_steps"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L94",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_security_posture"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L118",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_trustvault_pwa_project_status_summary",
-      "target": "project_status_test_coverage"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L92",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_ai_assistance_experimental_completed_2026_06_21"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L37",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_0_critical_crypto_completed_202_la_05_15"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L42",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_1_credential_management_completed_2026_05_20"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L48",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_2_security_advanced_features_completed_2026_05_25"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L56",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_3_settings_ux_completed_2026_06_01"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L62",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_4_polish_advanced_completed_2026_06_10"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L69",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_5_testing_security_audit_completed_2026_06_12"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L76",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_6_production_hardening_completed_2026_06_15"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L84",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_completed_features_all_7_phases_ai",
-      "target": "project_status_phase_7_multi_vault_profiles_completed_2026_06_18"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L141",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_known_limitations_tech_debt",
-      "target": "project_status_blocking_issues_none"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L144",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_known_limitations_tech_debt",
-      "target": "project_status_minor_gaps_non_blocking_low_priority"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L188",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_maintenance_next_steps",
-      "target": "project_status_before_next_pr_merge"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L202",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_maintenance_next_steps",
-      "target": "project_status_documentation_maintenance"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PROJECT_STATUS.md",
-      "source_location": "L195",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "project_status_maintenance_next_steps",
-      "target": "project_status_post_production_phase_8_if_planned"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "PROJECT_SUMMARY.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -83537,96 +83627,6 @@
       "confidence_score": 1.0,
       "source": "quickstart",
       "target": "quickstart_deprecated_see_getting_started_md_instead"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme",
-      "target": "readme_trustvault_pwa"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L29",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_architecture_snapshot"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L82",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_contributing_expectations"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_current_status_feature_complete_june_2026"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L71",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_documentation_map"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L40",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_getting_started"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L91",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_support_links"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L57",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_verification_matrix"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_trustvault_pwa",
-      "target": "readme_why_trustvault"
     },
     {
       "relation": "contains",
@@ -94920,5 +94920,5 @@
       "source_file": "src/core/breach/unlockBreachRefresh.ts"
     }
   ],
-  "built_at_commit": "30a0d612a606d79ef98cc0af25e07e5be0813c03"
+  "built_at_commit": "dc5f792a61a06746920d4cec63f0c5a158706000"
 }
