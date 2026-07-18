@@ -21,3 +21,11 @@
 **Learning:** `Math.random()` is not cryptographically secure and can generate predictable values. In security contexts (like generating identifiers that might be used to correlate or authorize messages in extensions between content scripts and background workers), predictable random values could potentially lead to spoofing attacks or other logic flaws where an attacker anticipates the IDs.
 
 **Prevention:** Always use cryptographically secure random number generators such as `crypto.randomUUID()` or `crypto.getRandomValues()` instead of `Math.random()`, especially in components dealing with request identifiers or security tokens.
+
+## 2026-06-20 - [XSS] Incomplete HTML Escaping using DOM properties
+
+**Vulnerability:** The `escapeHtml` utility in `chrome-extension/scripts/content.js` relied on setting `.textContent` and reading `.innerHTML` to escape characters. While this escapes `<`, `>`, and `&`, it fails to escape single (`'`) and double (`"`) quotes.
+
+**Learning:** Using DOM properties (`textContent` to `innerHTML`) for HTML escaping is incomplete. Browsers do not escape quotes when generating `innerHTML` from text nodes because quotes are perfectly valid in text contexts. However, if this escaped string is later interpolated into an HTML attribute context (e.g., `<input value="${escapeHtml(userInput)}">`), the unescaped quotes can be used to break out of the attribute and inject malicious event handlers or scripts, leading to Cross-Site Scripting (XSS).
+
+**Prevention:** Always use a robust, explicit string replacement method (e.g., regex replacements) or dedicated libraries (like DOMPurify) to escape HTML entities. Ensure that `&`, `<`, `>`, `"`, and `'` are all explicitly escaped into their corresponding entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`).
