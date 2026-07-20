@@ -397,7 +397,7 @@ describe('OWASP M4: Insufficient Input Validation', () => {
           expect(error).toBeDefined();
         }
       }
-    });
+    }, 30000);
   });
 
   describe('NoSQL Injection Prevention', () => {

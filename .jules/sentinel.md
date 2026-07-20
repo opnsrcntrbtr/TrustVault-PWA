@@ -21,3 +21,11 @@
 **Learning:** `Math.random()` is not cryptographically secure and can generate predictable values. In security contexts (like generating identifiers that might be used to correlate or authorize messages in extensions between content scripts and background workers), predictable random values could potentially lead to spoofing attacks or other logic flaws where an attacker anticipates the IDs.
 
 **Prevention:** Always use cryptographically secure random number generators such as `crypto.randomUUID()` or `crypto.getRandomValues()` instead of `Math.random()`, especially in components dealing with request identifiers or security tokens.
+
+## 2026-06-25 - [XSS] Incomplete HTML Escaping using innerHTML
+
+**Vulnerability:** The `escapeHtml` function in `chrome-extension/scripts/content.js` used a DOM-based approach (`div.textContent = text; return div.innerHTML;`) which fails to escape single (`'`) and double (`"`) quotes. This could lead to Cross-Site Scripting (XSS) if the escaped text is ever used within an HTML attribute.
+
+**Learning:** Relying on the browser's `.innerHTML` conversion from `.textContent` is insufficient for comprehensive HTML escaping because it only escapes `<`, `>`, and `&` in text nodes, but not quotes. It is a common anti-pattern that leaves attribute-based injection vectors open.
+
+**Prevention:** Always use a robust string replacement method that explicitly escapes all five significant HTML characters: `&`, `<`, `>`, `"`, and `'` into their corresponding HTML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#039;`).
