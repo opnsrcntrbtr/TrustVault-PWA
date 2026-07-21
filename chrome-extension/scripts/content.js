@@ -43,8 +43,8 @@ function detectLoginForms() {
  */
 function findUsernameField(form) {
   // Try autocomplete attribute first
-  let field = form.querySelector('[autocomplete="username"]') ||
-              form.querySelector('[autocomplete="email"]');
+  let field =
+    form.querySelector('[autocomplete="username"]') || form.querySelector('[autocomplete="email"]');
 
   if (field) return field;
 
@@ -83,8 +83,9 @@ function findUsernameField(form) {
  */
 function findPasswordField(form) {
   // Try autocomplete attribute first
-  let field = form.querySelector('[autocomplete="current-password"]') ||
-              form.querySelector('[autocomplete="password"]');
+  let field =
+    form.querySelector('[autocomplete="current-password"]') ||
+    form.querySelector('[autocomplete="password"]');
 
   if (field) return field;
 
@@ -220,7 +221,7 @@ function handleOutsideClick(event) {
  * Fill credential into form
  */
 function fillCredential(credential) {
-  detectedForms.forEach(formData => {
+  detectedForms.forEach((formData) => {
     if (formData.usernameField) {
       formData.usernameField.value = credential.username;
       formData.usernameField.dispatchEvent(new Event('input', { bubbles: true }));
@@ -241,9 +242,13 @@ function fillCredential(credential) {
  * Escape HTML to prevent XSS
  */
 function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+  if (!text) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 /**
@@ -290,7 +295,7 @@ async function initializeAutofill() {
   console.log(`TrustVault: Found ${credentials.length} matching credential(s)`);
 
   // Add focus listeners to username fields
-  forms.forEach(formData => {
+  forms.forEach((formData) => {
     if (formData.usernameField) {
       formData.usernameField.addEventListener('focus', () => {
         createAutofillOverlay(formData.usernameField, credentials);
