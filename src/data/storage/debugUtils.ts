@@ -27,7 +27,7 @@ export async function listUsers(): Promise<void> {
     const users = await db.users.toArray();
     console.log('Users in database:', users.length);
     users.forEach((user, index) => {
-      console.log(`${index + 1}. ${user.email} (ID: ${user.id})`);
+      console.log(`${String(index + 1)}. ${user.email ?? 'unknown'} (ID: ${user.id})`);
     });
   } catch (error) {
     console.error('Failed to list users:', error);
@@ -50,14 +50,4 @@ export async function deleteUserByEmail(email: string): Promise<void> {
     console.error('Failed to delete user:', error);
     throw error;
   }
-}
-
-// Expose to window for console access
-if (typeof window !== 'undefined') {
-  (window as any).debugDB = {
-    clearAllData,
-    listUsers,
-    deleteUserByEmail,
-  };
-  console.log('Debug utilities available: window.debugDB');
 }
