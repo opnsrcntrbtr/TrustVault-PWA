@@ -17,20 +17,10 @@ suite: 394 tests across `src/core/auth`, `src/data/repositories`,
 type-check` 0 errors; `npm run lint` 0 new issues on touched files (baseline
 pre-existing debt unchanged or reduced).
 
-**Manual verification still required before merge to main** (documented here per
-the plan's post-plan checklist; not yet executed in this environment):
-
-- [ ] Fresh biometric enrollment on `localhost` with a PRF-capable
-      authenticator — expect a **single** biometric prompt on Chrome 147+
-      (`usedSingleCeremony: true`), two prompts elsewhere.
-- [ ] Lock → biometric unlock → vault opens; DevTools → IndexedDB → confirm
-      `wrappedVaultKey` is a `{"v":1,...}` envelope, not raw `EncryptedData` JSON.
-- [ ] Biometric unlock for a pre-refactor enrolled user (legacy record) succeeds
-      on the first try and the stored `wrappedVaultKey` flips to the v1 envelope;
-      a second unlock succeeds without re-triggering the migration path.
-- [ ] Cancelling the biometric prompt shows "cancelled or timed out" and master
-      password unlock still works.
-- [ ] `npm run build` succeeds; `npm run lighthouse` still scores >90.
+**Manual verification still required before merge to main.**
+See `docs/manual-verification/webauthn-prf-zktv-manual-verification.md` for the
+complete step-by-step guide with DevTools inspection commands, pass criteria,
+and sign-off table.
 
 ---
 

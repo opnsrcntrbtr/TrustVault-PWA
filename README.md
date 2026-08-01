@@ -74,26 +74,33 @@ Document manual verifications (biometrics, auto-lock, breach triage) in `TEST_ST
 ---
 
 ## Documentation Map
+**AI Agent Instructions:**
+- **`AGENTS.md`** – Single source of truth: architecture, security patterns, conventions for all AI coding agents
+
 **Quick Start:**
-- **`PROJECT_STATUS.md`** – Single source of truth: project health, all 7 phases, deployment checklist
-- **`ROADMAP.md`** – Full phased backlog with completion timeline (all phases 0-7 documented)
+- **`docs/status/PROJECT_STATUS.md`** – Project health, all 7 phases, deployment checklist
+- **`docs/guides/ROADMAP.md`** – Full phased backlog with completion timeline (all phases 0-7 documented)
+- **`docs/guides/GETTING_STARTED.md`** – Setup guide, first login, troubleshooting
 
-**Detailed Guides:**
-- `CLAUDE.md` / `.github/copilot-instructions.md` – Coding guardrails, tech stack, critical rules
-- `SECURITY.md`, `SECURITY_AUDIT_REPORT.md` – Cryptographic implementation, OWASP compliance
-- `SECURITY_HARDENING_PLAN_2026-06.md` – Security phases A–E (CSP, biometric, key zeroization)
-- `BREACH_DETECTION_README.md`, `PHASE_4.1_BIOMETRIC_AUTH.md` – Feature deep dives
-- `AGENTS.md` – Responsibilities, workflows, escalation paths
+**Architecture & Security:**
+- **`docs/architecture/ARCHITECTURE.md`** – Clean Architecture layering, module contracts
+- **`docs/security/SECURITY.md`** – Cryptographic implementation, OWASP compliance
+- **`docs/security/GAP_ANALYSIS.md`** – Historical gap analysis (sections 1–16 superseded by §17)
+- **`docs/security/SECURITY_AUDIT_REPORT.md`** – Security audit findings and remediation
 
-**Audit & Validation:**
-- **`DOC_VALIDATION_REPORT.md`** – Documentation audit: gaps, lint errors, test status (2026-06-18)
-- `KEY_FINDINGS.md` – Audit deltas and historical decisions
-- `PROJECT_CONTEXT.md` – Hub linking all deep-dive docs
+**Deployment & Testing:**
+- **`docs/deployment/DEPLOYMENT.md`** – Vercel deployment, CI/CD, verification
+- **`docs/testing/TEST_STATUS.md`** – Test coverage, manual verification evidence
+
+**Historical & Reference:**
+- `DOC_VALIDATION_REPORT.md` – Documentation audit: gaps, lint errors (2026-06-18)
+- `KEY_FINDINGS.md` – Historical audit deltas and resolutions
+- `PROJECT_CONTEXT.md` – Hub linking all feature deep-dives
 
 ---
 
 ## Contributing & Expectations
-- Follow the guardrails in `CLAUDE.md` and `.github/copilot-instructions.md` before touching code.
+- Follow the guardrails in **`AGENTS.md`** (consolidated AI agent instructions) before touching code.
 - Every enhancement must land with matching tests plus documented verification steps.
 - Never log or persist secrets; keep vault keys, CryptoKey material, and decrypted payloads in memory only.
 - Use feature flags (`src/configs/featureFlags.ts`) for experimental UX so production builds remain stable.

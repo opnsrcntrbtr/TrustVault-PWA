@@ -1,72 +1,433 @@
-# TrustVault PWA - Agentic Coding Guide
+# TrustVault PWA - AI Agent Instructions
 
-This file is the primary operating guide for Codex and similar agentic AI coding systems working in TrustVault PWA. Treat `CLAUDE.md` as the deeper implementation reference and keep this file focused on shared agent behavior, verification, and handoff discipline.
+**Security-First Credential Manager** | React 19 + TypeScript 5.7 + Vite 6 + Clean Architecture
 
-## Mission Snapshot
+---
 
-Deliver a zero-knowledge, offline-first password vault with a world-class security posture and refined UX. Every agent must pair code changes with measurable verification, documentation updates when scope changes, and careful handling of secrets.
+## Current Objectives (Nov 2025)
 
-## Agent Operating Rules
+1. **Vault Trust Hardening** – Patch vault key decrypt/read bugs, wire `useAutoLock`, scrub decrypted state on lock, and document verification in `TEST_STATUS.md`.
+2. **CredOps Experience** – Deliver credential CRUD UX, password generator, secure clipboard manager, search/filter, responsive dashboard, and TOTP display.
+3. **Passwordless & Recovery** – Implement WebAuthn biometric unlock, change-master-password flows, and encrypted import/export with recovery copy.
+4. **Threat Intelligence & Reporting** – Integrate breach detection UX, expand Vitest/integration coverage (>85%), and keep `SECURITY_AUDIT_REPORT.md` current.
 
-- Read repo context before changing files: start with `graphify` guidance below, then inspect the smallest relevant set of files.
-- Prefer `rg`/`rg --files` for search, follow existing architecture and local patterns, and keep diffs scoped to the user request.
-- Never log, expose, persist, or serialize master passwords, vault keys, decrypted payloads, CryptoKey material, session secrets, or biometric PRF-derived material.
-- Do not revert or overwrite user changes unless the user explicitly asks. If unrelated local changes exist, leave them alone.
-- Preserve the offline-first posture: database, service worker, network, OCR, breach detection, and auth failures must degrade gracefully.
-- Keep risky or experimental behavior feature-flagged or clearly guarded, with owner and rollback notes when applicable.
-- Update `README.md`, `ROADMAP.md`, `TEST_STATUS.md`, `SECURITY_AUDIT_REPORT.md`, `CLAUDE.md`, or this file when scope, validation, ownership, or workflows change.
+When implementing new functionality:
+- Reference `docs/guides/ROADMAP.md` for prompts + validation, and update it if acceptance criteria evolve.
+- Touch companion docs (README/AGENTS/CLAUDE/copilot instructions) whenever developer workflows, tooling expectations, or ownership changes.
+- Record manual verification evidence in `docs/testing/TEST_STATUS.md` (UX) and `docs/security/SECURITY_AUDIT_REPORT.md` (security) before merging.
 
-## CLAUDE.md Reference
+---
 
-Before implementing, review `CLAUDE.md` for the concrete guardrails that apply to this repo:
+## Architecture Overview
 
-- React 19 StrictMode-safe effects, cleanup, mounted flags, and timeout fallbacks.
-- Offline-first Dexie initialization and graceful persistence failure behavior.
-- TypeScript strict-mode expectations, including null-safe access and explicit returns.
-- `@/` path aliases and Clean Architecture dependency boundaries.
-- Security headers managed through `src/config/securityHeaders.ts`, not inline meta tags or duplicated config.
-- PWA icon, service worker, Lighthouse, and performance expectations.
-- Zustand state handling, vault-key memory hygiene, crypto rules, and lazy loading of heavy WASM/UMD modules.
+This is an **offline-first PWA** using Clean Architecture with three distinct layers:
 
-If `AGENTS.md` and `CLAUDE.md` disagree on implementation details, prefer `CLAUDE.md` for code-level rules and update the stale document as part of the same change when appropriate.
+```
+src/
+├── presentation/   # React UI, Zustand stores, MUI components
+├── domain/         # Business entities & repository interfaces
+├── data/           # Repository implementations, IndexedDB (Dexie)
+└── core/           # Crypto utilities, auth services
+```
 
-## Responsibility Lenses
+**Critical Rule**: Dependencies flow inward only. `presentation` → `domain` ← `data` ← `core`. Domain never imports from data/presentation.
 
-Use these lenses to catch the right risks while planning and reviewing work:
+### Path Aliases
+Use `@/` imports everywhere (configured in tsconfig.json + vite.config.ts):
+```typescript
+import { User } from '@/domain/entities/User';
+import { db } from '@/data/storage/database';
+import { useAuthStore } from '@/presentation/store/authStore';
+import { encrypt } from '@/core/crypto/encryption';
+```
 
-| Lens | What to Protect | Required Evidence |
-| --- | --- | --- |
-| Security | Crypto correctness, session lifecycle, WebAuthn, breach detection, import/export encryption, security headers. | Unit/security tests, `npm run security:audit` when relevant, and notes in `SECURITY_AUDIT_REPORT.md` for security changes. |
-| UX | Credential CRUD, password generator, responsive dashboard, onboarding, settings IA, accessibility, microcopy. | Desktop/mobile manual checks, accessibility review, screenshots/GIFs when useful, and `TEST_STATUS.md` updates for new UX. |
-| QA | Vitest coverage, integration smoke, Lighthouse/PWA checks, CI health, Dexie fixtures. | Targeted tests, coverage or smoke notes, and exact commands/results recorded in the handoff. |
-| Release | Feature flags, deployment notes, rollback paths, doc hygiene, release readiness. | Updated docs, risk notes, feature-flag ownership, and verification artifacts before tagging or merging. |
+---
 
-## Verification Expectations
+## Security & Cryptography
 
-Run the narrowest command set that proves the change, then report what passed and what was skipped.
+### 🔐 Password Hashing (Login Flow)
+- **Algorithm**: Scrypt (via `@noble/hashes/scrypt`)
+- **Parameters**: N=32768, r=8, p=1, dkLen=32
+- **Hash Format**: `scrypt$N$r$p$base64salt$base64hash`
+- **Location**: `src/core/crypto/password.ts` - `hashPassword()`, `verifyPassword()`
 
-| Change Type | Expected Commands |
-| --- | --- |
-| TypeScript or shared logic | `npm run type-check`, targeted `npm run test` or `npm run test:run` |
-| UI or React behavior | `npm run type-check`, `npm run lint`, targeted `npm run test`, manual browser check when relevant |
-| Security-sensitive behavior | `npm run type-check`, targeted tests, `npm run security:audit`, `npm run lighthouse` when headers/PWA behavior are affected |
-| Documentation-only | Manual Markdown review, `npm run docs:verify` when applicable |
+```typescript
+// ✅ CORRECT - Use scrypt for master password
+import { hashPassword, verifyPassword } from '@/core/crypto/password';
+const hashedPassword = await hashPassword(masterPassword);
+const isValid = await verifyPassword(inputPassword, storedHash);
+```
 
-The README Verification Matrix remains the project-level baseline. Record manual verification in `TEST_STATUS.md`, and use `SECURITY_AUDIT_REPORT.md` for changes affecting secrets, sessions, crypto, CSP, biometrics, import/export, or breach detection.
+### 🔑 Key Derivation (Vault Encryption)
+- **Algorithm**: PBKDF2-SHA256
+- **Iterations**: 600,000+ (OWASP 2025)
+- **Salt**: 256-bit random per user
+- **Output**: 256-bit AES-GCM key
+- **Location**: `src/core/crypto/encryption.ts` - `deriveKeyFromPassword()`
 
-## Documentation & Handoff
+### 🔒 Data Encryption
+- **Algorithm**: AES-256-GCM (authenticated encryption)
+- **IV**: 96-bit random per operation
+- **Location**: `src/core/crypto/encryption.ts` - `encrypt()`, `decrypt()`
 
-- Keep handoffs concise but concrete: files changed, commands run, results, and any residual risk.
-- Link work back to `ROADMAP.md` or `KEY_FINDINGS.md` when it advances a tracked item.
-- Do not mark security or UX work done without matching verification evidence.
-- If a change introduces a new workflow, dependency, feature flag, or operational expectation, update the relevant docs in the same branch.
+**Pattern for encrypting credentials**:
+```typescript
+const vaultKey = useAuthStore(state => state.vaultKey); // CryptoKey
+const encrypted = await encrypt(plaintext, vaultKey);
+// Returns { ciphertext: string, iv: string }
+```
 
-## graphify
+---
 
-This project has a knowledge graph at `graphify-out/` with god nodes, community structure, and cross-file relationships.
+## Critical Module Loading Pattern
 
-Rules:
-- ALWAYS read `graphify-out/GRAPH_REPORT.md` before reading any source files, running grep/glob searches, or answering codebase questions. The graph is your primary map of the codebase.
-- IF `graphify-out/wiki/index.md` EXISTS, navigate it instead of reading raw files.
-- For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep; these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files.
-- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+### ⚠️ WASM/UMD Modules
+
+**Problem**: Direct top-level imports of heavy WASM/UMD modules break Vite ESM builds and bloat the initial bundle.
+**Solution**: Lazy dynamic imports with singleton pattern, excluded from `optimizeDeps`.
+
+```typescript
+// ❌ WRONG - top-level import, breaks build / inflates initial bundle
+import heavyModule from 'some-wasm-module';
+
+// ✅ CORRECT - lazy load pattern (see src/core/ocr for the Tesseract reference)
+let modulePromise: Promise<unknown> | null = null;
+async function loadModule() {
+  if (!modulePromise) {
+    modulePromise = import('some-wasm-module').then(m => m.default ?? m);
+  }
+  return modulePromise;
+}
+```
+
+**Note**: `argon2-browser` and `dexie-encrypted` were removed entirely (P5, 2026-06-10) — unused attack surface and the historic reason `'unsafe-eval'` was tolerated in the CSP. Master-password hashing uses **`@noble/hashes/scrypt`** (N=32768, r=8, p=1, dkLen=32) — pure JS, no WASM, no `optimizeDeps` exclusion needed. See `DATABASE_MIGRATION.md` for the Argon2id → Scrypt migration history. The remaining heavy WASM module is the **self-hosted Tesseract OCR core** (`public/ocr/`), which follows the lazy dynamic-import pattern above and needs `'wasm-unsafe-eval'` (not full `'unsafe-eval'`) in `script-src`.
+
+---
+
+## State Management (Zustand)
+
+### Auth Store Pattern
+```typescript
+// src/presentation/store/authStore.ts
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      vaultKey: null, // CryptoKey - never persisted
+      isAuthenticated: false,
+      isLocked: false,
+
+      lockVault: () => set({ isLocked: true, vaultKey: null }),
+      logout: () => set({ user: null, session: null, isAuthenticated: false }),
+    }),
+    {
+      name: 'trustvault-auth',
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated })
+      // Sensitive data (vaultKey, session) NOT persisted
+    }
+  )
+);
+```
+
+**Key Points**:
+- `vaultKey` stays in memory only (cleared on lock/logout)
+- Auto-lock timer clears vaultKey but keeps user logged in
+- Use `partialize` to exclude sensitive state from localStorage
+
+---
+
+## React 19 & StrictMode Patterns
+
+### Effect Cleanup (Double Render in Dev)
+React 19 StrictMode runs effects twice. Always use cleanup:
+
+```typescript
+useEffect(() => {
+  let mounted = true;
+  let hasCompleted = false;
+
+  const completeInitialization = (source: string) => {
+    if (mounted && !hasCompleted) {
+      hasCompleted = true;
+      console.log(`Init completed via ${source}`);
+      setInitialized(true);
+    }
+  };
+
+  const timeout = setTimeout(() => completeInitialization('timeout'), 2000);
+
+  initializeDatabase()
+    .then(() => { clearTimeout(timeout); completeInitialization('success'); })
+    .catch(() => { clearTimeout(timeout); completeInitialization('error'); });
+
+  return () => {
+    mounted = false;
+    clearTimeout(timeout);
+  };
+}, []); // Empty deps - run once per mount
+```
+
+**Pattern**: `mounted` flag + `hasCompleted` flag + timeout fallback for async operations
+
+---
+
+## Database (IndexedDB via Dexie)
+
+### Schema
+```typescript
+// src/data/storage/database.ts
+export class TrustVaultDB extends Dexie {
+  credentials!: Table<StoredCredential, string>;
+  users!: Table<StoredUser, string>;
+  sessions!: Table<StoredSession, string>;
+  settings!: Table<{ id: string; data: SecuritySettings }, string>;
+}
+```
+
+### Offline-First Pattern
+```typescript
+// Always fail gracefully - app must work without DB
+export async function initializeDatabase(): Promise<void> {
+  try {
+    await db.open();
+    console.log('DB initialized');
+  } catch (error) {
+    console.error('DB failed:', error);
+    // Don't throw - allow app to continue
+  }
+}
+```
+
+### Encrypted Fields
+Store encrypted data as strings:
+```typescript
+interface StoredCredential {
+  encryptedPassword: string; // Base64 encoded
+  encryptedTotpSecret?: string;
+  // Other fields in plaintext for indexing
+}
+```
+
+---
+
+## TypeScript Strict Mode
+
+### Critical Flags Enforced
+```json
+{
+  "strict": true,
+  "noUncheckedIndexedAccess": true,  // arr[i] returns T | undefined
+  "exactOptionalPropertyTypes": true,
+  "noImplicitReturns": true
+}
+```
+
+### Common Fixes
+```typescript
+// ❌ Unchecked array access
+const item = credentials[0].title;
+
+// ✅ Null-safe
+const item = credentials[0]?.title ?? 'Unknown';
+
+// ❌ Missing return path
+function getScore(x: number) {
+  if (x > 0) return x;
+  // Error: not all code paths return
+}
+
+// ✅ Explicit return
+function getScore(x: number): number {
+  return x > 0 ? x : 0;
+}
+```
+
+---
+
+## PWA & Service Worker
+
+### Configuration (vite.config.ts)
+```typescript
+VitePWA({
+  registerType: 'autoUpdate',
+  workbox: {
+    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm}'],
+    skipWaiting: true,
+    clientsClaim: true,
+  },
+  devOptions: { enabled: true } // SW enabled in dev mode
+})
+```
+
+### Security Headers
+Set via Vite `server`/`preview` config (`vite.config.ts` ~line 189-200), NOT meta tags.
+Headers are imported from `src/config/securityHeaders.ts` — the single source of truth, kept in parity with `vercel.json` by `securityHeaders.test.ts`. Edit `securityHeaders.ts` only; never duplicate headers inline:
+```typescript
+import { SECURITY_HEADERS, DEV_SECURITY_HEADERS } from './src/config/securityHeaders';
+
+server: { headers: DEV_SECURITY_HEADERS },
+preview: { headers: SECURITY_HEADERS },
+```
+
+### PWA Icons Requirement
+Must exist in `public/` as valid PNGs:
+- `pwa-192x192.png`, `pwa-512x512.png`
+- `pwa-maskable-192x192.png`, `pwa-maskable-512x512.png`
+- `apple-touch-icon.png`, `favicon.ico`
+
+---
+
+## Development Workflow
+
+### Commands
+```bash
+npm run dev          # HTTP dev server @ :3000
+npm run dev:https    # HTTPS (required for WebAuthn)
+npm run build        # Type-check → Production build
+npm run type-check   # TypeScript validation only
+npm run lint         # ESLint (max 0 warnings)
+npm test             # Vitest unit tests
+npm run lighthouse   # PWA audit (after preview)
+```
+
+### Pre-Commit Checklist
+- [ ] `npm run type-check` passes
+- [ ] `npm run lint` has 0 warnings
+- [ ] No `console.log` in production code
+- [ ] Security-sensitive changes reviewed
+- [ ] Path aliases used (`@/` not `../../`)
+
+### Build Optimization
+Code splitting (vite.config.ts:154-159):
+```typescript
+manualChunks: {
+  'react-vendor': ['react', 'react-dom'],
+  'mui-vendor': ['@mui/material', '@mui/icons-material'],
+  'security-vendor': ['@simplewebauthn/browser', '@noble/hashes'],
+  'storage-vendor': ['dexie']
+}
+```
+
+---
+
+## Common Patterns
+
+### Auto-Lock Implementation
+```typescript
+// src/presentation/hooks/useAutoLock.ts
+export function useAutoLock(config: AutoLockConfig) {
+  const lockVault = useAuthStore(state => state.lockVault);
+
+  useEffect(() => {
+    if (!config.enabled) return;
+
+    const handleActivity = () => {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        lockVault();
+      }, config.timeoutMinutes * 60 * 1000);
+    };
+
+    document.addEventListener('mousemove', handleActivity);
+    return () => document.removeEventListener('mousemove', handleActivity);
+  }, [config, lockVault]);
+}
+```
+
+### Clipboard with Auto-Clear
+```typescript
+// src/presentation/utils/clipboard.ts
+export async function copyToClipboard(text: string, clearAfterMs: number = 30000) {
+  await navigator.clipboard.writeText(text);
+
+  setTimeout(async () => {
+    const current = await navigator.clipboard.readText();
+    if (current === text) {
+      await navigator.clipboard.writeText('');
+    }
+  }, clearAfterMs);
+}
+```
+
+---
+
+## Testing Patterns
+
+### Crypto Function Tests
+```typescript
+describe('Encryption', () => {
+  it('should encrypt and decrypt correctly', async () => {
+    const key = await generateEncryptionKey();
+    const plaintext = 'sensitive data';
+
+    const encrypted = await encrypt(plaintext, key);
+    const decrypted = await decrypt(encrypted, key);
+
+    expect(decrypted).toBe(plaintext);
+    expect(encrypted.ciphertext).not.toBe(plaintext);
+  });
+});
+```
+
+---
+
+## Security Guidelines
+
+### Never Do This
+- ❌ Log sensitive data (passwords, keys, tokens)
+- ❌ Store `CryptoKey` in localStorage/sessionStorage
+- ❌ Use `any` type for crypto operations
+- ❌ Import UMD modules at top level
+- ❌ Set security headers via meta tags
+
+### Always Do This
+- ✅ Use Web Crypto API for random generation
+- ✅ Clear sensitive state on logout/lock
+- ✅ Validate inputs before crypto operations
+- ✅ Use constant-time comparisons for hashes
+- ✅ Lazy load heavy modules (crypto, WASM)
+
+---
+
+## Troubleshooting
+
+### "Loading spinner stuck"
+**Cause**: JS module error preventing React mount
+**Fix**: Check console for import errors, verify DB init has timeout (<2s)
+
+### "Invalid hash format" on login
+**Cause**: Legacy Argon2id hash from before the Scrypt migration (`DATABASE_MIGRATION.md`)
+**Fix**: Clear DB via `await db.delete()` or use debug utils
+
+### TypeScript errors on build
+**Symptom**: `npm run build` fails but dev works
+**Fix**: Run `npm run type-check` to see all errors. Enable strict mode fixes.
+
+---
+
+## Key Files Reference
+
+|Purpose|File Path|
+|---|---|
+|Database schema|`src/data/storage/database.ts`|
+|Encryption core|`src/core/crypto/encryption.ts`|
+|Password hashing|`src/core/crypto/password.ts`|
+|Auth state|`src/presentation/store/authStore.ts`|
+|Credential state|`src/presentation/store/credentialStore.ts`|
+|App routing|`src/presentation/App.tsx`|
+|Build config|`vite.config.ts`|
+|TypeScript config|`tsconfig.json`|
+
+---
+
+## External Documentation
+
+- **Security Details**: See `docs/security/SECURITY.md` for cryptographic specs
+- **Project Setup**: See `PROJECT_CONTEXT.md` for full context
+- **Contribution**: See `CONTRIBUTING.md` for code standards
+- **Quick Start**: See `docs/guides/GETTING_STARTED.md` for 3-minute setup
+
+---
+
+**Last Updated**: 2026-07-06
+**Node**: >=20.0.0 | **npm**: >=10.0.0 | **TypeScript**: 5.7.2 | **React**: 19.0.0
