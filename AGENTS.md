@@ -6,10 +6,10 @@
 
 ## Current Objectives (Nov 2025)
 
-1. **Vault Trust Hardening** – Patch vault key decrypt/read bugs, wire `useAutoLock`, scrub decrypted state on lock, and document verification in `TEST_STATUS.md`.
+1. **Vault Trust Hardening** – Patch vault key decrypt/read bugs, wire `useAutoLock`, scrub decrypted state on lock, and document verification in `docs/testing/TEST_STATUS.md`.
 2. **CredOps Experience** – Deliver credential CRUD UX, password generator, secure clipboard manager, search/filter, responsive dashboard, and TOTP display.
 3. **Passwordless & Recovery** – Implement WebAuthn biometric unlock, change-master-password flows, and encrypted import/export with recovery copy.
-4. **Threat Intelligence & Reporting** – Integrate breach detection UX, expand Vitest/integration coverage (>85%), and keep `SECURITY_AUDIT_REPORT.md` current.
+4. **Threat Intelligence & Reporting** – Integrate breach detection UX, expand Vitest/integration coverage (>85%), and keep `docs/security/SECURITY_AUDIT_REPORT.md` current.
 
 When implementing new functionality:
 - Reference `docs/guides/ROADMAP.md` for prompts + validation, and update it if acceptance criteria evolve.
@@ -100,7 +100,7 @@ async function loadModule() {
 }
 ```
 
-**Note**: `argon2-browser` and `dexie-encrypted` were removed entirely (P5, 2026-06-10) — unused attack surface and the historic reason `'unsafe-eval'` was tolerated in the CSP. Master-password hashing uses **`@noble/hashes/scrypt`** (N=32768, r=8, p=1, dkLen=32) — pure JS, no WASM, no `optimizeDeps` exclusion needed. See `DATABASE_MIGRATION.md` for the Argon2id → Scrypt migration history. The remaining heavy WASM module is the **self-hosted Tesseract OCR core** (`public/ocr/`), which follows the lazy dynamic-import pattern above and needs `'wasm-unsafe-eval'` (not full `'unsafe-eval'`) in `script-src`.
+**Note**: `argon2-browser` and `dexie-encrypted` were removed entirely (P5, 2026-06-10) — unused attack surface and the historic reason `'unsafe-eval'` was tolerated in the CSP. Master-password hashing uses **`@noble/hashes/scrypt`** (N=32768, r=8, p=1, dkLen=32) — pure JS, no WASM, no `optimizeDeps` exclusion needed. See `docs/guides/database-migration.md` for the Argon2id → Scrypt migration history. The remaining heavy WASM module is the **self-hosted Tesseract OCR core** (`public/ocr/`), which follows the lazy dynamic-import pattern above and needs `'wasm-unsafe-eval'` (not full `'unsafe-eval'`) in `script-src`.
 
 ---
 
@@ -396,7 +396,7 @@ describe('Encryption', () => {
 **Fix**: Check console for import errors, verify DB init has timeout (<2s)
 
 ### "Invalid hash format" on login
-**Cause**: Legacy Argon2id hash from before the Scrypt migration (`DATABASE_MIGRATION.md`)
+**Cause**: Legacy Argon2id hash from before the Scrypt migration (`docs/guides/database-migration.md`)
 **Fix**: Clear DB via `await db.delete()` or use debug utils
 
 ### TypeScript errors on build
@@ -423,8 +423,8 @@ describe('Encryption', () => {
 ## External Documentation
 
 - **Security Details**: See `docs/security/SECURITY.md` for cryptographic specs
-- **Project Setup**: See `PROJECT_CONTEXT.md` for full context
-- **Contribution**: See `CONTRIBUTING.md` for code standards
+- **Project Setup**: See `docs/archived/PROJECT_CONTEXT.md` for full context
+- **Contribution**: See `docs/guides/contributing.md` for code standards
 - **Quick Start**: See `docs/guides/GETTING_STARTED.md` for 3-minute setup
 
 ---

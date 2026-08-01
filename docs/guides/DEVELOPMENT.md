@@ -5,9 +5,9 @@ Welcome! This guide helps you contribute with confidence.
 ## Before You Start
 
 1. **Read the docs:**
-   - `src/ARCHITECTURE.md` — Layer structure & import rules
+   - `docs/architecture/ARCHITECTURE.md` — Layer structure & import rules
    - `src/MODULE_CONTRACTS.md` — What APIs exist
-   - `CLAUDE.md` — Project-specific patterns
+   - `AGENTS.md` — AI agent instructions (architecture, security patterns)
 
 2. **Verify setup:**
    ```bash
@@ -160,9 +160,9 @@ npm run build
 
 After code changes, update:
 - `README.md` — High-level overview
-- `CLAUDE.md` — Developer patterns (if you changed patterns)
+- `AGENTS.md` — AI agent instructions (if you changed patterns)
 - Module `README.md` — If you changed public API
-- `ARCHITECTURE.md` — If you changed layer structure
+- `docs/architecture/ARCHITECTURE.md` — If you changed layer structure
 
 ---
 
