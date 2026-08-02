@@ -1,69 +1,71 @@
-# TDD Improvement Plan — Presentation Components & Pages (Broadened)
+# TDD Improvement Plan — Presentation Components & Pages (v3, reviewed)
 
 **Date:** 2026-08-02
 **Status:** Planned (awaiting approval; execution happens in later sessions, one workstream at a time)
-**Program type:** Mixed — targeted refactoring + full component/page coverage + documented feature gaps + E2E (Playwright) + test-suite debt cleanup, every change driven by Test-Driven Development (red → green → refactor)
-**Target areas:** `src/presentation/pages/**`, `src/presentation/components/**`, `src/presentation/hooks/**`, `src/presentation/store/**`, `src/features/**` (CSV, audit helpers), `e2e/**`
-**Revision:** v2 (2026-08-02) — broadened per owner direction: **all** untested components, documented feature gaps, E2E, test-suite debt; deepened per-task detail.
+**Program type:** Mixed — targeted refactoring + exhaustive component/page coverage + documented feature gaps + E2E (Playwright) + test-suite debt cleanup, every change driven by Test-Driven Development (red → green → refactor)
+**Target areas:** `src/presentation/pages/**`, `src/presentation/components/**`, `src/presentation/hooks/**`, `src/features/**` (CSV, audit helpers), `e2e/**`
+**Revision:** v3 (2026-08-02) — adversarial review applied (verified against project state + authoritative sources: Testing Trophy / Testing Library docs / Playwright best practices). **Coverage model: exhaustive** (owner decision — every component/page gets direct tests). **Dependency policy: `axe-core` + `papaparse` approved.**
 
 ---
 
-## 1. Context & Baseline
+## 1. Context & Baseline (verified 2026-08-02)
 
-TrustVault PWA is feature-complete (7 phases + AI; **1414/1415 tests passing, 119 files** per `docs/testing/TEST_STATUS.md`). This plan targets the **presentation layer** and its supporting E2E/test hygiene:
+TrustVault PWA is feature-complete (7 phases + AI; **1414/1415 tests passing** per `docs/testing/TEST_STATUS.md`). This plan targets the **presentation layer** and its supporting E2E/test hygiene.
 
-### 1.1 Pages (13) — direct test status
+**Verified inventory (shell counts, Node v22.23.1):**
+- **Components:** 45 (`src/presentation/components/`: 41 + `ai/`: 4). Tested: **12** → **33 untested** (all targeted by WS-C).
+- **Pages:** 12 (README.md is not a page). Direct tests: 2 (`PasswordGeneratorPage`, `UnlockPage`).
+- **Test files:** 115 colocated `*.test.ts(x)` under `src/`. (Docs cite "119" — likely includes config/test-helper files; 115 is the verified colocated count.)
+- **E2E:** 1 smoke spec (`e2e/login.spec.ts`), Playwright config present (`baseURL: http://localhost:3000/TrustVault-PWA` — matches Vite `base` since `VERCEL` is unset).
+- **Lint baseline:** documented ~853–855 problems across TEST_STATUS snapshots; **must be re-measured at execution time** (workspace has no `node_modules` until `npm install` runs).
 
-| Page | Direct tests | Integration coverage | Notes |
+### 1.1 Pages — direct test status
+
+| Page | Direct tests | Integration coverage | Plan |
 |---|---|---|---|
-| `PasswordGeneratorPage.tsx` | ✅ 5/5 | ✅ `password-generator.test.tsx` | Reference baseline; no new work |
-| `UnlockPage.tsx` | ✅ | ✅ auth-flow | Reference baseline; no new work |
-| `DashboardPage.tsx` | ❌ | ✅ `credential-crud`, `dashboard-sort` | Stats/filter logic inline → WS-D |
-| `FavoritesPage.tsx` | ❌ | ❌ | → WS-D |
-| `CredentialDetailPage.tsx` | ❌ | ❌ | Copy/delete/favorite flows → WS-D |
-| `AddCredentialPage.tsx` | ❌ | ✅ `credential-crud` | **610-line monolith** → WS-B |
-| `EditCredentialPage.tsx` | ❌ | ❌ | **733-line monolith** → WS-B |
-| `SecurityAuditPage.tsx` | ❌ | ❌ (manual only) | ~470 lines; issue engine inline → WS-A |
-| `SettingsPage.tsx` | ❌ | ✅ `master-password-change`, `import-export` | Dialog-gating area (historic jsdom mis-click) → WS-D |
-| `LoginPage.tsx` / `SigninPage.tsx` / `SignupPage.tsx` | ❌ | ✅ `auth-flow` | Validation + biometric-button gating → WS-D |
+| `PasswordGeneratorPage.tsx` | ✅ 5/5 | ✅ | Baseline; no new work |
+| `UnlockPage.tsx` | ✅ | ✅ | Baseline; no new work |
+| `DashboardPage.tsx` | ❌ | ✅ `credential-crud`, `dashboard-sort` | WS-D (+ WS-A score dedupe) |
+| `FavoritesPage.tsx` | ❌ | ❌ | WS-D |
+| `CredentialDetailPage.tsx` | ❌ | ❌ | WS-D, WS-H |
+| `AddCredentialPage.tsx` | ❌ | ✅ `credential-crud` | WS-B (610-line monolith) |
+| `EditCredentialPage.tsx` | ❌ | ❌ | WS-B (733-line monolith) |
+| `SecurityAuditPage.tsx` | ❌ | ❌ (manual only) | WS-A (issue engine inline) |
+| `SettingsPage.tsx` | ❌ | ✅ `master-password-change`, `import-export` | WS-D (dialog-gating area) |
+| `LoginPage` / `SigninPage` / `SignupPage` | ❌ | ✅ `auth-flow` | WS-D |
 
-### 1.2 Components (48) — direct test status
+### 1.2 Components — test status (33 untested → WS-C)
 
 **Tested (12):** `AiAssistanceSettings`, `BackupCodeInput`, `BackupCodesModal`, `BreachDetailsModal`, `ErrorBoundary`, `OcrOverlaySettings`, `PasswordStrengthIndicator`, `SortDropdown`, `ai/BreachInsightCard`, `ai/ChatPanel`, `ai/GeneralAssistant`, `ai/StrengthInsightCard`.
 
-**Untested (35 — all targeted by WS-C):**
+**Untested (33):**
+- **Credential display & interaction:** `CredentialCard`, `CredentialSection`, `CredentialDetailsDialog`, `SwipeableCredentialCard`, `TotpDisplay`, `CategoryIcon`
+- **Dialogs & modals:** `DeleteConfirmDialog`, `ExportDialog`*, `ImportDialog`*, `PasswordGeneratorDialog`, `ChangeMasterPasswordDialog`, `BiometricSetupDialog`, `CameraScanDialog`, `OcrResultDialog`, `UnlockDialog`
+- **Search / filter / input:** `SearchBar`, `FilterChips`, `TagInput`
+- **Settings controls:** `AutoLockSettings`, `ClipboardSettings`, `ClipboardNotification`, `ProfilesSettings`, `ProfileSwitcher`, `ThemeToggle`
+- **PWA / chrome / utility:** `OfflineIndicator`, `MobileNavigation`, `InstallPrompt`, `UpdateAvailableSnackbar`, `UpdateNotification`, `ReEncryptionProgress`, `BreachAlertBanner`, `CryptoAPIError`, `RouteErrorBoundary`
+- **Onboarding / help:** `OnboardingTour`, `TourHelpButton`
 
-| Group | Components |
-|---|---|
-| Credential display & interaction | `CredentialCard`, `CredentialSection`, `CredentialDetailsDialog`, `SwipeableCredentialCard`, `TotpDisplay`, `CategoryIcon` |
-| Dialogs & modals | `DeleteConfirmDialog`, `ExportDialog`*, `ImportDialog`*, `PasswordGeneratorDialog`, `ChangeMasterPasswordDialog`, `BiometricSetupDialog`, `CameraScanDialog`, `OcrResultDialog`, `UnlockDialog` |
-| Search / filter / input | `SearchBar`, `FilterChips`, `TagInput` |
-| Settings controls | `AutoLockSettings`, `ClipboardSettings`, `ClipboardNotification`, `ProfilesSettings`, `ProfileSwitcher`, `ThemeToggle` |
-| PWA / chrome / utility | `OfflineIndicator`, `MobileNavigation`, `InstallPrompt`, `UpdateAvailableSnackbar`, `UpdateNotification`, `ReEncryptionProgress`, `BreachAlertBanner`, `CryptoAPIError`, `RouteErrorBoundary` |
-| Onboarding / help | `OnboardingTour`, `TourHelpButton` |
-
-\* `ExportDialog`/`ImportDialog` are integration-covered (`import-export.test.tsx`) but have no direct unit tests.
+\* Integration-covered (`import-export.test.tsx`) but no direct unit tests.
 
 ### 1.3 Hooks, stores, utils — baseline
 
-All 8 hooks have tests (`useAutoLock`, `usePasswordGenerator`, `useSwipeGesture`, `useServiceWorkerUpdate`, `useAi*`, `useDriverTour`). All 5 stores have tests (`authStore`, `credentialStore`, `profileStore`, `themeStore`, `loadProfiles`). All 5 utils have tests (`clipboard`, `credentialSort`, `performance`, `timeFormat`, `url`). → No new work except hooks introduced by WS-B and WS-H.
+All 8 hooks, all 5 stores, all 5 utils have tests. No new work except hooks introduced by WS-B/WS-H.
 
-### 1.4 Documented gaps (in scope for this program)
+### 1.4 Documented gaps in scope
 
 | Gap | Source | Workstream |
 |---|---|---|
-| CSV import/export not implemented | ROADMAP known gaps; GAP_ANALYSIS §17 #6 | WS-E |
-| Credential history view (lastAccessedAt tracked, no UI) | GAP_ANALYSIS §12/#12, §17 | WS-H |
-| WCAG 2.1 AA audit (partial — zoom fixed, no full audit) | GAP_ANALYSIS §17 #9 | WS-H |
-| TOTP SMS fallback (stub) | GAP_ANALYSIS §17 #5 | WS-H (optional, flagged) |
-| E2E coverage = 1 smoke spec (`e2e/login.spec.ts`) | GAP_ANALYSIS §13; e2e/README | WS-F |
-| 13 ESLint errors in test files; 1 flaky test; timer-test flakiness | ROADMAP gaps; TEST_STATUS | WS-G |
+| CSV import/export | ROADMAP; GAP_ANALYSIS §17 #6 | WS-E |
+| Credential history view | GAP_ANALYSIS §12/#12 | WS-H |
+| WCAG 2.1 AA audit | GAP_ANALYSIS §17 #9 | WS-H |
+| TOTP SMS fallback (stub) | GAP_ANALYSIS §17 #5 | WS-H (deferred, flagged) |
+| E2E = 1 smoke spec | GAP_ANALYSIS §13 | WS-F |
+| 13 lint errors in test files; 1 flake; timer flakiness | ROADMAP; TEST_STATUS | WS-G |
 
-### 1.5 E2E infra (existing)
+### 1.5 Coverage targets
 
-`playwright.config.ts` — `testDir: ./e2e`, `baseURL: http://localhost:3000/TrustVault-PWA`, `webServer: npm run dev` (port 3000), CI → Chromium + WebKit, `retries: 2` in CI. Scripts: `npm run e2e` / `e2e:ui` / `e2e:headed` / `e2e:debug`. One spec exists (`login.spec.ts` smoke).
-
-**Coverage targets (from `docs/testing/TESTING_PATTERNS.md`):** components ≥70%, overall ≥80%; `test:coverage` enforces lines/statements ≥85% repo-wide.
+`vitest.config.ts` enforces lines ≥85 / functions ≥85 / branches ≥80 / statements ≥85. `TESTING_PATTERNS.md`: components ≥70%. **Owner decision: exhaustive direct coverage of all 33 components + 10 pages is in scope** — tests must be *behavior-focused* (user-observable) so exhaustiveness does not produce brittle "coverage theater" (see §3).
 
 ---
 
@@ -71,273 +73,253 @@ All 8 hooks have tests (`useAutoLock`, `usePasswordGenerator`, `useSwipeGesture`
 
 ### Goals
 1. Move security-critical, business logic **out of components into pure, unit-tested modules** (testable without DOM/jsdom).
-2. **100% direct test coverage of every presentation component and page** (no component left without a colocated test file).
-3. Ship the documented **CSV import/export** feature with tests written before implementation.
-4. Ship the documented **credential history view** and a **WCAG 2.1 AA audit** pass with testable fixes.
-5. Grow the **Playwright E2E suite** from 1 smoke spec to full critical-journey coverage.
-6. **Zero test-suite debt**: fix the 13 lint errors in test files, the known flake, and timer-test nondeterminism.
-7. Keep every change verified by: failing test first → minimal green implementation → safe refactor → full validation battery.
+2. **Exhaustive direct test coverage** of every presentation component (33) and page (10) — behavior-focused, per §3 conventions.
+3. Ship documented **CSV import/export** (via `papaparse`) **with CSV-injection protection**, tests first.
+4. Ship the **credential history view** and a **WCAG 2.1 AA audit** (axe-core-assisted, TDD for testable fixes).
+5. Grow **Playwright E2E** from 1 smoke spec to critical-journey coverage using verified Playwright best practices (web-first assertions, isolated state, `storageState` bootstrap, `page.route` mocks, `context.setOffline`).
+6. **Zero test-suite debt**: fix the 13 lint errors in test files, the known flake, and timer nondeterminism; final full-suite target **1415/1415**.
+7. Adopt **verified testing best practices**: RTL `user-event` over `fireEvent` (behavior, not implementation); web-first assertions in E2E; static analysis (TS/ESLint) as the base layer.
 
 ### Non-Goals
-- No changes to crypto/auth/breach **core** modules (already ≥90% covered; out of scope).
+- No changes to crypto/auth/breach **core** modules (≥90% covered).
 - No full rewrite of pages — decomposition only where it enables testing or removes duplication.
-- No new **runtime** dependencies. New **devDependencies** allowed only with explicit approval (candidates: `axe-core` for the WCAG audit workstream).
-- Not fixing the entire repo-wide lint baseline (~855 pre-existing problems) in one pass; debt fixes target test files (WS-G) and guarantee **0 new** issues on every touched file.
-- WebAuthn/biometric E2E (requires a physical authenticator) stays in the **manual** verification suite, not Playwright.
+- New deps are **approved and enumerated**: runtime `papaparse` (+ `@types/papaparse` dev); dev `axe-core`. No other new dependencies without explicit approval.
+- Not fixing the entire repo-wide lint baseline in one pass; WS-G targets test files and guarantees **0 new** issues per touched file.
+- WebAuthn/biometric E2E stays in the **manual** suite (physical authenticator required).
 
 ---
 
-## 3. TDD Workflow (repo-specific)
+## 3. TDD Workflow & Conventions (v3 — best-practice aligned)
 
-Every task follows this loop, committed to `docs/testing/TEST_STATUS.md` per the AGENTS.md convention:
+Every task follows red → green → refactor, recorded in `docs/testing/TEST_STATUS.md` per AGENTS.md.
 
-1. **RED** — write the failing test(s) in a colocated `__tests__/` file (`src/presentation/**/__tests__/*.test.ts(x)`). Run: `npx vitest run <new test file>` → confirm failure is for the right reason.
-2. **GREEN** — write the minimal production code (new pure module, hook, or component) to pass.
-3. **REFACTOR** — rewire the existing component/page to consume the new module. Re-run tests → still green.
-4. **VALIDATE** — see §7. Record evidence in `docs/testing/TEST_STATUS.md`.
+1. **RED** — failing test(s) in a colocated `__tests__/` file (`src/presentation/**/__tests__/*.test.ts(x)`). Confirm failure is for the right reason (`npx vitest run <file>`).
+2. **GREEN** — minimal production code to pass.
+3. **REFACTOR** — rewire the component/page to consume the new module; re-run → still green.
+4. **VALIDATE** — §6 gates; record evidence in TEST_STATUS.
 
-For **E2E specs** (WS-F): write the spec against the acceptance criteria first (failing against current app if the behavior is missing), then implement, then re-run `npm run e2e` → green. This mirrors red→green for browser-level behavior.
-
-Test conventions (per `TESTING_PATTERNS.md`): use `@/` aliases, fixtures from `src/__tests__/fixtures/` where they exist, `describe`/`it`, `vi.fn()`, `@testing-library/react` for components, `vi.useFakeTimers()` for time logic, no `console.log`. E2E: one unique user per spec (no shared state), clear IndexedDB in `beforeEach`.
+**Conventions (updated from verified sources — Testing Library, Playwright docs):**
+- **`user-event` over `fireEvent`** for all interactions (`@testing-library/user-event` already in devDependencies). Reserve `fireEvent` only where user-event lacks support (e.g. synthetic swipe).
+- **Test behavior, not implementation**: interact with the rendered UI (role/text queries), assert user-observable outcomes (rendered text, callbacks fired, DOM state). No assertions on internal component state, prop plumbing, or lifecycle details.
+- **Async**: prefer `findBy*`/`waitFor` over fixed sleeps; timers via `vi.useFakeTimers()`.
+- **E2E**: web-first assertions (`await expect(locator).toBeVisible()`), never manual `waitForTimeout`; isolated browser contexts; unique user per spec; `storageState` for auth bootstrap; `page.route` for HIBP; `context.setOffline(true)` for offline.
+- **Prerequisite**: run `npm install` before any gate (workspace ships without `node_modules`; the preview install command covers this).
+- Fixtures from `src/__tests__/fixtures/`; `@/` aliases; no `console.log`; **never log secrets** (incl. password columns in CSV errors).
 
 ---
 
 ## 4. Workstreams & Tasks
 
-> Order = value/risk. Workstreams are independent; execute in any order, but finish one task (incl. validation) before starting the next. WS-A, WS-B, WS-E are prerequisite to their downstream rewiring only.
+> Order = value/risk. Independent workstreams; finish one task (incl. validation) before starting the next. WS-A/B/E are prerequisites to their downstream rewiring.
 
 ### WS-A — Extract & test Security Audit logic (highest value)
 
-Extract the issue-detection engine from `SecurityAuditPage.tsx` into a pure module; page becomes a thin view.
-
 **A1 — Pure module `securityAuditEngine` (TDD, no DOM)**
-- New file: `src/presentation/pages/securityAuditEngine.ts`.
-- Export: `buildSecurityIssues(credentials, breachedCredentials, opts?) → SecurityIssue[]`, `computeSecurityScore(credentials) → number`, `countIssuesByType(issues) → issuesByType`, `formatAgeDays(updatedAt, now) → number | undefined`.
-- Port the exact rules from `analyzeCredentials()` (breach-priority, missing-password, weak `<60`/`<40` severity bands, reused via password map, old `>365`/`>730`, plain-avg score matching DashboardPage).
-- Test cases (`__tests__/securityAuditEngine.test.ts`): each issue type fires; severity band boundaries (score 39/40, 59/60); breach outranks weak for same credential; reused aggregation groups titles and emits one issue; empty vault → score 0 + zero issues; age boundaries (365/366, 730/731); `countIssuesByType` returns zeroed shape; deterministic id format.
-- Refactor: `SecurityAuditPage` calls the module; delete inline logic. Keep UI identical.
+- New: `src/presentation/pages/securityAuditEngine.ts`. Exports: `buildSecurityIssues(credentials, breachedCredentials, opts?) → SecurityIssue[]`, `computeSecurityScore(credentials) → number`, `countIssuesByType(issues)`, `formatAgeDays(updatedAt, now)`, plus the `SecurityIssue` **type** (exported for reuse).
+- Port rules exactly from `analyzeCredentials()` (breach-priority; missing-password; weak `<60`/`<40` bands; reused via password map; old `>365`/`>730`; plain-avg score). Pure & synchronous — breach data is *pre-loaded* by the caller.
+- Tests: each issue type fires; band boundaries (39/40, 59/60); breach outranks weak; reused aggregation + single issue; empty vault → score 0/no issues; age boundaries (365/366, 730/731); zeroed `issuesByType` shape; deterministic ids.
+- **Dedupe (review finding):** `DashboardPage` computes the same plain-avg score inline — rewire it to consume `computeSecurityScore` too (kills the duplicated logic).
 
-**A2 — Score/label presentation helpers (TDD)**
-- Extract `getScoreColor`, `getScoreLabel`, `getSeverityColor`, `getSeverityIcon` into the module (icon stays in the page; mappings become pure).
-- Test cases: label boundaries (80/60/40), color mapping per band, severity→color and severity→icon mapping for all five severities + unknown fallback.
-- Refactor page to consume.
+**A2 — Score/label helpers (TDD):** extract `getScoreColor`, `getScoreLabel`, `getSeverityColor`, `getSeverityIcon` (mappings pure; icon JSX stays in page). Tests: label/color boundaries (80/60/40); all five severities + unknown fallback.
 
-**Acceptance:** all A1–A2 tests pass; `SecurityAuditPage` renders identically; no new lint issues.
+**Acceptance:** A1–A2 green; `SecurityAuditPage` **and** `DashboardPage` consume the module with identical output; no new lint.
 
 ### WS-B — Decompose Add/Edit credential monoliths
 
-**B1 — Pure credential-form validation (TDD)**
-- New file: `src/presentation/pages/credentialFormValidation.ts` with `validateCredentialForm(input) → { valid, errors: { title?, username?, password?, url?, category? } }` (URL via `src/presentation/utils/url.ts`, password min-length 12 parity with signup, tag count cap).
-- Test cases: each field rule fires independently; fully valid form → `valid: true`, empty errors; boundaries (11/12-char password, empty title, malformed URL, >cap tags); errors object only contains failing fields.
-- Refactor: `AddCredentialPage`/`EditCredentialPage` call it.
+**B1 — Pure validation (TDD):** `src/presentation/pages/credentialFormValidation.ts` — `validateCredentialForm(input) → { valid, errors: { title?, username?, password?, url?, category? } }` (URL via `url.ts`, password min 12 parity with signup, tag cap). Tests: per-field rules, valid form, boundaries (11/12 chars, empty title, bad URL, tag cap), errors only for failing fields.
+**B2 — Shared `useCredentialForm` hook (TDD):** `src/presentation/hooks/useCredentialForm.ts` — state, handlers, validate-on-submit, dirty tracking, edit-mode seeding, reset. Tests (`renderHook`): seed, immutable edits, `onSave` only-when-valid, errors clear on fix, dirty toggles, reset.
+**Refactor:** both pages consume B1+B2 (removes the largest duplicated chunk of the 610/733-line files).
 
-**B2 — Shared `useCredentialForm` hook (TDD)**
-- New hook `src/presentation/hooks/useCredentialForm.ts`: form state, change handlers, validation on submit, dirty tracking, initial-value seeding (edit mode), reset.
-- Test cases (`renderHook`): initial values from seed; edits update state immutably; `onSave` fires only when valid; validation errors surface and clear on fix; dirty flag toggles; edit-mode seed/update; reset restores initial.
-- Refactor: both pages consume the hook (removes the largest duplicated chunk of the 610/733-line files).
+**Acceptance:** B1–B2 green; `credential-crud.test.tsx` passes; pages shrink, behavior unchanged.
 
-**Acceptance:** B1–B2 green; `credential-crud.test.tsx` still passes; pages shrink without behavior change.
+### WS-C — Exhaustive direct coverage of all 33 untested components
 
-### WS-C — Direct coverage for ALL untested components (35)
-
-Colocate under `src/presentation/components/__tests__/`; mock stores/services (never real crypto/DB/IndexedDB). Grouped test plans:
+Colocate under `src/presentation/components/__tests__/`; mock stores/services (never real crypto/DB/IndexedDB). **Behavior-focused**: assert what users see/do (rendered fields, fired callbacks, disabled states), via `user-event`.
 
 **C1 — Credential display & interaction**
-| Component | Minimum cases |
+| Component | Minimum behavior cases |
 |---|---|
-| `CredentialCard` | renders title/username/breach badge; menu actions (edit/favorite/delete) fire callbacks; no crash on empty credential; loading state |
-| `CredentialSection` | groups credentials by category; renders children per item; empty state |
-| `CredentialDetailsDialog` | renders all fields (title/username/password-masked/url/category/tags); copy buttons call handlers; favorite toggle; close; breached alert passthrough |
-| `SwipeableCredentialCard` | swipe-left/right reveal actions (mock `useSwipeGesture`); tap resolves; actions fire callbacks |
-| `TotpDisplay` | renders 6-digit code; seconds-left formatting with `vi.useFakeTimers()`; window rollover; error/empty states |
-| `CategoryIcon` | icon per category; unknown-category fallback; accessible label |
+| `CredentialCard` | title/username/breach badge render; menu actions (edit/favorite/delete) fire callbacks; empty credential renders without crash; loading state |
+| `CredentialSection` | groups credentials by category; renders items; empty state |
+| `CredentialDetailsDialog` | renders all fields (password masked); copy buttons fire handlers; favorite toggle; close; breached alert passthrough |
+| `SwipeableCredentialCard` | swipe reveals actions (mock `useSwipeGesture`); tap resolves; actions fire callbacks |
+| `TotpDisplay` | 6-digit code renders; seconds-left formatting (fake timers); window rollover; error/empty states |
+| `CategoryIcon` | icon per category; unknown fallback; accessible label |
 
 **C2 — Dialogs & modals**
-| Component | Minimum cases |
+| Component | Minimum behavior cases |
 |---|---|
-| `DeleteConfirmDialog` | confirm/cancel callbacks; loading disables confirm; credential title shown; escape closes |
-| `ExportDialog` | opens with format options (`.tvault`, and CSV after WS-E); password validation (min 12); strength indicator shown; export success/failure feedback |
-| `ImportDialog` | file selection; decrypt-wrong-password error; merge vs replace mode radios; progress per item; success summary |
-| `PasswordGeneratorDialog` | renders generated password; regenerate; copy; insert-to-form callback |
-| `ChangeMasterPasswordDialog` | current/new/confirm validation; mismatch error; strength meter; submit calls handler only when valid |
-| `BiometricSetupDialog` | device-support gating; enrollment flow states; failure + retry; close |
-| `CameraScanDialog` | camera permission denial; capture calls OCR handler; cancel |
-| `OcrResultDialog` | shows parsed fields; edit/confirm/discard actions |
-| `UnlockDialog` | password unlock; biometric button (calls handler); error state; loading |
+| `DeleteConfirmDialog` | confirm/cancel fire; loading disables confirm; credential title shown; Escape closes |
+| `ExportDialog` | format options (`.tvault` + CSV after WS-E); password validation (min 12); strength shown; success/failure feedback |
+| `ImportDialog` | file selection; wrong-password error; merge/replace modes; progress; success summary |
+| `PasswordGeneratorDialog` | renders password; regenerate; copy; insert callback |
+| `ChangeMasterPasswordDialog` | current/new/confirm validation; mismatch error; strength meter; submit only-when-valid |
+| `BiometricSetupDialog` | device-support gating; enrollment states; failure + retry; close |
+| `CameraScanDialog` | permission denial; capture → OCR handler; cancel |
+| `OcrResultDialog` | parsed fields shown; edit/confirm/discard actions |
+| `UnlockDialog` | password unlock; biometric button calls handler; error + loading states |
 
 **C3 — Search / filter / input**
-| Component | Minimum cases |
+| Component | Minimum behavior cases |
 |---|---|
-| `SearchBar` | typing calls `onChange` (debounced, fake timers); clear button; controlled value |
-| `FilterChips` | active-chip highlight; callback with category; "All" resets; disabled state |
-| `TagInput` | add on Enter; comma-separated add; duplicate rejection; remove tag; empty-input no-op |
+| `SearchBar` | debounced `onChange` (fake timers); clear button; controlled value |
+| `FilterChips` | active-chip highlight; category callback; "All" reset; disabled state |
+| `TagInput` | add on Enter; comma add; duplicate rejection; remove; empty no-op |
 
 **C4 — Settings controls**
-| Component | Minimum cases |
+| Component | Minimum behavior cases |
 |---|---|
-| `AutoLockSettings` | renders options; change persists to settings store; disabled while saving |
-| `ClipboardSettings` | renders timeout options; save handler; parity with `clipboard.ts` util defaults |
-| `ClipboardNotification` | shows on clipboard event; auto-hides (fake timers); dismiss |
-| `ProfilesSettings` | lists profiles; create/rename/delete callbacks; active-profile highlight |
-| `ProfileSwitcher` | lists profiles; selection calls store; active check |
+| `AutoLockSettings` | options render; change persists to store; disabled while saving |
+| `ClipboardSettings` | options render; save handler; parity with `clipboard.ts` defaults |
+| `ClipboardNotification` | shows on clipboard event; auto-hide (fake timers); dismiss |
+| `ProfilesSettings` | list; create/rename/delete callbacks; active highlight |
+| `ProfileSwitcher` | list; selection calls store; active check |
 | `ThemeToggle` | toggles `themeStore`; icon reflects mode |
 
 **C5 — PWA / chrome / utility**
-| Component | Minimum cases |
+| Component | Minimum behavior cases |
 |---|---|
-| `OfflineIndicator` | renders when offline (`navigator.onLine` mock), hidden online |
-| `MobileNavigation` | renders nav items; active route highlight; logout action |
+| `OfflineIndicator` | renders offline (`navigator.onLine` mock), hidden online |
+| `MobileNavigation` | nav items; active highlight; logout action |
 | `InstallPrompt` | hidden when criteria unmet; captures `beforeinstallprompt`; install click fires prompt |
 | `UpdateAvailableSnackbar` | renders on `updateavailable`; reload action; dismiss |
-| `UpdateNotification` | pending-state render; skip-waiting handshake |
+| `UpdateNotification` | pending render; skip-waiting handshake |
 | `ReEncryptionProgress` | progress %; completion callback; cancellation |
-| `BreachAlertBanner` | renders when breached count > 0; CTA navigates to audit (mock router); dismiss |
-| `CryptoAPIError` | renders guidance when crypto API missing; retry callback |
-| `RouteErrorBoundary` | catches child error → fallback UI + retry (template: `ErrorBoundary.test.tsx`) |
+| `BreachAlertBanner` | renders when breached > 0; CTA to audit (mock router); dismiss |
+| `CryptoAPIError` | guidance render; retry callback |
+| `RouteErrorBoundary` | catches child error → fallback + retry (template: `ErrorBoundary.test.tsx`) |
 
 **C6 — Onboarding / help**
-| Component | Minimum cases |
+| Component | Minimum behavior cases |
 |---|---|
-| `OnboardingTour` | renders steps from tour config; completion persists (mock `useDriverTour`); skip |
-| `TourHelpButton` | opens tour; only when tour enabled; aria-label |
+| `OnboardingTour` | renders steps; completion persists (mock `useDriverTour`); skip |
+| `TourHelpButton` | opens tour when enabled; aria-label |
 
-**Acceptance:** all 35 components have a passing colocated test file; components are unchanged or refactored only for testability (e.g. prop-drilling instead of store reads where trivial).
+**Acceptance:** 33 new colocated test files, all green, `user-event`-based, behavior-focused, no new lint.
 
-### WS-D — Page-level behavior tests (all pages)
+### WS-D — Page-level behavior tests (all 10 untested pages)
 
-Targeted unit tests mounting pages with mocked stores/repos/router (avoids duplicating integration happy paths; asserts behavior + error states):
+Mount with mocked stores/repos/router; assert behavior + error states (complements, not duplicates, integration happy paths):
 
-- `DashboardPage`: stats derive from mocked credential list (score avg, counts); search filters list; category filter; empty state; lock button calls store.
-- `FavoritesPage`: only favorites render; empty state; unfavorite removes from list.
-- `CredentialDetailPage`: loading → rendered; missing credential → error + back action; edit navigates; delete confirm path calls repo then navigates; favorite toggle updates UI.
-- `SecurityAuditPage` (post WS-A): smoke — renders score circle + issue list from mocked engine; scan button triggers `scanForBreaches`; disabled while scanning.
-- `SettingsPage`: renders sections; dialog open/close gating for Change Master Password / Export / Import (pins the historic jsdom mis-click regression); no `setTimeout(navigate)` side effects.
-- `AddCredentialPage` / `EditCredentialPage` (post WS-B): mount with mocked `useCredentialForm`; save/cancel wiring; edit pre-fills.
-- `LoginPage` / `SigninPage` / `SignupPage`: validation messages (email format, 12-char password, mismatch); submit calls auth handler; biometric button visibility gated on availability; error display.
-- `PasswordGeneratorPage` / `UnlockPage`: existing tests are the baseline — only add missing error/edge cases found while auditing (no duplication).
+- `DashboardPage`: stats from mocked list (avg score, counts); search filters; category filter; empty state; lock button calls store.
+- `FavoritesPage`: favorites only; empty state; unfavorite removes.
+- `CredentialDetailPage`: loading → rendered; missing → error + back; edit navigates; delete confirm path calls repo → navigates; favorite toggle updates UI.
+- `SecurityAuditPage` (post WS-A): renders score + issues from mocked engine; scan button triggers `scanForBreaches`; disabled while scanning.
+- `SettingsPage`: sections render; dialog open/close gating for Change Password / Export / Import (pins the historic jsdom mis-click regression); no `setTimeout(navigate)` side effects.
+- `AddCredentialPage` / `EditCredentialPage` (post WS-B): mount with mocked `useCredentialForm`; save/cancel wiring; edit pre-fill.
+- `LoginPage` / `SigninPage` / `SignupPage`: validation messages (email, 12-char password, mismatch); submit fires auth handler; biometric button gated on availability; error display.
 
-**Acceptance:** all pass; no `.skip` added; `src/__tests__/integration/` still green.
+**Acceptance:** all green; no `.skip`; `src/__tests__/integration/` still green.
 
-### WS-E — New feature: CSV import/export (TDD)
+### WS-E — CSV import/export with injection protection (TDD, papaparse)
 
-The documented gap (GAP_ANALYSIS §17 #6, ROADMAP known gaps).
+- **E1 — Export:** `src/features/vault/csv/csvExport.ts` — `serializeCredentialsCsv(credentials) → string` (header row, RFC 4180 quoting, tags/category encoding, UTF-8 BOM option). **CSV-injection guard applied on import path, not export.**
+- **E2 — Import:** `src/features/vault/csv/csvImport.ts` — `parseCredentialsCsv(text) → { rows, errors }` **built on `papaparse`** (battle-tested parser; no hand-rolled RFC 4180 edge cases). Wraps it with: header detection/variants; per-row validation (parity with Zod import caps: row count, field length, enum checks); **CSV-injection sanitization** — fields starting with `=`, `+`, `-`, `@` are prefixed/quoted-neutralized before use; **never echoes password content** into errors or logs.
+- Tests: round-trip export→parse; quoting (commas, quotes, newlines, UTF-8); header variants; malformed row → indexed error; empty input; injection payloads (`=HYPERLINK(...)`, `+cmd`, `-cmd`, `@cmd`) are neutralized; caps enforced; password column absent from error messages.
+- Wire (after E1/E2 green): "CSV" format option in `ExportDialog` (Blob download); "CSV" accept in `ImportDialog` (parse → credential inputs → existing validation).
+- **Deps (approved):** `papaparse` (runtime) + `@types/papaparse` (dev).
 
-- **E1** `src/features/vault/csv/csvExport.ts` — `serializeCredentialsCsv(credentials) → string` (RFC 4180 quoting, header row, category/tags encoding, UTF-8 BOM option).
-- **E2** `src/features/vault/csv/csvImport.ts` — `parseCredentialsCsv(text) → { rows, errors }` (quoted fields, embedded newlines, header detection + variants, per-row validation; **never** logs plaintext passwords).
-- Test cases (E1+E2): round-trip export→parse; quoting (commas, double-quotes, newlines, UTF-8/non-ASCII); header variants (with/without header); malformed row → error entry with row index; empty input; tag/category round-trip; password column never echoed into error messages.
-- Wire (after E1/E2 green): add "CSV" format option to `ExportDialog` (Blob download); "CSV" accept to `ImportDialog` (parse → credential inputs → existing Zod/field validation). Keep dialogs' integration tests green.
+**Acceptance:** E1/E2 fully unit-tested before wiring; injection tests green; dialogs' integration tests pass; manual export→import round trip recorded.
 
-**Acceptance:** E1/E2 fully unit-tested before wiring; manual export→import round trip recorded in TEST_STATUS.md; C2 dialog tests updated for the new option.
+### WS-F — E2E: grow from smoke to critical journeys (Playwright best practices)
 
-### WS-F — E2E (Playwright): grow from smoke to critical journeys
+- **F1 — Infrastructure & isolation:** `e2e/fixtures/` helpers — unique user per spec; clear IndexedDB in `beforeEach`; **auth bootstrap via `storageState`** (one signup → save state → reuse for CRUD/security/audit specs, keeping the suite fast — Playwright's state-driven setup pattern); verify existing `login.spec.ts` green on Chromium + CI WebKit.
+- **F2 — Auth journey:** signup → vault setup → lock → unlock (master password) → logout → login; assert URL transitions + lock gating. *(No `storageState` shortcut here — this journey is the feature under test.)*
+- **F3 — Credential CRUD:** add (with generator), edit, favorite toggle, search filter, detail view, delete; assert persistence across navigation.
+- **F4 — Security flows:** auto-lock (short timeout); change master password → re-login; export `.tvault` → import (merge); backup-code reveal.
+- **F5 — PWA/offline drill:** `context.setOffline(true)` → reload → unlock → dashboard renders from IndexedDB; `OfflineIndicator` visible; restore online.
+- **F6 — Security Audit:** seed weak-password credential; run "Scan All"; assert issue list + lower score. HIBP endpoint mocked via `page.route`.
+- **F7 — A11y focus journeys (cross-link from WS-H):** dialogs open → focus moves into dialog; Escape closes and focus returns to trigger — asserted in real browser where jsdom cannot.
+- **F8 — Cross-browser:** CI matrix Chromium + WebKit; documented skips (WebAuthn — manual only).
 
-- **F1 — Infrastructure & isolation:** add `e2e/fixtures/` helpers (unique user per spec, `beforeEach` clears IndexedDB via `page.evaluate`); verify `npm run e2e` (Chromium) and CI WebKit run on the existing `login.spec.ts` without flakes.
-- **F2 — Auth journey:** signup → vault setup → lock → unlock (master password) → logout → login. Assert URL transitions and lock-screen gating.
-- **F3 — Credential CRUD:** add credential (with generator), edit, favorite toggle, search filter, detail view, delete. Assert persisted state across navigation.
-- **F4 — Security flows:** auto-lock with short timeout; change master password (old → new → re-login); export `.tvault` → import round trip (merge mode); backup-code reveal.
-- **F5 — PWA/offline drill (automate the manual P1/P4 drills):** `context.setOffline(true)` → reload → unlock → dashboard renders from IndexedDB; `OfflineIndicator` visible.
-- **F6 — Security Audit:** seed a credential with a known-weak password; run "Scan All"; assert issue list + lowered score. (HIBP network calls stubbed via `page.route` — k-anonymity endpoint mocked.)
-- **F7 — Cross-browser:** keep CI matrix (Chromium + WebKit); document known skips (WebAuthn — manual only).
-
-**Acceptance:** `npm run e2e` green locally (Chromium); specs deterministic (no shared user state); each spec maps to a user-visible journey from the ROADMAP/user guide.
+**Acceptance:** `npm run e2e` green (Chromium locally); web-first assertions only; deterministic (isolated state per spec); each spec maps to a documented user journey.
 
 ### WS-G — Test-suite debt cleanup
 
-- **G1 — Fix 13 ESLint errors in test files** (non-null assertions, deprecated fields per ROADMAP gaps): targeted `eslint` runs per file; no production-code changes.
-- **G2 — Fix the known flake:** `import-export.test.tsx` "reject import with wrong password" (timing-sensitive under full-suite load) → make deterministic (explicit `await`, fake timers or longer bound); confirm green in isolation AND full suite.
-- **G3 — Timer determinism audit:** TOTP, clipboard, `useAutoLock` suites — assert every timer path uses `vi.useFakeTimers()`; no real `setTimeout` waits; no `advanceTimersByTimeAsync` misuse.
-- **G4 — Lint gate definition:** `npm run lint` must not exceed the approved baseline (~855) at any commit; touched files **0 new**; track baseline deltas in TEST_STATUS.
-- **G5 — Evidence:** update TEST_STATUS with per-fix results (isolated + full-suite runs).
+- **G1 — Fix 13 ESLint errors in test files** (non-null assertions, deprecated fields): targeted eslint per file; no production-code changes. **Re-measure the full baseline first** (`npm run lint`) to record the true starting number.
+- **G2 — Fix the known flake:** `import-export.test.tsx` "reject import with wrong password" → deterministic (explicit await, fake timers or stronger bound); green in isolation **and** full suite.
+- **G3 — Timer determinism audit:** TOTP, clipboard, `useAutoLock` suites — all timer paths via `vi.useFakeTimers()`; no real `setTimeout` waits.
+- **G4 — Lint gate:** `npm run lint` must not exceed baseline at any commit; touched files **0 new**; baseline deltas tracked in TEST_STATUS.
+- **G5 — Evidence:** TEST_STATUS per-fix results (isolated + full-suite).
 
-**Acceptance:** lint baseline reduced (≥13 fewer problems) with zero new; full `npm run test` fully green (1415/1415) at the end of the program.
+**Acceptance:** lint baseline reduced (≥13 fewer) with zero new; full suite 1415/1415 at program end.
 
 ### WS-H — Documented feature gaps (credential history + a11y)
 
-- **H1 — Credential history view (TDD):** `lastAccessedAt` is already tracked — add a read-only metadata panel to `CredentialDetailPage`/`CredentialDetailsDialog`.
-  - Pure helper `src/presentation/utils/timeFormat` extension or new `formatLastAccessed(cred, now)` (reuses existing `timeFormat.ts` patterns) — tests: relative labels (today/yesterday/N days/months), never-before-accessed state, `undefined` guards.
-  - Component tests: renders Created / Updated / Last accessed rows; hidden for missing values.
-- **H2 — WCAG 2.1 AA audit (testable fixes first):**
-  - Fix audit findings that are assertable in jsdom: dialog focus management (focus trap on open, return focus on close), aria-labels/roles on icon-only buttons, contrast-safe severity colors, keyboard-close on dialogs (Escape).
-  - TDD each fix (render + interaction tests) before/with the change.
-  - **Automated sweep (optional, requires approval for new devDep):** `axe-core` + `vitest-axe`-style checks on the core dialogs. If not approved, rely on the manual checklist in `docs/security/audit-checklist.md` and record results there.
-- **H3 — TOTP SMS fallback (optional/backlog, flagged):** core RFC 6238 TOTP + backup codes are shipped; SMS is a stub with no backend — keep **out of scope** for this program unless explicitly requested (documented here for traceability).
+- **H1 — Credential history view (TDD):** `lastAccessedAt` already tracked. Pure helper (`timeFormat.ts` extension): `formatLastAccessed(cred, now)` — tests: today/yesterday/N-days/months; never-accessed; undefined guards. Component: metadata rows in `CredentialDetailPage`/`CredentialDetailsDialog` (Created/Updated/Last accessed); hidden for missing values.
+- **H2 — WCAG 2.1 AA audit (axe-core-assisted):**
+  - Add `axe-core` (dev, approved). Small helper `src/test/setup.ts` → `runAxe(container)` returning violations; used in component tests for the **core dialogs + forms** (assert zero violations of configured rules).
+  - Fix findings assertable in jsdom first: dialog focus management (focus moves to dialog on open — structural assertions + WS-F F7 for real focus), aria-labels/roles on icon-only buttons, contrast-safe severity colors, Escape-to-close.
+  - Manual audit against `docs/security/audit-checklist.md`; record results there.
+- **H3 — TOTP SMS fallback:** keep **deferred** (flagged, documented for traceability; no backend exists).
 
-**Acceptance:** H1 shipped with tests; H2 fixes each have a regression test + recorded audit result; H3 explicitly deferred.
+**Acceptance:** H1 shipped with tests; H2 has axe-driven tests on core dialogs + recorded manual audit; H3 explicitly deferred.
 
-### WS-I — Cross-cutting quality (applies to every touched file)
+### WS-I — Cross-cutting quality (every touched file)
 
-- No `console.log`/`debugger` in new code; no new ESLint problems (`npx eslint <touched files>`).
-- Timer-dependent tests use `vi.useFakeTimers()`.
-- Deterministic: no network, no real IndexedDB in component tests (mock repos/stores).
-- Update `docs/testing/TEST_STATUS.md` with per-task evidence (tests, verification, lint deltas) and this plan's link.
+- No `console.log`/`debugger`; **0 new** ESLint problems per touched file.
+- `user-event` for interactions; `vi.useFakeTimers()` for time; `findBy*`/`waitFor` for async.
+- Deterministic: no network, no real IndexedDB in component tests.
+- TEST_STATUS evidence per task (tests, verification, lint deltas) + link to this plan.
 
 ---
 
 ## 5. New/Changed File Map
 
-**New — production modules:**
-- `src/presentation/pages/securityAuditEngine.ts`
-- `src/presentation/pages/credentialFormValidation.ts`
-- `src/presentation/hooks/useCredentialForm.ts`
-- `src/features/vault/csv/csvExport.ts`, `src/features/vault/csv/csvImport.ts`
-- `src/presentation/utils/timeFormat.ts` extension (or `lastAccessedFormat.ts`) — H1
+**New — production modules:** `securityAuditEngine.ts`, `credentialFormValidation.ts`, `useCredentialForm.ts`, `features/vault/csv/csvExport.ts` + `csvImport.ts`, `timeFormat.ts` extension (H1).
 
-**New — tests (all colocated `__tests__/` unless noted):**
-- `securityAuditEngine.test.ts`, `credentialFormValidation.test.ts`, `useCredentialForm.test.ts`
-- `csvExport.test.ts`, `csvImport.test.ts`, `lastAccessedFormat.test.ts`
-- 35 component test files (WS-C matrix) under `src/presentation/components/__tests__/`
-- Page tests (WS-D) under `src/presentation/pages/__tests__/`
+**New — deps (approved):** `papaparse` (runtime), `@types/papaparse` (dev), `axe-core` (dev).
 
-**New — E2E (WS-F):**
-- `e2e/auth-journey.spec.ts`, `e2e/credential-crud.spec.ts`, `e2e/security-flows.spec.ts`, `e2e/offline-drill.spec.ts`, `e2e/security-audit.spec.ts`, `e2e/fixtures/` helpers
+**New — tests:** `securityAuditEngine.test.ts`, `credentialFormValidation.test.ts`, `useCredentialForm.test.ts`, `csvExport.test.ts`, `csvImport.test.ts`, `lastAccessedFormat.test.ts`, 33 component test files (WS-C), 10 page test files (WS-D), axe helper in `src/test/setup.ts`.
 
-**Changed (refactor only, after tests pass):**
-- `SecurityAuditPage.tsx` (WS-A), `AddCredentialPage.tsx`/`EditCredentialPage.tsx` (WS-B), `ExportDialog.tsx`/`ImportDialog.tsx` (WS-E), `CredentialDetailPage.tsx`/`CredentialDetailsDialog.tsx` (WS-H), dialog focus/aria fixes (WS-H)
-- Test files fixed under WS-G (13 lint errors, flake, timer determinism)
-- Docs: this plan + `docs/testing/TEST_STATUS.md` + `docs/security/audit-checklist.md` (H2 results)
+**New — E2E:** `e2e/auth-journey.spec.ts`, `credential-crud.spec.ts`, `security-flows.spec.ts`, `offline-drill.spec.ts`, `security-audit.spec.ts`, `a11y-focus.spec.ts`, `e2e/fixtures/` (unique-user + storageState helpers).
+
+**Changed (refactor only, after tests pass):** `SecurityAuditPage.tsx`, `DashboardPage.tsx` (WS-A), `AddCredentialPage.tsx`, `EditCredentialPage.tsx` (WS-B), `ExportDialog.tsx`, `ImportDialog.tsx` (WS-E), `CredentialDetailPage.tsx`, `CredentialDetailsDialog.tsx` (WS-H), dialog focus/aria fixes (WS-H), WS-G test-file fixes. Docs: this plan, TEST_STATUS, audit-checklist.
 
 ---
 
-## 6. Validation Gates (per task and at end of each workstream)
+## 6. Validation Gates
+
+**Prerequisite:** `npm install` (workspace ships without `node_modules`).
 
 ```bash
-npx vitest run <new/affected test files>      # RED confirmation + GREEN pass
+npx vitest run <new/affected test files>      # RED + GREEN per task
 npm run type-check                            # 0 errors
-npx eslint <touched files>                    # 0 new problems vs. baseline
+npx eslint <touched files>                    # 0 new problems vs. re-measured baseline
 npx vitest run src/__tests__/integration/     # no regressions on related flows
-npm run e2e                                   # WS-F: Playwright (Chromium) green
+npm run e2e                                   # WS-F: Playwright green (Chromium locally)
 ```
 
-Final gates for the whole program:
-- `npm run test` — **1415/1415 passing** (flake G2 eliminated; baseline 1414/1415 + new suites)
-- `npm run lint` — total problems ≤ baseline (855) and **strictly fewer** after G1
-- `npm run e2e` — all journeys green (Chromium locally; WebKit in CI)
-- `npm run type-check` — 0 errors
-- Coverage: `npm run test:coverage` thresholds maintained (≥85% lines/statements)
+**Full-suite runs** (workstream boundaries, not per task — scrypt-heavy suites are slow):
+```bash
+npm run test -- --testTimeout=30000           # constrained-env requirement (TEST_STATUS)
+npm run test:coverage                         # thresholds: lines/functions/statements ≥85, branches ≥80
+npm run lint                                  # ≤ baseline; ≥13 fewer after WS-G
+```
+
+**Final gates:** `npm run test` **1415/1415**; lint ≤ baseline and reduced; `npm run e2e` green; `type-check` 0; coverage thresholds held.
 
 ---
 
 ## 7. Risks & Notes
 
-- **SecurityAuditPage parity risk (WS-A):** engine port must match current behavior exactly — module tests pin the *existing* rules before rewiring; manual side-by-side score comparison before refactor.
-- **Settings/Import/Export jsdom history:** dialog gating previously broke ~15 integration tests; WS-D pins it; WS-E must not reintroduce navigation side effects (no `setTimeout(navigate)`).
-- **CSV scope creep:** E1/E2 are the tested core; dialog wiring is minimal and follows existing dialog patterns.
-- **E2E flakiness (WS-F):** index users per spec and clear IndexedDB in `beforeEach`; mock the HIBP k-anonymity endpoint in F6; rely on the config's `retries: 2` only in CI, not locally (specs must be deterministic first).
-- **Playwright browser install:** running `npm run e2e` locally requires `npx playwright install chromium` if not present (environment step, not a code change).
-- **WCAG automation depends on approval:** `axe-core` is a new devDependency — if not approved, H2 proceeds with manual audit + jsdom-assertable regression tests only.
-- **Coverage thresholds:** new pure modules are small and dense (help coverage); WS-C/WS-D component/page tests offset page-file line movements.
-- **Lint baseline drift:** G4's gate is the mechanism that keeps the program from expanding repo-wide lint debt.
-- Keep each workstream's diff small and independent so partial completion still leaves the suite green.
+- **SecurityAudit parity (WS-A):** module tests pin existing rules before rewiring; manual side-by-side score comparison for both SecurityAudit **and** Dashboard before refactor.
+- **Settings/Import/Export jsdom history:** WS-D pins dialog gating; WS-E must not introduce navigation side effects.
+- **CSV (WS-E):** `papaparse` is battle-tested, but its config must be pinned (header detection, `dynamicTyping: false`, skip-empty-lines) — tests lock the exact behavior. Injection guard is a security control, not optional.
+- **E2E determinism (WS-F):** unique user per spec, `storageState` bootstrap, HIBP mocked via `page.route`; no shared state; `retries: 2` is CI-only.
+- **Playwright browsers:** `npx playwright install chromium` may be required locally (environment step).
+- **a11y (WS-H):** jsdom cannot verify real focus — axe rules + structural assertions in unit tests, real focus behavior in WS-F F7.
+- **Exhaustive coverage cost (owner decision):** 33 component + 10 page test files is deliberate; behavior-focused conventions keep them maintainable. Trivial components get minimal smoke tests (render + key interaction), not exhaustive permutations.
+- **Lint baseline drift:** G4's gate prevents expansion; baseline re-measured at execution (G1).
+- Keep each workstream's diff small and independent so partial completion leaves the suite green.
 
 ---
 
 ## 8. References
 
-- `docs/testing/TESTING_PATTERNS.md` — conventions, fixtures, coverage targets
-- `docs/testing/TEST_STATUS.md` — baseline + evidence ledger to update
-- `docs/guides/ROADMAP.md` — known gaps (CSV, lint debt, WCAG, TOTP SMS)
-- `docs/security/GAP_ANALYSIS.md` §17 — current verified gaps; §11 file-by-file sizes
-- `docs/security/audit-checklist.md` — WCAG/manual audit scratchpad (H2)
-- `src/MODULE_CONTRACTS.md` — public APIs to preserve during extraction
-- `e2e/README.md` + `playwright.config.ts` — E2E conventions, base URL, CI matrix
-- `AGENTS.md` — Definition of Done, security guardrails (no logging secrets, `@/` aliases)
+**Project docs:** `TESTING_PATTERNS.md` (conventions/coverage), `TEST_STATUS.md` (baseline + evidence ledger), `ROADMAP.md` (gaps), `GAP_ANALYSIS.md` §17 (verified gaps) + §11 (sizes), `audit-checklist.md` (WCAG scratchpad), `MODULE_CONTRACTS.md` (APIs to preserve), `e2e/README.md` + `playwright.config.ts` (E2E conventions), `AGENTS.md` (DoD, guardrails).
+
+**Verified online sources (best practices applied):**
+- Kent C. Dodds — *The Testing Trophy and Testing Classifications* (kentcdodds.com/blog/the-testing-trophy-and-testing-classifications); *Write tests. Not too many. Mostly integration.* (kentcdodds.com/blog/write-tests); *Testing Implementation Details* (kentcdodds.com/blog/testing-implementation-details)
+- React Testing Library — official docs + guiding principles (testing-library.com) — behavior over implementation; `user-event`
+- Playwright — *Best Practices* docs (playwright.dev/docs/best-practices) — web-first assertions, test isolation, state setup, `page.route`, `context.setOffline`
