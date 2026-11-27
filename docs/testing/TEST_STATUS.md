@@ -879,5 +879,6 @@ human should verify in real Chrome:
 
 New suites: `aad.test.ts`, `encryption-aad.test.ts`, `credentialRowCrypto.test.ts`,
 `CredentialRepositoryImpl.integrity.test.ts`, `aadMigration.test.ts`,
-`exportEncryption.v11.test.ts`, `ExportDialog.integrity.test.tsx`. Spec:
+`exportEncryption.v11.test.ts`, `ExportDialog.integrity.test.tsx`, `anchorDowngrade.test.ts` (post-review
+fixes). Known flake, unrelated: `totp-edge-cases.test.ts` "same code within large time step". Spec:
 `docs/superpowers/specs/2026-11-27-aad-ciphertext-binding-design.md`.
