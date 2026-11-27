@@ -8,6 +8,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { db } from '@/data/storage/database';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { sealLegacyMetadata } from '@/data/repositories/metadataSealing';
+import { encrypt } from '@/core/crypto/encryption';
 
 async function makeVaultKey(): Promise<CryptoKey> {
   return crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, [
@@ -15,6 +16,16 @@ async function makeVaultKey(): Promise<CryptoKey> {
     'decrypt',
   ]);
 }
+
+/**
+ * Turns a created row into a genuine pre-v5 one: a legacy password blob and no
+ * other encrypted columns (v2 rows are never sealed).
+ */
+const preV5Columns = async (key: CryptoKey) => ({
+  encryptedPassword: JSON.stringify(await encrypt('secret-password-123', key)),
+  encryptedUsername: undefined,
+  username: 'user@example.com',
+});
 
 const loginInput = (title: string) => ({
   title,
@@ -112,6 +123,7 @@ describe('two-user credential isolation', () => {
     const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
     // Simulate a pre-v5/pre-v9 row: plaintext metadata, unsealed, unowned.
     await db.credentials.update(a.id, {
+      ...(await preV5Columns(keyA)),
       isSealed: false,
       title: 'Legacy plaintext title',
       encryptedTitle: undefined,
@@ -141,8 +153,8 @@ describe('two-user credential isolation', () => {
     const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
     const b = await credentialRepository.create(loginInput('B1'), keyB, userB);
     // Both rows unsealed with plaintext metadata, but both owned.
-    await db.credentials.update(a.id, { isSealed: false, title: 'A plain', encryptedTitle: undefined });
-    await db.credentials.update(b.id, { isSealed: false, title: 'B plain', encryptedTitle: undefined });
+    await db.credentials.update(a.id, { ...(await preV5Columns(keyA)), isSealed: false, title: 'A plain', encryptedTitle: undefined });
+    await db.credentials.update(b.id, { ...(await preV5Columns(keyB)), isSealed: false, title: 'B plain', encryptedTitle: undefined });
 
     expect(await sealLegacyMetadata(keyA, userA)).toBe(1);
     expect((await db.credentials.get(a.id))?.isSealed).toBe(true);

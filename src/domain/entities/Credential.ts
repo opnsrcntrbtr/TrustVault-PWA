@@ -27,6 +27,7 @@ export interface Credential {
   lastAccessedAt?: Date | undefined;
   isFavorite: boolean;
   securityScore?: number | undefined; // 0-100 based on password strength
+  integrityError?: boolean | undefined; // stored data failed authentication; no secrets are exposed
   totpSecret?: string | undefined; // TOTP/2FA secret (base32-encoded, decrypted in memory)
   backupCodes?: BackupCode[] | undefined; // Single-use recovery codes, encrypted with credential
 

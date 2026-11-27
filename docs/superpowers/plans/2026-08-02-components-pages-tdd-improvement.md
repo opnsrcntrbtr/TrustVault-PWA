@@ -4,13 +4,13 @@
 **Status:** Planned (awaiting approval; execution happens in later sessions, one workstream at a time)
 **Program type:** Mixed — targeted refactoring + exhaustive component/page coverage + documented feature gaps + E2E (Playwright) + test-suite debt cleanup + Bitwarden-benchmarked feature workstreams, every change driven by Test-Driven Development (red → green → refactor)
 **Target areas:** `src/presentation/pages/**`, `src/presentation/components/**`, `src/presentation/hooks/**`, `src/features/**` (CSV, audit, trash, history, reprompt, generator-history), `src/domain/entities/**`, `src/data/storage/**` (schema v11), `e2e/**`
-**Revision:** v4 (2026-08-02) — adversarial review applied (verified against project state + Testing Trophy / Testing Library / Playwright docs) **and Bitwarden state-of-the-art benchmark applied** (patterns only; license guardrail in §7). **Coverage model: exhaustive** (owner decision). **Dependency policy: `axe-core` + `papaparse` approved.**
+**Revision:** v4.1 (2026-08-03) — baseline test count corrected (1402/1403, verified); v4 original unchanged. **Coverage model: exhaustive** (owner decision). **Dependency policy: `axe-core` + `papaparse` approved.**
 
 ---
 
 ## 1. Context & Baseline (verified 2026-08-02)
 
-TrustVault PWA is feature-complete (7 phases + AI; **1414/1415 tests passing** per `docs/testing/TEST_STATUS.md`). This plan targets the **presentation layer** and its supporting E2E/test hygiene, plus five Bitwarden-parity feature workstreams (WS-J…WS-N) that were researched and added at v4.
+TrustVault PWA is feature-complete (7 phases + AI; **1402/1403 tests passing** per `docs/testing/TEST_STATUS.md`). This plan targets the **presentation layer** and its supporting E2E/test hygiene, plus five Bitwarden-parity feature workstreams (WS-J…WS-N) that were researched and added at v4.
 
 **Verified inventory (shell counts, Node v22.23.1):**
 - **Components:** 45 (`src/presentation/components/`: 41 + `ai/`: 4). Tested: **12** → **33 untested** (all targeted by WS-C). *New components introduced by WS-J…N are covered test-first inside their own workstreams and roll into the exhaustive inventory on landing.*
@@ -19,6 +19,7 @@ TrustVault PWA is feature-complete (7 phases + AI; **1414/1415 tests passing** p
 - **E2E:** 1 smoke spec (`e2e/login.spec.ts`), Playwright config present (`baseURL: http://localhost:3000/TrustVault-PWA`).
 - **Database:** `TrustVaultDB` at **schema v10** (Dexie). Encrypted sensitive fields follow the `encrypted*` prefix pattern (`encryptedBackupCodes` is the model for the new encrypted password-history blob). Post-login backfill pattern (v5 metadata seal, v10 profile backfill) is the precedent for vault-key-dependent migrations.
 - **Lint baseline:** documented ~853–855 problems across TEST_STATUS snapshots; **must be re-measured at execution time**.
+- **Test count delta (1415 → 1403):** 4 test files deleted in commit `7a08418` ("refactor: remove inline PRF crypto superseded by webauthn-prf-zktv, drop simplewebauthn") — `biometricVaultKey.test.ts`, `webauthn-security.test.ts`, `webauthnPrf.test.ts`, `zktvPackage.test.ts`. These tested the pre-refactor SimpleWebAuthn implementation; the new PRF-based flow has its tests in the remaining files. Test consolidation during refactor reduced the count by ~12. **All 1403 tests are the new baseline; the plan's final gate target is 1403/1403 + new tests from WS-A…N.**
 
 ### 1.1 Pages — direct test status
 
@@ -100,7 +101,7 @@ Not adopted (out of scope for an offline-first single-device PWA): server-side s
 3. Ship documented **CSV import/export** (via `papaparse`) **with CSV-injection protection**, tests first.
 4. Ship the **credential history view** and a **WCAG 2.1 AA audit** (axe-core-assisted, TDD for testable fixes).
 5. Grow **Playwright E2E** from 1 smoke spec to critical-journey coverage (web-first assertions, isolated state, `storageState`, `page.route`, `context.setOffline`).
-6. **Zero test-suite debt**: fix the 13 lint errors in test files, the known flake, and timer nondeterminism; final full-suite target **1415/1415**.
+6. **Zero test-suite debt**: fix the 13 lint errors in test files, the known flake, and timer nondeterminism; final full-suite target **1403/1403 + new tests from WS-A…N**.
 7. Adopt **verified testing best practices**: RTL `user-event` over `fireEvent`; web-first assertions in E2E; static analysis as base layer.
 8. **Trash / soft-delete + restore** (WS-J): soft-delete, Trash surface, restore, permanent delete, retention purge — Bitwarden-parity recovery UX, TDD-first.
 9. **Password history + restore** (WS-K): encrypted, capped history per credential with restore-previous-password — TDD-first.
@@ -276,7 +277,7 @@ Mount with mocked stores/repos/router; assert behavior + error states (complemen
 - **G4 — Lint gate:** `npm run lint` must not exceed baseline at any commit; touched files **0 new**; baseline deltas tracked in TEST_STATUS.
 - **G5 — Evidence:** TEST_STATUS per-fix results (isolated + full-suite).
 
-**Acceptance:** lint baseline reduced (≥13 fewer) with zero new; full suite 1415/1415 at program end.
+**Acceptance:** lint baseline reduced (≥13 fewer) with zero new; full suite 1403/1403 at program end (pre-WS-A…N).
 
 ### WS-H — Documented feature gaps (credential history + a11y)
 
@@ -356,6 +357,23 @@ Mount with mocked stores/repos/router; assert behavior + error states (complemen
 
 ---
 
+### Research-driven backlog (added 2026-11-27, after WS-N)
+
+R1 (AAD ciphertext binding) has its own spec and plan:
+`docs/superpowers/plans/2026-11-27-aad-ciphertext-binding.md`. The rest are not yet designed.
+
+| WS | Item | Basis | Size |
+|---|---|---|---|
+| WS-O (R2) | NIST SP 800-63B-4 master-password policy: recommend ≥15 characters (currently 12), allow ≥64, no composition rules, allow paste, check HIBP k-anonymity at signup and change | NIST SP 800-63B-4 (July 2025); verify wording against the NIST PDF | S |
+| WS-P (R3) | FIDO CXF 1.0 import/export (logins, TOTP, notes); pairs with WS-E. CXP transport not needed (reported still a working draft) | FIDO Credential Exchange specs | M |
+| WS-Q (R1b) | Per-purpose HKDF subkeys | ePrint 2026/058, key separation | S–M |
+| WS-R (R4) | Opt-in end-to-end encrypted sync relay; needs its own design | ePrint 2026/058 attack classes | L |
+| WS-S (R5) | WCAG 2.2 AA (raises WS-H's 2.1 target) and a React ErrorBoundary | W3C WCAG 2.2 | S–M |
+| WS-T (R6) | Published threat model and tamper-test suite mapped to attack classes | ePrint 2026/058 | S |
+| WS-U (R7) | Post-quantum watch: WebCrypto ML-KEM/ML-DSA. Browser release versions unverified; relevant only once key exchange exists | WICG webcrypto-modern-algos | — |
+
+---
+
 ## 5. New/Changed File Map
 
 **New — production modules:**
@@ -397,13 +415,13 @@ npm run test:coverage                         # thresholds: lines/functions/stat
 npm run lint                                  # ≤ baseline; ≥13 fewer after WS-G
 ```
 
-**Final gates:** `npm run test` **1415/1415**; lint ≤ baseline and reduced; `npm run e2e` green; `type-check` 0; coverage thresholds held; CSP `connect-src` unchanged (WS-N adds no network).
+**Final gates:** `npm run test` **1403/1403 + new tests from WS-A…N**; lint ≤ baseline and reduced; `npm run e2e` green; `type-check` 0; coverage thresholds held; CSP `connect-src` unchanged (WS-N adds no network).
 
 ---
 
 ## 7. Risks & Notes
 
-- **License guardrail (v4):** Bitwarden's `clients`/`server`/`mobile`/`android`/`ios` are **GPL-3.0**; TrustVault is **Apache-2.0** (`LICENSE`). Only *patterns* (UX flows, data shapes, report semantics) are adopted — **never** GPL source files, code, or structures. No Bitwarden code may be copied, translated, or adapted; no attribution/NOTICE changes are expected. The 2fa.directory dataset is separately licensed (public-domain-style facts about domains — see its license in the generator script header) and is consumed as *data*, not code. If any task ever needs a concrete implementation from a GPL project, stop and escalate instead of porting it.
+- **License guardrail (v4.1):** Bitwarden's `clients`/`server`/`mobile`/`android`/`ios` are **GPL-3.0**; TrustVault is **Apache-2.0** (`LICENSE`). Only *patterns* (UX flows, data shapes, report semantics) are adopted — **never** GPL source files, code, or structures. No Bitwarden code may be copied, translated, or adapted; no attribution/NOTICE changes are expected. The 2fa.directory dataset is separately licensed (public-domain-style facts about domains — see its license in the generator script header) and is consumed as *data*, not code. If any task ever needs a concrete implementation from a GPL project, stop and escalate instead of porting it.
 - **Schema v11 additive (WS-J/K/L):** no destructive index changes; `encryptedPasswordHistory` follows the v5/v10 precedent (vault-key-dependent writes happen post-login/on-save, never inside `.upgrade()`). Migration tests must run against fake-indexeddb, not the browser.
 - **Trash retention policy (WS-J):** 30-day default (Bitwarden parity), constant extracted for tests; purge runs on unlock (offline-safe). Hard delete remains available from Trash (explicit user action) — soft-delete never blocks a deliberate permanent delete.
 - **Password history sensitivity (WS-K):** entries are real passwords at rest — encrypted with the vault key; **never logged, never rendered in full in tests, never echoed in errors**. Restore must append the current password to history before overwriting (no loop). Cap of 5 keeps storage bounded.

@@ -12,6 +12,8 @@ import { ensureDefaultProfile } from '@/data/repositories/profileMigration';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import { decrypt } from '@/core/crypto/encryption';
 
+import { buildAad } from '@/core/crypto/aad';
+
 async function makeVaultKey(): Promise<CryptoKey> {
   return crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, [
     'encrypt',
@@ -58,7 +60,8 @@ describe('ensureDefaultProfile (v10 post-login migration)', () => {
     expect(row).toBeDefined();
     const decrypted = await decrypt(
       JSON.parse(row?.encryptedName ?? '') as Parameters<typeof decrypt>[0],
-      keyA
+      keyA,
+      buildAad({ purpose: 'profile-name', userId: userA, recordId: row?.id ?? '' })
     );
     expect(decrypted).toBe('Personal');
   });

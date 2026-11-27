@@ -18,7 +18,10 @@
 import { ICredentialRepository } from '@/domain/repositories/ICredentialRepository';
 import { Credential, CredentialInput } from '@/domain/entities/Credential';
 import { db, type StoredCredential } from '../storage/database';
-import { encrypt, decrypt } from '@/core/crypto/encryption';
+import { decrypt } from '@/core/crypto/encryption';
+import type { CredentialField } from '@/core/crypto/aad';
+import { IntegrityError, isV2Row, openRow, resealRow, sealField } from './credentialRowCrypto';
+import { commitRowIfUnchanged } from './rowCommit';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 import { saveBreachPrefix, deleteBreachPrefix } from '@/core/breach/breachPrefixStore';
 
@@ -26,18 +29,18 @@ export class CredentialRepository implements ICredentialRepository {
 
   // ── Private crypto helpers ─────────────────────────────────────────────────
 
-  private async encryptField(value: string, key: CryptoKey): Promise<string> {
-    return JSON.stringify(await encrypt(value, key));
-  }
-
   private async encryptOptional(
     value: string | undefined,
-    key: CryptoKey
+    key: CryptoKey,
+    userId: string,
+    recordId: string,
+    field: CredentialField
   ): Promise<string | undefined> {
     if (!value) return undefined;
-    return this.encryptField(value, key);
+    return sealField(value, key, userId, recordId, field);
   }
 
+  /** Legacy (pre-AAD) rows only; v2 rows are read through openRow(). */
   private async decryptField(blob: string, key: CryptoKey): Promise<string> {
     return decrypt(JSON.parse(blob) as Parameters<typeof decrypt>[0], key);
   }
@@ -59,13 +62,19 @@ export class CredentialRepository implements ICredentialRepository {
    * (auth-tag failure throws), so a successful decrypt is cryptographic proof
    * of ownership.
    */
-  private async canClaim(stored: StoredCredential, key: CryptoKey): Promise<boolean> {
+  private async canClaim(stored: StoredCredential, key: CryptoKey, userId: string): Promise<boolean> {
     try {
-      await this.decryptField(stored.encryptedPassword, key);
+      await this.readPassword(stored, key, userId);
       return true;
     } catch {
       return false;
     }
+  }
+
+  private async readPassword(stored: StoredCredential, key: CryptoKey, userId: string): Promise<string> {
+    if (!isV2Row(stored)) return this.decryptField(stored.encryptedPassword, key);
+    const { encryptedPassword } = await openRow(stored, key, userId);
+    return encryptedPassword as string;
   }
 
   /**
@@ -79,7 +88,7 @@ export class CredentialRepository implements ICredentialRepository {
   ): Promise<StoredCredential[]> {
     const claimed: StoredCredential[] = [];
     for (const stored of unowned) {
-      if (await this.canClaim(stored, key)) {
+      if (await this.canClaim(stored, key, userId)) {
         await db.credentials.update(stored.id, { userId });
         claimed.push({ ...stored, userId });
       }
@@ -113,29 +122,28 @@ export class CredentialRepository implements ICredentialRepository {
     userId: string,
     profileId?: string
   ): Promise<Credential> {
-    const encryptedPassword       = await this.encryptField(input.password, encryptionKey);
-    const encryptedTitle          = await this.encryptField(input.title, encryptionKey);
-    const encryptedUsername       = await this.encryptOptional(input.username, encryptionKey);
-    const encryptedUrl            = await this.encryptOptional(input.url, encryptionKey);
+    const encryptedPassword       = await sealField(input.password, encryptionKey, userId, id, 'encryptedPassword');
+    const encryptedTitle          = await sealField(input.title, encryptionKey, userId, id, 'encryptedTitle');
+    const encryptedUsername       = await this.encryptOptional(input.username, encryptionKey, userId, id, 'encryptedUsername');
+    const encryptedUrl            = await this.encryptOptional(input.url, encryptionKey, userId, id, 'encryptedUrl');
     const encryptedTags           = (input.tags?.length ?? 0) > 0
-      ? await this.encryptField(JSON.stringify(input.tags), encryptionKey)
+      ? await sealField(JSON.stringify(input.tags), encryptionKey, userId, id, 'encryptedTags')
       : undefined;
-    const encryptedNotes          = await this.encryptOptional(input.notes, encryptionKey);
-    const encryptedTotpSecret     = await this.encryptOptional(input.totpSecret, encryptionKey);
-    const encryptedCardNumber     = await this.encryptOptional(input.cardNumber, encryptionKey);
-    const encryptedCvv            = await this.encryptOptional(input.cvv, encryptionKey);
-    const encryptedCardholderName = await this.encryptOptional(input.cardholderName, encryptionKey);
-    const encryptedExpiryMonth    = await this.encryptOptional(input.expiryMonth, encryptionKey);
-    const encryptedExpiryYear     = await this.encryptOptional(input.expiryYear, encryptionKey);
-    const encryptedCardType       = await this.encryptOptional(input.cardType, encryptionKey);
-    const encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey);
+    const encryptedNotes          = await this.encryptOptional(input.notes, encryptionKey, userId, id, 'encryptedNotes');
+    const encryptedTotpSecret     = await this.encryptOptional(input.totpSecret, encryptionKey, userId, id, 'encryptedTotpSecret');
+    const encryptedCardNumber     = await this.encryptOptional(input.cardNumber, encryptionKey, userId, id, 'encryptedCardNumber');
+    const encryptedCvv            = await this.encryptOptional(input.cvv, encryptionKey, userId, id, 'encryptedCvv');
+    const encryptedCardholderName = await this.encryptOptional(input.cardholderName, encryptionKey, userId, id, 'encryptedCardholderName');
+    const encryptedExpiryMonth    = await this.encryptOptional(input.expiryMonth, encryptionKey, userId, id, 'encryptedExpiryMonth');
+    const encryptedExpiryYear     = await this.encryptOptional(input.expiryYear, encryptionKey, userId, id, 'encryptedExpiryYear');
+    const encryptedCardType       = await this.encryptOptional(input.cardType, encryptionKey, userId, id, 'encryptedCardType');
+    const encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey, userId, id, 'encryptedBillingAddress');
 
     // Encrypt backup codes if present
     let encryptedBackupCodes: string | undefined;
     if (input.backupCodes && input.backupCodes.length > 0) {
       const codesJson = JSON.stringify(input.backupCodes);
-      const encrypted = await encrypt(codesJson, encryptionKey);
-      encryptedBackupCodes = JSON.stringify(encrypted);
+      encryptedBackupCodes = await sealField(codesJson, encryptionKey, userId, id, 'encryptedBackupCodes');
     }
 
     const stored: StoredCredential = {
@@ -159,7 +167,7 @@ export class CredentialRepository implements ICredentialRepository {
     await db.credentials.add(stored);
     // P4: keep the HIBP prefix store in sync (never blocks/breaks CRUD).
     await saveBreachPrefix(id, input.password, userId);
-    return this.decryptCredential(stored, encryptionKey);
+    return this.decryptCredential(stored, encryptionKey, userId);
   }
 
   // ── CRUD ──────────────────────────────────────────────────────────────────
@@ -184,11 +192,11 @@ export class CredentialRepository implements ICredentialRepository {
     if (stored.userId !== undefined && stored.userId !== userId) return null;
     // Legacy unowned row → claim only on cryptographic proof of ownership.
     if (stored.userId === undefined) {
-      if (!(await this.canClaim(stored, decryptionKey))) return null;
+      if (!(await this.canClaim(stored, decryptionKey, userId))) return null;
       await db.credentials.update(id, { userId });
     }
     await this.updateAccessTime(id, userId);
-    return this.decryptCredential(stored, decryptionKey);
+    return this.decryptCredential(stored, decryptionKey, userId);
   }
 
   async findAll(
@@ -200,7 +208,7 @@ export class CredentialRepository implements ICredentialRepository {
     if (profileId !== undefined) {
       rows = rows.filter((c) => c.profileId === profileId);
     }
-    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
+    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey, userId)));
   }
 
   async update(
@@ -215,14 +223,17 @@ export class CredentialRepository implements ICredentialRepository {
       throw new Error('Credential not found');
     }
     // Legacy unowned row: updating requires cryptographic proof of ownership.
-    if (existing.userId === undefined && !(await this.canClaim(existing, encryptionKey))) {
+    if (existing.userId === undefined && !(await this.canClaim(existing, encryptionKey, userId))) {
       throw new Error('Credential not found');
     }
 
+    // The whole row must be authentic and v2 before any partial write, so a
+    // failed row is never overwritten and no legacy column is stranded.
+    await this.requireAuthenticV2Row(id, encryptionKey, userId);
+
     // Start with only the timestamp.
-    // isSealed is preserved from the existing record; it is NOT set to true here
-    // for a partial update on a pre-v5 row — sealLegacyMetadata() owns the full
-    // sealing lifecycle (fixes 3324555923).
+    // isSealed is never set by a partial update on its own: sealLegacyMetadata()
+    // owns the sealing lifecycle (fixes 3324555923).
     const updates: Partial<StoredCredential> = {
       updatedAt: Date.now(),
       userId, // claims legacy unowned rows (ownership proven above)
@@ -232,20 +243,20 @@ export class CredentialRepository implements ICredentialRepository {
     // For each metadata field in the update, write the encrypted version AND
     // clear the legacy plaintext column (fixes 3324556024 and 3324556049).
     if (input.title !== undefined) {
-      updates.encryptedTitle = await this.encryptField(input.title, encryptionKey);
+      updates.encryptedTitle = await sealField(input.title, encryptionKey, userId, id, 'encryptedTitle');
       updates.title = undefined;
     }
     if (input.username !== undefined) {
-      updates.encryptedUsername = await this.encryptOptional(input.username, encryptionKey);
+      updates.encryptedUsername = await this.encryptOptional(input.username, encryptionKey, userId, id, 'encryptedUsername');
       updates.username = undefined;
     }
     if (input.url !== undefined) {
-      updates.encryptedUrl = await this.encryptOptional(input.url, encryptionKey);
+      updates.encryptedUrl = await this.encryptOptional(input.url, encryptionKey, userId, id, 'encryptedUrl');
       updates.url = undefined;
     }
     if (input.tags !== undefined) {
       updates.encryptedTags = input.tags.length > 0
-        ? await this.encryptField(JSON.stringify(input.tags), encryptionKey)
+        ? await sealField(JSON.stringify(input.tags), encryptionKey, userId, id, 'encryptedTags')
         : undefined;
       updates.tags = [];
     }
@@ -253,48 +264,47 @@ export class CredentialRepository implements ICredentialRepository {
     if (input.isFavorite !== undefined) updates.isFavorite = input.isFavorite;
 
     if (input.notes !== undefined) {
-      updates.encryptedNotes = await this.encryptOptional(input.notes, encryptionKey);
+      updates.encryptedNotes = await this.encryptOptional(input.notes, encryptionKey, userId, id, 'encryptedNotes');
       updates.notes = undefined;
     }
     if (input.password !== undefined) {
-      updates.encryptedPassword = await this.encryptField(input.password, encryptionKey);
+      updates.encryptedPassword = await sealField(input.password, encryptionKey, userId, id, 'encryptedPassword');
       updates.securityScore = analyzePasswordStrength(input.password).score;
       // P4: refresh the HIBP prefix for the new password.
       await saveBreachPrefix(id, input.password, userId);
     }
     if (input.totpSecret !== undefined)
-      updates.encryptedTotpSecret = await this.encryptOptional(input.totpSecret, encryptionKey);
+      updates.encryptedTotpSecret = await this.encryptOptional(input.totpSecret, encryptionKey, userId, id, 'encryptedTotpSecret');
     if (input.cardNumber !== undefined)
-      updates.encryptedCardNumber = await this.encryptOptional(input.cardNumber, encryptionKey);
+      updates.encryptedCardNumber = await this.encryptOptional(input.cardNumber, encryptionKey, userId, id, 'encryptedCardNumber');
     if (input.cvv !== undefined)
-      updates.encryptedCvv = await this.encryptOptional(input.cvv, encryptionKey);
+      updates.encryptedCvv = await this.encryptOptional(input.cvv, encryptionKey, userId, id, 'encryptedCvv');
 
     // Card metadata — encrypt AND clear plaintext counterpart (fixes 3324556049)
     if (input.cardholderName !== undefined) {
-      updates.encryptedCardholderName = await this.encryptOptional(input.cardholderName, encryptionKey);
+      updates.encryptedCardholderName = await this.encryptOptional(input.cardholderName, encryptionKey, userId, id, 'encryptedCardholderName');
       updates.cardholderName = undefined;
     }
     if (input.expiryMonth !== undefined) {
-      updates.encryptedExpiryMonth = await this.encryptOptional(input.expiryMonth, encryptionKey);
+      updates.encryptedExpiryMonth = await this.encryptOptional(input.expiryMonth, encryptionKey, userId, id, 'encryptedExpiryMonth');
       updates.expiryMonth = undefined;
     }
     if (input.expiryYear !== undefined) {
-      updates.encryptedExpiryYear = await this.encryptOptional(input.expiryYear, encryptionKey);
+      updates.encryptedExpiryYear = await this.encryptOptional(input.expiryYear, encryptionKey, userId, id, 'encryptedExpiryYear');
       updates.expiryYear = undefined;
     }
     if (input.cardType !== undefined) {
-      updates.encryptedCardType = await this.encryptOptional(input.cardType, encryptionKey);
+      updates.encryptedCardType = await this.encryptOptional(input.cardType, encryptionKey, userId, id, 'encryptedCardType');
       updates.cardType = undefined;
     }
     if (input.billingAddress !== undefined) {
-      updates.encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey);
+      updates.encryptedBillingAddress = await this.encryptOptional(input.billingAddress, encryptionKey, userId, id, 'encryptedBillingAddress');
       updates.billingAddress = undefined;
     }
     if (input.backupCodes !== undefined) {
       if (input.backupCodes.length > 0) {
         const codesJson = JSON.stringify(input.backupCodes);
-        const encrypted = await encrypt(codesJson, encryptionKey);
-        updates.encryptedBackupCodes = JSON.stringify(encrypted);
+        updates.encryptedBackupCodes = await sealField(codesJson, encryptionKey, userId, id, 'encryptedBackupCodes');
       } else {
         updates.encryptedBackupCodes = undefined;
       }
@@ -303,7 +313,25 @@ export class CredentialRepository implements ICredentialRepository {
     await db.credentials.update(id, updates);
     const updated = await db.credentials.get(id);
     if (!updated) throw new Error('Credential not found after update');
-    return this.decryptCredential(updated, encryptionKey);
+    return this.decryptCredential(updated, encryptionKey, userId);
+  }
+
+  /**
+   * Upgrades a legacy row in its own guarded write, so the caller's partial
+   * write then touches only the fields it changes. If another writer got there
+   * first, the row is re-read instead of being overwritten with stale columns.
+   */
+  private async requireAuthenticV2Row(id: string, key: CryptoKey, userId: string): Promise<void> {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const row = await db.credentials.get(id);
+      if (!row) throw new Error('Credential not found');
+      if (isV2Row(row)) {
+        await openRow(row, key, userId);
+        return;
+      }
+      await commitRowIfUnchanged(row, await resealRow(row, key, userId));
+    }
+    throw new IntegrityError();
   }
 
   async delete(id: string, decryptionKey: CryptoKey, userId: string): Promise<void> {
@@ -314,7 +342,7 @@ export class CredentialRepository implements ICredentialRepository {
     }
     // Legacy unowned row: deleting requires cryptographic proof of ownership
     // (mirrors update()); identical error so failure leaks no existence info.
-    if (existing.userId === undefined && !(await this.canClaim(existing, decryptionKey))) {
+    if (existing.userId === undefined && !(await this.canClaim(existing, decryptionKey, userId))) {
       throw new Error('Credential not found');
     }
     await db.credentials.delete(id);
@@ -357,7 +385,7 @@ export class CredentialRepository implements ICredentialRepository {
     if (profileId !== undefined) {
       rows = rows.filter((c) => c.profileId === profileId);
     }
-    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
+    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey, userId)));
   }
 
   async findFavorites(
@@ -372,18 +400,18 @@ export class CredentialRepository implements ICredentialRepository {
     if (profileId !== undefined) {
       rows = rows.filter((c) => c.profileId === profileId);
     }
-    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey)));
+    return Promise.all(rows.map((c) => this.decryptCredential(c, decryptionKey, userId)));
   }
 
   async exportAll(decryptionKey: CryptoKey, userId: string): Promise<string> {
     // Fully decrypt before export so that importFromJson() receives plaintext
     // title/username/url/tags rather than the encrypted blobs (fixes 3324556108).
     const credentials = await this.findAll(decryptionKey, userId);
-    const exportable = credentials.map((c) => ({
+    const exportable = credentials.filter((c) => !c.integrityError).map((c) => ({
       id: c.id,
       title: c.title,
       username: c.username,
-      password: c.password !== '[Decryption Failed]' ? c.password : undefined,
+      password: c.password,
       url: c.url,
       notes: c.notes,
       category: c.category,
@@ -422,14 +450,14 @@ export class CredentialRepository implements ICredentialRepository {
     if (mode === 'merge') {
       const existing = await this.findAll(encryptionKey, userId);
       existingKeys = new Set(
-        existing.map((c) => `${c.title.toLowerCase()} ${c.username.toLowerCase()}`)
+        existing.map((c) => `${c.title.toLowerCase()}\u0000${c.username.toLowerCase()}`)
       );
     }
 
     let imported = 0;
     for (const item of parsed) {
       if (existingKeys) {
-        const key = `${(item.title ?? '').toLowerCase()} ${(item.username ?? '').toLowerCase()}`;
+        const key = `${(item.title ?? '').toLowerCase()}\u0000${(item.username ?? '').toLowerCase()}`;
         if (existingKeys.has(key)) continue;
         existingKeys.add(key); // dedupe within the import payload itself too
       }
@@ -481,7 +509,7 @@ export class CredentialRepository implements ICredentialRepository {
       throw new Error('Credential not found');
     }
     try {
-      const password = await this.decryptField(credential.encryptedPassword, decryptionKey);
+      const password = await this.readPassword(credential, decryptionKey, userId);
       const analysis = analyzePasswordStrength(password);
       await db.credentials.update(id, { securityScore: analysis.score });
       return analysis.score;
@@ -490,9 +518,72 @@ export class CredentialRepository implements ICredentialRepository {
     }
   }
 
+  private rowMeta(stored: StoredCredential) {
+    return {
+      id: stored.id,
+      category: stored.category,
+      createdAt: new Date(stored.createdAt),
+      updatedAt: new Date(stored.updatedAt),
+      lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
+      isFavorite: stored.isFavorite,
+    };
+  }
+
+  /** What a row that fails to decrypt yields: no secrets, no URL, no plaintext columns. */
+  private lockedCredential(stored: StoredCredential): Credential {
+    return {
+      ...this.rowMeta(stored),
+      integrityError: true,
+      title: 'Integrity check failed',
+      username: '',
+      password: '',
+      tags: [],
+    };
+  }
+
+  /** v2 rows yield authenticated data only; plaintext columns are never read. */
+  private async decryptBoundCredential(
+    stored: StoredCredential,
+    vaultKey: CryptoKey,
+    userId: string
+  ): Promise<Credential> {
+    const meta = this.rowMeta(stored);
+    try {
+      const f = await openRow(stored, vaultKey, userId);
+      return {
+        ...meta,
+        securityScore: stored.securityScore,
+        title: f.encryptedTitle ?? '',
+        username: f.encryptedUsername ?? '',
+        password: f.encryptedPassword ?? '',
+        url: f.encryptedUrl,
+        notes: f.encryptedNotes,
+        tags: f.encryptedTags ? (JSON.parse(f.encryptedTags) as string[]) : [],
+        totpSecret: f.encryptedTotpSecret,
+        cardNumber: f.encryptedCardNumber,
+        cvv: f.encryptedCvv,
+        cardholderName: f.encryptedCardholderName,
+        expiryMonth: f.encryptedExpiryMonth,
+        expiryYear: f.encryptedExpiryYear,
+        cardType: f.encryptedCardType as Credential['cardType'],
+        billingAddress: f.encryptedBillingAddress,
+        backupCodes: f.encryptedBackupCodes
+          ? (JSON.parse(f.encryptedBackupCodes) as Credential['backupCodes'])
+          : undefined,
+      };
+    } catch {
+      return this.lockedCredential(stored);
+    }
+  }
+
   // ── Decrypt a stored row into a domain Credential ─────────────────────────
 
-  async decryptCredential(stored: StoredCredential, vaultKey: CryptoKey): Promise<Credential> {
+  async decryptCredential(
+    stored: StoredCredential,
+    vaultKey: CryptoKey,
+    userId: string = stored.userId ?? ''
+  ): Promise<Credential> {
+    if (isV2Row(stored)) return this.decryptBoundCredential(stored, vaultKey, userId);
     try {
       const password = await this.decryptField(stored.encryptedPassword, vaultKey);
 
@@ -572,21 +663,9 @@ export class CredentialRepository implements ICredentialRepository {
         cvv, cardType, billingAddress, backupCodes,
       };
     } catch {
-      return {
-        id: stored.id,
-        title: stored.title ?? '',
-        username: stored.username ?? '',
-        password: '[Decryption Failed]',
-        url: stored.url,
-        notes: stored.notes,
-        category: stored.category,
-        tags: stored.tags ?? [],
-        createdAt: new Date(stored.createdAt),
-        updatedAt: new Date(stored.updatedAt),
-        lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
-        isFavorite: stored.isFavorite,
-        securityScore: stored.securityScore,
-      };
+      // Falling back to plaintext columns here would let anyone who damages the
+      // password blob choose the URL and notes the user sees.
+      return this.lockedCredential(stored);
     }
   }
 

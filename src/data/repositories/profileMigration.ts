@@ -11,6 +11,7 @@
  */
 import { db, type StoredVaultProfile } from '../storage/database';
 import { encrypt, decrypt } from '@/core/crypto/encryption';
+import { buildAad } from '@/core/crypto/aad';
 import type { VaultProfile } from '@/domain/entities/VaultProfile';
 
 function toDomain(stored: StoredVaultProfile, name: string): VaultProfile {
@@ -42,10 +43,13 @@ export async function ensureDefaultProfile(
     defaultRow = existingDefault;
   } else {
     const now = Date.now();
+    const id = crypto.randomUUID();
     defaultRow = {
-      id: crypto.randomUUID(),
+      id,
       userId,
-      encryptedName: JSON.stringify(await encrypt('Personal', vaultKey)),
+      encryptedName: JSON.stringify(
+        await encrypt('Personal', vaultKey, buildAad({ purpose: 'profile-name', userId, recordId: id }))
+      ),
       type: 'personal',
       isDefault: true,
       createdAt: now,
@@ -62,7 +66,8 @@ export async function ensureDefaultProfile(
 
   const name = await decrypt(
     JSON.parse(defaultRow.encryptedName) as Parameters<typeof decrypt>[0],
-    vaultKey
+    vaultKey,
+    buildAad({ purpose: 'profile-name', userId, recordId: defaultRow.id })
   );
   return toDomain(defaultRow, name);
 }
