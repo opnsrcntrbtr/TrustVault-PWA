@@ -188,6 +188,12 @@ assumes a malicious server; TrustVault has none, so this is the local analogue.
   `securityScore`.
 - In-origin XSS after unlock.
 
+**Close other TrustVault tabs and windows before updating.** A tab still running an older build
+can *write* to an upgraded vault. Saving an edited title or password there mixes an old-format
+value into a v2 record, which the new build then locks: it cannot be edited, the upgrade does not
+repair it, and the app offers only deletion. Restore such an entry from a backup. Only the tab that
+accepts the update reloads. (Found in review and reproduced with simulated old-build writes.)
+
 **One-way upgrade:** older builds cannot read an upgraded vault or a 1.1 backup. Export a backup
 before deploying, and expect a stale service-worker tab or a rollback deploy to fail to read data.
 
