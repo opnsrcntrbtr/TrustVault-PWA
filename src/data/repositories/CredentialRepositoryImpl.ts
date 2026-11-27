@@ -21,7 +21,7 @@ import { db, type StoredCredential } from '../storage/database';
 import { decrypt } from '@/core/crypto/encryption';
 import type { CredentialField } from '@/core/crypto/aad';
 import { IntegrityError, isV2Row, openRow, resealRow, sealField } from './credentialRowCrypto';
-import { sealLegacyMetadata } from './metadataSealing';
+import { commitRowIfUnchanged } from './rowCommit';
 import { analyzePasswordStrength } from '@/core/crypto/password';
 import { saveBreachPrefix, deleteBreachPrefix } from '@/core/breach/breachPrefixStore';
 
@@ -229,18 +229,7 @@ export class CredentialRepository implements ICredentialRepository {
 
     // The whole row must be authentic and v2 before any partial write, so a
     // failed row is never overwritten and no legacy column is stranded.
-    let upgrade: Partial<StoredCredential> = {};
-    if (isV2Row(existing)) {
-      await openRow(existing, encryptionKey, userId);
-    } else {
-      let row = existing;
-      if (!row.isSealed) {
-        await sealLegacyMetadata(encryptionKey, userId);
-        row = (await db.credentials.get(id)) ?? existing;
-        if (!row.isSealed) throw new IntegrityError();
-      }
-      upgrade = await resealRow(row, encryptionKey, userId);
-    }
+    await this.requireAuthenticV2Row(id, encryptionKey, userId);
 
     // Start with only the timestamp.
     // isSealed is never set by a partial update on its own: sealLegacyMetadata()
@@ -321,10 +310,28 @@ export class CredentialRepository implements ICredentialRepository {
       }
     }
 
-    await db.credentials.update(id, { ...upgrade, ...updates });
+    await db.credentials.update(id, updates);
     const updated = await db.credentials.get(id);
     if (!updated) throw new Error('Credential not found after update');
     return this.decryptCredential(updated, encryptionKey, userId);
+  }
+
+  /**
+   * Upgrades a legacy row in its own guarded write, so the caller's partial
+   * write then touches only the fields it changes. If another writer got there
+   * first, the row is re-read instead of being overwritten with stale columns.
+   */
+  private async requireAuthenticV2Row(id: string, key: CryptoKey, userId: string): Promise<void> {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const row = await db.credentials.get(id);
+      if (!row) throw new Error('Credential not found');
+      if (isV2Row(row)) {
+        await openRow(row, key, userId);
+        return;
+      }
+      await commitRowIfUnchanged(row, await resealRow(row, key, userId));
+    }
+    throw new IntegrityError();
   }
 
   async delete(id: string, decryptionKey: CryptoKey, userId: string): Promise<void> {
@@ -404,7 +411,7 @@ export class CredentialRepository implements ICredentialRepository {
       id: c.id,
       title: c.title,
       username: c.username,
-      password: c.password !== '[Decryption Failed]' ? c.password : undefined,
+      password: c.password,
       url: c.url,
       notes: c.notes,
       category: c.category,
@@ -511,13 +518,8 @@ export class CredentialRepository implements ICredentialRepository {
     }
   }
 
-  /** v2 rows yield authenticated data only; plaintext columns are never read. */
-  private async decryptBoundCredential(
-    stored: StoredCredential,
-    vaultKey: CryptoKey,
-    userId: string
-  ): Promise<Credential> {
-    const meta = {
+  private rowMeta(stored: StoredCredential) {
+    return {
       id: stored.id,
       category: stored.category,
       createdAt: new Date(stored.createdAt),
@@ -525,6 +527,27 @@ export class CredentialRepository implements ICredentialRepository {
       lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
       isFavorite: stored.isFavorite,
     };
+  }
+
+  /** What a row that fails to decrypt yields: no secrets, no URL, no plaintext columns. */
+  private lockedCredential(stored: StoredCredential): Credential {
+    return {
+      ...this.rowMeta(stored),
+      integrityError: true,
+      title: 'Integrity check failed',
+      username: '',
+      password: '',
+      tags: [],
+    };
+  }
+
+  /** v2 rows yield authenticated data only; plaintext columns are never read. */
+  private async decryptBoundCredential(
+    stored: StoredCredential,
+    vaultKey: CryptoKey,
+    userId: string
+  ): Promise<Credential> {
+    const meta = this.rowMeta(stored);
     try {
       const f = await openRow(stored, vaultKey, userId);
       return {
@@ -549,14 +572,7 @@ export class CredentialRepository implements ICredentialRepository {
           : undefined,
       };
     } catch {
-      return {
-        ...meta,
-        integrityError: true,
-        title: 'Integrity check failed',
-        username: '',
-        password: '',
-        tags: [],
-      };
+      return this.lockedCredential(stored);
     }
   }
 
@@ -647,21 +663,9 @@ export class CredentialRepository implements ICredentialRepository {
         cvv, cardType, billingAddress, backupCodes,
       };
     } catch {
-      return {
-        id: stored.id,
-        title: stored.title ?? '',
-        username: stored.username ?? '',
-        password: '[Decryption Failed]',
-        url: stored.url,
-        notes: stored.notes,
-        category: stored.category,
-        tags: stored.tags ?? [],
-        createdAt: new Date(stored.createdAt),
-        updatedAt: new Date(stored.updatedAt),
-        lastAccessedAt: stored.lastAccessedAt ? new Date(stored.lastAccessedAt) : undefined,
-        isFavorite: stored.isFavorite,
-        securityScore: stored.securityScore,
-      };
+      // Falling back to plaintext columns here would let anyone who damages the
+      // password blob choose the URL and notes the user sees.
+      return this.lockedCredential(stored);
     }
   }
 

@@ -17,8 +17,15 @@ async function makeVaultKey(): Promise<CryptoKey> {
   ]);
 }
 
-/** Pre-AAD password blob: v2 rows are never sealed, so fixtures must be legacy. */
-const legacyPassword = async (key: CryptoKey) => JSON.stringify(await encrypt('secret-password-123', key));
+/**
+ * Turns a created row into a genuine pre-v5 one: a legacy password blob and no
+ * other encrypted columns (v2 rows are never sealed).
+ */
+const preV5Columns = async (key: CryptoKey) => ({
+  encryptedPassword: JSON.stringify(await encrypt('secret-password-123', key)),
+  encryptedUsername: undefined,
+  username: 'user@example.com',
+});
 
 const loginInput = (title: string) => ({
   title,
@@ -116,7 +123,7 @@ describe('two-user credential isolation', () => {
     const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
     // Simulate a pre-v5/pre-v9 row: plaintext metadata, unsealed, unowned.
     await db.credentials.update(a.id, {
-      encryptedPassword: await legacyPassword(keyA),
+      ...(await preV5Columns(keyA)),
       isSealed: false,
       title: 'Legacy plaintext title',
       encryptedTitle: undefined,
@@ -146,8 +153,8 @@ describe('two-user credential isolation', () => {
     const a = await credentialRepository.create(loginInput('A1'), keyA, userA);
     const b = await credentialRepository.create(loginInput('B1'), keyB, userB);
     // Both rows unsealed with plaintext metadata, but both owned.
-    await db.credentials.update(a.id, { encryptedPassword: await legacyPassword(keyA), isSealed: false, title: 'A plain', encryptedTitle: undefined });
-    await db.credentials.update(b.id, { encryptedPassword: await legacyPassword(keyB), isSealed: false, title: 'B plain', encryptedTitle: undefined });
+    await db.credentials.update(a.id, { ...(await preV5Columns(keyA)), isSealed: false, title: 'A plain', encryptedTitle: undefined });
+    await db.credentials.update(b.id, { ...(await preV5Columns(keyB)), isSealed: false, title: 'B plain', encryptedTitle: undefined });
 
     expect(await sealLegacyMetadata(keyA, userA)).toBe(1);
     expect((await db.credentials.get(a.id))?.isSealed).toBe(true);

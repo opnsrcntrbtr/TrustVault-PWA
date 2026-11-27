@@ -10,6 +10,7 @@ import { db } from '../storage/database';
 import { encrypt, decrypt, type EncryptedData } from '@/core/crypto/encryption';
 import { buildAad } from '@/core/crypto/aad';
 import { isV2Row, resealRow } from './credentialRowCrypto';
+import { commitRowIfUnchanged } from './rowCommit';
 
 export interface UpgradeResult {
   upgraded: number;
@@ -33,16 +34,8 @@ async function upgradeCredentials(vaultKey: CryptoKey, userId: string, result: U
       if (row.userId === userId) result.skipped++;
       continue;
     }
-    // WebCrypto work is done above: a Dexie transaction cannot await it.
-    await db.transaction('rw', db.credentials, async () => {
-      const current = await db.credentials.get(row.id);
-      if (current?.updatedAt !== row.updatedAt || current.encryptedPassword !== row.encryptedPassword) {
-        result.skipped++;
-        return;
-      }
-      await db.credentials.update(row.id, updates);
-      result.upgraded++;
-    });
+    if (await commitRowIfUnchanged(row, updates)) result.upgraded++;
+    else result.skipped++;
   }
 }
 

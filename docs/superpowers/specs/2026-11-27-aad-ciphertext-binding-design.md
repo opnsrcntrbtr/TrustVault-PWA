@@ -59,7 +59,8 @@ HKDF per-purpose subkeys (R1b), the biometric PRF wrap (owned by `webauthn-prf-z
 
 **Row rules.**
 - *v2 row:* every encrypted column that is present must be v2 and must authenticate under its own column name. Plaintext columns are ignored. Any failure marks the whole row `integrityError`: title `Integrity check failed`, empty username and password, no URL, notes, TOTP or card data.
-- *Legacy row:* read as today.
+- *Legacy row:* read as today, except that if it fails to decrypt it is locked like a failed v2 row (changed after review: the old plaintext fallback let one write downgrade a v2 row).
+- *Sealing (changed after review):* needs decryption proof for every row and writes v2 directly.
 - *New and updated rows:* always v2.
 
 **Integrity-failed rows** cannot be updated (delete still works). They are left out of export, and the export dialog says how many were skipped.
