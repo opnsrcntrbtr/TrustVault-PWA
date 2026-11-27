@@ -169,13 +169,19 @@ assumes a malicious server; TrustVault has none, so this is the local analogue.
 - **Row rule:** if `encryptedPassword` is v2, every present column must be v2 and authenticate,
   and plaintext columns are ignored. Otherwise the credential shows `Integrity check failed` with
   no secrets and no URL. It can be deleted, but not edited or exported.
+- A legacy row whose password cannot be decrypted is locked the same way; its plaintext columns
+  are never shown.
+- Pre-v5 sealing requires every row, whatever its `userId`, to be opened by the vault key, and it
+  writes v2 directly. A row with any unreadable column stays untouched, so its pre-v5 plaintext
+  metadata stays at rest.
 - Legacy rows are upgraded after password or biometric unlock. A legacy vault-key wrap is
   upgraded when the master password is entered.
 - `.tvault` 1.1 uses scrypt (N=2^17, r=8, p=1); 1.0 files still import.
 
 **Not protected:**
 - Anyone with an **earlier copy** of the database can restore old rows, or replay old legacy
-  blobs as a legacy row (full or per-row rollback).
+  blobs as a legacy row (full or per-row rollback). The same applies to legacy blobs still present
+  in rows the upgrade had to skip.
 - Tampering done **before** a row is upgraded is carried forward (trust on first use).
 - Deleting a whole row, or a whole optional ciphertext, reads as empty.
 - Index fields are not authenticated: `category`, `isFavorite`, `profileId`, timestamps,
