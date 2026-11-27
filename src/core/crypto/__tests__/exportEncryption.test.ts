@@ -10,14 +10,19 @@ import { deriveKeyFromPassword, encrypt } from '../encryption';
 import type { Credential } from '@/domain/entities/Credential';
 
 vi.mock('../encryption', () => ({
-  PBKDF2_ITERATIONS: 600_000,
+  VAULT_SCRYPT_PARAMS: { N: 131072, r: 8, p: 1, dkLen: 32 },
+  deriveScryptKey: vi.fn((password: string, salt: Uint8Array) => Promise.resolve({
+    password,
+    salt: Array.from(salt),
+  })),
   deriveKeyFromPassword: vi.fn((password: string, salt: Uint8Array) => Promise.resolve({
     password,
     salt: Array.from(salt),
   })),
-  encrypt: vi.fn((plaintext: string, key: unknown) => Promise.resolve({
+  encrypt: vi.fn((plaintext: string, key: unknown, aad?: Uint8Array) => Promise.resolve({
     ciphertext: btoa(JSON.stringify({ plaintext, password: (key as { password: string }).password })),
     iv: btoa('mock-iv'),
+    ...(aad ? { v: 2 } : {}),
   })),
   decrypt: vi.fn((encryptedData: { ciphertext: string }, key: unknown) => {
     const parsed = JSON.parse(atob(encryptedData.ciphertext)) as {
@@ -65,7 +70,7 @@ describe('exportEncryption', () => {
       encryptionParams: { algorithm: string };
     };
 
-    expect(parsed.version).toBe('1.0');
+    expect(parsed.version).toBe('1.1');
     expect(parsed.encryptionParams.algorithm).toBe('AES-256-GCM');
     expect(parsed.salt).toBeTypeOf('string');
     expect(parsed.encryptedData).toBeTypeOf('string');

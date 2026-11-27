@@ -3,7 +3,8 @@
  * Handles encryption and decryption of vault exports with a separate password
  */
 
-import { deriveKeyFromPassword, encrypt, decrypt, PBKDF2_ITERATIONS } from './encryption';
+import { deriveKeyFromPassword, deriveScryptKey, encrypt, decrypt, VAULT_SCRYPT_PARAMS } from './encryption';
+import { buildAad, type ExportHeader } from './aad';
 import { encodeUint8ArrayToBase64, decodeBase64ToUint8Array } from '@/core/utils/base64';
 import type { Credential } from '@/domain/entities/Credential';
 
@@ -17,7 +18,42 @@ export interface VaultExport {
   encryptedData: string; // JSON stringified encrypted data
   encryptionParams: {
     algorithm: string;
-    iterations: number;
+    // 1.1
+    kdf?: string;
+    N?: number;
+    r?: number;
+    p?: number;
+    dkLen?: number;
+    // 1.0
+    iterations?: number;
+  };
+}
+
+const MAX_SCRYPT_N = 1 << 20;
+const MAX_SCRYPT_P = 4;
+
+/**
+ * Validates untrusted 1.1 KDF settings before any key derivation: the floor
+ * stops a weakened KDF, the ceiling stops a crafted file exhausting memory.
+ */
+function readHeader(vaultExport: VaultExport): ExportHeader {
+  const { kdf, N, r, p, dkLen } = vaultExport.encryptionParams;
+  const isPowerOfTwo = (n: number) => Number.isInteger(n) && (n & (n - 1)) === 0;
+  if (
+    kdf !== 'scrypt' ||
+    typeof N !== 'number' || !isPowerOfTwo(N) || N < VAULT_SCRYPT_PARAMS.N || N > MAX_SCRYPT_N ||
+    r !== VAULT_SCRYPT_PARAMS.r ||
+    typeof p !== 'number' || !Number.isInteger(p) || p < 1 || p > MAX_SCRYPT_P ||
+    dkLen !== VAULT_SCRYPT_PARAMS.dkLen
+  ) {
+    throw new Error('Unsupported export encryption parameters');
+  }
+  return {
+    version: vaultExport.version,
+    exportDate: vaultExport.exportDate,
+    salt: vaultExport.salt,
+    kdf,
+    kdfParams: { N, r, p, dkLen },
   };
 }
 
@@ -42,12 +78,21 @@ export async function encryptExport(
   const salt = new Uint8Array(32);
   crypto.getRandomValues(salt);
 
+  const header: ExportHeader = {
+    version: '1.1',
+    exportDate: new Date().toISOString(),
+    salt: encodeUint8ArrayToBase64(salt),
+    kdf: 'scrypt',
+    kdfParams: { ...VAULT_SCRYPT_PARAMS },
+  };
+
   // Derive encryption key from export password
-  const key = await deriveKeyFromPassword(exportPassword, salt);
+  const key = await deriveScryptKey(exportPassword, salt, header.kdfParams);
 
   // Prepare data to encrypt
   const exportData: ExportData = {
-    credentials: credentials.map((cred) => ({
+    // Integrity-failed rows hold no real data and must not enter a backup.
+    credentials: credentials.filter((cred) => !cred.integrityError).map((cred) => ({
       ...cred,
       // Convert dates to ISO strings for JSON serialization
       createdAt: cred.createdAt.toISOString(),
@@ -57,17 +102,18 @@ export async function encryptExport(
 
   // Encrypt the data
   const dataString = JSON.stringify(exportData);
-  const encryptedData = await encrypt(dataString, key);
+  const encryptedData = await encrypt(dataString, key, buildAad({ purpose: 'export', header }));
 
   // Create export object
   const vaultExport: VaultExport = {
-    version: '1.0',
-    exportDate: new Date().toISOString(),
-    salt: encodeUint8ArrayToBase64(salt),
+    version: header.version,
+    exportDate: header.exportDate,
+    salt: header.salt,
     encryptedData: JSON.stringify(encryptedData),
     encryptionParams: {
       algorithm: 'AES-256-GCM',
-      iterations: PBKDF2_ITERATIONS,
+      kdf: header.kdf,
+      ...header.kdfParams,
     },
   };
 
@@ -103,15 +149,19 @@ export async function decryptImport(
   }
 
   // Check version compatibility
-  if (vaultExport.version !== '1.0') {
+  if (vaultExport.version !== '1.0' && vaultExport.version !== '1.1') {
     throw new Error(`Unsupported export version: ${vaultExport.version}`);
   }
+
+  const header = vaultExport.version === '1.1' ? readHeader(vaultExport) : null;
 
   // Decode salt
   const salt = decodeBase64ToUint8Array(vaultExport.salt);
 
   // Derive decryption key
-  const key = await deriveKeyFromPassword(exportPassword, salt);
+  const key = header
+    ? await deriveScryptKey(exportPassword, salt, header.kdfParams)
+    : await deriveKeyFromPassword(exportPassword, salt); // 1.0 files
 
   // Parse encrypted data
   let encryptedData;
@@ -124,7 +174,14 @@ export async function decryptImport(
   // Decrypt the data
   let decryptedString: string;
   try {
-    decryptedString = await decrypt(encryptedData, key);
+    // A 1.1 payload must be bound to this exact header; a 1.0 payload is unbound,
+    // so a 1.1 file relabelled as 1.0 cannot decrypt.
+    if (header && encryptedData.v !== 2) throw new Error('Unbound payload');
+    decryptedString = await decrypt(
+      encryptedData,
+      key,
+      header ? buildAad({ purpose: 'export', header }) : undefined
+    );
   } catch (error) {
     throw new Error('Failed to decrypt export. Invalid password or corrupted file.');
   }

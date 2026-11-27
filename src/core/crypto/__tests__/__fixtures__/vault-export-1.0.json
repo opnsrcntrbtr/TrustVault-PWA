@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-11-27T15:20:08.645Z",
+  "salt": "i1WaEJlCI+kS8gVUurtAK3xXLXGogFHik9AALRjUHdw=",
+  "encryptedData": "{\"ciphertext\":\"Ls+6n+gRZRS2nrn6ryYG84SoY2xNvYcLeUdh7i7gCExvhlgP3e/fbT5kUsXFYVbPd/P6a4vHC3aDLHTpcm/zl9rZVoC2/agPWnn1EccPn0ZmSSJnL8Kr3kCB+EW5+QQZLXsFhXi5EWm2vZxwLCApd46x2VrAobjmCfTgBIB5ufdgWujhVURuQQb8ZmqWc6tE5i31qK/vb3fMcKOatlUMiren1JHLpg3QFxJHCEhJwc2ArNaE1d13l3loOtE0jTwRuhZKxiLWJJPnVHmcQglM7BTf91XbABfe3Dr1WOYKsa0pk3wd8z5ILQBysB8tRls6E+kq2oM=\",\"iv\":\"u2KWCd9jlsAI9k4F\"}",
+  "encryptionParams": {
+    "algorithm": "AES-256-GCM",
+    "iterations": 600000
+  }
+}

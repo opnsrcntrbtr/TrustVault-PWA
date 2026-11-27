@@ -107,8 +107,19 @@ export async function deriveVaultWrapKey(
   password: string,
   salt: Uint8Array
 ): Promise<CryptoKey> {
+  return deriveScryptKey(password, salt, VAULT_SCRYPT_PARAMS);
+}
+
+export const VAULT_SCRYPT_PARAMS = { N: 131072, r: 8, p: 1, dkLen: 32 } as const;
+
+/** scrypt → non-extractable AES-GCM key. Callers validate untrusted params. */
+export async function deriveScryptKey(
+  password: string,
+  salt: Uint8Array,
+  params: { N: number; r: number; p: number; dkLen: number }
+): Promise<CryptoKey> {
   validateCryptoAPI();
-  const derived = scrypt(password, salt, { N: 131072, r: 8, p: 1, dkLen: 32 });
+  const derived = scrypt(password, salt, params);
   try {
     return await crypto.subtle.importKey(
       'raw',

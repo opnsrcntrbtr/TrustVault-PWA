@@ -44,6 +44,7 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
 
   // UI state
   const [error, setError] = useState<string | null>(null);
+  const [skippedNotice, setSkippedNotice] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
 
   // Validation
@@ -56,13 +57,15 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
     if (!session?.vaultKey || !isValid) return;
 
     setError(null);
+    setSkippedNotice(null);
     setExporting(true);
 
     try {
       // Get all credentials
       const credentials = await credentialRepository.findAll(session.vaultKey, session.userId);
 
-      if (credentials.length === 0) {
+      const skipped = credentials.filter((c) => c.integrityError).length;
+      if (credentials.length === skipped) {
         setError('No credentials to export');
         setExporting(false);
         return;
@@ -77,6 +80,15 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
 
       // Success
       setExporting(false);
+      if (skipped > 0) {
+        // Stay open so a partial backup is never mistaken for a full one.
+        setSkippedNotice(
+          skipped === 1
+            ? '1 credential failed the integrity check and was not included in this backup.'
+            : `${String(skipped)} credentials failed the integrity check and were not included in this backup.`
+        );
+        return;
+      }
       onSuccess();
       handleClose();
     } catch (err) {
@@ -92,6 +104,7 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
     setConfirmPassword('');
     setConfirmationChecked(false);
     setError(null);
+    setSkippedNotice(null);
     onClose();
   };
 
@@ -110,6 +123,12 @@ export default function ExportDialog({ open, onClose, onSuccess }: ExportDialogP
             Store this export password securely - you'll need it to import the vault later.
           </Typography>
         </Alert>
+
+        {skippedNotice && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {skippedNotice}
+          </Alert>
+        )}
 
         {/* Error Alert */}
         {error && (
