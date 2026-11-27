@@ -357,6 +357,23 @@ Mount with mocked stores/repos/router; assert behavior + error states (complemen
 
 ---
 
+### Research-driven backlog (added 2026-11-27, after WS-N)
+
+R1 (AAD ciphertext binding) has its own spec and plan:
+`docs/superpowers/plans/2026-11-27-aad-ciphertext-binding.md`. The rest are not yet designed.
+
+| WS | Item | Basis | Size |
+|---|---|---|---|
+| WS-O (R2) | NIST SP 800-63B-4 master-password policy: recommend ≥15 characters (currently 12), allow ≥64, no composition rules, allow paste, check HIBP k-anonymity at signup and change | NIST SP 800-63B-4 (July 2025); verify wording against the NIST PDF | S |
+| WS-P (R3) | FIDO CXF 1.0 import/export (logins, TOTP, notes); pairs with WS-E. CXP transport not needed (reported still a working draft) | FIDO Credential Exchange specs | M |
+| WS-Q (R1b) | Per-purpose HKDF subkeys | ePrint 2026/058, key separation | S–M |
+| WS-R (R4) | Opt-in end-to-end encrypted sync relay; needs its own design | ePrint 2026/058 attack classes | L |
+| WS-S (R5) | WCAG 2.2 AA (raises WS-H's 2.1 target) and a React ErrorBoundary | W3C WCAG 2.2 | S–M |
+| WS-T (R6) | Published threat model and tamper-test suite mapped to attack classes | ePrint 2026/058 | S |
+| WS-U (R7) | Post-quantum watch: WebCrypto ML-KEM/ML-DSA. Browser release versions unverified; relevant only once key exchange exists | WICG webcrypto-modern-algos | — |
+
+---
+
 ## 5. New/Changed File Map
 
 **New — production modules:**

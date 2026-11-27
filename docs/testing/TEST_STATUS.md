@@ -874,3 +874,10 @@ human should verify in real Chrome:
 5. A long chat conversation (10+ turns) surfaces the "Long conversation — older messages may be
    dropped" warning in `ChatPanel`.
 6. DevTools → Network shows no new egress during any of the above — inference stays fully local.
+
+## AAD ciphertext binding (R1, 2026-11-27)
+
+New suites: `aad.test.ts`, `encryption-aad.test.ts`, `credentialRowCrypto.test.ts`,
+`CredentialRepositoryImpl.integrity.test.ts`, `aadMigration.test.ts`,
+`exportEncryption.v11.test.ts`, `ExportDialog.integrity.test.tsx`. Spec:
+`docs/superpowers/specs/2026-11-27-aad-ciphertext-binding-design.md`.

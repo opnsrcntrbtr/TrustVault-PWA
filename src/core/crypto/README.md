@@ -10,6 +10,14 @@ Provides encryption/decryption and password hashing for vault security:
 
 ## Public API
 
+### Ciphertext binding (AAD v2)
+
+Vault data must be encrypted with AAD from `buildAad()` (`aad.ts`). Credential columns go through
+`src/data/repositories/credentialRowCrypto.ts`, not `encrypt()` directly. `decrypt()` requires AAD
+for `v: 2` data and ignores it for legacy data, so code that must reject legacy data checks `v`.
+See `docs/security/SECURITY.md` → "Ciphertext binding". `.tvault` is version 1.1 (scrypt,
+authenticated header).
+
 ### Encryption (AES-256-GCM)
 
 ```typescript

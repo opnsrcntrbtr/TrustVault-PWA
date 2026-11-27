@@ -156,6 +156,35 @@ TrustVaultDB (v1)
 - Session keys stored in memory only
 - Automatic secure wipe on logout
 
+### Ciphertext binding (AAD v2, R1)
+
+**Threat:** someone who can write IndexedDB at rest (malicious extension with storage access,
+shared or compromised device, tampered backup, a future sync relay). Basis: Scarlata et al.,
+*Zero Knowledge (About) Encryption*, USENIX Security 2026 / IACR ePrint 2026/058. That paper
+assumes a malicious server; TrustVault has none, so this is the local analogue.
+
+- v2 ciphertexts carry `"v":2` and use AES-GCM additional data (`src/core/crypto/aad.ts`) that
+  binds credential columns to user, record and column; profile names to user and profile; the
+  vault-key wrap to the user; and `.tvault` 1.1 payloads to their header.
+- **Row rule:** if `encryptedPassword` is v2, every present column must be v2 and authenticate,
+  and plaintext columns are ignored. Otherwise the credential shows `Integrity check failed` with
+  no secrets and no URL. It can be deleted, but not edited or exported.
+- Legacy rows are upgraded after password or biometric unlock. A legacy vault-key wrap is
+  upgraded when the master password is entered.
+- `.tvault` 1.1 uses scrypt (N=2^17, r=8, p=1); 1.0 files still import.
+
+**Not protected:**
+- Anyone with an **earlier copy** of the database can restore old rows, or replay old legacy
+  blobs as a legacy row (full or per-row rollback).
+- Tampering done **before** a row is upgraded is carried forward (trust on first use).
+- Deleting a whole row, or a whole optional ciphertext, reads as empty.
+- Index fields are not authenticated: `category`, `isFavorite`, `profileId`, timestamps,
+  `securityScore`.
+- In-origin XSS after unlock.
+
+**One-way upgrade:** older builds cannot read an upgraded vault or a 1.1 backup. Export a backup
+before deploying, and expect a stale service-worker tab or a rollback deploy to fail to read data.
+
 ### Key Hygiene (S7)
 - **Session vault keys are non-extractable** `CryptoKey`s on BOTH unlock paths
   (password and biometric PRF) — `crypto.subtle.exportKey` on them throws.
