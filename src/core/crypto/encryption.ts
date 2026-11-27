@@ -39,6 +39,7 @@ export interface EncryptedData {
   iv: string; // Base64 encoded
   salt?: string | undefined; // Base64 encoded (for password-based encryption)
   authTag?: string | undefined; // Base64 encoded GCM auth tag
+  v?: 2 | undefined; // 2 = AAD-bound (see aad.ts); absent = legacy
 }
 
 /**
@@ -139,10 +140,12 @@ export async function generateEncryptionKey(): Promise<CryptoKey> {
 /**
  * Encrypts data using AES-256-GCM
  * Returns encrypted data with IV and optional salt
+ * When `aad` is given the ciphertext is bound to it and marked v2.
  */
 export async function encrypt(
   plaintext: string,
-  key: CryptoKey
+  key: CryptoKey,
+  aad?: Uint8Array
 ): Promise<EncryptedData> {
   try {
     validateCryptoAPI();
@@ -155,6 +158,7 @@ export async function encrypt(
       {
         name: 'AES-GCM',
         iv: iv as BufferSource,
+        ...(aad ? { additionalData: aad as BufferSource } : {}),
       },
       key,
       data
@@ -163,6 +167,7 @@ export async function encrypt(
     return {
       ciphertext: arrayBufferToBase64(ciphertext),
       iv: arrayBufferToBase64(iv),
+      ...(aad ? { v: 2 as const } : {}),
     };
   } catch {
     throw new Error('Failed to encrypt data');
@@ -170,14 +175,22 @@ export async function encrypt(
 }
 
 /**
- * Decrypts AES-256-GCM encrypted data
+ * Decrypts AES-256-GCM encrypted data.
+ * v2 data requires the matching `aad`; legacy data ignores it. Callers that
+ * must not accept legacy data check `v` themselves.
  */
 export async function decrypt(
   encryptedData: EncryptedData,
-  key: CryptoKey
+  key: CryptoKey,
+  aad?: Uint8Array
 ): Promise<string> {
   try {
     validateCryptoAPI();
+
+    const version: unknown = encryptedData.v;
+    if (version !== undefined && (version !== 2 || !aad)) {
+      throw new Error('Unsupported ciphertext');
+    }
 
     const ciphertext = base64ToArrayBuffer(encryptedData.ciphertext);
     const iv = base64ToArrayBuffer(encryptedData.iv);
@@ -186,6 +199,7 @@ export async function decrypt(
       {
         name: 'AES-GCM',
         iv: iv,
+        ...(version === 2 ? { additionalData: aad as BufferSource } : {}),
       },
       key,
       ciphertext
