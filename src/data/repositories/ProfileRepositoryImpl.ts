@@ -7,14 +7,19 @@
  */
 import { db, type StoredVaultProfile } from '@/data/storage/database';
 import { encrypt, decrypt } from '@/core/crypto/encryption';
+import { buildAad } from '@/core/crypto/aad';
 import type { IProfileRepository } from '@/domain/repositories/IProfileRepository';
 import type { VaultProfile, VaultProfileInput } from '@/domain/entities/VaultProfile';
+
+const nameAad = (userId: string, recordId: string) =>
+  buildAad({ purpose: 'profile-name', userId, recordId });
 
 class ProfileRepository implements IProfileRepository {
   private async toDomain(stored: StoredVaultProfile, key: CryptoKey): Promise<VaultProfile> {
     const name = await decrypt(
       JSON.parse(stored.encryptedName) as Parameters<typeof decrypt>[0],
-      key
+      key,
+      nameAad(stored.userId, stored.id)
     );
     return {
       id: stored.id,
@@ -52,10 +57,11 @@ class ProfileRepository implements IProfileRepository {
         .modify({ isDefault: false });
     }
 
+    const id = crypto.randomUUID();
     const row: StoredVaultProfile = {
-      id: crypto.randomUUID(),
+      id,
       userId,
-      encryptedName: JSON.stringify(await encrypt(input.name, encryptionKey)),
+      encryptedName: JSON.stringify(await encrypt(input.name, encryptionKey, nameAad(userId, id))),
       type: input.type,
       accentColor: input.accentColor,
       icon: input.icon,
@@ -96,7 +102,7 @@ class ProfileRepository implements IProfileRepository {
 
     const updates: Partial<StoredVaultProfile> = { updatedAt: Date.now() };
     if (input.name !== undefined) {
-      updates.encryptedName = JSON.stringify(await encrypt(input.name, encryptionKey));
+      updates.encryptedName = JSON.stringify(await encrypt(input.name, encryptionKey, nameAad(userId, id)));
     }
     if (input.type !== undefined) updates.type = input.type;
     if (input.accentColor !== undefined) updates.accentColor = input.accentColor;

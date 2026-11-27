@@ -12,8 +12,12 @@ import type { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { checkRateLimit, recordFailedAttempt, clearAttempts } from '@/core/auth/rateLimiter';
 import { sealLegacyMetadata } from '@/data/repositories/metadataSealing';
 import { ensureDefaultProfile } from '@/data/repositories/profileMigration';
+import { resealToAadV2 } from '@/data/repositories/aadMigration';
+import { buildAad } from '@/core/crypto/aad';
 import { stripLegacyBiometric } from '@/core/auth/biometricMigration';
 import { usernameKey } from '@/core/auth/usernameValidation';
+
+const wrapAad = (userId: string) => buildAad({ purpose: 'vault-key-wrap', userId });
 
 export class UserRepositoryImpl implements IUserRepository {
   /**
@@ -42,12 +46,13 @@ export class UserRepositoryImpl implements IUserRepository {
     const masterVaultKey = new Uint8Array(32);
     crypto.getRandomValues(masterVaultKey);
     const masterVaultKeyBase64 = btoa(String.fromCharCode(...masterVaultKey));
-    const encryptedVaultKey = await encrypt(masterVaultKeyBase64, vaultKey);
+    const userId = crypto.randomUUID();
+    const encryptedVaultKey = await encrypt(masterVaultKeyBase64, vaultKey, wrapAad(userId));
     // S7: zeroize the transient raw key bytes once the encrypted copy exists.
     masterVaultKey.fill(0);
 
     const user: User = {
-      id: crypto.randomUUID(),
+      id: userId,
       username,
       ...(email ? { email } : {}),
       hashedMasterPassword,
@@ -129,13 +134,13 @@ export class UserRepositoryImpl implements IUserRepository {
 
     // Decrypt the actual vault key (masterVaultKey) from storage
     const encryptedVaultKeyData = JSON.parse(storedUser.encryptedVaultKey);
-    const masterVaultKeyBase64 = await decrypt(encryptedVaultKeyData, tempKey);
+    const masterVaultKeyBase64 = await decrypt(encryptedVaultKeyData, tempKey, wrapAad(storedUser.id));
 
-    // Transparent KDF upgrade (Finding 3). Best-effort: never blocks login.
-    if (!isScryptWrapped) {
+    // Transparent KDF (Finding 3) and AAD upgrade. Best-effort: never blocks login.
+    if (!isScryptWrapped || encryptedVaultKeyData.v !== 2) {
       try {
-        const upgradedWrapKey = await deriveVaultWrapKey(masterPassword, salt);
-        const upgradedCiphertext = await encrypt(masterVaultKeyBase64, upgradedWrapKey);
+        const upgradedWrapKey = isScryptWrapped ? tempKey : await deriveVaultWrapKey(masterPassword, salt);
+        const upgradedCiphertext = await encrypt(masterVaultKeyBase64, upgradedWrapKey, wrapAad(storedUser.id));
         await db.users.update(storedUser.id, {
           encryptedVaultKey: JSON.stringify(upgradedCiphertext),
           vaultKdf: 'scrypt-v1',
@@ -182,6 +187,13 @@ export class UserRepositoryImpl implements IUserRepository {
       await ensureDefaultProfile(resolvedVaultKey, storedUser.id);
     } catch {
       // Non-fatal: will retry next login.
+    }
+
+    // Bind legacy ciphertexts to their records (AAD v2).
+    try {
+      await resealToAadV2(resolvedVaultKey, storedUser.id);
+    } catch {
+      // Non-fatal: legacy rows stay readable and are retried next login.
     }
 
     // S1: enforce the PRF-only invariant by removing any legacy (insecure)
@@ -316,6 +328,12 @@ export class UserRepositoryImpl implements IUserRepository {
       // Non-fatal: will retry next login.
     }
 
+    try {
+      await resealToAadV2(vaultKey, userId);
+    } catch {
+      // Non-fatal: legacy rows stay readable and are retried next login.
+    }
+
     return {
       userId: user.id,
       vaultKey,
@@ -447,10 +465,19 @@ export class UserRepositoryImpl implements IUserRepository {
     const tempKey = user.vaultKdf === 'scrypt-v1'
       ? await deriveVaultWrapKey(masterPassword, userSalt)
       : await deriveKeyFromPassword(masterPassword, userSalt);
-    const vaultKeyBase64 = await decrypt(
-      JSON.parse(user.encryptedVaultKey) as Parameters<typeof decrypt>[0],
-      tempKey,
-    );
+    const wrapData = JSON.parse(user.encryptedVaultKey) as Parameters<typeof decrypt>[0];
+    const vaultKeyBase64 = await decrypt(wrapData, tempKey, wrapAad(user.id));
+    // The password is in hand, so upgrade a legacy wrap now.
+    const wrapUpgrade = wrapData.v === 2
+      ? {}
+      : {
+          encryptedVaultKey: JSON.stringify(await encrypt(
+            vaultKeyBase64,
+            user.vaultKdf === 'scrypt-v1' ? tempKey : await deriveVaultWrapKey(masterPassword, userSalt),
+            wrapAad(user.id),
+          )),
+          vaultKdf: 'scrypt-v1' as const,
+        };
     const vaultKeyRaw = Uint8Array.from(atob(vaultKeyBase64), c => c.charCodeAt(0));
 
     let wrappedVaultKey: string;
@@ -485,6 +512,7 @@ export class UserRepositoryImpl implements IUserRepository {
     await db.users.update(userId, {
       webAuthnCredentials: updatedCredentials as typeof user.webAuthnCredentials,
       biometricEnabled: true,
+      ...wrapUpgrade,
     });
   }
 
@@ -562,13 +590,13 @@ export class UserRepositoryImpl implements IUserRepository {
       : await deriveKeyFromPassword(currentPassword, currentSalt);
 
     const encryptedVaultKeyData = JSON.parse(user.encryptedVaultKey);
-    const masterVaultKey = await decrypt(encryptedVaultKeyData, currentVaultKey);
+    const masterVaultKey = await decrypt(encryptedVaultKeyData, currentVaultKey, wrapAad(userId));
 
     const newSalt = new Uint8Array(32);
     crypto.getRandomValues(newSalt);
     // Always re-wrap under scrypt (Finding 3) regardless of the previous KDF.
     const newVaultKey = await deriveVaultWrapKey(newPassword, newSalt);
-    const newEncryptedVaultKey = await encrypt(masterVaultKey, newVaultKey);
+    const newEncryptedVaultKey = await encrypt(masterVaultKey, newVaultKey, wrapAad(userId));
 
     await db.users.update(userId, {
       hashedMasterPassword: newHashedPassword,

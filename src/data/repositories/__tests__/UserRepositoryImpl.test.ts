@@ -7,6 +7,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { scrypt } from '@noble/hashes/scrypt';
 import { UserRepositoryImpl } from '../UserRepositoryImpl';
+import { resealToAadV2 } from '../aadMigration';
+import { buildAad } from '@/core/crypto/aad';
 import { needsRehash } from '@/core/crypto/password';
 import { deriveVaultWrapKey, deriveKeyFromPassword, encrypt, decrypt } from '@/core/crypto/encryption';
 import { isPRFSupported } from '@/core/auth/webauthn';
@@ -22,6 +24,12 @@ import { enrollPrfCredential, evaluatePrf } from 'webauthn-prf-zktv/webauthn';
 import { encodeUint8ArrayToBase64 } from '@/core/utils/base64';
 import { db } from '../../storage/database';
 import type { User } from '@/domain/entities/User';
+
+// Passthrough spy: the real upgrade runs unless a test overrides it.
+vi.mock('../aadMigration', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../aadMigration')>();
+  return { resealToAadV2: vi.fn(actual.resealToAadV2) };
+});
 
 // S1: mock the app-level availability gate; the WebAuthn/PRF ceremonies and
 // crypto wrap/unwrap live in webauthn-prf-zktv and are mocked separately below.
@@ -708,6 +716,36 @@ describe('UserRepositoryImpl', () => {
       vi.clearAllMocks();
     });
 
+    it('runs the AAD upgrade on password and biometric unlock, and a failure blocks neither', async () => {
+      const user = await repository.createUser(username, password);
+      await repository.registerBiometric(user.id, password);
+      vi.mocked(resealToAadV2).mockClear();
+
+      vi.mocked(resealToAadV2).mockRejectedValueOnce(new Error('quota'));
+      await expect(repository.authenticateWithPassword(username, password)).resolves.toMatchObject({ userId: user.id });
+      vi.mocked(resealToAadV2).mockRejectedValueOnce(new Error('quota'));
+      await expect(repository.authenticateWithBiometric(user.id, 'prf-cred-1')).resolves.toMatchObject({ userId: user.id });
+
+      expect(resealToAadV2).toHaveBeenCalledTimes(2);
+    });
+
+    it('upgrades a legacy vault-key wrap during biometric enrolment', async () => {
+      const user = await repository.createUser(username, password);
+      const raw = await recoverVaultKeyRaw(user.id, password);
+      const stored = (await db.users.get(user.id))!;
+      const salt = Uint8Array.from(atob(stored.salt), c => c.charCodeAt(0));
+      const wrapKey = await deriveVaultWrapKey(password, salt);
+      await db.users.update(user.id, {
+        encryptedVaultKey: JSON.stringify(await encrypt(encodeUint8ArrayToBase64(raw), wrapKey)),
+      });
+
+      await repository.registerBiometric(user.id, password);
+
+      const after = (await db.users.get(user.id))!;
+      expect((JSON.parse(after.encryptedVaultKey) as { v?: number }).v).toBe(2);
+      await expect(recoverVaultKeyRaw(user.id, password)).resolves.toEqual(raw);
+    });
+
     /** Recovers the raw vault key bytes exactly as registerBiometric does. */
     async function recoverVaultKeyRaw(userId: string, masterPassword: string): Promise<Uint8Array> {
       const stored = await db.users.get(userId);
@@ -719,6 +757,7 @@ describe('UserRepositoryImpl', () => {
       const vaultKeyBase64 = await decrypt(
         JSON.parse(stored.encryptedVaultKey) as Parameters<typeof decrypt>[0],
         tempKey,
+        buildAad({ purpose: 'vault-key-wrap', userId }),
       );
       return Uint8Array.from(atob(vaultKeyBase64), c => c.charCodeAt(0));
     }
@@ -1000,7 +1039,8 @@ describe('UserRepositoryImpl', () => {
       const legacyWrap = await deriveKeyFromPassword('a-strong-master-pw-123', salt);
       const vaultKeyB64 = await decrypt(
         JSON.parse(stored.encryptedVaultKey) as Parameters<typeof decrypt>[0],
-        await deriveVaultWrapKey('a-strong-master-pw-123', salt)
+        await deriveVaultWrapKey('a-strong-master-pw-123', salt),
+        buildAad({ purpose: 'vault-key-wrap', userId: stored.id })
       );
       const reWrapped = await encrypt(vaultKeyB64, legacyWrap);
       const { vaultKdf: _omitted, ...legacyRow } = stored;
