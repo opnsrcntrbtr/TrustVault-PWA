@@ -60,6 +60,7 @@ import ThemeToggle from '@/presentation/components/ThemeToggle';
 import ProfileSwitcher from '@/presentation/components/ProfileSwitcher';
 import TourHelpButton from '@/components/TourHelpButton';
 import type { Credential, CredentialCategory } from '@/domain/entities/Credential';
+import { computeSecurityScore } from './securityAuditEngine';
 import { clipboardManager } from '@/presentation/utils/clipboard';
 import BreachAlertBanner from '@/presentation/components/BreachAlertBanner';
 import { runUnlockBreachRefresh } from '@/core/breach/unlockBreachRefresh';
@@ -342,9 +343,7 @@ export default function DashboardPage() {
   const totalCredentials = credentials.length;
   const strongPasswords = credentials.filter((c) => (c.securityScore || 0) >= 80).length;
   const weakPasswords = credentials.filter((c) => (c.securityScore || 0) < 60).length;
-  const averageScore = totalCredentials > 0
-    ? Math.round(credentials.reduce((sum, c) => sum + (c.securityScore || 0), 0) / totalCredentials)
-    : 0;
+  const averageScore = computeSecurityScore(credentials);
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>

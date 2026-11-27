@@ -43,7 +43,7 @@ import {
 import { useAuthStore } from '../store/authStore';
 import { credentialRepository } from '@/data/repositories/CredentialRepositoryImpl';
 import type { Credential } from '@/domain/entities/Credential';
-import { analyzePasswordStrength } from '@/core/crypto/password';
+import { buildSecurityIssues, computeSecurityScore, getScoreColor, getScoreLabel, getSeverityColor, type SecurityIssue } from './securityAuditEngine';
 import { checkPasswordBreach, isHibpEnabled } from '@/core/breach/hibpService';
 import { getLastFullCheckAt, markBreachCheckComplete } from '@/core/breach/unlockBreachRefresh';
 import {
@@ -54,16 +54,6 @@ import {
 import type { BreachCheckResult } from '@/core/breach/breachTypes';
 import BreachDetailsModal from '../components/BreachDetailsModal';
 
-interface SecurityIssue {
-  id: string;
-  title: string;
-  severity: 'critical' | 'high' | 'medium' | 'low';
-  type: 'weak' | 'reused' | 'old' | 'no-password' | 'breached';
-  credentialTitle: string;
-  credentialId?: string;
-  details: string;
-  breachData?: BreachCheckResult;
-}
 
 export default function SecurityAuditPage() {
   const navigate = useNavigate();
@@ -138,10 +128,6 @@ export default function SecurityAuditPage() {
   const analyzeCredentials = async () => {
     setLoading(true);
 
-    const foundIssues: SecurityIssue[] = [];
-    const passwordMap = new Map<string, string[]>(); // password -> [credential titles]
-    const credentialCount = credentials.length;
-
     // Load breach data if available
     let breachedCredentials: Array<{
       credentialId: string;
@@ -160,158 +146,15 @@ export default function SecurityAuditPage() {
       }
     }
 
-    // Analyze each credential
-    credentials.forEach((cred) => {
-      // Check for breaches first (highest priority)
-      const breach = breachedCredentials.find(b => b.credentialId === cred.id && b.checkType === 'password');
-      if (breach) {
-        const severityMap: { [key: string]: 'critical' | 'high' | 'medium' | 'low' } = {
-          critical: 'critical',
-          high: 'high',
-          medium: 'medium',
-          low: 'low',
-        };
-
-        foundIssues.push({
-          id: `${cred.id}-breached`,
-          title: 'Password Found in Data Breach',
-          severity: severityMap[breach.severity] || 'critical',
-          type: 'breached',
-          credentialTitle: cred.title,
-          credentialId: cred.id,
-          details: `This password has been seen ${breach.breachCount.toLocaleString()} time${breach.breachCount === 1 ? '' : 's'} in data breaches. Change it immediately!`,
-          breachData: {
-            breached: true,
-            breaches: [],
-            severity: breach.severity as any,
-            checkedAt: breach.checkedAt,
-            breachCount: breach.breachCount,
-          },
-        });
-      }
-
-      // Check if password exists
-      if (!cred.password || cred.password.trim() === '') {
-        foundIssues.push({
-          id: `${cred.id}-no-password`,
-          title: 'Missing Password',
-          severity: 'medium',
-          type: 'no-password',
-          credentialTitle: cred.title,
-          credentialId: cred.id,
-          details: 'This credential has no password set.',
-        });
-        return;
-      }
-
-      // Check password strength
-      const strength = analyzePasswordStrength(cred.password);
-
-      if (strength.score < 60) {
-        foundIssues.push({
-          id: `${cred.id}-weak`,
-          title: 'Weak Password',
-          severity: strength.score < 40 ? 'critical' : 'high',
-          type: 'weak',
-          credentialTitle: cred.title,
-          credentialId: cred.id,
-          details: `Password strength: ${strength.strength}. ${strength.feedback.join(' ')}`,
-        });
-      }
-
-      // Track for reuse detection
-      if (passwordMap.has(cred.password)) {
-        passwordMap.get(cred.password)!.push(cred.title);
-      } else {
-        passwordMap.set(cred.password, [cred.title]);
-      }
-
-      // Check password age (if updatedAt available)
-      if (cred.updatedAt) {
-        const daysSinceUpdate = Math.floor(
-          (Date.now() - new Date(cred.updatedAt).getTime()) / (1000 * 60 * 60 * 24)
-        );
-
-        if (daysSinceUpdate > 365) {
-          foundIssues.push({
-            id: `${cred.id}-old`,
-            title: 'Password Not Updated',
-            severity: daysSinceUpdate > 730 ? 'high' : 'medium',
-            type: 'old',
-            credentialTitle: cred.title,
-            credentialId: cred.id,
-            details: `Password is ${daysSinceUpdate} days old. Consider updating for better security.`,
-          });
-        }
-      }
-    });
-
-    // Check for reused passwords
-    passwordMap.forEach((titles, password) => {
-      if (titles.length > 1) {
-        foundIssues.push({
-          id: `reused-${password.substring(0, 8)}`,
-          title: 'Reused Password',
-          severity: 'high',
-          type: 'reused',
-          credentialTitle: titles.join(', '),
-          details: `This password is used on ${titles.length} accounts: ${titles.join(', ')}`,
-        });
-      }
-    });
+    // Delegate issue detection to pure engine
+    const foundIssues = buildSecurityIssues(credentials, breachedCredentials, { now: Date.now() });
 
     // Overall security score: plain avg of stored c.securityScore (matches DashboardPage)
-    const finalScore = credentialCount > 0
-      ? credentials.reduce((sum, c) => sum + (c.securityScore || 0), 0) / credentialCount
-      : 0;
-
-    setSecurityScore(Math.round(finalScore));
+    setSecurityScore(computeSecurityScore(credentials));
     setIssues(foundIssues);
     setLoading(false);
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'success';
-    if (score >= 60) return 'info';
-    if (score >= 40) return 'warning';
-    return 'error';
-  };
-
-  const getScoreLabel = (score: number) => {
-    if (score >= 80) return 'Excellent';
-    if (score >= 60) return 'Good';
-    if (score >= 40) return 'Fair';
-    return 'Needs Improvement';
-  };
-
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical':
-        return 'error';
-      case 'high':
-        return 'error';
-      case 'medium':
-        return 'warning';
-      case 'low':
-        return 'info';
-      default:
-        return 'default';
-    }
-  };
-
-  const getSeverityIcon = (severity: string) => {
-    switch (severity) {
-      case 'critical':
-      case 'high':
-        return <Error color="error" />;
-      case 'medium':
-        return <Warning color="warning" />;
-      case 'low':
-        return <Info color="info" />;
-      default:
-        return <Info />;
-    }
-  };
 
   const loadBreachStats = async () => {
     if (!user) return;
@@ -334,7 +177,6 @@ export default function SecurityAuditPage() {
 
     try {
       let scannedCount = 0;
-      const totalCount = credentials.length;
 
       for (const credential of credentials) {
         if (!credential.password || credential.password.trim() === '') {
@@ -345,16 +187,9 @@ export default function SecurityAuditPage() {
           const result = await checkPasswordBreach(credential.password);
           await saveBreachResult(credential.id, 'password', result, user.id);
 
-          if (result.breached) {
-            console.log(`Breach detected for ${credential.title}: ${result.breachCount} times`);
-          }
 
           scannedCount++;
 
-          // Update progress
-          if (scannedCount % 5 === 0) {
-            console.log(`Scanned ${scannedCount}/${totalCount} credentials`);
-          }
         } catch (error) {
           console.error(`Failed to check breach for ${credential.title}:`, error);
         }
@@ -608,7 +443,7 @@ export default function SecurityAuditPage() {
                     alignItems: 'flex-start',
                   }}
                 >
-                  <ListItemIcon sx={{ mt: 1 }}>{getSeverityIcon(issue.severity)}</ListItemIcon>
+                  <ListItemIcon sx={{ mt: 1 }}>{issue.severity === 'critical' || issue.severity === 'high' ? <Error color="error" /> : issue.severity === 'medium' ? <Warning color="warning" /> : <Info color="info" />}</ListItemIcon>
                   <ListItemText
                     primary={
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5, flexWrap: 'wrap' }}>
