@@ -54,16 +54,17 @@ describe('comment 3324555923: partial update must not prematurely mark legacy ro
     return id;
   }
 
-  it('a partial update (isFavorite only) leaves a legacy row unsealed so sealLegacyMetadata can still process it', async () => {
+  it('a partial update (isFavorite only) never leaves a legacy row half-sealed: it seals the whole row first', async () => {
     const id = await insertLegacyRow();
 
     await repo.update(id, { isFavorite: true }, vaultKey, TEST_USER);
 
     const stored = await db.credentials.get(id);
-    // Must still be unsealed so sealLegacyMetadata picks it up
-    expect(stored?.isSealed).toBeFalsy();
-    // Plaintext title must still be present (not corrupted by a false-seal)
-    expect(stored?.title).toBe('LegacyTitle');
+    // Sealed only because every column really was encrypted
+    expect(stored?.isSealed).toBe(true);
+    expect(stored?.title).toBeUndefined();
+    // The legacy title survives the upgrade
+    await expect(repo.findById(id, vaultKey, TEST_USER)).resolves.toMatchObject({ title: 'LegacyTitle' });
   });
 
   it('a full metadata update on a legacy row encrypts and clears the updated fields (sealLegacyMetadata handles final isSealed)', async () => {

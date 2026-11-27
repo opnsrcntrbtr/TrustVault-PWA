@@ -12,6 +12,7 @@
 
 import { db, type StoredCredential } from '../storage/database';
 import { encrypt, decrypt } from '@/core/crypto/encryption';
+import { isV2Row } from './credentialRowCrypto';
 
 async function encryptField(value: string, key: CryptoKey): Promise<string> {
   return JSON.stringify(await encrypt(value, key));
@@ -52,7 +53,9 @@ async function encryptOptional(value: string | undefined, key: CryptoKey): Promi
  */
 export async function sealLegacyMetadata(vaultKey: CryptoKey, userId: string): Promise<number> {
   const candidates = await db.credentials
-    .filter((c) => c.isSealed !== true)
+    // Never seal a v2 row: its plaintext columns are untrusted, and sealing
+    // would copy injected values into the encrypted columns.
+    .filter((c) => c.isSealed !== true && !isV2Row(c))
     .toArray();
 
   const unsealed: StoredCredential[] = [];
